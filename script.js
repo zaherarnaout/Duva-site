@@ -1788,7 +1788,8 @@ function generatePDF() {
   showPDFContainer();
   // 4. Prepare PDF export
   const element = document.querySelector('.pdf-container');
-  const code = document.querySelector('[data-type="code"] .selected-value')?.textContent?.trim() || 'file';
+  // Use the correct selector for the code
+  const code = document.getElementById('pdf-code')?.textContent?.replace(/^Code:\s*/i, '').trim() || 'file';
   if (!element) {
     hidePDFContainer();
     alert('PDF container not found!');
