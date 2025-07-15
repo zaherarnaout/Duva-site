@@ -672,6 +672,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateOrderingCode() { 
 
+    ensureProductCode();
+    console.log("updateOrderingCode: product =", window.currentSelection.product);
     const baseCode = window.currentSelection.product || "CXXX"; 
 
     const keys = ["watt", "ip-rating", "beam", "cct", "cri", "finish"]; 
@@ -698,6 +700,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Build plain code string for filename
       const plainParts = keys.map(key => getTextValue(key) || "XX");
       pdfCodeElement.textContent = `${baseCode}.${plainParts.join(".")}`;
+      console.log("updateOrderingCode: pdfCodeElement.textContent =", pdfCodeElement.textContent);
     }
   } 
 } 
@@ -1370,12 +1373,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* === Generate PDF Datasheet Dynamically === */ 
 
-  function generatePDF(productCode) { 
-
+  function generatePDF(productCode) {
+    updateOrderingCode(); // Always update before export
+    const code = document.getElementById('pdf-code')?.textContent?.trim();
+    console.log("generatePDF: code for filename =", code);
+    if (!code) {
+      alert('Product code not set!');
+      return;
+    }
     const { jsPDF } = window.jspdf; 
 
     const doc = new jsPDF(); 
-
  
 
     const selection = window.currentSelection || {}; 
@@ -1829,7 +1837,9 @@ exportButtons.forEach(btn => {
 // === Utility: Ensure Product Code is Set from DOM ===
 function ensureProductCode() {
   const code = document.querySelector("#product-code-heading")?.textContent.trim();
+  console.log("ensureProductCode: found code =", code);
   if (code) {
     window.currentSelection.product = code;
   }
+  console.log("window.currentSelection.product =", window.currentSelection.product);
 }
