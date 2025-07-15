@@ -679,32 +679,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const labels = ["Wattage", "IP Rating", "Beam", "CCT", "CRI", "Finish"]; 
 
     const codeElement = document.querySelector(".ordering-code-value"); 
+    const pdfCodeElement = document.getElementById("pdf-code"); // <-- Add this
 
- 
+  if (codeElement) { 
+    const styledParts = keys.map((key, i) => { 
+      const val = getTextValue(key) || "XX"; 
+      const defaultVal = window.currentSelection.defaults?.[key] || "XX"; 
+      const isDefault = val === defaultVal; 
+      const color = isDefault ? "#999" : "#C0392B"; 
+      return `<span title="${labels[i]}" style="color:${color}; font-weight: bold;">${val}</span>`; 
+    }); 
 
-    if (codeElement) { 
+    // For on-screen display
+    codeElement.innerHTML = `<span title="Product Code" style="color: #111; font-weight: bold;">${baseCode}</span>.` + styledParts.join(".");
 
-      const styledParts = keys.map((key, i) => { 
-
-        const val = getTextValue(key) || "XX"; 
-
-        const defaultVal = window.currentSelection.defaults?.[key] || "XX"; 
-
-        const isDefault = val === defaultVal; 
-
-        const color = isDefault ? "#999" : "#C0392B"; 
-
-        return `<span title="${labels[i]}" style="color:${color}; font-weight: bold;">${val}</span>`; 
-
-      }); 
-
- 
-
-      codeElement.innerHTML = `<span title="Product Code" style="color: #111; font-weight: bold;">${baseCode}</span>.` + styledParts.join("."); 
-
-    } 
-
+    // For PDF filename (plain text, no HTML)
+    if (pdfCodeElement) {
+      // Build plain code string for filename
+      const plainParts = keys.map(key => getTextValue(key) || "XX");
+      pdfCodeElement.textContent = `${baseCode}.${plainParts.join(".")}`;
+    }
   } 
+} 
 
  
 
