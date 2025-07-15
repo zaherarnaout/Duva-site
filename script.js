@@ -1825,3 +1825,11 @@ exportButtons.forEach(btn => {
     generatePDF();
   });
 });
+
+// === Utility: Ensure Product Code is Set from DOM ===
+function ensureProductCode() {
+  const code = document.querySelector("#product-code-heading")?.textContent.trim();
+  if (code) {
+    window.currentSelection.product = code;
+  }
+}
