@@ -1,3 +1,5 @@
+console.log("DUVA script.js loaded!");
+
 /* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
 document.querySelectorAll('.accessory-image').forEach(container => { 
