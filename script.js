@@ -1737,6 +1737,7 @@ document.querySelectorAll('.accessory-checkbox').forEach(box => {
 }); 
 
 // === PDF Export Logic for DUVA ===
+let isExporting = false; // Guard to prevent double export
 function showPDFContainer() {
   const pdfContainer = document.querySelector('.pdf-container');
   if (pdfContainer) {
@@ -1761,6 +1762,8 @@ function hidePDFContainer() {
 }
 
 function generatePDF() {
+  if (isExporting) return; // Prevent double export
+  isExporting = true;
   // 1. Clear previous accessories
   const pdfAccessories = document.querySelector('.pdf-accessories');
   if (pdfAccessories) {
@@ -1788,11 +1791,11 @@ function generatePDF() {
   showPDFContainer();
   // 4. Prepare PDF export
   const element = document.querySelector('.pdf-container');
-  // Use the correct selector for the code
   const code = document.getElementById('pdf-code')?.textContent?.replace(/^Code:\s*/i, '').trim() || 'file';
   if (!element) {
     hidePDFContainer();
     alert('PDF container not found!');
+    isExporting = false;
     return;
   }
   // 5. Export PDF
@@ -1812,11 +1815,15 @@ function generatePDF() {
         pdfAccessories.innerHTML = '';
       }
       hidePDFContainer();
+      isExporting = false;
+    })
+    .catch(() => {
+      isExporting = false;
     });
 }
-
-// === Attach event listener to export button(s) ===
-document.querySelectorAll('.download-button, .download-arrow').forEach(btn => {
+// Attach the event listener ONCE, after DOM is ready
+const exportButtons = document.querySelectorAll('.download-button, .download-arrow');
+exportButtons.forEach(btn => {
   btn.addEventListener('click', function (e) {
     e.preventDefault();
     generatePDF();
