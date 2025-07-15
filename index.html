@@ -14,115 +14,11 @@
   <!-- PDF Layout -->
 <!-- === DUVA PDF Layout Embed === -->
 <div class="pdf-container" id="pdf">
-  <style>
-    .pdf-container {
-      font-family: 'Inter', sans-serif;
-      background: #f9f9f9;
-      padding: 40px;
-      color: #111;
-    }
-    .pdf-container h1,
-    .pdf-container h2 {
-      color: #111;
-    }
-    .pdf-container h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-    .pdf-container h2 {
-      font-size: 20px;
-      margin-top: 40px;
-      margin-bottom: 16px;
-    }
-    .pdf-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #c0392b;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-    .pdf-header .brand {
-      font-weight: 700;
-      font-size: 24px;
-      color: #c0392b;
-    }
-    .pdf-title-block {
-      display: flex;
-      gap: 20px;
-    }
-    .pdf-title-block .product-image {
-      width: 100px;
-      height: 140px;
-      border: 1px solid #ccc;
-      background: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #444;
-    }
-    .pdf-info h1 {
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .pdf-info #pdf-code {
-      font-weight: bold;
-    }
-    .pdf-info #pdf-subtitle {
-      font-weight: 600;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-    .pdf-description {
-      margin-top: 8px;
-      font-size: 14px;
-    }
-    .pdf-features ul {
-      padding-left: 16px;
-      font-size: 14px;
-      line-height: 1.8;
-    }
-    .pdf-options table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    .pdf-options th,
-    .pdf-options td {
-      border: 1px solid #999;
-      padding: 8px;
-      text-align: left;
-    }
-    .pdf-photometric img {
-      max-width: 100px;
-      margin-right: 16px;
-    }
-    .pdf-accessories table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    .pdf-accessories th,
-    .pdf-accessories td {
-      border: 1px solid #999;
-      padding: 8px;
-      text-align: left;
-    }
-    .pdf-footer {
-      font-size: 11px;
-      margin-top: 40px;
-      text-align: center;
-      color: #666;
-    }
-  </style>
-
   <!-- HEADER -->
   <div class="pdf-header">
     <div class="brand">DUVA</div>
     <div id="pdf-family" style="font-style: italic; font-weight: 600;">Lucero</div>
   </div>
-
   <!-- TITLE BLOCK -->
   <div class="pdf-title-block">
     <div id="pdf-image" class="product-image">[Product Image]</div>
@@ -135,7 +31,6 @@
       </div>
     </div>
   </div>
-
   <!-- KEY FEATURES -->
   <h2>Key Features</h2>
   <div id="pdf-features" class="pdf-features">
@@ -150,7 +45,6 @@
       <li><strong>Finish:</strong> White / Black / RAL</li>
     </ul>
   </div>
-
   <!-- AVAILABLE OPTIONS -->
   <h2>Available Options</h2>
   <div id="pdf-options" class="pdf-options">
@@ -170,7 +64,6 @@
       </tbody>
     </table>
   </div>
-
   <!-- PHOTOMETRIC -->
   <h2>Photometric Diagrams</h2>
   <div id="pdf-photometric" class="pdf-photometric">
@@ -178,7 +71,6 @@
     <img src="#" alt="Diagram 1" />
     <img src="#" alt="Diagram 2" />
   </div>
-
   <!-- ACCESSORIES -->
   <h2>Accessories</h2>
   <div id="pdf-accessories" class="pdf-accessories">
@@ -196,7 +88,6 @@
       </tbody>
     </table>
   </div>
-
   <!-- FOOTER -->
   <div class="pdf-footer">
     www.duvalighting.com – All rights reserved – Specifications subject to change
