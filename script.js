@@ -1734,6 +1734,13 @@ function generatePDF() {
     const imageUrl = imageElement.src;
     pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%;">`;
   }
+  // === Inject Product Image into PDF ===
+  const mainProductImg = document.querySelector('#product-image img');
+  const pdfImg = document.querySelector('#pdf-product-image');
+
+  if (mainProductImg && pdfImg) {
+    pdfImg.src = mainProductImg.src;
+  }
   // 5. Export PDF
   html2pdf()
     .from(element)
