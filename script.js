@@ -1375,7 +1375,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* === Generate PDF Datasheet Dynamically === */ 
 
-   
+  // This function is now handled by html2pdf.generatePDF()
 
  
 
@@ -1539,7 +1539,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const code = getProductCode(); 
 
-        generatePDF(code); 
+        // This function is now handled by html2pdf.generatePDF()
 
         return; 
 
