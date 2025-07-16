@@ -875,6 +875,19 @@ visibility: visible !important;
 display: block !important;
 }
 
+/* === TEMPORARY DEBUG: Center PDF container for visual inspection === */
+.pdf-container {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  max-width: 800px;
+  margin: 80px auto;
+  background: white !important;
+  color: #111 !important;
+  z-index: 9999;
+}
+
 /* === PDF Export & Layout Styles === */
 .pdf-container {
   font-family: 'Inter', sans-serif;
