@@ -875,7 +875,7 @@ visibility: visible !important;
 display: block !important;
 }
 
-/* === TEMPORARY DEBUG: Center PDF container for visual inspection === */
+/* === DEBUG: Show PDF container visibly for testing === */
 .pdf-container {
   position: relative !important;
   top: auto !important;
@@ -885,6 +885,9 @@ display: block !important;
   margin: 80px auto;
   background: white !important;
   color: #111 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   z-index: 9999;
 }
 
