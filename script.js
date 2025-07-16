@@ -1537,11 +1537,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (isGenerated) { 
 
-        const code = getProductCode(); 
-
-        // This function is now handled by html2pdf.generatePDF()
-
-        return; 
+        return; // already handled by main export listener
 
       } 
 
