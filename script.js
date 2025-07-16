@@ -1693,29 +1693,29 @@ function hidePDFContainer() {
 function generatePDF() {
   if (isExporting) return; // Prevent double export
   isExporting = true;
-  // 1. Clear previous accessories
-  const pdfAccessories = document.querySelector('.pdf-accessories');
-  if (pdfAccessories) {
-    pdfAccessories.innerHTML = '';
-  }
-  // 2. Loop through selected accessories and build export list
-  document.querySelectorAll('.accessory-checkbox.active').forEach(box => {
-    const accessoryItem = box.closest('.accessory-item');
-    if (!accessoryItem) return;
-    const imageEl = accessoryItem.querySelector('.accessory-image img, img.accessory-image');
-    const titleEl = accessoryItem.querySelector('.accessory-title');
-    const descEl  = accessoryItem.querySelector('.accessory-desc');
-    if (imageEl?.src && !imageEl.src.includes('undefined') && titleEl) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'accessory-item';
-      wrapper.innerHTML = `
-        <img src="${imageEl.src}" class="accessory-image">
-        <div class="accessory-title">${titleEl.textContent}</div>
-        <div class="accessory-desc">${descEl?.textContent || ''}</div>
-      `;
-      pdfAccessories.appendChild(wrapper);
-    }
-  });
+  // --- Accessories block temporarily removed for testing ---
+  // const pdfAccessories = document.querySelector('.pdf-accessories');
+  // if (pdfAccessories) {
+  //   pdfAccessories.innerHTML = '';
+  // }
+  // document.querySelectorAll('.accessory-checkbox.active').forEach(box => {
+  //   const accessoryItem = box.closest('.accessory-item');
+  //   if (!accessoryItem) return;
+  //   const imageEl = accessoryItem.querySelector('.accessory-image img, img.accessory-image');
+  //   const titleEl = accessoryItem.querySelector('.accessory-title');
+  //   const descEl  = accessoryItem.querySelector('.accessory-desc');
+  //   if (imageEl?.src && !imageEl.src.includes('undefined') && titleEl) {
+  //     const wrapper = document.createElement('div');
+  //     wrapper.className = 'accessory-item';
+  //     wrapper.innerHTML = `
+  //       <img src="${imageEl.src}" class="accessory-image">
+  //       <div class="accessory-title">${titleEl.textContent}</div>
+  //       <div class="accessory-desc">${descEl?.textContent || ''}</div>
+  //     `;
+  //     pdfAccessories.appendChild(wrapper);
+  //   }
+  // });
+  // --- End accessories block ---
   // 3. Show the PDF container (off-screen but rendered)
   showPDFContainer();
   // 4. Prepare PDF export
@@ -1747,9 +1747,9 @@ function generatePDF() {
     .save()
     .then(() => {
       // 6. Cleanup after export
-      if (pdfAccessories) {
-        pdfAccessories.innerHTML = '';
-      }
+      // if (pdfAccessories) {
+      //   pdfAccessories.innerHTML = '';
+      // }
       hidePDFContainer();
       isExporting = false;
     })
