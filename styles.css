@@ -6,6 +6,8 @@
 }
 
 html, body {
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0;
   background: #fff;
@@ -878,25 +880,24 @@ visibility: visible !important;
 opacity: 1 !important;
 }
 
-/* === PDF Container Styling === */
+/* === PDF Container Layout Fix (Centered, No border, no background) === */
 .pdf-container {
-  position: relative;
-  top: auto;
-  left: auto;
   width: 100%;
-  max-width: 800px;
-  margin: 20px auto;
-  background: white;
-  color: #111;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 20mm;
+  box-sizing: border-box;
+  position: relative;
+  border: none;
+  background: none;
   display: block;
-  visibility: visible;
-  opacity: 1;
-  padding: 15px;
-  font-family: Arial, sans-serif;
-  line-height: 1.4;
-  border: 1px solid #ddd;
-  z-index: 9999;
-  min-height: 297mm; /* A4 height */
+}
+
+/* === PDF Product Image Styling === */
+.pdf-container .product-image {
+  width: 200px;
+  height: 200px;
 }
 
 /* Force full width usage */
@@ -958,22 +959,6 @@ opacity: 1 !important;
   margin-bottom: 8px;
 }
 
-/* === DEBUG: Show PDF container visibly for testing === */
-.pdf-container.debug {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  width: 100% !important;
-  max-width: 800px;
-  margin: 80px auto;
-  background: white !important;
-  color: #111 !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 9999;
-  border: 2px solid #c0392b !important;
-}
 .pdf-container h1,
 .pdf-container h2 {
   color: #111;
