@@ -1673,7 +1673,6 @@ function showPDFContainer() {
     pdfContainer.classList.remove('hidden');
     pdfContainer.classList.add('visible');
     pdfContainer.style.position = 'relative';
-    // pdfContainer.style.top = '-9999px'; // TEMP: Disabled for debug
     pdfContainer.style.left = '0';
     pdfContainer.style.width = '100vw';
   }
