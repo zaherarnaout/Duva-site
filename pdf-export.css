@@ -244,3 +244,156 @@
   border-top: 2px solid #e4e3e3;
   margin-top: 20px;
 }
+
+/* === Download Panel Styles === */
+.download-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.download-panel.fade-in {
+  display: flex;
+  opacity: 1;
+}
+
+.download-panel-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.download-checkbox {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #e4e3e3;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-checkbox:hover {
+  background-color: #f8f9fa;
+  border-color: #007bff;
+}
+
+.download-checkbox input[type="checkbox"] {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+.download-checkbox label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+}
+
+.download-checkbox.active {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.download-checkbox.active label {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.download-divider {
+  height: 1px;
+  background-color: #e4e3e3;
+  margin: 20px 0;
+}
+
+.download-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background: #0056b3;
+}
+
+.download-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.download-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.download-close:hover {
+  color: #333;
+}
+
+/* === Download Panel Fade-in Animation === */
+.download-panel {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.download-panel.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* === RAL Input Styling - No Blue Border === */
+#ral-input {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:focus {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:hover {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:active {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
