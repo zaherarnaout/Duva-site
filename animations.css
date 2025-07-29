@@ -388,16 +388,45 @@
 
 /* === Reduced Motion Support === */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
-  .scroll-animate {
-    opacity: 1;
-    transform: none;
-  }
+}
+
+/* === Product Page Section Fade-in Animation === */
+.product-page-section {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.product-page-section.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* === Product Visuals Fade-in Animation === */
+.product-visuals {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.product-visuals.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* === Product Info Block Fade-in Animation === */
+.product-info-block {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.product-info-block.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
