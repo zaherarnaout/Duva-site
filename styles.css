@@ -24743,7 +24743,65 @@ opacity: 1 !important;
               transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
+/* === Gallery Subscribe Wrapper Effects === */
+.gallery-subscribe-wrapper {
+  /* Ensure proper positioning and effects */
+  position: absolute !important;
+  right: 40px !important;
+  bottom: 40px !important;
+  z-index: 10 !important;
+  display: flex !important;
+  width: 25% !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  flex-flow: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 20px !important;
+  border-top-left-radius: var(--border-4px-cornner) !important;
+  border-top-right-radius: var(--border-4px-cornner) !important;
+  border-bottom-left-radius: var(--border-4px-cornner) !important;
+  border-bottom-right-radius: var(--border-4px-cornner) !important;
+  background-color: var(--f4f5f6-background-opc) !important;
+  
+  /* Animation properties */
+  opacity: 0.3 !important;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, transform !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+.gallery-subscribe-wrapper:hover {
+  opacity: 1 !important;
+  transform: translateZ(10px) scale(1.02) !important;
+}
+
 /* Smooth hover state transitions */
 .gallery-subscribe-wrapper * {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Responsive design for gallery subscribe wrapper */
+@media screen and (max-width: 991px) {
+  .gallery-subscribe-wrapper {
+    right: 20px !important;
+    bottom: 20px !important;
+    width: 50% !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gallery-subscribe-wrapper {
+    width: 60% !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery-subscribe-wrapper {
+    right: 10px !important;
+    bottom: 10px !important;
+    display: none !important;
+    width: 300px !important;
+  }
 }
