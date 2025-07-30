@@ -24805,3 +24805,37 @@ opacity: 1 !important;
     width: 300px !important;
   }
 }
+
+/* === Enhanced Wheel Scrolling Styles === */
+.gallery-section-cms {
+  /* Ensure proper wheel scrolling */
+  overflow-x: auto !important;
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-snap-stop: always !important;
+}
+
+.collection-list-6 {
+  /* Ensure proper wheel scrolling for related items */
+  overflow-x: auto !important;
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x proximity !important;
+  scroll-snap-stop: always !important;
+}
+
+/* Gallery section wrapper for broader wheel detection */
+.gallery-section-wrapper,
+.gallery-section {
+  /* Ensure wheel events can be captured */
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Related section wrapper for broader wheel detection */
+.related-section {
+  /* Ensure wheel events can be captured */
+  position: relative !important;
+  overflow: visible !important;
+}
