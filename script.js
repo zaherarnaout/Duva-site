@@ -2939,6 +2939,14 @@ function initializeGalleryAutoScroll() {
   gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
   console.log('🎯 Gallery mouse wheel always active');
   
+  // Also add wheel listener to the gallery section wrapper for broader coverage
+  const gallerySectionWrapper = document.querySelector('.gallery-section-wrapper') || 
+                               document.querySelector('.gallery-section');
+  if (gallerySectionWrapper) {
+    gallerySectionWrapper.addEventListener('wheel', handleWheelScroll, { passive: false });
+    console.log('✅ Added wheel listener to gallery section wrapper');
+  }
+  
   // Hover pause functionality
   gallery.addEventListener('mouseenter', function() {
     stopAutoScroll();
@@ -2951,10 +2959,6 @@ function initializeGalleryAutoScroll() {
     }
     console.log('🎯 Gallery auto-scroll resumed');
   });
-
-  // Always active wheel scroll for gallery (not just on hover)
-  gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
-  console.log('🎯 Gallery mouse wheel always active');
 }
 
 // Initialize gallery auto-scroll when DOM is ready
@@ -3351,9 +3355,22 @@ function initializeGalleryParallax() {
   console.log('🎨 Gallery subscribe wrapper:', gallerySubscribeWrapper.className);
   console.log('🎨 Gallery section:', gallerySection.className);
   
-  // Set initial opacity
+  // Set initial opacity and ensure proper styling
   gallerySubscribeWrapper.style.opacity = '0.3';
   gallerySubscribeWrapper.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+  gallerySubscribeWrapper.style.willChange = 'opacity, transform';
+  gallerySubscribeWrapper.style.transform = 'translateZ(0)';
+  
+  // Add hover effect for full opacity
+  gallerySubscribeWrapper.addEventListener('mouseenter', function() {
+    gallerySubscribeWrapper.style.opacity = '1';
+    gallerySubscribeWrapper.style.transform = 'translateZ(10px) scale(1.02)';
+  });
+  
+  gallerySubscribeWrapper.addEventListener('mouseleave', function() {
+    // Return to scroll-based opacity
+    updateParallax();
+  });
   
   // Parallax scroll effect
   function updateParallax() {
@@ -3362,13 +3379,21 @@ function initializeGalleryParallax() {
     
     // Apply parallax effect based on scroll position
     if (scrollProgress > 0 && scrollProgress < 1) {
-      const parallaxDepth = scrollProgress * 20; // 0-20px depth
+      const parallaxDepth = scrollProgress * 30; // 0-30px depth
       const opacity = 0.3 + (scrollProgress * 0.7); // 30% to 100% opacity
       
-      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.02})`;
+      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.03})`;
       gallerySubscribeWrapper.style.opacity = opacity;
       
       console.log(`🎨 Parallax: depth=${parallaxDepth}px, opacity=${opacity.toFixed(2)}`);
+    } else if (scrollProgress <= 0) {
+      // Above the section - fade out
+      gallerySubscribeWrapper.style.opacity = '0.1';
+      gallerySubscribeWrapper.style.transform = 'translateZ(0) scale(1)';
+    } else {
+      // Below the section - full opacity
+      gallerySubscribeWrapper.style.opacity = '1';
+      gallerySubscribeWrapper.style.transform = 'translateZ(30px) scale(1.03)';
     }
   }
   
