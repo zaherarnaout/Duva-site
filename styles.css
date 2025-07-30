@@ -24574,4 +24574,176 @@ opacity: 1 !important;
 
 .product-info-block.fade-in {
   opacity: 1 !important;
-  transform: translateY(0) !/
+  transform: translateY(0) !important;
+}
+
+/* === Download Panel Fade-in Animation === */
+.download-panel {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.download-panel.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* === RAL Input Styling - No Blue Border === */
+#ral-input {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:focus {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:hover {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+#ral-input:active {
+  outline: none !important;
+  border: 1px solid #e4e3e3 !important;
+  border-color: #e4e3e3 !important;
+  box-shadow: none !important;
+}
+
+/* === Related Items Scroll Performance Optimizations === */
+.collection-list-6 {
+  /* Hardware acceleration for smoother scrolling */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+  will-change: scroll-position !important;
+  /* Optimize for touch devices */
+  touch-action: pan-x !important;
+  /* Reduce scroll sensitivity for smoother feel */
+  scroll-snap-type: x proximity !important;
+}
+
+/* Optimize individual items for better performance */
+.collection-list-6 .w-dyn-item {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
+  flex-shrink: 0 !important;
+}
+
+/* === Gallery Scroll Performance Optimizations === */
+.gallery-section-cms {
+  /* Hardware acceleration for smoother scrolling */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+  will-change: scroll-position !important;
+  /* Optimize for touch devices */
+  touch-action: pan-x !important;
+  /* Smooth momentum scrolling */
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  /* Enhanced scroll snap for better positioning */
+  scroll-snap-type: x mandatory !important;
+  scroll-snap-stop: always !important;
+  /* Prevent scroll chaining */
+  overscroll-behavior-x: contain !important;
+}
+
+/* Optimize individual gallery items for better performance */
+.gallery-section-cms .w-dyn-item {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
+  /* Enhanced scroll snap alignment */
+  scroll-snap-align: start !important;
+  scroll-snap-stop: always !important;
+}
+
+/* Smooth image transitions */
+.gallery-section-cms .w-dyn-item img,
+.gallery-section-cms img,
+.gallery-image img {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
+}
+
+/* Subtle hover effect for better UX */
+.gallery-section-cms .w-dyn-item:hover img,
+.gallery-section-cms:hover img,
+.gallery-image:hover img {
+  transform: scale(1.02) !important;
+}
+
+/* === Arrow Hover Effects === */
+.download-arrow {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
+}
+
+.download-arrow:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  filter: brightness(1.1) !important;
+}
+
+.accessories-arrow {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
+}
+
+.accessories-arrow:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  filter: brightness(1.1) !important;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
+}
+
+.dropdown-arrow:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  filter: brightness(1.1) !important;
+}
+
+/* === Gallery Subscribe Wrapper Parallax Effect === */
+.gallery-subscribe-wrapper {
+  opacity: 0.3 !important; /* 30% opacity as default */
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, transform !important;
+  /* Parallax effect */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+}
+
+.gallery-subscribe-wrapper:hover {
+  opacity: 1 !important; /* Full opacity on hover */
+  transform: translateZ(10px) scale(1.02) !important;
+}
+
+/* Enhanced parallax effect on scroll */
+.gallery-section-wrapper {
+  perspective: 1000px !important;
+  transform-style: preserve-3d !important;
+}
+
+.gallery-subscribe-wrapper {
+  /* Parallax depth effect */
+  transform: translateZ(0) !important;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Smooth hover state transitions */
+.gallery-subscribe-wrapper * {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
