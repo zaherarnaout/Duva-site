@@ -2300,7 +2300,11 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('✅ Related items mouse wheel scroll logic initialized');
     console.log('📦 Related scroll container found:', scrollContainer);
     
-    // Smooth mouse wheel scrolling
+    // Improved smooth mouse wheel scrolling with momentum
+    let scrollVelocity = 0;
+    let isScrolling = false;
+    let scrollAnimationId = null;
+    
     scrollContainer.addEventListener('wheel', function(e) {
       console.log('🔄 Related section wheel event triggered');
       
@@ -2309,45 +2313,123 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault(); // Prevent default vertical scrolling
         e.stopPropagation(); // Stop event from bubbling up
         
-        // Get scroll direction and amount
+        // Get scroll direction and amount with improved sensitivity
         const delta = e.deltaY || e.deltaX;
-        const scrollSpeed = 50; // Adjust this value to control scroll sensitivity
+        const scrollSpeed = Math.abs(delta) * 0.5; // Dynamic speed based on wheel delta
+        const direction = delta > 0 ? 1 : -1;
         
-        // Smooth scroll horizontally
-        scrollContainer.scrollBy({
-          left: delta > 0 ? scrollSpeed : -scrollSpeed,
-          behavior: 'smooth'
-        });
+        // Add to velocity for momentum effect
+        scrollVelocity += direction * scrollSpeed;
         
-        console.log('🔄 Mouse wheel scrolling:', delta > 0 ? 'right' : 'left');
+        // Smooth scroll with momentum
+        if (!isScrolling) {
+          isScrolling = true;
+          smoothScrollWithMomentum();
+        }
+        
+        console.log('🔄 Mouse wheel scrolling:', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
       }
     }, { passive: false }); // Required for preventDefault to work
     
-    // Add touch/swipe support for mobile
-    let isScrolling = false;
+    // Improved touch/swipe support for mobile with momentum
     let startX = 0;
     let scrollLeft = 0;
+    let touchVelocity = 0;
+    let lastTouchTime = 0;
+    let lastTouchX = 0;
     
     scrollContainer.addEventListener('touchstart', function(e) {
       console.log('📱 Related section touch start');
-      isScrolling = true;
       startX = e.touches[0].pageX - scrollContainer.offsetLeft;
       scrollLeft = scrollContainer.scrollLeft;
+      lastTouchTime = Date.now();
+      lastTouchX = e.touches[0].pageX;
+      touchVelocity = 0;
+      
+      // Stop any ongoing momentum scroll
+      if (scrollAnimationId) {
+        cancelAnimationFrame(scrollAnimationId);
+        scrollAnimationId = null;
+      }
     });
     
     scrollContainer.addEventListener('touchmove', function(e) {
-      if (!isScrolling) return;
       e.preventDefault();
-      const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed multiplier
-      scrollContainer.scrollLeft = scrollLeft - walk;
+      const currentX = e.touches[0].pageX - scrollContainer.offsetLeft;
+      const walk = (startX - currentX) * 1.5; // Improved sensitivity
+      scrollContainer.scrollLeft = scrollLeft + walk;
+      
+      // Calculate velocity for momentum
+      const currentTime = Date.now();
+      const timeDiff = currentTime - lastTouchTime;
+      if (timeDiff > 0) {
+        touchVelocity = (lastTouchX - e.touches[0].pageX) / timeDiff;
+        lastTouchX = e.touches[0].pageX;
+        lastTouchTime = currentTime;
+      }
+      
       console.log('📱 Related section touch move');
     });
     
     scrollContainer.addEventListener('touchend', function() {
       console.log('📱 Related section touch end');
-      isScrolling = false;
+      
+      // Apply momentum scrolling
+      if (Math.abs(touchVelocity) > 0.5) {
+        const momentumDistance = touchVelocity * 100; // Adjust momentum strength
+        const targetScroll = scrollContainer.scrollLeft + momentumDistance;
+        
+        // Smooth scroll to target with easing
+        smoothScrollTo(targetScroll, 800); // 800ms duration
+      }
     });
+    
+    // Smooth scroll with momentum function
+    function smoothScrollWithMomentum() {
+      if (Math.abs(scrollVelocity) > 0.1) {
+        scrollContainer.scrollBy({
+          left: scrollVelocity,
+          behavior: 'auto' // Use auto for smoother performance
+        });
+        
+        // Apply friction to slow down
+        scrollVelocity *= 0.85;
+        
+        scrollAnimationId = requestAnimationFrame(smoothScrollWithMomentum);
+      } else {
+        isScrolling = false;
+        scrollVelocity = 0;
+        if (scrollAnimationId) {
+          cancelAnimationFrame(scrollAnimationId);
+          scrollAnimationId = null;
+        }
+      }
+    }
+    
+    // Smooth scroll to specific position
+    function smoothScrollTo(target, duration) {
+      const start = scrollContainer.scrollLeft;
+      const distance = target - start;
+      const startTime = performance.now();
+      
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+      
+      function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutCubic(progress);
+        
+        scrollContainer.scrollLeft = start + (distance * easedProgress);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+      
+      requestAnimationFrame(animate);
+    }
     
   } else {
     console.log('⚠️ Related items scroll container not found');
@@ -2689,41 +2771,6 @@ function initializeGalleryAutoScroll() {
   }
 
   console.log('📏 Gallery found:', gallery);
-  console.log('📏 Gallery scrollWidth:', gallery.scrollWidth);
-  console.log('📏 Gallery clientWidth:', gallery.clientWidth);
-  
-  // Check for images in the gallery
-  const images = gallery.querySelectorAll('img');
-  console.log('🖼️ Number of images found:', images.length);
-  
-  // Additional check: if no images found, hide gallery section
-  if (images.length === 0) {
-    console.log('⚠️ No images found in gallery - hiding gallery section');
-    if (gallerySection) {
-      gallerySection.style.display = 'none';
-      gallerySection.style.visibility = 'hidden';
-      gallerySection.style.opacity = '0';
-      gallerySection.style.height = '0';
-      gallerySection.style.overflow = 'hidden';
-    }
-    return; // Exit the function early
-  }
-  
-  images.forEach((img, index) => {
-    console.log(`🖼️ Image ${index + 1}:`, {
-      src: img.src,
-      loaded: img.complete,
-      naturalWidth: img.naturalWidth,
-      naturalHeight: img.naturalHeight,
-      offsetWidth: img.offsetWidth,
-      offsetHeight: img.offsetHeight,
-      style: {
-        display: img.style.display,
-        visibility: img.style.visibility,
-        opacity: img.style.opacity
-      }
-    });
-  });
   
   // Check for collection items
   const collectionItems = gallery.querySelectorAll('.w-dyn-item');
@@ -2751,90 +2798,89 @@ function initializeGalleryAutoScroll() {
       gallerySection.style.overflow = 'visible';
     }
   }
-  
-  // Debug collection item dimensions
-  collectionItems.forEach((item, index) => {
-    const rect = item.getBoundingClientRect();
-    console.log(`📦 Item ${index + 1}:`, {
-      width: rect.width,
-      height: rect.height,
-      left: rect.left,
-      top: rect.top,
-      offsetWidth: item.offsetWidth,
-      clientWidth: item.clientWidth
-    });
-  });
-  
-  // Check gallery container dimensions
-  const galleryRect = gallery.getBoundingClientRect();
-  console.log('📏 Gallery container dimensions:', {
-    width: galleryRect.width,
-    height: galleryRect.height,
-    scrollWidth: gallery.scrollWidth,
-    clientWidth: gallery.clientWidth
-  });
 
-  let scrollInterval;
+  // Gallery state management
+  let currentIndex = 0;
   let isAutoScrolling = true;
-  const scrollSpeed = 5000; // time between slides (ms)
+  let scrollInterval;
+  const scrollSpeed = 4000; // time between slides (ms)
+  const transitionDuration = 800; // ms for smooth transitions
+  
+  // Get total number of images
+  const totalImages = collectionItems.length;
+  const viewportWidth = window.innerWidth;
+  
+  console.log(`📊 Gallery stats: ${totalImages} images, viewport: ${viewportWidth}px`);
 
+  // Smooth scroll to specific image index
+  function scrollToImage(index, duration = transitionDuration) {
+    if (index < 0 || index >= totalImages) return;
+    
+    const targetScroll = index * viewportWidth;
+    
+    console.log(`🎯 Scrolling to image ${index + 1}/${totalImages} at position ${targetScroll}px`);
+    
+    // Use custom smooth scroll for better control
+    smoothScrollTo(gallery, targetScroll, duration);
+    
+    currentIndex = index;
+  }
+
+  // Custom smooth scroll function with easing
+  function smoothScrollTo(element, target, duration) {
+    const start = element.scrollLeft;
+    const distance = target - start;
+    const startTime = performance.now();
+    
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      
+      element.scrollLeft = start + (distance * easedProgress);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+    
+    requestAnimationFrame(animate);
+  }
+
+  // Next image with seamless looping
   function scrollToNext() {
-    if (!gallery) return;
-    
-    const currentScroll = gallery.scrollLeft;
-    const viewportWidth = window.innerWidth;
-    const maxScroll = gallery.scrollWidth - viewportWidth;
-    
-    console.log(`🔄 Current scroll: ${currentScroll}px, Max scroll: ${maxScroll}px`);
-    
-    // Check if we're at the end
-    const atEnd = currentScroll >= maxScroll - 10;
-    
-    if (atEnd) {
-      // Loop back to the beginning
-      gallery.scrollTo({
-        left: 0,
-        behavior: "smooth"
-      });
-      console.log('🔄 Looping back to start');
+    if (currentIndex >= totalImages - 1) {
+      // At the end - loop seamlessly by duplicating first image
+      currentIndex = 0;
+      console.log('🔄 Looping to first image seamlessly');
     } else {
-      // Scroll to next full image
-      gallery.scrollTo({
-        left: currentScroll + viewportWidth,
-        behavior: "smooth"
-      });
-      console.log(`🔄 Scrolling to: ${currentScroll + viewportWidth}px`);
+      currentIndex++;
+      console.log(`🔄 Moving to next image: ${currentIndex + 1}/${totalImages}`);
     }
+    
+    scrollToImage(currentIndex);
   }
 
+  // Previous image with seamless looping
   function scrollToPrevious() {
-    if (!gallery) return;
-    
-    const currentScroll = gallery.scrollLeft;
-    const viewportWidth = window.innerWidth;
-    
-    console.log(`🔄 Scrolling to previous image`);
-    
-    // Check if we're at the beginning
-    if (currentScroll <= 10) {
-      // Loop to the end
-      const maxScroll = gallery.scrollWidth - viewportWidth;
-      gallery.scrollTo({
-        left: maxScroll,
-        behavior: "smooth"
-      });
-      console.log('🔄 Looping to end');
+    if (currentIndex <= 0) {
+      // At the beginning - loop seamlessly to last image
+      currentIndex = totalImages - 1;
+      console.log('🔄 Looping to last image seamlessly');
     } else {
-      // Scroll to previous full image
-      gallery.scrollTo({
-        left: currentScroll - viewportWidth,
-        behavior: "smooth"
-      });
-      console.log(`🔄 Scrolling to: ${currentScroll - viewportWidth}px`);
+      currentIndex--;
+      console.log(`🔄 Moving to previous image: ${currentIndex + 1}/${totalImages}`);
     }
+    
+    scrollToImage(currentIndex);
   }
 
-  function startScrolling() {
+  // Auto-scroll function
+  function startAutoScroll() {
     if (scrollInterval) {
       clearInterval(scrollInterval);
     }
@@ -2843,86 +2889,154 @@ function initializeGalleryAutoScroll() {
     console.log('▶️ Auto-scroll started');
   }
 
-  function stopScrolling() {
+  function stopAutoScroll() {
     if (scrollInterval) {
       clearInterval(scrollInterval);
       scrollInterval = null;
-      isAutoScrolling = false;
-      console.log('⏸️ Auto-scroll paused');
     }
+    isAutoScrolling = false;
+    console.log('⏸️ Auto-scroll paused');
   }
 
-  // Mouse wheel scroll handler
+  // Enhanced mouse wheel scroll handler with momentum
+  let wheelVelocity = 0;
+  let wheelAnimationId = null;
+  
   function handleWheelScroll(event) {
-    // Only handle wheel scroll when hovering over gallery
-    // Prevent default scroll behavior for the entire page
     event.preventDefault();
     event.stopPropagation();
     
-    // Determine scroll direction
-    if (event.deltaY > 0) {
-      // Scroll down/right - go to next image
-      scrollToNext();
-    } else {
-      // Scroll up/left - go to previous image
-      scrollToPrevious();
+    // Calculate velocity based on wheel delta
+    const delta = event.deltaY || event.deltaX;
+    const direction = delta > 0 ? 1 : -1;
+    const speed = Math.abs(delta) * 0.01;
+    
+    wheelVelocity += direction * speed;
+    
+    // Stop any ongoing auto-scroll
+    stopAutoScroll();
+    
+    // Apply momentum scrolling
+    if (!wheelAnimationId) {
+      wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
     }
     
-    // Return false to prevent any further scroll events
-    return false;
+    console.log(`🎯 Wheel scroll: direction=${direction}, speed=${speed}`);
+  }
+  
+  function applyWheelMomentum() {
+    if (Math.abs(wheelVelocity) > 0.1) {
+      if (wheelVelocity > 0) {
+        scrollToNext();
+      } else {
+        scrollToPrevious();
+      }
+      
+      // Apply friction
+      wheelVelocity *= 0.8;
+      
+      wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
+    } else {
+      wheelVelocity = 0;
+      wheelAnimationId = null;
+      
+      // Restart auto-scroll after a delay
+      setTimeout(() => {
+        if (isAutoScrolling) {
+          startAutoScroll();
+        }
+      }, 2000);
+    }
   }
 
-  // Add mouse wheel event listener only when hovering over gallery
+  // Touch/swipe support for mobile
+  let touchStartX = 0;
+  let touchStartTime = 0;
+  let touchVelocity = 0;
+  
+  gallery.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].pageX;
+    touchStartTime = Date.now();
+    touchVelocity = 0;
+    
+    // Stop auto-scroll during touch
+    stopAutoScroll();
+    
+    console.log('📱 Gallery touch start');
+  });
+  
+  gallery.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    const currentX = e.touches[0].pageX;
+    const deltaX = touchStartX - currentX;
+    
+    // Calculate velocity
+    const currentTime = Date.now();
+    const timeDiff = currentTime - touchStartTime;
+    if (timeDiff > 0) {
+      touchVelocity = deltaX / timeDiff;
+    }
+    
+    // Direct scroll during touch
+    gallery.scrollLeft += deltaX * 0.5;
+    touchStartX = currentX;
+    touchStartTime = currentTime;
+  });
+  
+  gallery.addEventListener('touchend', function() {
+    console.log('📱 Gallery touch end');
+    
+    // Apply momentum based on velocity
+    if (Math.abs(touchVelocity) > 0.5) {
+      if (touchVelocity > 0) {
+        scrollToNext();
+      } else {
+        scrollToPrevious();
+      }
+    }
+    
+    // Restart auto-scroll after a delay
+    setTimeout(() => {
+      if (isAutoScrolling) {
+        startAutoScroll();
+      }
+    }, 2000);
+  });
+
+  // Event listeners
   gallery.addEventListener('mouseenter', function() {
     gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
-    console.log('🎯 Gallery mouse wheel enabled');
+    stopAutoScroll();
+    console.log('🎯 Gallery mouse wheel enabled, auto-scroll paused');
   });
   
   gallery.addEventListener('mouseleave', function() {
     gallery.removeEventListener('wheel', handleWheelScroll);
-    console.log('🎯 Gallery mouse wheel disabled');
-  });
-  
-  console.log('🎯 Mouse wheel navigation always active');
-  
-  // Add hover pause functionality
-  gallery.addEventListener('mouseenter', stopScrolling);
-  gallery.addEventListener('mouseleave', startScrolling);
-  
-  console.log('⏸️ Hover pause functionality enabled');
-  
-  // Start auto-scrolling after a short delay
-  setTimeout(() => {
-    startScrolling();
-  }, 2000); // 2 second delay to let everything load properly
-  
-  // Force scroll to first image to ensure it's visible (no auto-scroll for testing)
-  setTimeout(() => {
-    gallery.scrollTo({
-      left: 0,
-      behavior: "instant"
-    });
-    console.log('📍 Forced scroll to first image');
-    
-    // Check scroll position after forcing
-    console.log('📍 Gallery scroll position after reset:', gallery.scrollLeft);
-    
-    // Check if first item is visible
-    if (collectionItems.length > 0) {
-      const firstItem = collectionItems[0];
-      const firstItemRect = firstItem.getBoundingClientRect();
-      const galleryRect = gallery.getBoundingClientRect();
-      
-      console.log('📍 First item visibility check:', {
-        firstItemLeft: firstItemRect.left,
-        galleryLeft: galleryRect.left,
-        isVisible: firstItemRect.left >= galleryRect.left && firstItemRect.right <= galleryRect.right
-      });
+    if (isAutoScrolling) {
+      startAutoScroll();
     }
-  }, 500);
+    console.log('🎯 Gallery mouse wheel disabled, auto-scroll resumed');
+  });
+
+  // Initialize gallery
+  function initializeGallery() {
+    // Set initial scroll position
+    gallery.scrollLeft = 0;
+    currentIndex = 0;
+    
+    console.log('📍 Gallery initialized at first image');
+    
+    // Start auto-scroll after a delay
+    setTimeout(() => {
+      startAutoScroll();
+    }, 3000); // 3 second delay
+  }
+
+  // Initialize when DOM is ready
+  initializeGallery();
   
-  console.log('✅ Gallery initialized with auto-scroll enabled');
-  console.log('💡 Auto-scroll starts after 2 seconds, mouse wheel always available');
+  console.log('✅ Gallery initialized with smooth scrolling and seamless looping');
+  console.log('💡 Features: Auto-scroll, mouse wheel, touch gestures, seamless looping');
 }
 
 // Initialize gallery auto-scroll when DOM is ready
@@ -3252,4 +3366,98 @@ function preloadCriticalImages() {
 // Initialize preloading
 document.addEventListener('DOMContentLoaded', function() {
   preloadCriticalImages();
+});
+
+/* === Arrow Hover Effects === */
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Download arrow hover effects
+  document.querySelectorAll('.download-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+  
+  // Dropdown arrow hover effects
+  document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      // Only reset scale if dropdown is not open (to preserve rotation)
+      const dropdown = this.closest('.dropdown-wrapper');
+      if (!dropdown || !dropdown.classList.contains('open')) {
+        this.style.transform = 'scale(1)';
+      } else {
+        // If dropdown is open, maintain rotation but reset scale
+        this.style.transform = 'rotate(180deg) scale(1)';
+      }
+    });
+  });
+});
+
+// Initialize gallery auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeGalleryAutoScroll();
+});
+
+// === Gallery Subscribe Wrapper Parallax Enhancement ===
+function initializeGalleryParallax() {
+  console.log('🎨 Initializing gallery parallax effect...');
+  
+  const gallerySubscribeWrapper = document.querySelector('.gallery-subscribe-wrapper');
+  const gallerySection = document.querySelector('.gallery-section-wrapper');
+  
+  if (!gallerySubscribeWrapper || !gallerySection) {
+    console.log('⚠️ Gallery subscribe wrapper or section not found');
+    return;
+  }
+  
+  console.log('✅ Gallery parallax elements found');
+  
+  // Parallax scroll effect
+  function updateParallax() {
+    const rect = gallerySection.getBoundingClientRect();
+    const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+    
+    // Apply parallax effect based on scroll position
+    if (scrollProgress > 0 && scrollProgress < 1) {
+      const parallaxDepth = scrollProgress * 20; // 0-20px depth
+      const opacity = 0.3 + (scrollProgress * 0.7); // 30% to 100% opacity
+      
+      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.02})`;
+      gallerySubscribeWrapper.style.opacity = opacity;
+      
+      console.log(`🎨 Parallax: depth=${parallaxDepth}px, opacity=${opacity.toFixed(2)}`);
+    }
+  }
+  
+  // Throttled scroll handler for performance
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+  
+  // Add scroll listener
+  window.addEventListener('scroll', requestTick, { passive: true });
+  
+  // Initial update
+  updateParallax();
+  
+  console.log('✅ Gallery parallax effect initialized');
+}
+
+// Initialize parallax when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeGalleryParallax();
 });
