@@ -24839,3 +24839,48 @@ opacity: 1 !important;
   position: relative !important;
   overflow: visible !important;
 }
+
+/* === Global Gotham Font Implementation === */
+/* Override all font families to use Gotham */
+* {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Specific overrides for elements that might need different font weights */
+h1, h2, h3, h4, h5, h6 {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+p, span, div, a, button, input, textarea, select {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Ensure form elements use Gotham */
+input, textarea, select, button {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Navigation elements */
+nav, .nav, .navigation {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Menu elements */
+.menu-wrapper, .menu-panel, .menu-overlay {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Gallery and related items */
+.gallery-section, .related-section {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Product elements */
+.product-title, .product-description, .product-price {
+  font-family: Gotham, Arial, sans-serif !important;
+}
+
+/* Footer elements */
+footer, .footer {
+  font-family: Gotham, Arial, sans-serif !important;
+}
