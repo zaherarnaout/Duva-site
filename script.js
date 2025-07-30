@@ -2305,6 +2305,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let isScrolling = false;
     let scrollAnimationId = null;
     
+    // Define smoothScrollWithMomentum function in the correct scope
+    function smoothScrollWithMomentum() {
+      if (Math.abs(scrollVelocity) > 0.1) {
+        scrollContainer.scrollLeft += scrollVelocity;
+        scrollVelocity *= 0.9; // Friction
+        
+        scrollAnimationId = requestAnimationFrame(smoothScrollWithMomentum);
+      } else {
+        scrollVelocity = 0;
+        isScrolling = false;
+        scrollAnimationId = null;
+      }
+    }
+    
     // Always active wheel scroll (not just on hover)
     scrollContainer.addEventListener('wheel', function(e) {
       console.log('🔄 Related section wheel event triggered');
@@ -2346,7 +2360,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log('🔄 Related section wheel event triggered (from parent)');
           
           if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
-      e.preventDefault();
+            e.preventDefault();
             e.stopPropagation();
             
             const delta = e.deltaY || e.deltaX;
@@ -4949,4 +4963,161 @@ function fixGallerySeamlessLoop() {
 // Apply the seamless loop fix
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(fixGallerySeamlessLoop, 1000); // Delay to ensure gallery is initialized
+});
+
+// === Accessories Section Auto-Scroll and Mouse Wheel Logic ===
+document.addEventListener("DOMContentLoaded", function () {
+  const accessoriesContainer = document.querySelector(".accessories-wrapper");
+  const accessoriesSection = document.querySelector(".accessories-section");
+
+  if (accessoriesContainer && accessoriesSection) {
+    console.log('✅ Accessories auto-scroll and mouse wheel logic initialized');
+    console.log('📦 Accessories container found:', accessoriesContainer);
+    
+    // Auto-scroll variables
+    let isAccessoriesAutoScrolling = true;
+    let accessoriesScrollInterval = null;
+    let accessoriesScrollSpeed = 1; // pixels per frame
+    let accessoriesScrollDirection = 1; // 1 for right, -1 for left
+    
+    // Mouse wheel scrolling variables
+    let accessoriesWheelVelocity = 0;
+    let accessoriesIsWheelScrolling = false;
+    let accessoriesWheelAnimationId = null;
+    
+    // Define smooth scroll function for accessories
+    function smoothAccessoriesScrollWithMomentum() {
+      if (Math.abs(accessoriesWheelVelocity) > 0.1) {
+        accessoriesContainer.scrollLeft += accessoriesWheelVelocity;
+        accessoriesWheelVelocity *= 0.9; // Friction
+        
+        accessoriesWheelAnimationId = requestAnimationFrame(smoothAccessoriesScrollWithMomentum);
+      } else {
+        accessoriesWheelVelocity = 0;
+        accessoriesIsWheelScrolling = false;
+        accessoriesWheelAnimationId = null;
+      }
+    }
+    
+    // Auto-scroll function for accessories
+    function startAccessoriesAutoScroll() {
+      if (accessoriesScrollInterval) return; // Already running
+      
+      accessoriesScrollInterval = setInterval(() => {
+        if (!accessoriesIsWheelScrolling && isAccessoriesAutoScrolling) {
+          const maxScroll = accessoriesContainer.scrollWidth - accessoriesContainer.clientWidth;
+          
+          if (accessoriesContainer.scrollLeft >= maxScroll) {
+            accessoriesScrollDirection = -1; // Change direction to left
+          } else if (accessoriesContainer.scrollLeft <= 0) {
+            accessoriesScrollDirection = 1; // Change direction to right
+          }
+          
+          accessoriesContainer.scrollLeft += accessoriesScrollSpeed * accessoriesScrollDirection;
+        }
+      }, 50); // 20 FPS for smooth scrolling
+      
+      console.log('▶️ Accessories auto-scroll started');
+    }
+    
+    function stopAccessoriesAutoScroll() {
+      if (accessoriesScrollInterval) {
+        clearInterval(accessoriesScrollInterval);
+        accessoriesScrollInterval = null;
+        console.log('⏸️ Accessories auto-scroll paused');
+      }
+    }
+    
+    // Mouse wheel event handler for accessories
+    function handleAccessoriesWheel(event) {
+      console.log('🔄 Accessories wheel event triggered');
+      
+      // Only handle if accessories section is open
+      if (!accessoriesSection.classList.contains('open')) {
+        return;
+      }
+      
+      // Only prevent default if we're actually scrolling the container
+      if (accessoriesContainer.scrollWidth > accessoriesContainer.clientWidth) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Stop auto-scroll during wheel interaction
+        stopAccessoriesAutoScroll();
+        
+        // Get scroll direction and amount
+        const delta = event.deltaY || event.deltaX;
+        const scrollSpeed = Math.abs(delta) * 0.5;
+        const direction = delta > 0 ? 1 : -1;
+        
+        // Add to velocity for momentum effect
+        accessoriesWheelVelocity += direction * scrollSpeed;
+        
+        // Smooth scroll with momentum
+        if (!accessoriesIsWheelScrolling) {
+          accessoriesIsWheelScrolling = true;
+          smoothAccessoriesScrollWithMomentum();
+        }
+        
+        console.log('🔄 Accessories wheel scrolling:', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
+        
+        // Restart auto-scroll after a delay
+        setTimeout(() => {
+          if (isAccessoriesAutoScrolling) {
+            startAccessoriesAutoScroll();
+          }
+        }, 2000);
+      }
+    }
+    
+    // Add wheel listeners to accessories container and section
+    accessoriesContainer.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
+    accessoriesSection.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
+    
+    // Pause auto-scroll on hover
+    accessoriesContainer.addEventListener('mouseenter', () => {
+      stopAccessoriesAutoScroll();
+      console.log('🎯 Accessories auto-scroll paused on hover');
+    });
+    
+    accessoriesContainer.addEventListener('mouseleave', () => {
+      if (isAccessoriesAutoScrolling) {
+        startAccessoriesAutoScroll();
+        console.log('🎯 Accessories auto-scroll resumed');
+      }
+    });
+    
+    // Start auto-scroll when accessories section opens
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (accessoriesSection.classList.contains('open')) {
+            // Start auto-scroll after a short delay to ensure content is loaded
+            setTimeout(() => {
+              if (isAccessoriesAutoScrolling) {
+                startAccessoriesAutoScroll();
+              }
+            }, 500);
+          } else {
+            stopAccessoriesAutoScroll();
+          }
+        }
+      });
+    });
+    
+    observer.observe(accessoriesSection, { attributes: true });
+    
+    // Start auto-scroll if section is already open
+    if (accessoriesSection.classList.contains('open')) {
+      setTimeout(() => {
+        if (isAccessoriesAutoScrolling) {
+          startAccessoriesAutoScroll();
+        }
+      }, 500);
+    }
+    
+    console.log('✅ Accessories auto-scroll and mouse wheel functionality initialized');
+  } else {
+    console.log('⚠️ Accessories container or section not found');
+  }
 });
