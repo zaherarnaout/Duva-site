@@ -2935,16 +2935,47 @@ function initializeGalleryAutoScroll() {
     }, 2000);
   });
 
+  // Enhanced wheel scroll for gallery with better debugging
+  function handleGalleryWheel(event) {
+    console.log('🎯 Gallery wheel event triggered');
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Calculate velocity based on wheel delta
+    const delta = event.deltaY || event.deltaX;
+    const direction = delta > 0 ? 1 : -1;
+    const speed = Math.abs(delta) * 0.01;
+    
+    wheelVelocity += direction * speed;
+    
+    // Stop any ongoing auto-scroll
+    stopAutoScroll();
+    
+    // Apply momentum scrolling
+    if (!wheelAnimationId) {
+      wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
+    }
+    
+    console.log(`🎯 Gallery wheel: direction=${direction}, speed=${speed}`);
+  }
+  
   // Always active wheel scroll for gallery (not just on hover)
-  gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
+  gallery.addEventListener('wheel', handleGalleryWheel, { passive: false });
   console.log('🎯 Gallery mouse wheel always active');
   
   // Also add wheel listener to the gallery section wrapper for broader coverage
   const gallerySectionWrapper = document.querySelector('.gallery-section-wrapper') || 
                                document.querySelector('.gallery-section');
   if (gallerySectionWrapper) {
-    gallerySectionWrapper.addEventListener('wheel', handleWheelScroll, { passive: false });
+    gallerySectionWrapper.addEventListener('wheel', handleGalleryWheel, { passive: false });
     console.log('✅ Added wheel listener to gallery section wrapper');
+  }
+  
+  // Add wheel listener to the entire gallery section for maximum coverage
+  const gallerySectionElement = document.querySelector('.gallery-section');
+  if (gallerySectionElement && gallerySectionElement !== gallerySectionWrapper) {
+    gallerySectionElement.addEventListener('wheel', handleGalleryWheel, { passive: false });
+    console.log('✅ Added wheel listener to gallery section');
   }
   
   // Hover pause functionality
@@ -4719,4 +4750,101 @@ function createDemoSVGAnimation() {
 // Initialize SVG tracing animation when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   initializeSVGTracingAnimation();
+});
+
+// === Enhanced Mouse Wheel Scrolling ===
+function initializeEnhancedWheelScrolling() {
+  console.log('🎯 Initializing enhanced mouse wheel scrolling...');
+  
+  // Gallery wheel scrolling
+  const gallery = document.querySelector('.gallery-section-cms');
+  if (gallery) {
+    console.log('✅ Gallery found for wheel scrolling');
+    
+    function handleGalleryWheel(event) {
+      console.log('🎯 Gallery wheel event triggered');
+      event.preventDefault();
+      event.stopPropagation();
+      
+      // Calculate velocity based on wheel delta
+      const delta = event.deltaY || event.deltaX;
+      const direction = delta > 0 ? 1 : -1;
+      const speed = Math.abs(delta) * 0.01;
+      
+      // Use the existing wheel velocity system
+      if (typeof wheelVelocity !== 'undefined') {
+        wheelVelocity += direction * speed;
+        
+        // Stop any ongoing auto-scroll
+        if (typeof stopAutoScroll === 'function') {
+          stopAutoScroll();
+        }
+        
+        // Apply momentum scrolling
+        if (!wheelAnimationId) {
+          wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
+        }
+      }
+      
+      console.log(`🎯 Gallery wheel: direction=${direction}, speed=${speed}`);
+    }
+    
+    gallery.addEventListener('wheel', handleGalleryWheel, { passive: false });
+    console.log('✅ Added wheel listener to gallery');
+  }
+  
+  // Related items wheel scrolling
+  const relatedContainer = document.querySelector('.collection-list-6');
+  if (relatedContainer) {
+    console.log('✅ Related items container found for wheel scrolling');
+    
+    let scrollVelocity = 0;
+    let isScrolling = false;
+    let scrollAnimationId = null;
+    
+    function handleRelatedWheel(event) {
+      console.log('🔄 Related section wheel event triggered');
+      
+      if (relatedContainer.scrollWidth > relatedContainer.clientWidth) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const delta = event.deltaY || event.deltaX;
+        const scrollSpeed = Math.abs(delta) * 0.5;
+        const direction = delta > 0 ? 1 : -1;
+        
+        scrollVelocity += direction * scrollSpeed;
+        
+        if (!isScrolling) {
+          isScrolling = true;
+          smoothScrollWithMomentum();
+        }
+        
+        console.log('🔄 Related wheel: direction=', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
+      }
+    }
+    
+    function smoothScrollWithMomentum() {
+      if (Math.abs(scrollVelocity) > 0.1) {
+        relatedContainer.scrollLeft += scrollVelocity;
+        scrollVelocity *= 0.9; // Friction
+        
+        scrollAnimationId = requestAnimationFrame(smoothScrollWithMomentum);
+      } else {
+        scrollVelocity = 0;
+        isScrolling = false;
+        scrollAnimationId = null;
+      }
+    }
+    
+    relatedContainer.addEventListener('wheel', handleRelatedWheel, { passive: false });
+    console.log('✅ Added wheel listener to related items');
+  }
+  
+  console.log('✅ Enhanced wheel scrolling initialized');
+}
+
+// Initialize enhanced wheel scrolling
+document.addEventListener('DOMContentLoaded', function() {
+  initializeEnhancedWheelScrolling();
 });
