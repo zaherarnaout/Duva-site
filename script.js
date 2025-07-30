@@ -4908,3 +4908,45 @@ document.addEventListener('DOMContentLoaded', function() {
   
   initializeEnhancedWheelScrolling();
 });
+
+// === Seamless Gallery Loop Fix ===
+function fixGallerySeamlessLoop() {
+  console.log('🔄 Fixing gallery seamless loop...');
+  
+  const gallery = document.querySelector('.gallery-section-cms');
+  if (!gallery) {
+    console.log('⚠️ Gallery not found for seamless loop fix');
+    return;
+  }
+  
+  // Override the existing scrollToNext function to use smooth scrolling
+  const originalScrollToNext = window.scrollToNext;
+  if (originalScrollToNext) {
+    window.scrollToNext = function() {
+      const totalImages = gallery.querySelectorAll('.w-dyn-item').length;
+      const viewportWidth = window.innerWidth;
+      const currentScroll = gallery.scrollLeft;
+      const currentIndex = Math.round(currentScroll / viewportWidth);
+      
+      if (currentIndex >= totalImages - 1) {
+        // At the end - smoothly scroll to first image
+        const firstImagePosition = 0;
+        smoothScrollTo(gallery, firstImagePosition, 800);
+        console.log('🔄 Seamless loop: Smoothly transitioning to first image');
+      } else {
+        // Normal progression
+        const nextIndex = currentIndex + 1;
+        const nextPosition = nextIndex * viewportWidth;
+        smoothScrollTo(gallery, nextPosition, 800);
+        console.log(`🔄 Seamless loop: Moving to image ${nextIndex + 1}/${totalImages}`);
+      }
+    };
+  }
+  
+  console.log('✅ Gallery seamless loop fix applied');
+}
+
+// Apply the seamless loop fix
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(fixGallerySeamlessLoop, 1000); // Delay to ensure gallery is initialized
+});
