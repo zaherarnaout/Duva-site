@@ -2293,24 +2293,92 @@ window.testProductChange = function(newProductCode) {
 
 // === Related Items Mouse Wheel Scroll Logic ===
 document.addEventListener("DOMContentLoaded", function () {
+  console.log('🔍 === RELATED ITEMS DEBUGGING START ===');
+  
+  // Check all possible selectors
+  const selectors = [
+    ".collection-list-6",
+    ".related-items", 
+    ".w-dyn-items",
+    "[data-collection-list]",
+    ".related-section .w-dyn-items",
+    ".related-section [class*='w-dyn']"
+  ];
+  
+  console.log('🔍 Checking all possible selectors:');
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector);
+    console.log(`  ${selector}: ${element ? 'FOUND' : 'NOT FOUND'}`);
+    if (element) {
+      console.log(`    - scrollWidth: ${element.scrollWidth}`);
+      console.log(`    - clientWidth: ${element.clientWidth}`);
+      console.log(`    - canScroll: ${element.scrollWidth > element.clientWidth}`);
+      console.log(`    - classes: ${element.className}`);
+    }
+  });
+  
   const scrollContainer = document.querySelector(".collection-list-6");
 
   if (scrollContainer) {
     console.log('✅ Related items mouse wheel scroll logic initialized');
     console.log('📦 Related scroll container found:', scrollContainer);
+    console.log('📏 Container details:', {
+      tagName: scrollContainer.tagName,
+      className: scrollContainer.className,
+      id: scrollContainer.id,
+      scrollWidth: scrollContainer.scrollWidth,
+      clientWidth: scrollContainer.clientWidth,
+      scrollLeft: scrollContainer.scrollLeft,
+      maxScroll: scrollContainer.scrollWidth - scrollContainer.clientWidth,
+      canScroll: scrollContainer.scrollWidth > scrollContainer.clientWidth,
+      style: {
+        overflow: scrollContainer.style.overflow,
+        display: scrollContainer.style.display,
+        visibility: scrollContainer.style.visibility
+      }
+    });
+    
+    // Check if container has children
+    const children = scrollContainer.children;
+    console.log('👶 Container children:', children.length);
+    for (let i = 0; i < Math.min(children.length, 3); i++) {
+      const child = children[i];
+      console.log(`  Child ${i}:`, {
+        tagName: child.tagName,
+        className: child.className,
+        offsetWidth: child.offsetWidth,
+        clientWidth: child.clientWidth
+      });
+    }
     
     // Smooth mouse wheel scrolling
     scrollContainer.addEventListener('wheel', function(e) {
       console.log('🔄 Related section wheel event triggered');
+      console.log('📏 Wheel event details:', {
+        deltaY: e.deltaY,
+        deltaX: e.deltaX,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        target: e.target.tagName + '.' + e.target.className
+      });
       
       // Only prevent default if we're actually scrolling the container
       if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+        console.log('✅ Container can scroll, preventing default');
         e.preventDefault(); // Prevent default vertical scrolling
         e.stopPropagation(); // Stop event from bubbling up
         
         // Get scroll direction and amount
         const delta = e.deltaY || e.deltaX;
         const scrollSpeed = 50; // Adjust this value to control scroll sensitivity
+        
+        console.log('📏 Scroll calculation:', {
+          delta: delta,
+          scrollSpeed: scrollSpeed,
+          direction: delta > 0 ? 'right' : 'left',
+          currentScrollLeft: scrollContainer.scrollLeft,
+          newScrollLeft: scrollContainer.scrollLeft + (delta > 0 ? scrollSpeed : -scrollSpeed)
+        });
         
         // Smooth scroll horizontally
         scrollContainer.scrollBy({
@@ -2319,6 +2387,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         
         console.log('🔄 Mouse wheel scrolling:', delta > 0 ? 'right' : 'left');
+      } else {
+        console.log('❌ Container cannot scroll - scrollWidth <= clientWidth');
       }
     }, { passive: false }); // Required for preventDefault to work
     
@@ -2350,7 +2420,33 @@ document.addEventListener("DOMContentLoaded", function () {
     
   } else {
     console.log('⚠️ Related items scroll container not found');
+    console.log('🔍 Available elements on page:');
+    
+    // List all elements that might be related
+    const allElements = document.querySelectorAll('*');
+    const relatedElements = [];
+    
+    allElements.forEach(el => {
+      if (el.className && (
+        el.className.includes('collection') || 
+        el.className.includes('related') || 
+        el.className.includes('w-dyn') ||
+        el.className.includes('scroll')
+      )) {
+        relatedElements.push({
+          tagName: el.tagName,
+          className: el.className,
+          id: el.id,
+          scrollWidth: el.scrollWidth,
+          clientWidth: el.clientWidth
+        });
+      }
+    });
+    
+    console.log('🔍 Potential related elements:', relatedElements);
   }
+  
+  console.log('🔍 === RELATED ITEMS DEBUGGING END ===');
 });
 
 // Observer to refresh ordering code when page content changes
@@ -2678,12 +2774,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // === Auto-scroll Fullscreen Image Gallery ===
 function initializeGalleryAutoScroll() {
+  console.log('🎠 === GALLERY DEBUGGING START ===');
   console.log('🎠 Initializing gallery auto-scroll...');
+  
+  // Check all possible gallery selectors
+  const gallerySelectors = [
+    '.gallery-section-cms',
+    '.gallery-section .w-dyn-items',
+    '[data-collection-list]',
+    '.gallery-section [class*="w-dyn"]',
+    '.gallery-section-cms .w-dyn-items'
+  ];
+  
+  console.log('🔍 Checking all possible gallery selectors:');
+  gallerySelectors.forEach(selector => {
+    const element = document.querySelector(selector);
+    console.log(`  ${selector}: ${element ? 'FOUND' : 'NOT FOUND'}`);
+    if (element) {
+      console.log(`    - scrollWidth: ${element.scrollWidth}`);
+      console.log(`    - clientWidth: ${element.clientWidth}`);
+      console.log(`    - canScroll: ${element.scrollWidth > element.clientWidth}`);
+      console.log(`    - classes: ${element.className}`);
+    }
+  });
   
   const gallery = document.querySelector('.gallery-section-cms');
   
   if (!gallery) {
     console.log('⚠️ Gallery section not found');
+    console.log('🔍 Available gallery-related elements:');
+    
+    // List all elements that might be gallery-related
+    const allElements = document.querySelectorAll('*');
+    const galleryElements = [];
+    
+    allElements.forEach(el => {
+      if (el.className && (
+        el.className.includes('gallery') || 
+        el.className.includes('w-dyn') ||
+        el.className.includes('collection')
+      )) {
+        galleryElements.push({
+          tagName: el.tagName,
+          className: el.className,
+          id: el.id,
+          scrollWidth: el.scrollWidth,
+          clientWidth: el.clientWidth
+        });
+      }
+    });
+    
+    console.log('🔍 Potential gallery elements:', galleryElements);
+    console.log('🎠 === GALLERY DEBUGGING END ===');
     return;
   }
 
@@ -2853,6 +2995,18 @@ function initializeGalleryAutoScroll() {
 
   // Mouse wheel scroll handler
   function handleWheelScroll(event) {
+    console.log('🎯 Gallery wheel event triggered');
+    console.log('📏 Wheel event details:', {
+      deltaY: event.deltaY,
+      deltaX: event.deltaX,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      target: event.target.tagName + '.' + event.target.className,
+      galleryScrollWidth: gallery.scrollWidth,
+      galleryClientWidth: gallery.clientWidth,
+      canScroll: gallery.scrollWidth > gallery.clientWidth
+    });
+    
     // Only handle wheel scroll when hovering over gallery
     // Prevent default scroll behavior for the entire page
     event.preventDefault();
@@ -2861,9 +3015,11 @@ function initializeGalleryAutoScroll() {
     // Determine scroll direction
     if (event.deltaY > 0) {
       // Scroll down/right - go to next image
+      console.log('🔄 Gallery wheel: scrolling to next image');
       scrollToNext();
     } else {
       // Scroll up/left - go to previous image
+      console.log('🔄 Gallery wheel: scrolling to previous image');
       scrollToPrevious();
     }
     
@@ -2922,6 +3078,32 @@ function initializeGalleryAutoScroll() {
   
   console.log('✅ Gallery initialized with auto-scroll enabled');
   console.log('💡 Auto-scroll starts after 2 seconds, mouse wheel always available');
+  
+  // Add test functions to window for manual testing
+  window.testGalleryScroll = function() {
+    console.log('🧪 Testing gallery scroll...');
+    if (gallery) {
+      console.log('📏 Current scroll position:', gallery.scrollLeft);
+      gallery.scrollBy({ left: 100, behavior: 'smooth' });
+      console.log('✅ Gallery scroll test executed');
+    } else {
+      console.log('❌ Gallery not found for testing');
+    }
+  };
+  
+  window.testRelatedScroll = function() {
+    console.log('🧪 Testing related items scroll...');
+    const relatedContainer = document.querySelector('.collection-list-6');
+    if (relatedContainer) {
+      console.log('📏 Current scroll position:', relatedContainer.scrollLeft);
+      relatedContainer.scrollBy({ left: 100, behavior: 'smooth' });
+      console.log('✅ Related scroll test executed');
+    } else {
+      console.log('❌ Related container not found for testing');
+    }
+  };
+  
+  console.log('🎠 === GALLERY DEBUGGING END ===');
 }
 
 // === Menu Panel Functionality ===
