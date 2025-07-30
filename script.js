@@ -4130,13 +4130,23 @@ function initializeFlipCardLinks() {
       }, 1000);
     });
     
-    // Add hover effects
+    // Add hover effects for fade animation
     link.addEventListener('mouseenter', function() {
       this.style.transform = 'translateY(-2px)';
+      // Ensure fade animation works
+      const flipCard = this.querySelector('.flip-card');
+      if (flipCard) {
+        flipCard.style.transition = 'all 0.6s ease';
+      }
     });
     
     link.addEventListener('mouseleave', function() {
       this.style.transform = 'translateY(0)';
+      // Reset fade animation
+      const flipCard = this.querySelector('.flip-card');
+      if (flipCard) {
+        flipCard.style.transition = 'all 0.6s ease';
+      }
     });
   });
 }
