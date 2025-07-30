@@ -1,60 +1,63 @@
-// === SVG Background Tracing Animation ===
-function initializeSVGTracingAnimation() {
-  const backgroundSVG = document.querySelector('svg.duva-main-background');
+// === Red Dot SVG Path Tracer ===
 
-  if (!backgroundSVG) {
-    console.warn('SVG not found.');
-    return;
-  }
+// Wait for the DOM and background SVG to be ready
+document.addEventListener("DOMContentLoaded", () => {
+  const svg = document.querySelector("svg");
+  if (!svg) return;
 
-  const paths = backgroundSVG.querySelectorAll('path');
-  if (paths.length === 0) {
-    console.warn('No paths to trace.');
-    return;
-  }
-
-  // Create the red dot
-  const dot = document.createElement('div');
-  dot.classList.add('tracing-dot');
+  // Create the red dot element
+  const dot = document.createElement("div");
+  dot.classList.add("tracing-dot");
   document.body.appendChild(dot);
 
-  // Helper: get total length and set initial styles
-  paths.forEach(path => {
-    path.style.stroke = '#C0392B';
-    path.style.strokeWidth = '2';
-    path.style.fill = 'none';
-    path.style.strokeDasharray = path.getTotalLength();
-    path.style.strokeDashoffset = path.getTotalLength();
-    path.style.animation = 'draw 4s ease forwards';
+  // Get all visible paths to animate
+  const paths = svg.querySelectorAll("path");
+  let totalLength = 0;
+
+  // Convert all paths into segments with cumulative lengths
+  const segments = [];
+  paths.forEach((path, index) => {
+    const length = path.getTotalLength();
+    if (length === 0) return;
+
+    const color = getComputedStyle(path).stroke;
+    path.style.stroke = color || "#C0392B";
+    path.style.strokeWidth = "1.5";
+    path.style.fill = "none";
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+    path.style.animation = `draw 4s linear forwards ${index * 0.5}s`;
+
+    segments.push({ path, length, offset: totalLength });
+    totalLength += length;
   });
 
-  // Animate the red dot along paths
-  let currentPath = 0;
-  function traceNextPath() {
-    if (currentPath >= paths.length) return;
+  // Animate red dot over time
+  let startTime = null;
+  function animateDot(time) {
+    if (!startTime) startTime = time;
+    const elapsed = (time - startTime) / 1000;
+    const speed = 100; // pixels per second
+    const distance = elapsed * speed;
 
-    const path = paths[currentPath];
-    const length = path.getTotalLength();
-    let start = null;
+    if (distance > totalLength) {
+      dot.style.display = "none"; // hide the dot at end
+      return;
+    }
 
-    function animateDot(time) {
-      if (!start) start = time;
-      const progress = (time - start) / 2000; // 2 seconds per path
-      const point = path.getPointAtLength(progress * length);
-      dot.style.transform = `translate(${point.x}px, ${point.y}px)`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animateDot);
-      } else {
-        currentPath++;
-        setTimeout(traceNextPath, 500); // pause before next
+    // Find current path segment
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      if (distance < seg.offset + seg.length) {
+        const t = (distance - seg.offset) / seg.length;
+        const point = seg.path.getPointAtLength(t * seg.length);
+        dot.style.transform = `translate(${point.x}px, ${point.y}px)`;
+        break;
       }
     }
 
     requestAnimationFrame(animateDot);
   }
 
-  traceNextPath();
-}
-
-document.addEventListener('DOMContentLoaded', initializeSVGTracingAnimation);
+  requestAnimationFrame(animateDot);
+});
