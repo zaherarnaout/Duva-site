@@ -4078,3 +4078,112 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('⚠️ Accessories container or section not found');
   }
 });
+
+/* === Flip Card Linking Functionality === */
+function initializeFlipCardLinks() {
+  // Find all flip card wrappers
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  
+  flipCardWrappers.forEach(wrapper => {
+    // Check if this wrapper already has a link
+    const existingLink = wrapper.querySelector('.flip-card-link');
+    if (existingLink) {
+      return; // Already processed
+    }
+    
+    // Get the collection item (parent of flip-card-wrapper)
+    const collectionItem = wrapper.closest('.collection-item');
+    if (!collectionItem) {
+      return;
+    }
+    
+    // Create the link element
+    const link = document.createElement('a');
+    link.className = 'flip-card-link';
+    
+    // Get the product URL from Webflow's data attributes or CMS
+    // This will be set by Webflow when you configure the link
+    const productUrl = collectionItem.getAttribute('data-product-url') || 
+                      collectionItem.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
+                      '#';
+    
+    link.href = productUrl;
+    link.setAttribute('data-product-url', productUrl);
+    
+    // Move the flip-card-wrapper inside the link
+    wrapper.parentNode.insertBefore(link, wrapper);
+    link.appendChild(wrapper);
+    
+    // Add click event listener for additional functionality
+    link.addEventListener('click', function(e) {
+      // Prevent default if URL is not set
+      if (productUrl === '#' || !productUrl) {
+        e.preventDefault();
+        console.log('Product URL not configured');
+        return;
+      }
+      
+      // Optional: Add loading state
+      this.style.pointerEvents = 'none';
+      setTimeout(() => {
+        this.style.pointerEvents = 'auto';
+      }, 1000);
+    });
+    
+    // Add hover effects
+    link.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-2px)';
+    });
+    
+    link.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+    });
+  });
+}
+
+/* === Cards Scroll Animation === */
+function initializeCardsScrollAnimation() {
+  const cards = document.querySelectorAll('.collection-item');
+  
+  if (!cards.length) return;
+  
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+      }
+    });
+  }, observerOptions);
+  
+  cards.forEach(card => {
+    observer.observe(card);
+  });
+}
+
+// Initialize flip card links when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeFlipCardLinks();
+  initializeCardsScrollAnimation();
+});
+
+// Re-initialize when Webflow's dynamic content loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for Webflow's dynamic content to load
+  setTimeout(() => {
+    initializeFlipCardLinks();
+    initializeCardsScrollAnimation();
+  }, 100);
+});
+
+// Also initialize when Webflow's page loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeFlipCardLinks();
+    initializeCardsScrollAnimation();
+  });
+}
