@@ -2305,6 +2305,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isScrolling = false;
     let scrollAnimationId = null;
     
+    // Always active wheel scroll (not just on hover)
     scrollContainer.addEventListener('wheel', function(e) {
       console.log('🔄 Related section wheel event triggered');
       
@@ -2331,106 +2332,1140 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, { passive: false }); // Required for preventDefault to work
     
-    // Improved touch/swipe support for mobile with momentum
-    let startX = 0;
-    let scrollLeft = 0;
-    let touchVelocity = 0;
-    let lastTouchTime = 0;
-    let lastTouchX = 0;
-    
-    scrollContainer.addEventListener('touchstart', function(e) {
-      console.log('📱 Related section touch start');
-      startX = e.touches[0].pageX - scrollContainer.offsetLeft;
-      scrollLeft = scrollContainer.scrollLeft;
-      lastTouchTime = Date.now();
-      lastTouchX = e.touches[0].pageX;
-      touchVelocity = 0;
-      
-      // Stop any ongoing momentum scroll
-      if (scrollAnimationId) {
-        cancelAnimationFrame(scrollAnimationId);
-        scrollAnimationId = null;
-      }
+    // Also add wheel listener to the parent section for better coverage
+    const relatedSection = document.querySelector('.related-section');
+    if (relatedSection) {
+      relatedSection.addEventListener('wheel', function(e) {
+        // Only handle if we're over the scroll container
+        const rect = scrollContainer.getBoundingClientRect();
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        
+        if (mouseX >= rect.left && mouseX <= rect.right && 
+            mouseY >= rect.top && mouseY <= rect.bottom) {
+          console.log('🔄 Related section wheel event triggered (from parent)');
+          
+          if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const delta = e.deltaY || e.deltaX;
+            const scrollSpeed = Math.abs(delta) * 0.5;
+            const direction = delta > 0 ? 1 : -1;
+            
+            scrollVelocity += direction * scrollSpeed;
+            
+            if (!isScrolling) {
+              isScrolling = true;
+              smoothScrollWithMomentum();
+            }
+          }
+        }
+      }, { passive: false });
+    }
+  } else {
+    console.log('⚠️ Related items scroll container not found');
+  }
+});
+
+// Observer to refresh ordering code when page content changes
+function setupOrderingCodeObserver() {
+  console.log('🔧 Setting up ordering code observer...');
+  
+  // Watch for changes in the product code element
+  const selectors = ['#product-code', '.product-code-heading', '.product-code', '.product-title-source'];
+  let productCodeElement = null;
+  
+  for (const selector of selectors) {
+    productCodeElement = document.querySelector(selector);
+    if (productCodeElement) {
+      console.log(`✅ Found element to observe: ${selector}`);
+      break;
+    }
+  }
+  
+  if (productCodeElement) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          console.log('🔄 Product code changed, refreshing ordering code...');
+          setTimeout(() => {
+            updateOrderingCode();
+            updateProductCodeInjection();
+            updateGeneratedCodeInjection();
+          }, 100);
+        }
+      });
     });
     
-    scrollContainer.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-      const currentX = e.touches[0].pageX - scrollContainer.offsetLeft;
-      const walk = (startX - currentX) * 1.5; // Improved sensitivity
-      scrollContainer.scrollLeft = scrollLeft + walk;
-      
-      // Calculate velocity for momentum
-      const currentTime = Date.now();
-      const timeDiff = currentTime - lastTouchTime;
-      if (timeDiff > 0) {
-        touchVelocity = (lastTouchX - e.touches[0].pageX) / timeDiff;
-        lastTouchX = e.touches[0].pageX;
-        lastTouchTime = currentTime;
-      }
-      
-      console.log('📱 Related section touch move');
+    observer.observe(productCodeElement, {
+      childList: true,
+      characterData: true,
+      subtree: true
     });
     
-    scrollContainer.addEventListener('touchend', function() {
-      console.log('📱 Related section touch end');
-      
-      // Apply momentum scrolling
-      if (Math.abs(touchVelocity) > 0.5) {
-        const momentumDistance = touchVelocity * 100; // Adjust momentum strength
-        const targetScroll = scrollContainer.scrollLeft + momentumDistance;
-        
-        // Smooth scroll to target with easing
-        smoothScrollTo(targetScroll, 800); // 800ms duration
+    console.log('✅ Ordering code observer set up for:', productCodeElement);
+  } else {
+    console.log('⚠️ No product code element found for observer, setting up periodic check');
+    // Set up periodic check as backup
+    setInterval(() => {
+      const currentCode = getCurrentProductCode();
+      if (currentCode !== 'CXXX' && currentCode !== window.lastProductCode) {
+        console.log('🔄 Product code changed via periodic check:', currentCode);
+        window.lastProductCode = currentCode;
+        updateOrderingCode();
+        updateProductCodeInjection();
+        updateGeneratedCodeInjection();
+      }
+    }, 2000); // Check every 2 seconds
+  }
+  
+  // Also watch for URL changes (for SPA navigation)
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      console.log('🔄 URL changed, refreshing ordering code...');
+      setTimeout(() => {
+        updateOrderingCode();
+        updateProductCodeInjection();
+        updateGeneratedCodeInjection();
+      }, 500);
+    }
+  }).observe(document, {subtree: true, childList: true});
+}
+
+// === Inject PDF Icons from CMS to #pdf-container ===
+function injectPdfIcons() {
+  // Find all CMS icons for this product (from the main page, not PDF container)
+  const cmsIcons = document.querySelectorAll('#pdf-icons .pdf-cms-icon');
+  const targetContainer = document.querySelector('#pdf-container .header-icons-wrapper');
+
+  if (!cmsIcons.length) {
+    console.log('⚠️ No CMS icons found in #pdf-icons for this product.');
+    return;
+  }
+  if (!targetContainer) {
+    console.log('⚠️ PDF icon target container not found.');
+    return;
+  }
+
+  // Clear existing icons
+  targetContainer.innerHTML = '';
+
+  // Inject all icons into the icons wrapper
+  cmsIcons.forEach((icon, i) => {
+    const clone = icon.cloneNode(true);
+    clone.removeAttribute('id');
+    targetContainer.appendChild(clone);
+    console.log(`✅ Injected icon #${i+1}:`, clone);
+  });
+
+  console.log(`✅ Injected ${cmsIcons.length} icons into PDF container.`);
+}
+
+// === Inject Product, Dimension, and Photometric Images into PDF ===
+function injectPdfImages() {
+  // Product Image
+  const productSource = document.querySelector('#main-lightbox-trigger.product-image');
+  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+  if (productSource && pdfImageContainer) {
+    pdfImageContainer.innerHTML = `<img src="${productSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Product image injected:', productSource.src);
+  } else {
+    console.log('⚠️ Product image source or container not found');
+  }
+
+  // Dimension Image
+  const dimensionSource = document.querySelector('#diagram.dimension');
+  const pdfDimContainer = document.querySelector('#pdf-container .diagram-pdf-img');
+  if (dimensionSource && pdfDimContainer) {
+    pdfDimContainer.innerHTML = `<img src="${dimensionSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Dimension image injected:', dimensionSource.src);
+  } else {
+    console.log('⚠️ Dimension image source or container not found');
+  }
+
+  // Photometric Image
+  const photometricSource = document.querySelector('#Photometric.photometric');
+  const pdfPhotoContainer = document.querySelector('#pdf-container .photometric-pdf-img');
+  if (photometricSource && pdfPhotoContainer) {
+    pdfPhotoContainer.innerHTML = `<img src="${photometricSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Photometric image injected:', photometricSource.src);
+  } else {
+    console.log('⚠️ Photometric image source or container not found');
+  }
+}
+
+function styleSpecLabelsAndValues() {
+  const specBlocks = document.querySelectorAll('#pdf-container .specifications-full-width .text-block-16');
+  specBlocks.forEach(block => {
+    // Split by <br> or line break
+    const html = block.innerHTML.trim();
+    const parts = html.split(/<br\s*\/?>(.*)/i);
+    if (parts.length >= 2) {
+      const label = parts[0].replace(/<[^>]+>/g, '').trim();
+      const value = parts[1].replace(/<[^>]+>/g, '').trim();
+      block.innerHTML = `<span class='label'>${label}</span><br><span class='value'>${value}</span>`;
+    }
+  });
+}
+// Call this after PDF content is injected
+if (typeof injectPdfContent === 'function') {
+  const originalInjectPdfContent = injectPdfContent;
+  injectPdfContent = function() {
+    originalInjectPdfContent.apply(this, arguments);
+    styleSpecLabelsAndValues();
+  };
+}
+
+// === Accessory Injection for PDF ===
+function injectSelectedAccessories() {
+  // Find the PDF accessories container
+  const pdfAccessoriesContainer = document.querySelector('#pdf-container .accessories-pdf-section');
+  if (!pdfAccessoriesContainer) {
+    console.log('⚠️ PDF accessories container not found');
+    return;
+  }
+
+  // Find all selected accessories (checkboxes that are active/checked)
+  const selectedAccessories = document.querySelectorAll('.accessory-checkbox.active, .accessory-checkbox.checked, .accessory-checkbox[data-selected="true"]');
+  
+  console.log('🔍 Found selected accessories:', selectedAccessories.length);
+  selectedAccessories.forEach((acc, i) => {
+    console.log(`  ${i + 1}. Checkbox:`, acc);
+    console.log(`     Classes:`, acc.className);
+    console.log(`     Parent item:`, acc.closest('.accessory-item'));
+  });
+  
+  if (selectedAccessories.length === 0) {
+    // Hide accessories section if none selected
+    pdfAccessoriesContainer.style.display = 'none';
+    console.log('ℹ️ No accessories selected, hiding accessories section');
+    return;
+  }
+
+  // Show accessories section
+  pdfAccessoriesContainer.style.display = 'block';
+  
+  // Clear existing accessories in PDF
+  const existingAccessories = pdfAccessoriesContainer.querySelectorAll('.accessory-item');
+  console.log('🧹 Clearing existing accessories:', existingAccessories.length);
+  existingAccessories.forEach(item => item.remove());
+
+  // Inject each selected accessory
+  selectedAccessories.forEach((checkbox, index) => {
+    const accessoryItem = checkbox.closest('.accessory-item');
+    if (!accessoryItem) {
+      console.log(`⚠️ No accessory item found for checkbox ${index + 1}`);
+      return;
+    }
+
+    // Collect accessory data
+    const code = accessoryItem.querySelector('.acc-code')?.textContent?.trim() || '';
+    const title = accessoryItem.querySelector('.acc-title')?.textContent?.trim() || '';
+    const description = accessoryItem.querySelector('.acc-description')?.textContent?.trim() || '';
+    
+    console.log(`📋 Accessory ${index + 1} data:`, { code, title, description });
+    
+    // Get image - try multiple selectors
+    const image = accessoryItem.querySelector('.accessory-image .acc-img, .accessory-image img, .acc-img');
+    const imageSrc = image?.src || image?.getAttribute('src') || '';
+    
+    console.log(`🔍 Accessory ${index + 1} image src:`, imageSrc);
+
+    // Create accessory HTML for PDF
+    const accessoryHTML = `
+      <div class="accessory-item">
+        <div class="accessory-image">
+          ${imageSrc ? `<img src="${imageSrc}" alt="${title}" style="width: 80px; height: 60px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; display: block;">` : ''}
+        </div>
+        <div class="accessory-details">
+          <div class="accessory-code">${code}</div>
+          <div class="accessory-title">${title}</div>
+          <div class="accessory-description">${description}</div>
+        </div>
+      </div>
+    `;
+
+    // Add to PDF container
+    pdfAccessoriesContainer.insertAdjacentHTML('beforeend', accessoryHTML);
+    console.log(`✅ Injected accessory ${index + 1}: ${title}`);
+  });
+
+  console.log(`✅ Total accessories injected: ${selectedAccessories.length}`);
+}
+
+// === Scroll-triggered Fade-in Animations ===
+function initializeScrollAnimations() {
+  console.log('✨ Initializing scroll animations...');
+  
+  // Create a single observer for all sections
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        console.log(`🎬 ${entry.target.className} fade-in triggered`);
       }
     });
+  }, {
+    threshold: 0.3, // Trigger when 30% of section is visible
+    rootMargin: '0px 0px -50px 0px' // Trigger slightly before section comes into view
+  });
+  
+  // Observe specific product page elements (NOT the wrapper)
+  const productVisuals = document.querySelector('.product-visuals');
+  const productInfoBlock = document.querySelector('.product-info-block');
+  const downloadPanel = document.querySelector('.download-panel');
+  
+  if (productVisuals) {
+    observer.observe(productVisuals);
+    console.log('✅ Product visuals observer set up');
+  }
+  
+  if (productInfoBlock) {
+    observer.observe(productInfoBlock);
+    console.log('✅ Product info block observer set up');
+  }
+  
+  if (downloadPanel) {
+    observer.observe(downloadPanel);
+    console.log('✅ Download panel observer set up');
+  }
+  
+  // Observe Related Items section
+  const relatedSection = document.querySelector('.related-section');
+  if (relatedSection) {
+    observer.observe(relatedSection);
+    console.log('✅ Related section observer set up');
+  }
+  
+  // Observe Gallery section
+  const gallerySection = document.querySelector('.gallery-section');
+  if (gallerySection) {
+    observer.observe(gallerySection);
+    console.log('✅ Gallery section observer set up');
+  }
+  
+  // Enhanced accessories dropdown animation
+  const accessoriesToggle = document.querySelector('.accessories-toggle');
+  if (accessoriesToggle) {
+    accessoriesToggle.addEventListener('click', function() {
+      const accessoriesSection = this.closest('.accessories-section');
+      const accessoriesItems = accessoriesSection.querySelectorAll('.accessories-item');
+      
+      // Add staggered animation delays to accessories items
+      accessoriesItems.forEach((item, index) => {
+        item.style.setProperty('--item-index', index);
+      });
+      
+      console.log('🎬 Accessories dropdown animation triggered');
+    });
+  }
+}
+
+// === Smooth Scroll to Related Section ===
+function scrollToRelatedSection() {
+  const relatedSection = document.querySelector('.related-section');
+  if (relatedSection) {
+    relatedSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    console.log('📜 Smooth scrolling to related section');
+  }
+}
+
+// Initialize animations when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeScrollAnimations();
+  
+  // Add smooth scroll button if needed (optional)
+  const scrollToRelatedBtn = document.querySelector('.scroll-to-related');
+  if (scrollToRelatedBtn) {
+    scrollToRelatedBtn.addEventListener('click', scrollToRelatedSection);
+  }
+  
+  // Initialize menu panel functionality
+  initializeMenuPanel();
+});
+
+// === Auto-scroll Fullscreen Image Gallery ===
+function initializeGalleryAutoScroll() {
+  console.log('🎠 Initializing gallery auto-scroll...');
+  
+  const gallery = document.querySelector('.gallery-section-cms');
+  
+  if (!gallery) {
+    console.log('⚠️ Gallery section not found');
+    return;
+  }
+
+  console.log('📏 Gallery found:', gallery);
+  
+  // Check for collection items
+  const collectionItems = gallery.querySelectorAll('.w-dyn-item');
+  console.log('📦 Number of collection items:', collectionItems.length);
+  
+  // Check if gallery has any images and hide section if empty
+  const gallerySection = document.querySelector('.gallery-section');
+  if (collectionItems.length === 0) {
+    console.log('⚠️ No images found in gallery - hiding gallery section');
+    if (gallerySection) {
+      gallerySection.style.display = 'none';
+      gallerySection.style.visibility = 'hidden';
+      gallerySection.style.opacity = '0';
+      gallerySection.style.height = '0';
+      gallerySection.style.overflow = 'hidden';
+    }
+    return; // Exit the function early
+  } else {
+    console.log(`✅ Gallery has ${collectionItems.length} images - showing gallery section`);
+    if (gallerySection) {
+      gallerySection.style.display = 'block';
+      gallerySection.style.visibility = 'visible';
+      gallerySection.style.opacity = '1';
+      gallerySection.style.height = 'auto';
+      gallerySection.style.overflow = 'visible';
+    }
+  }
+
+  // Gallery state management
+  let currentIndex = 0;
+  let isAutoScrolling = true;
+  let scrollInterval;
+  const scrollSpeed = 4000; // time between slides (ms)
+  const transitionDuration = 800; // ms for smooth transitions
+  
+  // Get total number of images
+  const totalImages = collectionItems.length;
+  const viewportWidth = window.innerWidth;
+  
+  console.log(`📊 Gallery stats: ${totalImages} images, viewport: ${viewportWidth}px`);
+
+  // Smooth scroll to specific image index
+  function scrollToImage(index, duration = transitionDuration) {
+    if (index < 0 || index >= totalImages) return;
     
-    // Smooth scroll with momentum function
-    function smoothScrollWithMomentum() {
-      if (Math.abs(scrollVelocity) > 0.1) {
-        scrollContainer.scrollBy({
-          left: scrollVelocity,
-          behavior: 'auto' // Use auto for smoother performance
-        });
-        
-        // Apply friction to slow down
-        scrollVelocity *= 0.85;
-        
-        scrollAnimationId = requestAnimationFrame(smoothScrollWithMomentum);
+    const targetScroll = index * viewportWidth;
+    
+    console.log(`🎯 Scrolling to image ${index + 1}/${totalImages} at position ${targetScroll}px`);
+    
+    // Use custom smooth scroll for better control
+    smoothScrollTo(gallery, targetScroll, duration);
+    
+    currentIndex = index;
+  }
+
+  // Custom smooth scroll function with easing
+  function smoothScrollTo(element, target, duration) {
+    const start = element.scrollLeft;
+    const distance = target - start;
+    const startTime = performance.now();
+    
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      
+      element.scrollLeft = start + (distance * easedProgress);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+    
+    requestAnimationFrame(animate);
+  }
+
+  // Next image with seamless looping
+  function scrollToNext() {
+    if (currentIndex >= totalImages - 1) {
+      // At the end - loop seamlessly by duplicating first image
+      currentIndex = 0;
+      console.log('🔄 Looping to first image seamlessly');
+    } else {
+      currentIndex++;
+      console.log(`🔄 Moving to next image: ${currentIndex + 1}/${totalImages}`);
+    }
+    
+    scrollToImage(currentIndex);
+  }
+
+  // Previous image with seamless looping
+  function scrollToPrevious() {
+    if (currentIndex <= 0) {
+      // At the beginning - loop seamlessly to last image
+      currentIndex = totalImages - 1;
+      console.log('🔄 Looping to last image seamlessly');
+    } else {
+      currentIndex--;
+      console.log(`🔄 Moving to previous image: ${currentIndex + 1}/${totalImages}`);
+    }
+    
+    scrollToImage(currentIndex);
+  }
+
+  // Auto-scroll function
+  function startAutoScroll() {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+    }
+    scrollInterval = setInterval(scrollToNext, scrollSpeed);
+    isAutoScrolling = true;
+    console.log('▶️ Auto-scroll started');
+  }
+
+  function stopAutoScroll() {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+    }
+    isAutoScrolling = false;
+    console.log('⏸️ Auto-scroll paused');
+  }
+
+  // Enhanced mouse wheel scroll handler with momentum
+  let wheelVelocity = 0;
+  let wheelAnimationId = null;
+  
+  function handleWheelScroll(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Calculate velocity based on wheel delta
+    const delta = event.deltaY || event.deltaX;
+    const direction = delta > 0 ? 1 : -1;
+    const speed = Math.abs(delta) * 0.01;
+    
+    wheelVelocity += direction * speed;
+    
+    // Stop any ongoing auto-scroll
+    stopAutoScroll();
+    
+    // Apply momentum scrolling
+    if (!wheelAnimationId) {
+      wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
+    }
+    
+    console.log(`🎯 Wheel scroll: direction=${direction}, speed=${speed}`);
+  }
+  
+  function applyWheelMomentum() {
+    if (Math.abs(wheelVelocity) > 0.1) {
+      if (wheelVelocity > 0) {
+        scrollToNext();
       } else {
-        isScrolling = false;
-        scrollVelocity = 0;
-        if (scrollAnimationId) {
-          cancelAnimationFrame(scrollAnimationId);
-          scrollAnimationId = null;
+        scrollToPrevious();
+      }
+      
+      // Apply friction
+      wheelVelocity *= 0.8;
+      
+      wheelAnimationId = requestAnimationFrame(applyWheelMomentum);
+    } else {
+      wheelVelocity = 0;
+      wheelAnimationId = null;
+      
+      // Restart auto-scroll after a delay
+      setTimeout(() => {
+        if (isAutoScrolling) {
+          startAutoScroll();
         }
+      }, 2000);
+    }
+  }
+
+  // Touch/swipe support for mobile
+  let touchStartX = 0;
+  let touchStartTime = 0;
+  let touchVelocity = 0;
+  
+  gallery.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].pageX;
+    touchStartTime = Date.now();
+    touchVelocity = 0;
+    
+    // Stop auto-scroll during touch
+    stopAutoScroll();
+    
+    console.log('📱 Gallery touch start');
+  });
+  
+  gallery.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    const currentX = e.touches[0].pageX;
+    const deltaX = touchStartX - currentX;
+    
+    // Calculate velocity
+    const currentTime = Date.now();
+    const timeDiff = currentTime - touchStartTime;
+    if (timeDiff > 0) {
+      touchVelocity = deltaX / timeDiff;
+    }
+    
+    // Direct scroll during touch
+    gallery.scrollLeft += deltaX * 0.5;
+    touchStartX = currentX;
+    touchStartTime = currentTime;
+  });
+  
+  gallery.addEventListener('touchend', function() {
+    console.log('📱 Gallery touch end');
+    
+    // Apply momentum based on velocity
+    if (Math.abs(touchVelocity) > 0.5) {
+      if (touchVelocity > 0) {
+        scrollToNext();
+      } else {
+        scrollToPrevious();
       }
     }
     
-    // Smooth scroll to specific position
-    function smoothScrollTo(target, duration) {
-      const start = scrollContainer.scrollLeft;
-      const distance = target - start;
-      const startTime = performance.now();
-      
-      function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
+    // Restart auto-scroll after a delay
+    setTimeout(() => {
+      if (isAutoScrolling) {
+        startAutoScroll();
       }
-      
-      function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easeOutCubic(progress);
-        
-        scrollContainer.scrollLeft = start + (distance * easedProgress);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      }
-      
-      requestAnimationFrame(animate);
+    }, 2000);
+  });
+
+  // Always active wheel scroll for gallery (not just on hover)
+  gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
+  console.log('🎯 Gallery mouse wheel always active');
+  
+  // Hover pause functionality
+  gallery.addEventListener('mouseenter', function() {
+    stopAutoScroll();
+    console.log('🎯 Gallery auto-scroll paused on hover');
+  });
+  
+  gallery.addEventListener('mouseleave', function() {
+    if (isAutoScrolling) {
+      startAutoScroll();
+    }
+    console.log('🎯 Gallery auto-scroll resumed');
+  });
+
+  // Always active wheel scroll for gallery (not just on hover)
+  gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
+  console.log('🎯 Gallery mouse wheel always active');
+}
+
+// Initialize gallery auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeGalleryAutoScroll();
+});
+
+// === Menu Panel Functionality ===
+function initializeMenuPanel() {
+  const menuWrapper = document.querySelector('.menu-wrapper');
+  const menuPanel = document.querySelector('.menu-panel');
+  const menuClose = document.querySelector('.menu-close');
+  const menuOverlay = document.querySelector('.menu-overlay');
+  
+  console.log('📋 Menu elements found:', {
+    menuWrapper: !!menuWrapper,
+    menuPanel: !!menuPanel,
+    menuClose: !!menuClose,
+    menuOverlay: !!menuOverlay
+  });
+  
+  if (menuWrapper && menuPanel) {
+    // Open menu
+    menuWrapper.addEventListener('click', function(e) {
+      console.log('📋 Menu wrapper clicked!');
+      e.preventDefault();
+      e.stopPropagation();
+      openMenu();
+    });
+    
+    // Close menu
+    if (menuClose) {
+      console.log('📋 Close button found:', menuClose);
+      menuClose.addEventListener('click', function(e) {
+        console.log('📋 Close button clicked!');
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+      });
+    } else {
+      console.log('⚠️ Close button not found!');
     }
     
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && menuPanel.classList.contains('active')) {
+        closeMenu();
+      }
+    });
+    
+    // Prevent wheel scrolling when menu is open
+    document.addEventListener('wheel', function(e) {
+      if (menuPanel.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, { passive: false });
+    
+    // Prevent touch scrolling when menu is open (mobile)
+    document.addEventListener('touchmove', function(e) {
+      if (menuPanel.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, { passive: false });
+    
+    // Close menu on overlay click
+    if (menuOverlay) {
+      menuOverlay.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeMenu();
+      });
+      
+      // Prevent scroll on overlay
+      menuOverlay.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, { passive: false });
+      
+      menuOverlay.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, { passive: false });
+    }
+    
+    // Close menu on outside click (backup method)
+    document.addEventListener('click', function(e) {
+      if (menuPanel.classList.contains('active') && 
+          !menuPanel.contains(e.target) && 
+          !menuWrapper.contains(e.target) &&
+          !menuOverlay.contains(e.target)) {
+        closeMenu();
+      }
+    });
+    
+    // Prevent menu panel clicks from closing the menu
+    menuPanel.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // Close menu when menu links are clicked
+    const menuLinks = menuPanel.querySelectorAll('a[href]');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        console.log('📋 Menu link clicked, closing menu...');
+        closeMenu();
+      });
+    });
+  }
+  
+  function openMenu() {
+    console.log('📋 Opening menu...');
+    
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open');
+    
+    // Calculate header height to position menu panel at bottom of header
+    const headerSection = document.querySelector('.header-section');
+    const headerHeight = headerSection ? headerSection.offsetHeight : 0;
+    
+    console.log('📋 Header height:', headerHeight);
+    
+    // Position menu panel at bottom of header
+    menuPanel.style.top = headerHeight + 'px';
+    
+    // Show overlay first
+    if (menuOverlay) {
+      menuOverlay.style.display = 'block';
+      setTimeout(() => {
+        menuOverlay.classList.add('active');
+      }, 10);
+    }
+    
+    // Show menu panel
+    menuPanel.style.display = 'flex';
+    menuPanel.style.visibility = 'visible';
+    menuPanel.style.opacity = '1';
+    
+    console.log('📋 Menu panel display set to flex');
+    console.log('📋 Menu panel visibility:', menuPanel.style.visibility);
+    console.log('📋 Menu panel opacity:', menuPanel.style.opacity);
+    
+    // Trigger animation after display change
+    setTimeout(() => {
+      menuPanel.classList.add('active');
+      console.log('📋 Menu panel active class added');
+      
+      // Check close button visibility
+      const closeBtn = menuPanel.querySelector('.menu-close');
+      if (closeBtn) {
+        console.log('📋 Close button found in active menu:', closeBtn);
+        console.log('📋 Close button display:', closeBtn.style.display);
+        console.log('📋 Close button visibility:', closeBtn.style.visibility);
+        console.log('📋 Close button opacity:', closeBtn.style.opacity);
+      } else {
+        console.log('⚠️ Close button not found in active menu');
+      }
+    }, 50);
+    
+    // Update ARIA state
+    menuWrapper.setAttribute('aria-expanded', 'true');
+    
+    console.log('📋 Menu opened at header bottom:', headerHeight + 'px');
+  }
+  
+  function closeMenu() {
+    console.log('📋 Closing menu...');
+    
+    // Restore body scrolling
+    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
+    
+    // Remove active class from menu panel
+    menuPanel.classList.remove('active');
+    
+    // Remove active class from overlay
+    if (menuOverlay) {
+      menuOverlay.classList.remove('active');
+    }
+    
+    // Hide elements after animation
+    setTimeout(() => {
+      menuPanel.style.display = 'none';
+      if (menuOverlay) {
+        menuOverlay.style.display = 'none';
+      }
+    }, 400); // Match CSS transition duration
+    
+    // Update ARIA state
+    menuWrapper.setAttribute('aria-expanded', 'false');
+    
+    console.log('📋 Menu closed');
+  }
+}
+
+/* === Skeleton Loader Functionality === */
+
+// Initialize skeleton loaders for all images
+function initializeSkeletonLoaders() {
+  const images = document.querySelectorAll('img[src]');
+  
+  images.forEach(img => {
+    // Add skeleton class initially
+    img.classList.add('skeleton');
+    
+    // Create a wrapper if it doesn't exist
+    let wrapper = img.parentElement;
+    if (!wrapper.classList.contains('skeleton-wrapper')) {
+      wrapper.classList.add('skeleton-wrapper');
+    }
+    
+    // Handle image load
+    if (img.complete) {
+      handleImageLoad(img);
+    } else {
+      img.addEventListener('load', () => handleImageLoad(img));
+      img.addEventListener('error', () => handleImageError(img));
+    }
+  });
+}
+
+// Handle successful image load
+function handleImageLoad(img) {
+  img.classList.remove('skeleton');
+  img.classList.add('loaded');
+  
+  // Add fade-in effect
+  img.style.opacity = '0';
+  img.style.transition = 'opacity 0.3s ease';
+  
+  setTimeout(() => {
+    img.style.opacity = '1';
+  }, 50);
+}
+
+// Handle image load error
+function handleImageError(img) {
+  img.classList.remove('skeleton');
+  img.classList.add('error');
+  
+  // Show error placeholder
+  img.style.display = 'none';
+  const errorPlaceholder = document.createElement('div');
+  errorPlaceholder.className = 'image-error-placeholder';
+  errorPlaceholder.innerHTML = '<span>Image not available</span>';
+  errorPlaceholder.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    color: #999;
+    font-size: 12px;
+  `;
+  img.parentElement.appendChild(errorPlaceholder);
+}
+
+// Initialize skeleton loaders when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeSkeletonLoaders();
+});
+
+// Handle dynamically added images (for CMS content)
+function handleDynamicImages() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          const images = node.querySelectorAll ? node.querySelectorAll('img[src]') : [];
+          images.forEach(img => {
+            if (!img.classList.contains('skeleton')) {
+              img.classList.add('skeleton');
+              if (img.complete) {
+                handleImageLoad(img);
+              } else {
+                img.addEventListener('load', () => handleImageLoad(img));
+                img.addEventListener('error', () => handleImageError(img));
+              }
+            }
+          });
+        }
+      });
+    });
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+}
+
+// Initialize dynamic image handling
+document.addEventListener('DOMContentLoaded', function() {
+  handleDynamicImages();
+});
+
+// Preload critical images
+function preloadCriticalImages() {
+  const criticalImages = [
+    'main-lightbox-trigger',
+    'thumbnail-image',
+    'gallery-image'
+  ];
+  
+  criticalImages.forEach(selector => {
+    const images = document.querySelectorAll(selector);
+    images.forEach(img => {
+      if (img.src) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = img.src;
+        document.head.appendChild(link);
+      }
+    });
+  });
+}
+
+// Initialize preloading
+document.addEventListener('DOMContentLoaded', function() {
+  preloadCriticalImages();
+});
+
+/* === Arrow Hover Effects === */
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Download arrow hover effects
+  document.querySelectorAll('.download-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+  
+  // Dropdown arrow hover effects
+  document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      // Only reset scale if dropdown is not open (to preserve rotation)
+      const dropdown = this.closest('.dropdown-wrapper');
+      if (!dropdown || !dropdown.classList.contains('open')) {
+        this.style.transform = 'scale(1)';
+      } else {
+        // If dropdown is open, maintain rotation but reset scale
+        this.style.transform = 'rotate(180deg) scale(1)';
+      }
+    });
+  });
+});
+
+// Initialize gallery auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeGalleryAutoScroll();
+});
+
+// === Gallery Subscribe Wrapper Parallax Enhancement ===
+function initializeGalleryParallax() {
+  console.log('🎨 Initializing gallery parallax effect...');
+  
+  // Try multiple selectors for the gallery subscribe wrapper
+  const gallerySubscribeWrapper = document.querySelector('.gallery-subscribe-wrapper') || 
+                                  document.querySelector('[class*="gallery-subscribe"]') ||
+                                  document.querySelector('[class*="subscribe-wrapper"]');
+  
+  // Try multiple selectors for the gallery section
+  const gallerySection = document.querySelector('.gallery-section-wrapper') || 
+                         document.querySelector('.gallery-section') ||
+                         document.querySelector('[class*="gallery-section"]');
+  
+  if (!gallerySubscribeWrapper || !gallerySection) {
+    console.log('⚠️ Gallery subscribe wrapper or section not found');
+    console.log('🔍 Gallery subscribe wrapper:', !!gallerySubscribeWrapper);
+    console.log('🔍 Gallery section:', !!gallerySection);
+    return;
+  }
+  
+  console.log('✅ Gallery parallax elements found');
+  console.log('🎨 Gallery subscribe wrapper:', gallerySubscribeWrapper.className);
+  console.log('🎨 Gallery section:', gallerySection.className);
+  
+  // Set initial opacity
+  gallerySubscribeWrapper.style.opacity = '0.3';
+  gallerySubscribeWrapper.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+  
+  // Parallax scroll effect
+  function updateParallax() {
+    const rect = gallerySection.getBoundingClientRect();
+    const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+    
+    // Apply parallax effect based on scroll position
+    if (scrollProgress > 0 && scrollProgress < 1) {
+      const parallaxDepth = scrollProgress * 20; // 0-20px depth
+      const opacity = 0.3 + (scrollProgress * 0.7); // 30% to 100% opacity
+      
+      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.02})`;
+      gallerySubscribeWrapper.style.opacity = opacity;
+      
+      console.log(`🎨 Parallax: depth=${parallaxDepth}px, opacity=${opacity.toFixed(2)}`);
+    }
+  }
+  
+  // Throttled scroll handler for performance
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+  
+  // Add scroll listener
+  window.addEventListener('scroll', requestTick, { passive: true });
+  
+  // Initial update
+  updateParallax();
+  
+  console.log('✅ Gallery parallax effect initialized');
+}
+
+// Initialize parallax when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeGalleryParallax();
+});
+
+// === Related Items Mouse Wheel Scroll Logic ===
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollContainer = document.querySelector(".collection-list-6");
+
+  if (scrollContainer) {
+    console.log('✅ Related items mouse wheel scroll logic initialized');
+    console.log('📦 Related scroll container found:', scrollContainer);
+    
+    // Improved smooth mouse wheel scrolling with momentum
+    let scrollVelocity = 0;
+    let isScrolling = false;
+    let scrollAnimationId = null;
+    
+    // Always active wheel scroll (not just on hover)
+    scrollContainer.addEventListener('wheel', function(e) {
+      console.log('🔄 Related section wheel event triggered');
+      
+      // Only prevent default if we're actually scrolling the container
+      if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+        e.preventDefault(); // Prevent default vertical scrolling
+        e.stopPropagation(); // Stop event from bubbling up
+        
+        // Get scroll direction and amount with improved sensitivity
+        const delta = e.deltaY || e.deltaX;
+        const scrollSpeed = Math.abs(delta) * 0.5; // Dynamic speed based on wheel delta
+        const direction = delta > 0 ? 1 : -1;
+        
+        // Add to velocity for momentum effect
+        scrollVelocity += direction * scrollSpeed;
+        
+        // Smooth scroll with momentum
+        if (!isScrolling) {
+          isScrolling = true;
+          smoothScrollWithMomentum();
+        }
+        
+        console.log('🔄 Mouse wheel scrolling:', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
+      }
+    }, { passive: false }); // Required for preventDefault to work
+    
+    // Also add wheel listener to the parent section for better coverage
+    const relatedSection = document.querySelector('.related-section');
+    if (relatedSection) {
+      relatedSection.addEventListener('wheel', function(e) {
+        // Only handle if we're over the scroll container
+        const rect = scrollContainer.getBoundingClientRect();
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        
+        if (mouseX >= rect.left && mouseX <= rect.right && 
+            mouseY >= rect.top && mouseY <= rect.bottom) {
+          console.log('🔄 Related section wheel event triggered (from parent)');
+          
+          if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const delta = e.deltaY || e.deltaX;
+            const scrollSpeed = Math.abs(delta) * 0.5;
+            const direction = delta > 0 ? 1 : -1;
+            
+            scrollVelocity += direction * scrollSpeed;
+            
+            if (!isScrolling) {
+              isScrolling = true;
+              smoothScrollWithMomentum();
+            }
+          }
+        }
+      }, { passive: false });
+    }
   } else {
     console.log('⚠️ Related items scroll container not found');
   }
