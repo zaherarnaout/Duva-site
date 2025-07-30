@@ -216,9 +216,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.color = "#999"; 
 
-    ralInput.style.padding = "12px 16px"; 
+    ralInput.style.padding = "8px 16px"; 
 
-    ralInput.style.minHeight = "48px"; 
+    ralInput.style.minHeight = "28px"; 
 
     ralInput.style.backgroundColor = "#fff"; 
 
@@ -226,9 +226,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.cursor = "text"; 
     
-    ralInput.style.border = "1px solid var(--border-main-shadow)";
+    // Match search bar border style
+    ralInput.style.border = "1px solid #e0e0e0";
     
-    ralInput.style.width = "280px";
+    // Fixed width matching search bar
+    ralInput.style.width = "300px";
+    ralInput.style.minWidth = "300px";
+    ralInput.style.maxWidth = "400px";
     
     ralInput.style.fontSize = "14px";
     
@@ -243,6 +247,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ralInput.style.resize = "none";
     
     ralInput.style.overflow = "hidden";
+    
+    // Additional search bar matching styles
+    ralInput.style.justifyContent = "flex-start";
+    ralInput.style.alignSelf = "center";
+    ralInput.style.alignItems = "center";
+    ralInput.style.whiteSpace = "nowrap";
+    ralInput.style.flex = "0 1 auto";
+    ralInput.style.margin = "0 16px";
+    ralInput.style.position = "relative";
 
   } 
 
@@ -328,7 +341,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
           ralInput.textContent = "Enter RAL number here"; 
 
-          ralInput.style.color = "#999"; 
+          ralInput.style.color = "#999";
+          
+          // Ensure search bar matching styles are applied
+          ralInput.style.border = "1px solid #e0e0e0";
+          ralInput.style.width = "300px";
+          ralInput.style.minWidth = "300px";
+          ralInput.style.maxWidth = "400px";
+          ralInput.style.padding = "8px 16px";
+          ralInput.style.minHeight = "28px"; 
 
           window.currentSelection.finish = "RAL"; 
 
@@ -484,7 +505,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
               ralInput.textContent = "Enter RAL number here"; 
 
-              ralInput.style.color = "#999"; 
+              ralInput.style.color = "#999";
+              
+              // Ensure search bar matching styles are applied
+              ralInput.style.border = "1px solid #e0e0e0";
+              ralInput.style.width = "300px";
+              ralInput.style.minWidth = "300px";
+              ralInput.style.maxWidth = "400px";
+              ralInput.style.padding = "8px 16px";
+              ralInput.style.minHeight = "28px"; 
 
               ralInput.addEventListener("focus", () => { 
 
@@ -543,7 +572,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
               ralInput.textContent = "Enter RAL number here"; 
 
-              ralInput.style.color = "#999"; 
+              ralInput.style.color = "#999";
+              
+              // Reset to search bar matching styles
+              ralInput.style.border = "1px solid #e0e0e0";
+              ralInput.style.width = "300px";
+              ralInput.style.minWidth = "300px";
+              ralInput.style.maxWidth = "400px";
+              ralInput.style.padding = "8px 16px";
+              ralInput.style.minHeight = "28px"; 
 
             } 
 
@@ -949,7 +986,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (firstValue.toLowerCase() === "ral") { 
 
-            ralInput.style.display = "block"; 
+            ralInput.style.display = "block";
+            
+            // Ensure search bar matching styles are applied
+            ralInput.style.border = "1px solid #e0e0e0";
+            ralInput.style.width = "300px";
+            ralInput.style.minWidth = "300px";
+            ralInput.style.maxWidth = "400px";
+            ralInput.style.padding = "8px 16px";
+            ralInput.style.minHeight = "28px";
 
           } else { 
 
@@ -1068,7 +1113,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
           ralInput.textContent = "Enter RAL number here"; 
 
-          ralInput.style.color = "#999"; 
+          ralInput.style.color = "#999";
+          
+          // Ensure search bar matching styles are applied
+          ralInput.style.border = "1px solid #e0e0e0";
+          ralInput.style.width = "300px";
+          ralInput.style.minWidth = "300px";
+          ralInput.style.maxWidth = "400px";
+          ralInput.style.padding = "8px 16px";
+          ralInput.style.minHeight = "28px"; 
 
  
 
