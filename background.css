@@ -1,0 +1,128 @@
+/* === SVG Background Tracing Animation Styles === */
+/* Background animation styles for DUVA website */
+/* This file contains all styles for the SVG tracing animation */
+
+/* === Tracing Dot Styles === */
+.tracing-dot {
+  /* Red dot with glow effect */
+  filter: drop-shadow(0 0 6px #C0392B) !important;
+  animation: pulse 2s ease-in-out infinite !important;
+  z-index: 1000 !important;
+  pointer-events: none !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px #C0392B) !important;
+  }
+  50% {
+    filter: drop-shadow(0 0 8px #C0392B) !important;
+  }
+}
+
+/* === Stroke Overlay Styles === */
+.stroke-overlay {
+  /* Stroke overlay for drawing effect */
+  pointer-events: none !important;
+  z-index: 999 !important;
+}
+
+.stroke-overlay path {
+  /* Individual stroke segments */
+  stroke: #C0392B !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
+  opacity: 0.8 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* === Background SVG Container Styles === */
+svg[class*="duva-main-background"],
+svg[class*="background"],
+svg[id*="background"],
+svg[data-background="true"] {
+  /* Ensure SVG is positioned correctly */
+  position: relative !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
+/* === Demo SVG Container Styles === */
+.demo-svg-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+  opacity: 0.1 !important;
+}
+
+/* === Animation Performance Optimizations === */
+.tracing-dot,
+.stroke-overlay path {
+  will-change: transform, opacity !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+/* === Smooth Transitions === */
+.tracing-dot,
+.stroke-overlay path {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .tracing-dot {
+    /* Smaller dot on mobile */
+    r: 2 !important;
+  }
+  
+  .stroke-overlay path {
+    /* Thinner strokes on mobile */
+    stroke-width: 1.5 !important;
+  }
+}
+
+/* === High DPI Displays === */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .tracing-dot {
+    /* Crisper rendering on high DPI */
+    filter: drop-shadow(0 0 8px #C0392B) !important;
+  }
+  
+  .stroke-overlay path {
+    /* Sharper strokes on high DPI */
+    stroke-width: 1.5 !important;
+  }
+}
+
+/* === Reduced Motion Support === */
+@media (prefers-reduced-motion: reduce) {
+  .tracing-dot {
+    /* Disable animation for users who prefer reduced motion */
+    animation: none !important;
+  }
+  
+  .stroke-overlay path {
+    /* Faster transitions for reduced motion */
+    transition: opacity 0.1s ease !important;
+  }
+}
+
+/* === Dark Mode Support === */
+@media (prefers-color-scheme: dark) {
+  .tracing-dot {
+    /* Slightly brighter glow in dark mode */
+    filter: drop-shadow(0 0 8px #C0392B) !important;
+  }
+  
+  .stroke-overlay path {
+    /* Slightly brighter strokes in dark mode */
+    opacity: 0.9 !important;
+  }
+} 
