@@ -2,9 +2,6 @@ console.log("DUVA script.js loaded!");
 console.log("🎯 Flip card functionality should be working!");
 console.log("TESTING - If you see this, the script is loading!");
 
-// Simple test to see if script is running
-alert("Script is loading! Click OK to continue.");
-
 // Quick test to see if flip card elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
