@@ -25093,7 +25093,7 @@ footer, .footer {
 }
 
 .flip-card-link:hover .flip-card {
-  transform: none !important;
+  /* Removed transform: none to allow fade animation */
 }
 
 /* Ensure flip card wrapper maintains proper structure */
@@ -25141,17 +25141,23 @@ footer, .footer {
   padding: 20px !important;
   box-sizing: border-box !important;
   text-align: center !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 8px !important;
 }
 
 /* Fade animation on hover */
 .flip-card-link:hover .flip-card-front {
   opacity: 0 !important;
   transform: translateZ(-10px) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+  pointer-events: none !important;
 }
 
 .flip-card-link:hover .flip-card-back {
   opacity: 1 !important;
   transform: translateZ(0) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+  pointer-events: auto !important;
 }
 
 /* Back card content overflow control */
@@ -25207,30 +25213,7 @@ footer, .footer {
   text-align: center !important;
 }
 
-/* Custom fade transitions per card */
-.cards-container .flip-card-wrapper:nth-child(1) .flip-card {
-  transition: all 0.4s ease !important;
-}
-
-.cards-container .flip-card-wrapper:nth-child(2) .flip-card {
-  transition: all 0.5s ease !important;
-}
-
-.cards-container .flip-card-wrapper:nth-child(3) .flip-card {
-  transition: all 0.6s ease !important;
-}
-
-.cards-container .flip-card-wrapper:nth-child(4) .flip-card {
-  transition: all 0.7s ease !important;
-}
-
-.cards-container .flip-card-wrapper:nth-child(5) .flip-card {
-  transition: all 0.8s ease !important;
-}
-
-.cards-container .flip-card-wrapper:nth-child(6) .flip-card {
-  transition: all 0.9s ease !important;
-}
+/* Custom fade transitions per card - REMOVED to prevent conflicts */
 
 /* Ensure proper cursor for clickable cards */
 .flip-card-link {
