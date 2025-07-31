@@ -25238,18 +25238,22 @@ section:hover .flip-card-back {
 /* Clean flip card styling */
 .flip-card-wrapper {
   perspective: 1000px !important;
+  height: 470px !important;
 }
 
 .flip-card {
   transition: all 0.6s ease !important;
+  height: 470px !important;
 }
 
 .flip-card-front {
   transition: opacity 0.6s ease, transform 0.6s ease !important;
+  height: 470px !important;
 }
 
 .flip-card-back {
   transition: opacity 0.6s ease, transform 0.6s ease !important;
+  height: 470px !important;
 }
 
 /* Remove unwanted underlines from all text */
