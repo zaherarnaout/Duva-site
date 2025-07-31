@@ -25147,6 +25147,8 @@ footer, .footer {
   border-radius: 8px !important;
   /* Reset any rotation from previous CSS */
   transform: translateZ(-10px) rotateY(0deg) !important;
+  /* Force visibility to be hidden by default */
+  visibility: hidden !important;
 }
 
 /* Fade animation on hover */
@@ -25164,6 +25166,7 @@ footer, .footer {
   transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   pointer-events: auto !important;
+  visibility: visible !important;
 }
 
 /* Back card content overflow control */
