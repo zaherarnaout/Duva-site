@@ -25101,6 +25101,8 @@ footer, .footer {
   perspective: 1000px !important;
   width: 100% !important;
   height: 100% !important;
+  /* Test to see if CSS is loading */
+  border: 3px solid red !important;
 }
 
 /* Modified flip card animations - Fade instead of flip */
@@ -25167,6 +25169,37 @@ footer, .footer {
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   pointer-events: auto !important;
   visibility: visible !important;
+}
+
+/* Additional fallback for any element containing flip-card */
+[class*="flip"]:hover .flip-card-front {
+  opacity: 0 !important;
+  transform: translateZ(-10px) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+
+[class*="flip"]:hover .flip-card-back {
+  opacity: 1 !important;
+  transform: translateZ(0) rotateY(0deg) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+  visibility: visible !important;
+}
+
+/* Debug: Make all flip card elements visible for testing */
+.flip-card-wrapper {
+  border: 5px solid blue !important;
+}
+
+.flip-card {
+  border: 3px solid green !important;
+}
+
+.flip-card-front {
+  border: 2px solid yellow !important;
+}
+
+.flip-card-back {
+  border: 2px solid orange !important;
 }
 
 /* Back card content overflow control */
