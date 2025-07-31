@@ -25139,9 +25139,9 @@ footer, .footer {
   z-index: 1 !important;
   overflow: hidden !important;
   flex-direction: column !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
-  padding: 20px !important;
+  padding: 30px 20px 20px 20px !important;
   box-sizing: border-box !important;
   text-align: center !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
@@ -25304,14 +25304,16 @@ a {
 
 /* Back card content overflow control */
 .back-title {
-  font-size: 16px !important;
+  font-size: 18px !important;
   line-height: 1.4 !important;
   margin-bottom: 15px !important;
+  margin-top: 0 !important;
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
   hyphens: auto !important;
   max-width: 100% !important;
   text-align: center !important;
+  font-weight: bold !important;
 }
 
 .back-card {
