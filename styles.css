@@ -25153,8 +25153,6 @@ footer, .footer {
   visibility: hidden !important;
   /* Hide the debug border by default */
   border: 2px solid transparent !important;
-  /* Add test content to make it visible */
-  content: "BACK CARD TEST" !important;
 }
 
 /* Fade animation on hover */
@@ -25236,32 +25234,21 @@ section:hover .flip-card-back {
   border: 2px solid orange !important;
 }
 
-/* Debug: Make all flip card elements visible for testing */
+/* Clean flip card styling */
 .flip-card-wrapper {
-  border: 5px solid blue !important;
-  background-color: rgba(0, 0, 255, 0.1) !important;
+  perspective: 1000px !important;
 }
 
 .flip-card {
-  border: 3px solid green !important;
-  background-color: rgba(0, 255, 0, 0.1) !important;
+  transition: all 0.6s ease !important;
 }
 
 .flip-card-front {
-  border: 2px solid yellow !important;
-  background-color: rgba(255, 255, 0, 0.1) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
 }
 
 .flip-card-back {
-  border: 2px solid transparent !important;
-  background-color: rgba(255, 165, 0, 0.1) !important;
-}
-
-/* Test hover with a very obvious change */
-.current-product:hover {
-  background-color: red !important;
-  transform: scale(1.05) !important;
-  transition: all 0.3s ease !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
 }
 
 /* Remove unwanted underlines from all text */
