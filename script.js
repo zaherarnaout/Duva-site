@@ -4223,9 +4223,14 @@ function initializeFlipCardLinks() {
     link.setAttribute('data-product-url', productUrl);
     
     // Set inline styles to ensure full coverage
-    link.style.display = 'block';
+    link.style.position = 'absolute';
+    link.style.top = '0';
+    link.style.left = '0';
+    link.style.right = '0';
+    link.style.bottom = '0';
     link.style.width = '100%';
     link.style.height = '100%';
+    link.style.zIndex = '5';
     link.style.cursor = 'pointer';
     
     // Move the flip-card-wrapper inside the link
