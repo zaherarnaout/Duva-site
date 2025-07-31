@@ -4082,6 +4082,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /* === Flip Card Linking Functionality === */
 function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
+  console.log('Script is working!');
   // Find all flip card wrappers
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
@@ -4102,6 +4103,19 @@ function initializeFlipCardLinks() {
   cardWrappers.forEach((wrapper, index) => {
     if (index < 5) { // Only log first 5 to avoid spam
       console.log('Card wrapper found:', wrapper.className);
+    }
+  });
+  
+  // Test if we can find any elements at all
+  const allElements = document.querySelectorAll('*');
+  console.log('Total elements on page:', allElements.length);
+  
+  // Check for any elements with "flip" in class name
+  const flipElements = document.querySelectorAll('[class*="flip"]');
+  console.log('Elements with "flip" in class name:', flipElements.length);
+  flipElements.forEach((el, index) => {
+    if (index < 3) {
+      console.log('Flip element found:', el.className);
     }
   });
   
@@ -4223,7 +4237,7 @@ function initializeCardsScrollAnimation() {
 
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOMContentLoaded - Initializing flip card links');
+  console.log('🚀 DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
 });
