@@ -25153,6 +25153,8 @@ footer, .footer {
   visibility: hidden !important;
   /* Hide the debug border by default */
   border: 2px solid transparent !important;
+  /* Add test content to make it visible */
+  content: "BACK CARD TEST" !important;
 }
 
 /* Fade animation on hover */
