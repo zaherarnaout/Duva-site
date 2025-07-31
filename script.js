@@ -4259,12 +4259,17 @@ function initializeFlipCardLinks() {
       
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
+        flipCard.style.transform = 'none';
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '0';
+        flipCardFront.style.transform = 'translateY(-20px)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '1';
+        flipCardBack.style.transform = 'translateY(0)';
       }
     });
     
@@ -4277,12 +4282,17 @@ function initializeFlipCardLinks() {
       
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
+        flipCard.style.transform = 'none';
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '1';
+        flipCardFront.style.transform = 'translateY(0)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '0';
+        flipCardBack.style.transform = 'translateY(100%)';
       }
     });
   });
