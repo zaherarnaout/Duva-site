@@ -25201,6 +25201,15 @@ section:hover .flip-card-back {
   visibility: visible !important;
 }
 
+/* Simple test - make cards change color on hover */
+.flip-card-wrapper:hover {
+  background-color: purple !important;
+}
+
+.flip-card:hover {
+  background-color: pink !important;
+}
+
 /* Additional fallback for any element containing flip-card */
 [class*="flip"]:hover .flip-card-front {
   opacity: 0 !important;
@@ -25218,18 +25227,29 @@ section:hover .flip-card-back {
 /* Debug: Make all flip card elements visible for testing */
 .flip-card-wrapper {
   border: 5px solid blue !important;
+  background-color: rgba(0, 0, 255, 0.1) !important;
 }
 
 .flip-card {
   border: 3px solid green !important;
+  background-color: rgba(0, 255, 0, 0.1) !important;
 }
 
 .flip-card-front {
   border: 2px solid yellow !important;
+  background-color: rgba(255, 255, 0, 0.1) !important;
 }
 
 .flip-card-back {
   border: 2px solid transparent !important;
+  background-color: rgba(255, 165, 0, 0.1) !important;
+}
+
+/* Test hover with a very obvious change */
+.current-product:hover {
+  background-color: red !important;
+  transform: scale(1.05) !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Remove unwanted underlines from all text */
