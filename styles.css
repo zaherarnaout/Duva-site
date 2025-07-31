@@ -25151,8 +25151,12 @@ footer, .footer {
   transform: translateZ(-10px) rotateY(0deg) !important;
   /* Force visibility to be hidden by default */
   visibility: hidden !important;
-  /* Hide the debug border by default */
-  border: 2px solid transparent !important;
+  /* Ensure it's in the layout but invisible */
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Fade animation on hover */
