@@ -25160,7 +25160,8 @@ footer, .footer {
 .flip-card-wrapper:hover .flip-card-front,
 a:hover .flip-card-front,
 [class*="link"]:hover .flip-card-front,
-.collection-item:hover .flip-card-front {
+.collection-item:hover .flip-card-front,
+.current-product:hover .flip-card-front {
   opacity: 0 !important;
   transform: translateZ(-10px) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
@@ -25171,7 +25172,8 @@ a:hover .flip-card-front,
 .flip-card-wrapper:hover .flip-card-back,
 a:hover .flip-card-back,
 [class*="link"]:hover .flip-card-back,
-.collection-item:hover .flip-card-back {
+.collection-item:hover .flip-card-back,
+.current-product:hover .flip-card-back {
   opacity: 1 !important;
   transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
@@ -25227,7 +25229,7 @@ section:hover .flip-card-back {
 }
 
 .flip-card-back {
-  border: 2px solid orange !important;
+  border: 2px solid transparent !important;
 }
 
 /* Remove unwanted underlines from all text */
@@ -25259,6 +25261,24 @@ a {
 /* Remove underlines from collection items */
 .collection-item *,
 .collection-list * {
+  text-decoration: none !important;
+}
+
+/* Specifically target text within the current-product link */
+.current-product {
+  text-decoration: none !important;
+}
+
+.current-product * {
+  text-decoration: none !important;
+}
+
+/* Remove underlines from link-block-4 as well */
+.link-block-4 {
+  text-decoration: none !important;
+}
+
+.link-block-4 * {
   text-decoration: none !important;
 }
 
