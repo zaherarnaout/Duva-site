@@ -4084,6 +4084,8 @@ function initializeFlipCardLinks() {
   // Find all flip card wrappers
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
+  console.log('Found flip card wrappers:', flipCardWrappers.length);
+  
   flipCardWrappers.forEach(wrapper => {
     // Check if this wrapper already has a link
     const existingLink = wrapper.querySelector('.flip-card-link');
@@ -4132,11 +4134,27 @@ function initializeFlipCardLinks() {
     
     // Add hover effects for fade animation
     link.addEventListener('mouseenter', function() {
+      console.log('Mouse enter triggered on flip card link');
       this.style.transform = 'translateY(-2px)';
       // Ensure fade animation works
       const flipCard = this.querySelector('.flip-card');
+      const flipCardFront = this.querySelector('.flip-card-front');
+      const flipCardBack = this.querySelector('.flip-card-back');
+      
+      console.log('Flip card elements found:', {
+        flipCard: !!flipCard,
+        flipCardFront: !!flipCardFront,
+        flipCardBack: !!flipCardBack
+      });
+      
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
+      }
+      if (flipCardFront) {
+        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      }
+      if (flipCardBack) {
+        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       }
     });
     
@@ -4144,8 +4162,17 @@ function initializeFlipCardLinks() {
       this.style.transform = 'translateY(0)';
       // Reset fade animation
       const flipCard = this.querySelector('.flip-card');
+      const flipCardFront = this.querySelector('.flip-card-front');
+      const flipCardBack = this.querySelector('.flip-card-back');
+      
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
+      }
+      if (flipCardFront) {
+        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      }
+      if (flipCardBack) {
+        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       }
     });
   });
