@@ -25110,6 +25110,8 @@ footer, .footer {
   position: relative !important;
   transform-style: preserve-3d !important;
   transition: all 0.6s ease !important;
+  /* Reset any rotation from previous CSS */
+  transform: none !important;
 }
 
 .flip-card-front,
@@ -25125,7 +25127,7 @@ footer, .footer {
 
 .flip-card-front {
   opacity: 1 !important;
-  transform: translateZ(0) !important;
+  transform: translateZ(0) rotateY(0deg) !important;
   z-index: 2 !important;
 }
 
@@ -25143,6 +25145,8 @@ footer, .footer {
   text-align: center !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-radius: 8px !important;
+  /* Reset any rotation from previous CSS */
+  transform: translateZ(-10px) rotateY(0deg) !important;
 }
 
 /* Fade animation on hover */
@@ -25155,7 +25159,7 @@ footer, .footer {
 
 .flip-card-link:hover .flip-card-back {
   opacity: 1 !important;
-  transform: translateZ(0) !important;
+  transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   pointer-events: auto !important;
 }
