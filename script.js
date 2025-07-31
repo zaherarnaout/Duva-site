@@ -4211,6 +4211,20 @@ function initializeFlipCardLinks() {
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
         flipCardBack.style.border = '2px solid orange';
+        
+        // Add test content to make back card visible
+        const backTitle = flipCardBack.querySelector('.back-title');
+        if (backTitle && backTitle.textContent === '') {
+          backTitle.textContent = 'BACK CARD TEST';
+        }
+        
+        // Add test content to spec items
+        const specItems = flipCardBack.querySelectorAll('.wattage');
+        specItems.forEach((item, index) => {
+          if (item.textContent === '') {
+            item.textContent = `Test Value ${index + 1}`;
+          }
+        });
       }
     });
     
