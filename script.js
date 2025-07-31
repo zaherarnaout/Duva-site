@@ -1,4 +1,15 @@
 console.log("DUVA script.js loaded!");
+console.log("🎯 Flip card functionality should be working!");
+
+// Quick test to see if flip card elements exist
+setTimeout(() => {
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  const flipCardLinks = document.querySelectorAll('.flip-card-link');
+  console.log('🔍 Quick test - Flip card elements found:', {
+    wrappers: flipCardWrappers.length,
+    links: flipCardLinks.length
+  });
+}, 1000);
 
 /* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
