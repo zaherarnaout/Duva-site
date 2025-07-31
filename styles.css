@@ -25082,8 +25082,12 @@ footer, .footer {
   height: 100% !important;
   text-decoration: none !important;
   color: inherit !important;
-  position: relative !important;
-  z-index: 1 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 5 !important;
   transition: transform 0.3s ease !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
@@ -25094,11 +25098,28 @@ footer, .footer {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
 }
 
 .flip-card-link:hover {
   transform: translateY(-2px) !important;
   text-decoration: none !important;
+}
+
+/* Additional coverage using pseudo-element */
+.flip-card-link::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
 }
 
 .flip-card-link:hover .flip-card {
@@ -25110,6 +25131,7 @@ footer, .footer {
   perspective: 1000px !important;
   width: 100% !important;
   height: 100% !important;
+  position: relative !important;
 }
 
 /* Modified flip card animations - Fade instead of flip */
@@ -25291,6 +25313,7 @@ footer, .footer {
   opacity: 0 !important;
   transform: translateY(30px) !important;
   transition: opacity 0.8s ease, transform 0.8s ease !important;
+  position: relative !important;
 }
 
 .collection-item.animate-in {
