@@ -4208,6 +4208,7 @@ function initializeFlipCardLinks() {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '1';
         flipCardBack.style.visibility = 'visible';
+        flipCardBack.style.display = 'flex';
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.zIndex = '10';
       }
@@ -4232,6 +4233,7 @@ function initializeFlipCardLinks() {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '0';
         flipCardBack.style.visibility = 'hidden';
+        flipCardBack.style.display = 'none';
         flipCardBack.style.transform = 'translateZ(-10px)';
         flipCardBack.style.zIndex = '1';
       }
