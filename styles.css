@@ -25157,7 +25157,8 @@ footer, .footer {
 .flip-card-link:hover .flip-card-front,
 .flip-card-wrapper:hover .flip-card-front,
 a:hover .flip-card-front,
-[class*="link"]:hover .flip-card-front {
+[class*="link"]:hover .flip-card-front,
+.collection-item:hover .flip-card-front {
   opacity: 0 !important;
   transform: translateZ(-10px) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
@@ -25167,11 +25168,30 @@ a:hover .flip-card-front,
 .flip-card-link:hover .flip-card-back,
 .flip-card-wrapper:hover .flip-card-back,
 a:hover .flip-card-back,
-[class*="link"]:hover .flip-card-back {
+[class*="link"]:hover .flip-card-back,
+.collection-item:hover .flip-card-back {
   opacity: 1 !important;
   transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+/* Test hover on any element that might be covering the cards */
+div:hover .flip-card-front,
+span:hover .flip-card-front,
+section:hover .flip-card-front {
+  opacity: 0 !important;
+  transform: translateZ(-10px) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+
+div:hover .flip-card-back,
+span:hover .flip-card-back,
+section:hover .flip-card-back {
+  opacity: 1 !important;
+  transform: translateZ(0) rotateY(0deg) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
   visibility: visible !important;
 }
 
@@ -25221,6 +25241,20 @@ a {
 }
 
 .flip-card-link * {
+  text-decoration: none !important;
+}
+
+/* Remove underlines from all text within cards */
+.flip-card-wrapper *,
+.flip-card *,
+.flip-card-front *,
+.flip-card-back * {
+  text-decoration: none !important;
+}
+
+/* Remove underlines from collection items */
+.collection-item *,
+.collection-list * {
   text-decoration: none !important;
 }
 
