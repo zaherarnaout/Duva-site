@@ -4081,10 +4081,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* === Flip Card Linking Functionality === */
 function initializeFlipCardLinks() {
+  console.log('=== initializeFlipCardLinks function called ===');
   // Find all flip card wrappers
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
   console.log('Found flip card wrappers:', flipCardWrappers.length);
+  
+  // Also check for other possible class names
+  const collectionItems = document.querySelectorAll('.collection-item');
+  const productCards = document.querySelectorAll('.product-card');
+  const cardWrappers = document.querySelectorAll('[class*="card"]');
+  
+  console.log('Other potential card elements found:', {
+    collectionItems: collectionItems.length,
+    productCards: productCards.length,
+    cardWrappers: cardWrappers.length
+  });
+  
+  // Log all elements with "card" in their class name
+  cardWrappers.forEach((wrapper, index) => {
+    if (index < 5) { // Only log first 5 to avoid spam
+      console.log('Card wrapper found:', wrapper.className);
+    }
+  });
   
   flipCardWrappers.forEach(wrapper => {
     // Check if this wrapper already has a link
@@ -4204,6 +4223,7 @@ function initializeCardsScrollAnimation() {
 
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
 });
@@ -4212,6 +4232,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   // Wait for Webflow's dynamic content to load
   setTimeout(() => {
+    console.log('DOMContentLoaded timeout - Re-initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
   }, 100);
@@ -4220,6 +4241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Also initialize when Webflow's page loads
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
+    console.log('Webflow.push - Initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
   });
