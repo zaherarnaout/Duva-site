@@ -1,8 +1,10 @@
 console.log("DUVA script.js loaded!");
 console.log("🎯 Flip card functionality should be working!");
+console.log("TESTING - If you see this, the script is loading!");
 
 // Quick test to see if flip card elements exist
 setTimeout(() => {
+  console.log("TIMEOUT TEST - Script is still running after 1 second");
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   const flipCardLinks = document.querySelectorAll('.flip-card-link');
   console.log('🔍 Quick test - Flip card elements found:', {
