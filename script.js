@@ -4211,6 +4211,12 @@ function initializeFlipCardLinks() {
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
         flipCardBack.style.border = '2px solid orange';
+        flipCardBack.style.zIndex = '10';
+        flipCardBack.style.position = 'absolute';
+        flipCardBack.style.top = '0';
+        flipCardBack.style.left = '0';
+        flipCardBack.style.width = '100%';
+        flipCardBack.style.height = '100%';
         
         // Add test content to make back card visible
         const backTitle = flipCardBack.querySelector('.back-title');
@@ -4240,9 +4246,17 @@ function initializeFlipCardLinks() {
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '1';
+        flipCardFront.style.transform = 'translateZ(0)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '0';
+        flipCardBack.style.visibility = 'hidden';
+        flipCardBack.style.transform = 'translateZ(-10px)';
+        flipCardBack.style.backgroundColor = 'transparent';
+        flipCardBack.style.border = '2px solid transparent';
+        flipCardBack.style.zIndex = '1';
       }
     });
   });
