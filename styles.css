@@ -25087,6 +25087,13 @@ footer, .footer {
   transition: transform 0.3s ease !important;
 }
 
+/* Override any Webflow inline styles */
+.flip-card-link[style] {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .flip-card-link:hover {
   transform: translateY(-2px) !important;
   text-decoration: none !important;
@@ -25112,6 +25119,12 @@ footer, .footer {
   transition: all 0.6s ease !important;
 }
 
+/* Override any Webflow inline styles on flip-card */
+.flip-card[style] {
+  transition: all 0.6s ease !important;
+  transform: none !important;
+}
+
 .flip-card-front,
 .flip-card-back {
   position: absolute !important;
@@ -25129,6 +25142,13 @@ footer, .footer {
   z-index: 2 !important;
 }
 
+/* Override any Webflow inline styles on flip-card-front */
+.flip-card-front[style] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+
 .flip-card-back {
   opacity: 0 !important;
   transform: translateY(100%) !important;
@@ -25143,6 +25163,13 @@ footer, .footer {
   text-align: center !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-radius: 8px !important;
+}
+
+/* Override any Webflow inline styles on flip-card-back */
+.flip-card-back[style] {
+  opacity: 0 !important;
+  transform: translateY(100%) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
 }
 
 /* Scroll animation on hover - Back card slides up from bottom */
