@@ -1,82 +1,5 @@
 console.log("DUVA script.js loaded!");
 
-/* === Diagnostic Function === */
-function diagnoseFlipCardIssues() {
-  console.log('🔍 === FLIP CARD DIAGNOSTIC ===');
-  
-  // Check if script is loading
-  console.log('✅ Script loaded successfully');
-  
-  // Check for flip card elements
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  const flipCardLinks = document.querySelectorAll('.flip-card-link');
-  const flipCards = document.querySelectorAll('.flip-card');
-  const flipCardFronts = document.querySelectorAll('.flip-card-front');
-  const flipCardBacks = document.querySelectorAll('.flip-card-back');
-  
-  console.log('📊 Element Counts:', {
-    flipCardWrappers: flipCardWrappers.length,
-    flipCardLinks: flipCardLinks.length,
-    flipCards: flipCards.length,
-    flipCardFronts: flipCardFronts.length,
-    flipCardBacks: flipCardBacks.length
-  });
-  
-  // Check for collection items
-  const collectionItems = document.querySelectorAll('.collection-item');
-  console.log('📦 Collection items found:', collectionItems.length);
-  
-  // Check for any elements with "flip" in class name
-  const allFlipElements = document.querySelectorAll('[class*="flip"]');
-  console.log('🔄 All elements with "flip" in class:', allFlipElements.length);
-  allFlipElements.forEach((el, index) => {
-    if (index < 5) {
-      console.log(`  - ${el.className}`);
-    }
-  });
-  
-  // Check for any elements with "card" in class name
-  const allCardElements = document.querySelectorAll('[class*="card"]');
-  console.log('🃏 All elements with "card" in class:', allCardElements.length);
-  allCardElements.forEach((el, index) => {
-    if (index < 5) {
-      console.log(`  - ${el.className}`);
-    }
-  });
-  
-  // Test CSS styles
-  if (flipCardLinks.length > 0) {
-    const testLink = flipCardLinks[0];
-    const computedStyle = window.getComputedStyle(testLink);
-    console.log('🎨 CSS Styles for flip-card-link:', {
-      display: computedStyle.display,
-      width: computedStyle.width,
-      height: computedStyle.height,
-      transition: computedStyle.transition
-    });
-  }
-  
-  if (flipCards.length > 0) {
-    const testCard = flipCards[0];
-    const computedStyle = window.getComputedStyle(testCard);
-    console.log('🎨 CSS Styles for flip-card:', {
-      transition: computedStyle.transition,
-      transform: computedStyle.transform
-    });
-  }
-  
-  // Check if hover events work
-  if (flipCardLinks.length > 0) {
-    const testLink = flipCardLinks[0];
-    testLink.addEventListener('mouseenter', () => {
-      console.log('🖱️ Hover event triggered on flip card link');
-    });
-    console.log('✅ Hover event listener added to test link');
-  }
-  
-  console.log('🔍 === DIAGNOSTIC COMPLETE ===');
-}
-
 /* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
 document.querySelectorAll('.accessory-image').forEach(container => { 
@@ -4222,17 +4145,6 @@ function initializeFlipCardLinks() {
     link.href = productUrl;
     link.setAttribute('data-product-url', productUrl);
     
-    // Set inline styles to ensure full coverage
-    link.style.position = 'absolute';
-    link.style.top = '0';
-    link.style.left = '0';
-    link.style.right = '0';
-    link.style.bottom = '0';
-    link.style.width = '100%';
-    link.style.height = '100%';
-    link.style.zIndex = '5';
-    link.style.cursor = 'pointer';
-    
     // Move the flip-card-wrapper inside the link
     wrapper.parentNode.insertBefore(link, wrapper);
     link.appendChild(wrapper);
@@ -4270,17 +4182,12 @@ function initializeFlipCardLinks() {
       
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
-        flipCard.style.transform = 'none';
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardFront.style.opacity = '0';
-        flipCardFront.style.transform = 'translateY(-20px)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardBack.style.opacity = '1';
-        flipCardBack.style.transform = 'translateY(0)';
       }
     });
     
@@ -4293,17 +4200,12 @@ function initializeFlipCardLinks() {
       
       if (flipCard) {
         flipCard.style.transition = 'all 0.6s ease';
-        flipCard.style.transform = 'none';
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardFront.style.opacity = '1';
-        flipCardFront.style.transform = 'translateY(0)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardBack.style.opacity = '0';
-        flipCardBack.style.transform = 'translateY(100%)';
       }
     });
   });
@@ -4336,7 +4238,6 @@ function initializeCardsScrollAnimation() {
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
-  diagnoseFlipCardIssues(); // Run diagnostic first
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
 });
@@ -4346,7 +4247,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Wait for Webflow's dynamic content to load
   setTimeout(() => {
     console.log('DOMContentLoaded timeout - Re-initializing flip card links');
-    diagnoseFlipCardIssues(); // Run diagnostic first
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
   }, 100);
@@ -4356,7 +4256,6 @@ document.addEventListener('DOMContentLoaded', function() {
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
     console.log('Webflow.push - Initializing flip card links');
-    diagnoseFlipCardIssues(); // Run diagnostic first
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
   });
