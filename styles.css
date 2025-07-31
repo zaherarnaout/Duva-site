@@ -25181,6 +25181,7 @@ a:hover .flip-card-back,
   visibility: visible !important;
   /* Show the debug border on hover */
   border: 2px solid orange !important;
+  background-color: rgba(255, 165, 0, 0.8) !important;
 }
 
 /* Test hover on any element that might be covering the cards */
@@ -25222,6 +25223,15 @@ section:hover .flip-card-back {
   transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   visibility: visible !important;
+  background-color: rgba(255, 165, 0, 0.8) !important;
+}
+
+/* Force back card to show on ANY hover */
+*:hover .flip-card-back {
+  opacity: 1 !important;
+  visibility: visible !important;
+  background-color: rgba(255, 165, 0, 0.8) !important;
+  border: 2px solid orange !important;
 }
 
 /* Debug: Make all flip card elements visible for testing */
