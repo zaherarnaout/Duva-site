@@ -4210,7 +4210,6 @@ function initializeFlipCardLinks() {
         flipCardBack.style.visibility = 'visible';
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.zIndex = '10';
-        flipCardBack.style.display = 'flex';
       }
     });
     
@@ -4234,10 +4233,7 @@ function initializeFlipCardLinks() {
         flipCardBack.style.opacity = '0';
         flipCardBack.style.visibility = 'hidden';
         flipCardBack.style.transform = 'translateZ(-10px)';
-        flipCardBack.style.backgroundColor = 'transparent';
-        flipCardBack.style.border = '2px solid transparent';
         flipCardBack.style.zIndex = '1';
-        flipCardBack.style.display = 'none';
       }
     });
   });
