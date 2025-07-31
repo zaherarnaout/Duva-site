@@ -4201,9 +4201,16 @@ function initializeFlipCardLinks() {
       }
       if (flipCardFront) {
         flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '0';
+        flipCardFront.style.transform = 'translateZ(-10px)';
       }
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '1';
+        flipCardBack.style.visibility = 'visible';
+        flipCardBack.style.transform = 'translateZ(0)';
+        flipCardBack.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
+        flipCardBack.style.border = '2px solid orange';
       }
     });
     
