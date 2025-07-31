@@ -4209,28 +4209,8 @@ function initializeFlipCardLinks() {
         flipCardBack.style.opacity = '1';
         flipCardBack.style.visibility = 'visible';
         flipCardBack.style.transform = 'translateZ(0)';
-        flipCardBack.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
-        flipCardBack.style.border = '2px solid orange';
         flipCardBack.style.zIndex = '10';
-        flipCardBack.style.position = 'absolute';
-        flipCardBack.style.top = '0';
-        flipCardBack.style.left = '0';
-        flipCardBack.style.width = '100%';
-        flipCardBack.style.height = '100%';
-        
-        // Add test content to make back card visible
-        const backTitle = flipCardBack.querySelector('.back-title');
-        if (backTitle && backTitle.textContent === '') {
-          backTitle.textContent = 'BACK CARD TEST';
-        }
-        
-        // Add test content to spec items
-        const specItems = flipCardBack.querySelectorAll('.wattage');
-        specItems.forEach((item, index) => {
-          if (item.textContent === '') {
-            item.textContent = `Test Value ${index + 1}`;
-          }
-        });
+        flipCardBack.style.display = 'flex';
       }
     });
     
@@ -4257,6 +4237,7 @@ function initializeFlipCardLinks() {
         flipCardBack.style.backgroundColor = 'transparent';
         flipCardBack.style.border = '2px solid transparent';
         flipCardBack.style.zIndex = '1';
+        flipCardBack.style.display = 'none';
       }
     });
   });
