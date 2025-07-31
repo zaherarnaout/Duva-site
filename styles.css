@@ -25150,14 +25150,16 @@ footer, .footer {
 }
 
 /* Fade animation on hover */
-.flip-card-link:hover .flip-card-front {
+.flip-card-link:hover .flip-card-front,
+.flip-card-wrapper:hover .flip-card-front {
   opacity: 0 !important;
   transform: translateZ(-10px) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
   pointer-events: none !important;
 }
 
-.flip-card-link:hover .flip-card-back {
+.flip-card-link:hover .flip-card-back,
+.flip-card-wrapper:hover .flip-card-back {
   opacity: 1 !important;
   transform: translateZ(0) rotateY(0deg) !important;
   transition: opacity 0.6s ease, transform 0.6s ease !important;
