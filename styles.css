@@ -25330,6 +25330,56 @@ a {
   text-decoration: none !important;
 }
 
+/* Remove underlines from product codes and descriptions */
+[class*="product"] *,
+[class*="item"] *,
+[class*="code"] *,
+[class*="number"] *,
+[class*="title"] *,
+[class*="text"] *,
+[class*="description"] *,
+[class*="name"] *,
+[class*="label"] *,
+[class*="heading"] *,
+[class*="h1"] *,
+[class*="h2"] *,
+[class*="h3"] *,
+[class*="h4"] *,
+[class*="h5"] *,
+[class*="h6"] *,
+[class*="p"] *,
+[class*="span"] *,
+[class*="div"] * {
+  text-decoration: none !important;
+}
+
+/* Force remove all underlines with higher specificity */
+body *,
+html *,
+#page-content *,
+.w-page *,
+.w-container *,
+.w-col *,
+.w-col-group *,
+.w-col-small *,
+.w-col-medium *,
+.w-col-large * {
+  text-decoration: none !important;
+}
+
+/* Remove underlines from any element with text */
+[data-ix],
+[data-hover],
+[data-animation] {
+  text-decoration: none !important;
+}
+
+[data-ix] *,
+[data-hover] *,
+[data-animation] * {
+  text-decoration: none !important;
+}
+
 /* Back card content overflow control */
 .back-title {
   font-size: 18px !important;
