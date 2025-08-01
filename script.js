@@ -4096,52 +4096,60 @@ document.addEventListener("DOMContentLoaded", function () {
 function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
   console.log('Script is working!');
-  // Find all flip card wrappers
+  
+  // Find all possible card elements
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  
-  console.log('Found flip card wrappers:', flipCardWrappers.length);
-  
-  // Also check for other possible class names
   const collectionItems = document.querySelectorAll('.collection-item');
   const productCards = document.querySelectorAll('.product-card');
   const cardWrappers = document.querySelectorAll('[class*="card"]');
+  const allCardElements = document.querySelectorAll('[class*="flip"], [class*="card"], [class*="collection"]');
   
-  console.log('Other potential card elements found:', {
+  console.log('Found elements:', {
+    flipCardWrappers: flipCardWrappers.length,
     collectionItems: collectionItems.length,
     productCards: productCards.length,
-    cardWrappers: cardWrappers.length
+    cardWrappers: cardWrappers.length,
+    allCardElements: allCardElements.length
   });
   
-  // Log all elements with "card" in their class name
-  cardWrappers.forEach((wrapper, index) => {
-    if (index < 5) { // Only log first 5 to avoid spam
-      console.log('Card wrapper found:', wrapper.className);
+  // Log first few elements to see what we're working with
+  allCardElements.forEach((el, index) => {
+    if (index < 5) {
+      console.log(`Element ${index + 1}:`, el.className, el.tagName);
     }
   });
   
-  // Test if we can find any elements at all
-  const allElements = document.querySelectorAll('*');
-  console.log('Total elements on page:', allElements.length);
+  // Try to find the actual card elements that need to be made clickable
+  let targetElements = [];
   
-  // Check for any elements with "flip" in class name
-  const flipElements = document.querySelectorAll('[class*="flip"]');
-  console.log('Elements with "flip" in class name:', flipElements.length);
-  flipElements.forEach((el, index) => {
-    if (index < 3) {
-      console.log('Flip element found:', el.className);
-    }
-  });
+  // First try collection items
+  if (collectionItems.length > 0) {
+    targetElements = collectionItems;
+    console.log('Using collection items as targets');
+  }
+  // Then try flip card wrappers
+  else if (flipCardWrappers.length > 0) {
+    targetElements = flipCardWrappers;
+    console.log('Using flip card wrappers as targets');
+  }
+  // Then try any element with "card" in class name
+  else if (cardWrappers.length > 0) {
+    targetElements = cardWrappers;
+    console.log('Using card wrappers as targets');
+  }
+  // Finally, try any element that might be a card
+  else {
+    targetElements = allCardElements;
+    console.log('Using all card elements as targets');
+  }
   
-  flipCardWrappers.forEach(wrapper => {
-    // Check if this wrapper already has a link
-    const existingLink = wrapper.querySelector('.flip-card-link');
+  console.log('Processing', targetElements.length, 'target elements');
+  
+  targetElements.forEach((element, index) => {
+    // Check if this element already has a link
+    const existingLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
     if (existingLink) {
-      return; // Already processed
-    }
-    
-    // Get the collection item (parent of flip-card-wrapper)
-    const collectionItem = wrapper.closest('.collection-item');
-    if (!collectionItem) {
+      console.log(`Element ${index + 1} already has a link, skipping`);
       return;
     }
     
@@ -4149,25 +4157,40 @@ function initializeFlipCardLinks() {
     const link = document.createElement('a');
     link.className = 'flip-card-link';
     
-    // Get the product URL from Webflow's data attributes or CMS
-    // This will be set by Webflow when you configure the link
-    const productUrl = collectionItem.getAttribute('data-product-url') || 
-                      collectionItem.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
-                      '#';
+    // Try to get the product URL from various sources
+    let productUrl = element.getAttribute('data-product-url') || 
+                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
+                    element.getAttribute('href') ||
+                    element.querySelector('a')?.getAttribute('href') ||
+                    '#';
+    
+    // If no URL found, try to construct one based on product code
+    if (productUrl === '#' || !productUrl) {
+      const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      if (productCode) {
+        // You can customize this URL pattern based on your site structure
+        productUrl = `/product/${productCode.toLowerCase()}`;
+        console.log(`Constructed URL for ${productCode}:`, productUrl);
+      }
+    }
     
     link.href = productUrl;
     link.setAttribute('data-product-url', productUrl);
     
-    // Move the flip-card-wrapper inside the link
-    wrapper.parentNode.insertBefore(link, wrapper);
-    link.appendChild(wrapper);
+    console.log(`Element ${index + 1} - URL:`, productUrl);
     
-    // Add click event listener for additional functionality
+    // Wrap the element in the link
+    element.parentNode.insertBefore(link, element);
+    link.appendChild(element);
+    
+    // Add click event listener
     link.addEventListener('click', function(e) {
+      console.log('Card clicked! URL:', productUrl);
+      
       // Prevent default if URL is not set
       if (productUrl === '#' || !productUrl) {
         e.preventDefault();
-        console.log('Product URL not configured');
+        console.log('Product URL not configured, preventing navigation');
         return;
       }
       
@@ -4267,6 +4290,11 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
+  
+  // Test if cards are clickable
+  setTimeout(() => {
+    testCardNavigation();
+  }, 500);
 });
 
 // Re-initialize when Webflow's dynamic content loads
@@ -4276,6 +4304,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded timeout - Re-initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
+    
+    // Test if cards are clickable
+    setTimeout(() => {
+      testCardNavigation();
+    }, 500);
   }, 100);
 });
 
@@ -4285,5 +4318,48 @@ if (typeof Webflow !== 'undefined') {
     console.log('Webflow.push - Initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
+    
+    // Test if cards are clickable
+    setTimeout(() => {
+      testCardNavigation();
+    }, 500);
+  });
+}
+
+// Test function to check if cards are clickable
+function testCardNavigation() {
+  console.log('🧪 Testing card navigation...');
+  
+  const allLinks = document.querySelectorAll('.flip-card-link, a[href]');
+  console.log('Found links:', allLinks.length);
+  
+  allLinks.forEach((link, index) => {
+    if (index < 5) { // Only test first 5
+      console.log(`Link ${index + 1}:`, {
+        href: link.href,
+        className: link.className,
+        tagName: link.tagName
+      });
+      
+      // Test if link is clickable
+      link.addEventListener('click', function(e) {
+        console.log(`✅ Link ${index + 1} clicked! URL:`, this.href);
+      });
+    }
+  });
+  
+  // Also check for any clickable elements
+  const clickableElements = document.querySelectorAll('[onclick], [data-href], [data-url]');
+  console.log('Found clickable elements:', clickableElements.length);
+  
+  clickableElements.forEach((el, index) => {
+    if (index < 3) {
+      console.log(`Clickable element ${index + 1}:`, {
+        onclick: el.getAttribute('onclick'),
+        dataHref: el.getAttribute('data-href'),
+        dataUrl: el.getAttribute('data-url'),
+        className: el.className
+      });
+    }
   });
 }
