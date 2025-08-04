@@ -4539,20 +4539,5 @@ setTimeout(() => {
 
 console.log('✅ DUVA Global Search functionality loaded!');
 
-// Add CSS override to remove only problematic search icons
-const style = document.createElement('style');
-style.textContent = `
-/* === Remove Only CSS-Generated Search Icons === */
-.search-icon {
-  background-image: none !important;
-}
-
-/* Only remove background images from global search, not Webflow icons */
-#globalSearchInput,
-.duva-global-search {
-  background-image: none !important;
-}
-
-/* Don't hide Webflow's search icons, just remove CSS background images */
-`;
-document.head.appendChild(style);
+// Let Webflow handle search icon styling naturally
+// No CSS overrides needed - using Webflow's default styling
