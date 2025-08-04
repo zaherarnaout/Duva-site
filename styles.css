@@ -2861,15 +2861,15 @@ opacity: 1 !important;
 .related-slider-wrapper::before {
   content: '' !important;
   position: absolute !important;
-  top: 20px !important; /* Account for wrapper padding */
-  left: 0 !important;
+  top: 21px !important; /* Account for wrapper padding + 1px */
+  left: 1px !important; /* 1px padding from edge */
   width: 80px !important;
-  height: 250px !important; /* Match related-card height */
+  height: 248px !important; /* Match related-card height - 2px for padding */
   background: linear-gradient(to right, 
-    #F4F5F6 0%, 
-    rgba(244, 245, 246, 0.8) 30%, 
-    rgba(244, 245, 246, 0.4) 60%, 
-    rgba(244, 245, 246, 0) 100%) !important;
+    #FFFFFF 0%, 
+    rgba(255, 255, 255, 0.8) 30%, 
+    rgba(255, 255, 255, 0.4) 60%, 
+    rgba(255, 255, 255, 0) 100%) !important;
   z-index: 5 !important;
   pointer-events: none !important;
 }
@@ -2878,15 +2878,15 @@ opacity: 1 !important;
 .related-slider-wrapper::after {
   content: '' !important;
   position: absolute !important;
-  top: 20px !important; /* Account for wrapper padding */
-  right: 0 !important;
+  top: 21px !important; /* Account for wrapper padding + 1px */
+  right: 1px !important; /* 1px padding from edge */
   width: 80px !important;
-  height: 250px !important; /* Match related-card height */
+  height: 248px !important; /* Match related-card height - 2px for padding */
   background: linear-gradient(to left, 
-    #F4F5F6 0%, 
-    rgba(244, 245, 246, 0.8) 30%, 
-    rgba(244, 245, 246, 0.4) 60%, 
-    rgba(244, 245, 246, 0) 100%) !important;
+    #FFFFFF 0%, 
+    rgba(255, 255, 255, 0.8) 30%, 
+    rgba(255, 255, 255, 0.4) 60%, 
+    rgba(255, 255, 255, 0) 100%) !important;
   z-index: 5 !important;
   pointer-events: none !important;
 }
