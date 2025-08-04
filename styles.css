@@ -802,9 +802,9 @@ display: none !important;
   margin-left: auto;
   padding-right: 20px;
   padding-left: 20px;
-  flex-flow: row; /* Changed to row for horizontal layout */
-  justify-content: flex-start; /* Changed to flex-start for horizontal alignment */
-  align-items: center;
+  flex-flow: column; /* Changed to column for vertical layout */
+  justify-content: flex-start; /* Changed to flex-start for vertical alignment */
+  align-items: flex-start;
   gap: 16px;
   border: none; /* Remove border when closed */
   border-radius: 0; /* Remove border radius when closed */
@@ -823,8 +823,7 @@ display: none !important;
 
 .accessories-section.open .accessories-wrapper {
   max-height: 10000px; /* Much larger height to ensure all content including final divider is contained */
-  overflow-x: auto !important; /* Enable horizontal scrolling */
-  overflow-y: hidden !important; /* Hide vertical scrollbar */
+  overflow: visible !important; /* Allow all content to be visible */
   scroll-behavior: smooth !important; /* Smooth scrolling */
   -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
   border: none; /* Remove border when open */
