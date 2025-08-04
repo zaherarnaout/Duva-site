@@ -1653,7 +1653,7 @@ document.addEventListener('DOMContentLoaded', function () {
  
 
   /* === Inject Accessories Divider (Max Width 2000px) === */ 
-
+  /* DISABLED - Divider removed as requested
   const accessoriesSection = document.querySelector(".accessories-section"); 
 
   if (accessoriesSection) { 
@@ -1684,7 +1684,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     accessoriesSection.after(wrapper); 
 
-  } 
+  }
+  */ 
 
  
 
