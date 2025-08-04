@@ -3143,16 +3143,16 @@ opacity: 1 !important;
   flex: 0 0 100vw !important;
 }
 
-/* Pointer cursor for gallery images on hover */
+/* Remove pointer cursor for gallery images */
 .gallery-section-cms .w-dyn-item:hover img,
 .gallery-section-cms:hover img,
 .gallery-image:hover img {
-  cursor: pointer !important;
+  cursor: default !important;
 }
 
-/* Pointer cursor for gallery container when hovering */
+/* Remove pointer cursor for gallery container */
 .gallery-section-cms:hover {
-  cursor: pointer !important;
+  cursor: default !important;
 }
 
 /* Hide scrollbar for cleaner look */
@@ -3508,15 +3508,16 @@ opacity: 1 !important;
 .gallery-section-cms .w-dyn-item img,
 .gallery-section-cms img,
 .gallery-image img {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform !important;
+  transition: none !important; /* Remove hover effects */
+  will-change: auto !important;
 }
 
-/* Subtle hover effect for better UX */
+/* Remove hover effects for gallery images */
 .gallery-section-cms .w-dyn-item:hover img,
 .gallery-section-cms:hover img,
 .gallery-image:hover img {
-  transform: scale(1.02) !important;
+  transform: none !important;
+  scale: none !important;
 }
 
 /* === Arrow Hover Effects === */
@@ -3732,13 +3733,15 @@ footer, .footer {
   object-position: center center !important;
   border-radius: 8px !important;
   background: #f4f5f6 !important;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform !important;
-  backface-visibility: hidden !important;
+  transition: none !important; /* Remove hover effects */
+  will-change: auto !important;
+  backface-visibility: visible !important;
 }
 
+/* Remove hover effects */
 .gallery-image:hover {
-  transform: scale(1.02) !important;
+  transform: none !important;
+  scale: none !important;
 }
 
 /* Gallery section wrapper optimization */
