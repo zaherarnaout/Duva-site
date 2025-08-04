@@ -4538,3 +4538,27 @@ setTimeout(() => {
 }, 3000);
 
 console.log('✅ DUVA Global Search functionality loaded!');
+
+// Add CSS override to remove all search icons
+const style = document.createElement('style');
+style.textContent = `
+/* === Remove All Search Icons - Use Webflow Default Only === */
+.search-icon {
+  display: none !important;
+  background-image: none !important;
+}
+
+/* Ensure global search has no background icons */
+#globalSearchInput,
+.duva-global-search {
+  background-image: none !important;
+}
+
+#globalSearchInput::before,
+#globalSearchInput::after,
+.duva-global-search::before,
+.duva-global-search::after {
+  display: none !important;
+}
+`;
+document.head.appendChild(style);
