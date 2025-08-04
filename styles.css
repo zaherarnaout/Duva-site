@@ -2923,6 +2923,13 @@ opacity: 1 !important;
   transform: translateY(0) !important;
 }
 
+/* === Remove Divider Between Related Items and Accessories === */
+.related-section + .accessories-section {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
 /* Ensure gallery images are always visible when section is visible */
 .gallery-section.fade-in .gallery-section-cms,
 .gallery-section.fade-in .gallery-image,
