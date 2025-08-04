@@ -2930,21 +2930,6 @@ opacity: 1 !important;
   border-top: none !important;
 }
 
-/* === Remove Accessories Section Border === */
-.accessories-section {
-  border: none !important;
-  border-bottom: none !important;
-  border-top: none !important;
-  box-shadow: none !important;
-}
-
-.accessories-wrapper {
-  border: none !important;
-  border-bottom: none !important;
-  border-top: none !important;
-  box-shadow: none !important;
-}
-
 /* Ensure gallery images are always visible when section is visible */
 .gallery-section.fade-in .gallery-section-cms,
 .gallery-section.fade-in .gallery-image,
