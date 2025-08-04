@@ -2861,7 +2861,7 @@ opacity: 1 !important;
 .related-slider-wrapper::before {
   content: '' !important;
   position: absolute !important;
-  top: 0 !important;
+  top: 20px !important; /* Account for wrapper padding */
   left: 0 !important;
   width: 80px !important;
   height: 250px !important; /* Match related-card height */
@@ -2878,7 +2878,7 @@ opacity: 1 !important;
 .related-slider-wrapper::after {
   content: '' !important;
   position: absolute !important;
-  top: 0 !important;
+  top: 20px !important; /* Account for wrapper padding */
   right: 0 !important;
   width: 80px !important;
   height: 250px !important; /* Match related-card height */
