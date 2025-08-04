@@ -808,7 +808,7 @@ display: none !important;
   gap: 16px;
   border: none; /* Remove border when closed */
   border-radius: 0; /* Remove border radius when closed */
-  background-color: var(--duva-white);
+  background-color: transparent; /* Remove background */
   box-shadow: none; /* Remove shadow when closed */
   max-height: 0; 
   overflow: hidden; 
@@ -827,9 +827,9 @@ display: none !important;
   overflow-y: hidden !important; /* Hide vertical scrollbar */
   scroll-behavior: smooth !important; /* Smooth scrolling */
   -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
-  border: 1px solid var(--border-divider-light); /* Add border when open */
-  border-radius: var(--border-4px-cornner); /* Add border radius when open */
-  box-shadow: 0 2px 5px 0 var(--duva-border-shadow); /* Add shadow when open */
+  border: none; /* Remove border when open */
+  border-radius: 0; /* Remove border radius when open */
+  box-shadow: none; /* Remove shadow when open */
   padding-bottom: 20px; /* Add extra padding at bottom to ensure divider is inside */
   transform: scaleY(1);
   /* Hide scrollbar */
