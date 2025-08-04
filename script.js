@@ -1650,51 +1650,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }); 
 
- 
-
-  /* === Inject Accessories Divider (Max Width 2000px) === */ 
-
-  const accessoriesSection = document.querySelector(".accessories-section"); 
-
-  if (accessoriesSection) { 
-
-    const wrapper = document.createElement("div"); 
-
-    wrapper.style.display = "flex"; 
-
-    wrapper.style.justifyContent = "center"; 
-
-    wrapper.style.marginTop = "24px"; 
-
- 
-
-    const divider = document.createElement("div"); 
-
-    divider.style.width = "100%"; 
-
-    divider.style.maxWidth = "2000px"; 
-
-    divider.style.height = "1px"; 
-
-    divider.style.backgroundColor = "#e0e0e0"; 
-
- 
-
-    wrapper.appendChild(divider); 
-
-    accessoriesSection.after(wrapper); 
-
-  } 
-
- 
-
-}); 
-
- 
-
- 
-
- 
 
   document.addEventListener("DOMContentLoaded", function () { 
 
