@@ -1119,7 +1119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           ralInput.style.display = "none"; 
 
-          window.currentSelection[type] = value; 
+          window.currentSelection[type] = value;
 
         } 
 
@@ -4363,3 +4363,178 @@ function testCardNavigation() {
     }
   });
 }
+
+/* === DUVA Global Live Search Functionality === */
+
+// Initialize global search functionality
+function initializeGlobalSearch() {
+  const searchInput = document.getElementById('globalSearchInput');
+  
+  if (!searchInput) {
+    console.log('🔍 Global search input not found');
+    return;
+  }
+  
+  console.log('🔍 Initializing global search functionality');
+  
+  // Add input event listener for real-time search
+  searchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    performGlobalSearch(searchTerm);
+  });
+  
+  // Add focus event to show all products when search is cleared
+  searchInput.addEventListener('focus', function(e) {
+    if (e.target.value === '') {
+      showAllProductCards();
+    }
+  });
+  
+  // Add blur event to maintain search state
+  searchInput.addEventListener('blur', function(e) {
+    // Keep current search results
+  });
+  
+  console.log('✅ Global search initialized');
+}
+
+// Extract all searchable text from a product card
+function extractCardText(card) {
+  const searchableText = [];
+  
+  // Get all text content from the card
+  const allText = card.textContent || card.innerText || '';
+  searchableText.push(allText);
+  
+  // Get specific fields that might be in data attributes
+  const dataFields = [
+    'data-product-code', 'data-name', 'data-family', 'data-description',
+    'data-wattage', 'data-ip', 'data-cct', 'data-cri', 'data-ordering-code',
+    'data-title', 'data-short-description', 'data-full-description'
+  ];
+  
+  dataFields.forEach(field => {
+    const value = card.getAttribute(field);
+    if (value) {
+      searchableText.push(value);
+    }
+  });
+  
+  // Get text from specific elements that might contain product info
+  const specificSelectors = [
+    '.product-title', '.product-name', '.product-code', '.product-family',
+    '.product-description', '.product-specs', '.product-details',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div'
+  ];
+  
+  specificSelectors.forEach(selector => {
+    const elements = card.querySelectorAll(selector);
+    elements.forEach(element => {
+      const text = element.textContent || element.innerText || '';
+      if (text.trim()) {
+        searchableText.push(text);
+      }
+    });
+  });
+  
+  // Get text from Webflow CMS binding elements
+  const cmsElements = card.querySelectorAll('[data-wf-cms-bind]');
+  cmsElements.forEach(element => {
+    const text = element.textContent || element.innerText || '';
+    if (text.trim()) {
+      searchableText.push(text);
+    }
+  });
+  
+  return searchableText.join(' ').toLowerCase();
+}
+
+// Perform the global search
+function performGlobalSearch(searchTerm) {
+  console.log('🔍 Performing global search for:', searchTerm);
+  
+  const productCards = document.querySelectorAll('.product-card, .collection-item, .w-dyn-item');
+  
+  if (productCards.length === 0) {
+    console.log('🔍 No product cards found');
+    return;
+  }
+  
+  let visibleCount = 0;
+  
+  productCards.forEach(card => {
+    const cardText = extractCardText(card);
+    const matches = searchTerm === '' || cardText.includes(searchTerm);
+    
+    if (matches) {
+      // Remove any inline display style to let CSS handle the layout
+      card.style.removeProperty('display');
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  console.log(`🔍 Search complete: ${visibleCount} of ${productCards.length} cards visible`);
+  
+  // Update search input placeholder to show results
+  const searchInput = document.getElementById('globalSearchInput');
+  if (searchInput) {
+    if (searchTerm === '') {
+      searchInput.placeholder = 'Search products...';
+    } else {
+      searchInput.placeholder = `Found ${visibleCount} results...`;
+    }
+  }
+}
+
+// Show all product cards (when search is cleared)
+function showAllProductCards() {
+  console.log('🔍 Showing all product cards');
+  
+  const productCards = document.querySelectorAll('.product-card, .collection-item, .w-dyn-item');
+  
+  productCards.forEach(card => {
+    // Remove any inline display style to let CSS handle the layout
+    card.style.removeProperty('display');
+  });
+  
+  // Reset search input placeholder
+  const searchInput = document.getElementById('globalSearchInput');
+  if (searchInput) {
+    searchInput.placeholder = 'Search products...';
+  }
+  
+  console.log(`🔍 All ${productCards.length} cards now visible`);
+}
+
+// Initialize global search when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 DOMContentLoaded - Initializing global search');
+  initializeGlobalSearch();
+});
+
+// Re-initialize when Webflow's dynamic content loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for Webflow's dynamic content to load
+  setTimeout(() => {
+    console.log('DOMContentLoaded timeout - Re-initializing global search');
+    initializeGlobalSearch();
+  }, 100);
+});
+
+// Also initialize when Webflow's page loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    console.log('Webflow.push - Initializing global search');
+    initializeGlobalSearch();
+  });
+}
+
+// Re-initialize search after a delay to catch late-loading content
+setTimeout(() => {
+  console.log('Delayed initialization - Re-initializing global search');
+  initializeGlobalSearch();
+}, 3000);
+
+console.log('✅ DUVA Global Search functionality loaded!');
