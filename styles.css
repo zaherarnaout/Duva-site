@@ -4826,23 +4826,6 @@ body.menu-open {
   margin: 0 16px;
 }
 
-.search-icon {
-  position: relative;
-  left: -35px;
-  z-index: 2;
-  width: 20px;
-  height: 20px;
-  margin-top: 0%;
-  background-image: url("https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/685049eae98ebb639d4c0921_magnifying%20glass%20icon.png");
-  background-position: 50% 50%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  background-clip: border-box;
-  -webkit-text-fill-color: inherit;
-  opacity: 0.3;
-}
-
 /* === Theme Toggle Wrapper === */
 .theme-toggle-wrapper {
   flex-shrink: 0;
