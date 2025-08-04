@@ -3767,13 +3767,15 @@ footer, .footer {
   border-bottom-right-radius: var(--border-4px-cornner) !important;
   background-color: var(--btn-light-text) !important;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  padding-bottom: 0 !important; /* Remove bottom padding */
 }
 
 /* Gallery CMS container optimization */
 .gallery-section-cms {
   overflow: hidden !important;
   width: 100% !important;
-  height: 700px !important;
+  height: 700px !important; /* Match image height */
   max-width: 2000px !important;
   flex-flow: row !important;
   justify-content: center !important;
@@ -3782,6 +3784,8 @@ footer, .footer {
   scroll-snap-type: x mandatory !important;
   scroll-snap-stop: always !important;
   -webkit-overflow-scrolling: touch !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  padding-bottom: 0 !important; /* Remove bottom padding */
 }
 
 /* Gallery items optimization */
@@ -3794,6 +3798,7 @@ footer, .footer {
   justify-content: center !important;
   align-items: center !important;
   padding: 0 12px !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
 }
 
 /* Ensure images maintain aspect ratio */
