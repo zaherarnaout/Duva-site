@@ -2867,8 +2867,9 @@ opacity: 1 !important;
   height: 248px !important; /* Match related-card height - 2px for padding */
   background: linear-gradient(to right, 
     #FFFFFF 0%, 
-    rgba(255, 255, 255, 0.8) 30%, 
-    rgba(255, 255, 255, 0.4) 60%, 
+    rgba(255, 255, 255, 0.95) 20%, 
+    rgba(255, 255, 255, 0.7) 40%, 
+    rgba(255, 255, 255, 0.3) 70%, 
     rgba(255, 255, 255, 0) 100%) !important;
   z-index: 5 !important;
   pointer-events: none !important;
@@ -2884,8 +2885,9 @@ opacity: 1 !important;
   height: 248px !important; /* Match related-card height - 2px for padding */
   background: linear-gradient(to left, 
     #FFFFFF 0%, 
-    rgba(255, 255, 255, 0.8) 30%, 
-    rgba(255, 255, 255, 0.4) 60%, 
+    rgba(255, 255, 255, 0.95) 20%, 
+    rgba(255, 255, 255, 0.7) 40%, 
+    rgba(255, 255, 255, 0.3) 70%, 
     rgba(255, 255, 255, 0) 100%) !important;
   z-index: 5 !important;
   pointer-events: none !important;
