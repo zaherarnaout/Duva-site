@@ -4558,6 +4558,16 @@ function performGlobalSearch(searchTerm) {
   
   console.log(`🔍 Search complete: ${visibleCount} of ${productCards.length} cards visible`);
   
+  // Show/hide no results message
+  const noResultsMessage = document.querySelector('.no-results-message');
+  if (noResultsMessage) {
+    if (visibleCount === 0 && searchTerm !== '') {
+      noResultsMessage.style.display = 'block';
+    } else {
+      noResultsMessage.style.display = 'none';
+    }
+  }
+  
   // Update search input placeholder to show results
   const searchInput = document.getElementById('globalSearchInput');
   if (searchInput) {
@@ -4586,6 +4596,12 @@ function showAllProductCards() {
     // Remove any inline display style to let CSS handle the layout
     card.style.removeProperty('display');
   });
+  
+  // Hide no results message when showing all products
+  const noResultsMessage = document.querySelector('.no-results-message');
+  if (noResultsMessage) {
+    noResultsMessage.style.display = 'none';
+  }
   
   // Reset search input placeholder
   const searchInput = document.getElementById('globalSearchInput');
