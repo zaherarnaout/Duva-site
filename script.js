@@ -4384,6 +4384,12 @@ function initializeGlobalSearch() {
                          window.location.pathname.includes('/collection') ||
                          document.querySelector('.cards-container') !== null;
   
+  // Store these values globally so they persist after element replacement
+  window.globalSearchState = {
+    currentPageUrl: currentPageUrl,
+    isOnProductsPage: isOnProductsPage
+  };
+  
   // Add input event listener for real-time search
   searchInput.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
@@ -4482,7 +4488,7 @@ function initializeGlobalSearch() {
         sessionStorage.removeItem('globalSearchTerm');
         
         // If search is cleared and we're on products page, show all products
-        if (isOnProductsPage) {
+        if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
           performGlobalSearch(searchTerm);
         } else {
           // Navigate back to original page
@@ -4493,7 +4499,7 @@ function initializeGlobalSearch() {
         sessionStorage.setItem('globalSearchTerm', searchTerm);
         
         // If we're not on products page, navigate to products page with search
-        if (!isOnProductsPage) {
+        if (window.globalSearchState && !window.globalSearchState.isOnProductsPage) {
           navigateToProductsPage(searchTerm);
         } else {
           // We're already on products page, perform search
@@ -4505,7 +4511,7 @@ function initializeGlobalSearch() {
     // Add focus event to show all products when search is cleared
     updatedSearchInput.addEventListener('focus', function(e) {
       if (e.target.value === '') {
-        if (isOnProductsPage) {
+        if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
           showAllProductCards();
         }
       }
@@ -4552,13 +4558,15 @@ function navigateToProductsPage(searchTerm) {
 // Navigate back to original page
 function navigateBackToOriginalPage() {
   // Remove search parameter from current URL if we're on products page
-  if (isOnProductsPage) {
+  if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
     const url = new URL(window.location);
     url.searchParams.delete('search');
     window.location.href = url.toString();
   } else {
     // Navigate back to stored original page
-    window.location.href = currentPageUrl;
+    if (window.globalSearchState && window.globalSearchState.currentPageUrl) {
+      window.location.href = window.globalSearchState.currentPageUrl;
+    }
   }
 }
 
