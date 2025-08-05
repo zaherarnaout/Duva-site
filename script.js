@@ -4378,16 +4378,42 @@ function initializeGlobalSearch() {
   
   console.log('🔍 Initializing global search functionality');
   
+  // Store the current page URL for navigation back
+  let currentPageUrl = window.location.href;
+  let isOnProductsPage = window.location.pathname.includes('/products') || 
+                         window.location.pathname.includes('/product') || 
+                         window.location.pathname.includes('/collection') ||
+                         document.querySelector('.cards-container') !== null;
+  
   // Add input event listener for real-time search
   searchInput.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
-    performGlobalSearch(searchTerm);
+    
+    if (searchTerm === '') {
+      // If search is cleared and we're on products page, show all products
+      if (isOnProductsPage) {
+        performGlobalSearch(searchTerm);
+      } else {
+        // Navigate back to original page
+        navigateBackToOriginalPage();
+      }
+    } else {
+      // If we're not on products page, navigate to products page with search
+      if (!isOnProductsPage) {
+        navigateToProductsPage(searchTerm);
+      } else {
+        // We're already on products page, perform search
+        performGlobalSearch(searchTerm);
+      }
+    }
   });
   
   // Add focus event to show all products when search is cleared
   searchInput.addEventListener('focus', function(e) {
     if (e.target.value === '') {
-      showAllProductCards();
+      if (isOnProductsPage) {
+        showAllProductCards();
+      }
     }
   });
   
@@ -4396,7 +4422,53 @@ function initializeGlobalSearch() {
     // Keep current search results
   });
   
+  // Check if we landed on products page with search parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchParam = urlParams.get('search');
+  if (searchParam && isOnProductsPage) {
+    // Set the search input value and perform search
+    searchInput.value = searchParam;
+    performGlobalSearch(searchParam);
+  }
+  
   console.log('✅ Global search initialized');
+}
+
+// Navigate to products page with search term
+function navigateToProductsPage(searchTerm) {
+  // Try to find the products page URL from the site structure
+  let productsPageUrl = '/products';
+  
+  // Check if we can find a products link on the page
+  const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
+  if (productsLinks.length > 0) {
+    // Use the first products link found
+    productsPageUrl = productsLinks[0].getAttribute('href');
+    // Ensure it's a relative URL
+    if (productsPageUrl.startsWith('http')) {
+      const url = new URL(productsPageUrl);
+      productsPageUrl = url.pathname;
+    }
+  }
+  
+  const searchParam = encodeURIComponent(searchTerm);
+  const targetUrl = `${productsPageUrl}?search=${searchParam}`;
+  
+  console.log(`🔍 Navigating to products page with search: ${targetUrl}`);
+  window.location.href = targetUrl;
+}
+
+// Navigate back to original page
+function navigateBackToOriginalPage() {
+  // Remove search parameter from current URL if we're on products page
+  if (isOnProductsPage) {
+    const url = new URL(window.location);
+    url.searchParams.delete('search');
+    window.location.href = url.toString();
+  } else {
+    // Navigate back to stored original page
+    window.location.href = currentPageUrl;
+  }
 }
 
 // Extract all searchable text from a product card
