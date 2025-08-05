@@ -4483,14 +4483,19 @@ function initializeGlobalSearch() {
     updatedSearchInput.addEventListener('input', function(e) {
       const searchTerm = e.target.value.toLowerCase().trim();
       
+      console.log('🔍 DEBUG: Search term cleared:', searchTerm);
+      console.log('🔍 DEBUG: Global state:', window.globalSearchState);
+      
       if (searchTerm === '') {
         // Clear sessionStorage when search is cleared
         sessionStorage.removeItem('globalSearchTerm');
         
         // If search is cleared and we're on products page, show all products
         if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
+          console.log('🔍 DEBUG: On products page, showing all products');
           performGlobalSearch(searchTerm);
         } else {
+          console.log('🔍 DEBUG: Not on products page, navigating back');
           // Navigate back to original page
           navigateBackToOriginalPage();
         }
@@ -4557,15 +4562,23 @@ function navigateToProductsPage(searchTerm) {
 
 // Navigate back to original page
 function navigateBackToOriginalPage() {
+  console.log('🔍 DEBUG: navigateBackToOriginalPage called');
+  console.log('🔍 DEBUG: Global state:', window.globalSearchState);
+  console.log('🔍 DEBUG: Current URL:', window.location.href);
+  
   // Remove search parameter from current URL if we're on products page
   if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
+    console.log('🔍 DEBUG: On products page, removing search param');
     const url = new URL(window.location);
     url.searchParams.delete('search');
     window.location.href = url.toString();
   } else {
     // Navigate back to stored original page
     if (window.globalSearchState && window.globalSearchState.currentPageUrl) {
+      console.log('🔍 DEBUG: Navigating back to:', window.globalSearchState.currentPageUrl);
       window.location.href = window.globalSearchState.currentPageUrl;
+    } else {
+      console.log('🔍 DEBUG: No original page URL found');
     }
   }
 }
