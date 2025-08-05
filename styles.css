@@ -3933,6 +3933,29 @@ footer, .footer {
   text-decoration: none !important;
 }
 
+/* === Product Cards Centering Fix === */
+.collection-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  max-width: 2000px !important;
+  margin: 0 auto !important;
+  padding: 10px !important;
+  gap: 20px !important;
+}
+
+.collection-item {
+  display: flex !important;
+  width: 300px !important;
+  height: 550px !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 20px !important;
+}
+
 
 
 
