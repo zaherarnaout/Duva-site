@@ -4447,12 +4447,21 @@ function initializeGlobalSearch() {
     console.log(`🔍 Set search input value to: ${searchInput.value}`);
     console.log(`🔍 DEBUG: Input value after setting: "${searchInput.value}"`);
     console.log(`🔍 DEBUG: Input getAttribute('value'): "${searchInput.getAttribute('value')}"`);
+    console.log(`🔍 DEBUG: Input visible: ${searchInput.offsetParent !== null}`);
+    console.log(`🔍 DEBUG: Input display: ${window.getComputedStyle(searchInput).display}`);
+    console.log(`🔍 DEBUG: Input opacity: ${window.getComputedStyle(searchInput).opacity}`);
     
     // Force the input to maintain its value
     searchInput.setAttribute('value', searchParam);
     
     // Also set the placeholder to show the search term
     searchInput.placeholder = `Searching for: ${searchParam}`;
+    
+    // Force a visual refresh by triggering input event
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    
+    // Also try setting the value using different methods
+    searchInput.defaultValue = searchParam;
     
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
