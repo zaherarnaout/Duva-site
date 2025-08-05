@@ -4470,6 +4470,52 @@ function initializeGlobalSearch() {
     // Replace the old input with the new one
     searchInput.parentNode.replaceChild(newInput, searchInput);
     
+    // Re-attach event listeners to the new input
+    const updatedSearchInput = document.getElementById('globalSearchInput');
+    
+    // Add input event listener for real-time search
+    updatedSearchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      
+      if (searchTerm === '') {
+        // Clear sessionStorage when search is cleared
+        sessionStorage.removeItem('globalSearchTerm');
+        
+        // If search is cleared and we're on products page, show all products
+        if (isOnProductsPage) {
+          performGlobalSearch(searchTerm);
+        } else {
+          // Navigate back to original page
+          navigateBackToOriginalPage();
+        }
+      } else {
+        // Store search term in sessionStorage
+        sessionStorage.setItem('globalSearchTerm', searchTerm);
+        
+        // If we're not on products page, navigate to products page with search
+        if (!isOnProductsPage) {
+          navigateToProductsPage(searchTerm);
+        } else {
+          // We're already on products page, perform search
+          performGlobalSearch(searchTerm);
+        }
+      }
+    });
+    
+    // Add focus event to show all products when search is cleared
+    updatedSearchInput.addEventListener('focus', function(e) {
+      if (e.target.value === '') {
+        if (isOnProductsPage) {
+          showAllProductCards();
+        }
+      }
+    });
+    
+    // Add blur event to maintain search state
+    updatedSearchInput.addEventListener('blur', function(e) {
+      // Keep current search results
+    });
+    
     // Perform search
     setTimeout(() => {
       performGlobalSearch(searchParam);
