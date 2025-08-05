@@ -4372,11 +4372,10 @@ function initializeGlobalSearch() {
   const searchInput = document.getElementById('globalSearchInput');
   
   if (!searchInput) {
-    console.log('🔍 Global search input not found');
     return;
   }
   
-  console.log('🔍 Initializing global search functionality');
+
   
   // Store the current page URL for navigation back
   let currentPageUrl = window.location.href;
@@ -4431,155 +4430,53 @@ function initializeGlobalSearch() {
   // Check if we landed on products page with search parameter
   const urlParams = new URLSearchParams(window.location.search);
   const searchParam = urlParams.get('search');
-  console.log(`🔍 DEBUG: URL search parameter: ${searchParam}`);
-  console.log(`🔍 DEBUG: Current page URL: ${window.location.href}`);
-  console.log(`🔍 DEBUG: Is on products page: ${isOnProductsPage}`);
   
   if (searchParam && isOnProductsPage) {
-    console.log(`🔍 Found search parameter: ${searchParam}`);
-    
     // Store the search parameter in sessionStorage as backup
     sessionStorage.setItem('globalSearchTerm', searchParam);
-    console.log(`🔍 DEBUG: Stored in sessionStorage: ${sessionStorage.getItem('globalSearchTerm')}`);
-    
-    // Set the search input value and perform search
-    searchInput.value = searchParam;
-    console.log(`🔍 Set search input value to: ${searchInput.value}`);
-    console.log(`🔍 DEBUG: Input value after setting: "${searchInput.value}"`);
-    console.log(`🔍 DEBUG: Input getAttribute('value'): "${searchInput.getAttribute('value')}"`);
-    console.log(`🔍 DEBUG: Input visible: ${searchInput.offsetParent !== null}`);
-    console.log(`🔍 DEBUG: Input display: ${window.getComputedStyle(searchInput).display}`);
-    console.log(`🔍 DEBUG: Input opacity: ${window.getComputedStyle(searchInput).opacity}`);
-    
-    // Force the input to maintain its value
-    searchInput.setAttribute('value', searchParam);
     
     // Clear placeholder first to avoid interference
     searchInput.placeholder = '';
     searchInput.setAttribute('placeholder', '');
+    searchInput.removeAttribute('placeholder');
     
-    // Set the value first
-    searchInput.value = searchParam;
-    searchInput.defaultValue = searchParam;
-    
-    // Force a visual refresh by triggering input event
-    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-    
-    // Force focus to make text visible (some inputs hide text until focused)
-    searchInput.focus();
-    searchInput.blur();
-    
-    // Hide placeholder for testing - comment out for now
-    // setTimeout(() => {
-    //   searchInput.placeholder = `Searching for: ${searchParam}`;
-    // }, 100);
-    
-          // Add a small delay and check if text is visible
-      setTimeout(() => {
-        console.log(`🔍 DEBUG: Final check - Input value: "${searchInput.value}"`);
-        console.log(`🔍 DEBUG: Final check - Input text color: ${window.getComputedStyle(searchInput).color}`);
-        console.log(`🔍 DEBUG: Final check - Input background: ${window.getComputedStyle(searchInput).backgroundColor}`);
-        
-        // Force text to be visible with multiple approaches
-        searchInput.style.color = '#333 !important';
-        searchInput.style.backgroundColor = '#fff !important';
-        searchInput.style.opacity = '1 !important';
-        searchInput.style.visibility = 'visible !important';
-        searchInput.style.display = 'block !important';
-        
-        // Force the value again
-        searchInput.value = searchParam;
-        searchInput.defaultValue = searchParam;
-        
-        // Create a temporary style element to override any CSS
-        const style = document.createElement('style');
-        style.textContent = `
-          #globalSearchInput {
-            color: #333 !important;
-            background-color: #fff !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            display: block !important;
-            font-family: var(--title-bold) !important;
-            font-size: 13px !important;
-            width: 100% !important;
-            border: none !important;
-            outline: none !important;
-          }
-          #globalSearchInput::placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-            display: none !important;
-          }
-          .duva-global-search::placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-            display: none !important;
-          }
-          .search-input::placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-            display: none !important;
-          }
-          .duva-global-search {
-            color: #333 !important;
-            background-color: #fff !important;
-          }
-          .search-input {
-            color: #333 !important;
-            background-color: #fff !important;
-          }
-        `;
-        document.head.appendChild(style);
-        
-        console.log(`🔍 DEBUG: Forced text visibility with CSS overrides`);
-        
-        // Try creating a new input element to replace the existing one
-        const newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.id = 'globalSearchInput';
-        newInput.className = 'duva-global-search search-input';
-        newInput.value = searchParam;
-        newInput.style.cssText = `
-          border: none !important;
-          outline: none !important;
-          background: #fff !important;
-          font-family: var(--title-bold) !important;
-          font-size: 13px !important;
-          width: 100% !important;
-          color: #333 !important;
-          opacity: 1 !important;
-          visibility: visible !important;
-          display: block !important;
-        `;
-        
-        // Replace the old input with the new one
-        searchInput.parentNode.replaceChild(newInput, searchInput);
-        
-        // Update the reference
-        const updatedSearchInput = document.getElementById('globalSearchInput');
-        
-        console.log(`🔍 DEBUG: Created new input element:`, updatedSearchInput);
-        console.log(`🔍 DEBUG: New input value: "${updatedSearchInput.value}"`);
-        console.log(`🔍 DEBUG: New input styles:`, updatedSearchInput.style.cssText);
-      }, 200);
-    
-    // Perform search after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      console.log(`🔍 DEBUG: After 100ms delay - Input value: "${searchInput.value}"`);
-      // Re-check and set value again in case it was cleared
-      if (searchInput.value !== searchParam) {
-        console.log(`🔍 Re-setting search input value to: ${searchParam}`);
-        searchInput.value = searchParam;
-        searchInput.setAttribute('value', searchParam);
+    // Remove placeholder from any parent elements
+    const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
+    parentElements.forEach(parent => {
+      if (parent.hasAttribute('placeholder')) {
+        parent.removeAttribute('placeholder');
       }
+    });
+    
+    // Create a new input element to replace the existing one
+    const newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.id = 'globalSearchInput';
+    newInput.className = 'duva-global-search search-input';
+    newInput.value = searchParam;
+    newInput.style.cssText = `
+      border: none !important;
+      outline: none !important;
+      background: #fff !important;
+      font-family: var(--title-bold) !important;
+      font-size: 13px !important;
+      width: 100% !important;
+      color: #333 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
+    `;
+    
+    // Replace the old input with the new one
+    searchInput.parentNode.replaceChild(newInput, searchInput);
+    
+    // Perform search
+    setTimeout(() => {
       performGlobalSearch(searchParam);
     }, 100);
-  } else {
-    console.log(`🔍 DEBUG: No search parameter or not on products page`);
   }
   
-  console.log('✅ Global search initialized');
+
 }
 
 // Navigate to products page with search term
@@ -4672,19 +4569,15 @@ function extractCardText(card) {
 
 // Perform the global search
 function performGlobalSearch(searchTerm) {
-  console.log('🔍 Performing global search for:', searchTerm);
-  
   // Target the same elements as the main filter to maintain grid layout
   const cardsContainer = document.querySelector('.cards-container');
   if (!cardsContainer) {
-    console.log('🔍 No cards container found');
     return;
   }
   
   const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
   
   if (productCards.length === 0) {
-    console.log('🔍 No product cards found');
     return;
   }
   
@@ -4703,8 +4596,6 @@ function performGlobalSearch(searchTerm) {
       card.style.display = 'none';
     }
   });
-  
-  console.log(`🔍 Search complete: ${visibleCount} of ${productCards.length} cards visible`);
   
   // Show/hide no results message
   const noResultsMessage = document.querySelector('.no-results-message');
@@ -4729,12 +4620,9 @@ function performGlobalSearch(searchTerm) {
 
 // Show all product cards (when search is cleared)
 function showAllProductCards() {
-  console.log('🔍 Showing all product cards');
-  
   // Target the same elements as the main filter to maintain grid layout
   const cardsContainer = document.querySelector('.cards-container');
   if (!cardsContainer) {
-    console.log('🔍 No cards container found');
     return;
   }
   
@@ -4756,8 +4644,6 @@ function showAllProductCards() {
   if (searchInput) {
     searchInput.placeholder = 'Search products...';
   }
-  
-  console.log(`🔍 All ${productCards.length} cards now visible`);
 }
 
 // Initialize global search when DOM is ready
@@ -4791,31 +4677,18 @@ setTimeout(() => {
 
 // Additional initialization to ensure search parameter is handled
 setTimeout(() => {
-  console.log('Final delayed initialization - Checking for search parameter');
   const searchInput = document.getElementById('globalSearchInput');
-  console.log(`🔍 DEBUG: Late init - Search input found: ${!!searchInput}`);
   
   if (searchInput) {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
     const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
-    
-    console.log(`🔍 DEBUG: Late init - URL param: ${searchParam}`);
-    console.log(`🔍 DEBUG: Late init - Stored term: ${storedSearchTerm}`);
-    console.log(`🔍 DEBUG: Late init - Current input value: "${searchInput.value}"`);
-    
     const finalSearchTerm = searchParam || storedSearchTerm;
     
     if (finalSearchTerm && searchInput.value === '') {
-      console.log(`🔍 Late initialization: Found search parameter: ${finalSearchTerm}`);
       searchInput.value = finalSearchTerm;
       searchInput.setAttribute('value', finalSearchTerm);
-      console.log(`🔍 DEBUG: Late init - After setting value: "${searchInput.value}"`);
       performGlobalSearch(finalSearchTerm);
-    } else if (finalSearchTerm) {
-      console.log(`🔍 DEBUG: Late init - Search term exists but input not empty: "${searchInput.value}"`);
-    } else {
-      console.log(`🔍 DEBUG: Late init - No search term found`);
     }
   }
 }, 1000);
@@ -4824,40 +4697,27 @@ setTimeout(() => {
 let searchValueMonitor = null;
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
-    console.log('🔍 DEBUG: Webflow.push triggered');
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
     const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
-    
-    console.log(`🔍 DEBUG: Webflow - URL search param: ${searchParam}`);
-    console.log(`🔍 DEBUG: Webflow - Stored search term: ${storedSearchTerm}`);
-    
-    // Use URL parameter first, then fallback to sessionStorage
     const finalSearchTerm = searchParam || storedSearchTerm;
     
-    console.log(`🔍 DEBUG: Webflow - Final search term: ${finalSearchTerm}`);
-    
     if (finalSearchTerm) {
-      console.log(`🔍 Webflow initialization: Setting search parameter: ${finalSearchTerm}`);
-      
       const searchInput = document.getElementById('globalSearchInput');
-      console.log(`🔍 DEBUG: Webflow - Search input found: ${!!searchInput}`);
       
       if (searchInput) {
-        console.log(`🔍 DEBUG: Webflow - Before setting - Input value: "${searchInput.value}"`);
+        // Clear placeholder first to avoid interference
+        searchInput.placeholder = '';
+        searchInput.setAttribute('placeholder', '');
+        searchInput.removeAttribute('placeholder');
         
-            // Clear placeholder first to avoid interference
-            searchInput.placeholder = '';
-            searchInput.setAttribute('placeholder', '');
-            searchInput.removeAttribute('placeholder');
-            
-            // Also remove placeholder from any parent elements that might have it
-            const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
-            parentElements.forEach(parent => {
-              if (parent.hasAttribute('placeholder')) {
-                parent.removeAttribute('placeholder');
-              }
-            });
+        // Remove placeholder from any parent elements
+        const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
+        parentElements.forEach(parent => {
+          if (parent.hasAttribute('placeholder')) {
+            parent.removeAttribute('placeholder');
+          }
+        });
         
         // Set the value
         searchInput.value = finalSearchTerm;
@@ -4866,22 +4726,12 @@ if (typeof Webflow !== 'undefined') {
         
         // Force visual refresh
         searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        // Hide placeholder for testing - comment out for now
-        // setTimeout(() => {
-        //   searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
-        // }, 100);
-        
-        console.log(`🔍 DEBUG: Webflow - After setting - Input value: "${searchInput.value}"`);
       }
       
       // Set up continuous monitoring
       searchValueMonitor = setInterval(() => {
         const searchInput = document.getElementById('globalSearchInput');
         if (searchInput && searchInput.value !== finalSearchTerm) {
-          console.log(`🔍 Monitoring: Re-setting search value to: ${finalSearchTerm}`);
-          console.log(`🔍 DEBUG: Monitoring - Current value: "${searchInput.value}"`);
-          
           // Clear placeholder first
           searchInput.placeholder = '';
           searchInput.setAttribute('placeholder', '');
@@ -4894,11 +4744,6 @@ if (typeof Webflow !== 'undefined') {
           
           // Force visual refresh
           searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-          
-          // Hide placeholder for testing - comment out for now
-          // setTimeout(() => {
-          //   searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
-          // }, 100);
         }
       }, 500);
       
@@ -4907,16 +4752,13 @@ if (typeof Webflow !== 'undefined') {
         if (searchValueMonitor) {
           clearInterval(searchValueMonitor);
           searchValueMonitor = null;
-          console.log('🔍 Search value monitoring stopped');
         }
       }, 10000);
-    } else {
-      console.log('🔍 DEBUG: Webflow - No search term to set');
     }
   });
 }
 
-console.log('✅ DUVA Global Search functionality loaded!');
+
 
 // Let Webflow handle search icon styling naturally
 // No CSS overrides needed - using Webflow's default styling
