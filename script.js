@@ -4426,9 +4426,14 @@ function initializeGlobalSearch() {
   const urlParams = new URLSearchParams(window.location.search);
   const searchParam = urlParams.get('search');
   if (searchParam && isOnProductsPage) {
+    console.log(`🔍 Found search parameter: ${searchParam}`);
     // Set the search input value and perform search
     searchInput.value = searchParam;
-    performGlobalSearch(searchParam);
+    console.log(`🔍 Set search input value to: ${searchInput.value}`);
+    // Perform search after a short delay to ensure DOM is ready
+    setTimeout(() => {
+      performGlobalSearch(searchParam);
+    }, 100);
   }
   
   console.log('✅ Global search initialized');
@@ -4640,6 +4645,21 @@ setTimeout(() => {
   console.log('Delayed initialization - Re-initializing global search');
   initializeGlobalSearch();
 }, 3000);
+
+// Additional initialization to ensure search parameter is handled
+setTimeout(() => {
+  console.log('Final delayed initialization - Checking for search parameter');
+  const searchInput = document.getElementById('globalSearchInput');
+  if (searchInput) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam && searchInput.value === '') {
+      console.log(`🔍 Late initialization: Found search parameter: ${searchParam}`);
+      searchInput.value = searchParam;
+      performGlobalSearch(searchParam);
+    }
+  }
+}, 1000);
 
 console.log('✅ DUVA Global Search functionality loaded!');
 
