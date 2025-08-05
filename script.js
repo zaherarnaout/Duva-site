@@ -4534,26 +4534,34 @@ function initializeGlobalSearch() {
         
         console.log(`🔍 DEBUG: Forced text visibility with CSS overrides`);
         
-        // Also try to force the text to show by simulating user input
-        searchInput.focus();
-        searchInput.select();
-        searchInput.setSelectionRange(0, searchInput.value.length);
+        // Try creating a new input element to replace the existing one
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.id = 'globalSearchInput';
+        newInput.className = 'duva-global-search search-input';
+        newInput.value = searchParam;
+        newInput.style.cssText = `
+          border: none !important;
+          outline: none !important;
+          background: #fff !important;
+          font-family: var(--title-bold) !important;
+          font-size: 13px !important;
+          width: 100% !important;
+          color: #333 !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          display: block !important;
+        `;
         
-        // Force a repaint
-        searchInput.style.transform = 'translateZ(0)';
+        // Replace the old input with the new one
+        searchInput.parentNode.replaceChild(newInput, searchInput);
         
-        // Try setting the value using different methods
-        searchInput.value = searchParam;
-        searchInput.defaultValue = searchParam;
-        searchInput.setAttribute('value', searchParam);
+        // Update the reference
+        const updatedSearchInput = document.getElementById('globalSearchInput');
         
-        // Force the input to show the text by triggering events
-        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-        
-        console.log(`🔍 DEBUG: Input element:`, searchInput);
-        console.log(`🔍 DEBUG: Input computed styles:`, window.getComputedStyle(searchInput));
-        console.log(`🔍 DEBUG: Input value after all methods: "${searchInput.value}"`);
+        console.log(`🔍 DEBUG: Created new input element:`, updatedSearchInput);
+        console.log(`🔍 DEBUG: New input value: "${updatedSearchInput.value}"`);
+        console.log(`🔍 DEBUG: New input styles:`, updatedSearchInput.style.cssText);
       }, 200);
     
     // Perform search after a short delay to ensure DOM is ready
