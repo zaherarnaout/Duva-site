@@ -4520,15 +4520,23 @@ function navigateToProductsPage(searchTerm) {
 
 // Navigate back to original page
 function navigateBackToOriginalPage() {
+  console.log('🔍 navigateBackToOriginalPage called');
+  console.log('🔍 Global state:', window.globalSearchState);
+  console.log('🔍 Current URL:', window.location.href);
+  
   // Remove search parameter from current URL if we're on products page
   if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
-    const url = new URL(window.location);
-    url.searchParams.delete('search');
-    window.location.href = url.toString();
+    console.log('🔍 On products page, removing search param and going to homepage');
+    // Go to homepage instead of just removing search param
+    window.location.href = window.location.origin + '/';
   } else {
     // Navigate back to stored original page
     if (window.globalSearchState && window.globalSearchState.currentPageUrl) {
+      console.log('🔍 Navigating back to:', window.globalSearchState.currentPageUrl);
       window.location.href = window.globalSearchState.currentPageUrl;
+    } else {
+      console.log('🔍 No original page URL found, going to homepage');
+      window.location.href = window.location.origin + '/';
     }
   }
 }
