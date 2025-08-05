@@ -1850,11 +1850,8 @@ function injectPdfContent() {
 
 // Get current product code dynamically from CMS
 function getCurrentProductCode() {
-  console.log('🔍 Searching for current product code...');
-  
   // PRIORITY 1: Check window.currentSelection first (most current)
   if (window.currentSelection && window.currentSelection.product) {
-    console.log('✅ Using product code from window.currentSelection:', window.currentSelection.product);
     return window.currentSelection.product;
   }
   
@@ -1870,11 +1867,8 @@ function getCurrentProductCode() {
   
   for (const selector of visibleSelectors) {
     const element = document.querySelector(selector);
-    console.log(`🔍 Checking visible selector "${selector}":`, element);
     if (element && element.textContent.trim()) {
-      const code = element.textContent.trim();
-      console.log(`✅ Found visible product code from ${selector}:`, code);
-      return code;
+      return element.textContent.trim();
     }
   }
   
@@ -1882,9 +1876,7 @@ function getCurrentProductCode() {
   const allElements = document.querySelectorAll('*:not([style*="display: none"])');
   for (const element of allElements) {
     if (element.textContent && element.textContent.match(/^C\d{3,4}$/)) {
-      const code = element.textContent.trim();
-      console.log(`✅ Found visible product code pattern in element:`, element, 'Code:', code);
-      return code;
+      return element.textContent.trim();
     }
   }
   
@@ -1899,15 +1891,11 @@ function getCurrentProductCode() {
   
   for (const selector of hiddenSelectors) {
     const element = document.querySelector(selector);
-    console.log(`🔍 Checking hidden selector "${selector}":`, element);
     if (element && element.textContent.trim()) {
-      const code = element.textContent.trim();
-      console.log(`⚠️ Using hidden product code from ${selector}:`, code);
-      return code;
+      return element.textContent.trim();
     }
   }
   
-  console.log('⚠️ No product code found, using fallback: CXXX');
   return 'CXXX';
 }
 
@@ -4372,8 +4360,11 @@ function initializeGlobalSearch() {
   const searchInput = document.getElementById('globalSearchInput');
   
   if (!searchInput) {
+    console.log('🔍 Global search input not found');
     return;
   }
+  
+  console.log('🔍 Global search input found:', searchInput);
   
 
   
@@ -4490,6 +4481,8 @@ function initializeGlobalSearch() {
     // Add input event listener for real-time search
     updatedSearchInput.addEventListener('input', function(e) {
       const searchTerm = e.target.value.toLowerCase().trim();
+      
+      console.log('🔍 Search input event triggered:', searchTerm);
       
       if (searchTerm === '') {
         // Clear sessionStorage when search is cleared
@@ -4726,14 +4719,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // Also initialize when Webflow's page loads
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
-    console.log('Webflow.push - Initializing global search');
     initializeGlobalSearch();
   });
 }
 
 // Re-initialize search after a delay to catch late-loading content
 setTimeout(() => {
-  console.log('Delayed initialization - Re-initializing global search');
   initializeGlobalSearch();
 }, 3000);
 
