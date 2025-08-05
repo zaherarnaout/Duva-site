@@ -4379,6 +4379,7 @@ function initializeGlobalSearch() {
   console.log('🔍 Input placeholder after:', searchInput.placeholder);
   
   // Check if this is a Webflow embed (div) or actual input
+  let actualSearchInput = searchInput;
   if (searchInput.tagName === 'DIV') {
     console.log('🔍 Found Webflow embed div, looking for actual input inside');
     // Look for the actual input element inside the embed
@@ -4386,7 +4387,7 @@ function initializeGlobalSearch() {
     if (actualInput) {
       console.log('🔍 Found actual input inside embed:', actualInput);
       // Use the actual input element instead
-      searchInput = actualInput;
+      actualSearchInput = actualInput;
     } else {
       console.log('🔍 No input found inside embed div');
       return;
@@ -4419,7 +4420,7 @@ function initializeGlobalSearch() {
   };
   
   // Add input event listener for real-time search
-  searchInput.addEventListener('input', function(e) {
+  actualSearchInput.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
     
     if (searchTerm === '') {
@@ -4448,7 +4449,7 @@ function initializeGlobalSearch() {
   });
   
   // Add focus event to show all products when search is cleared
-  searchInput.addEventListener('focus', function(e) {
+  actualSearchInput.addEventListener('focus', function(e) {
     if (e.target.value === '') {
       if (isOnProductsPage) {
         showAllProductCards();
@@ -4457,7 +4458,7 @@ function initializeGlobalSearch() {
   });
   
   // Add blur event to maintain search state
-  searchInput.addEventListener('blur', function(e) {
+  actualSearchInput.addEventListener('blur', function(e) {
     // Keep current search results
   });
   
@@ -4466,12 +4467,12 @@ function initializeGlobalSearch() {
     sessionStorage.setItem('globalSearchTerm', searchParam);
     
     // Clear placeholder first to avoid interference
-    searchInput.placeholder = '';
-    searchInput.setAttribute('placeholder', '');
-    searchInput.removeAttribute('placeholder');
+    actualSearchInput.placeholder = '';
+    actualSearchInput.setAttribute('placeholder', '');
+    actualSearchInput.removeAttribute('placeholder');
     
     // Remove placeholder from any parent elements
-    const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
+    const parentElements = actualSearchInput.parentElement ? [actualSearchInput.parentElement] : [];
     parentElements.forEach(parent => {
       if (parent.hasAttribute('placeholder')) {
         parent.removeAttribute('placeholder');
