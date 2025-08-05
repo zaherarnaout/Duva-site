@@ -4366,6 +4366,11 @@ function initializeGlobalSearch() {
   
   console.log('🔍 Global search input found:', searchInput);
   
+  // Add placeholder text if none exists
+  if (!searchInput.placeholder) {
+    searchInput.placeholder = 'Search products...';
+  }
+  
   // Check if this is a Webflow embed (div) or actual input
   if (searchInput.tagName === 'DIV') {
     console.log('🔍 Found Webflow embed div, looking for actual input inside');
