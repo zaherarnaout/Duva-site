@@ -4454,29 +4454,31 @@ function extractCardText(card) {
 function performGlobalSearch(searchTerm) {
   console.log('🔍 Performing global search for:', searchTerm);
   
-  const productCards = document.querySelectorAll('.product-card, .collection-item, .w-dyn-item');
+  // Target flip card wrappers instead of individual cards
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
-  if (productCards.length === 0) {
-    console.log('🔍 No product cards found');
+  if (flipCardWrappers.length === 0) {
+    console.log('🔍 No flip card wrappers found');
     return;
   }
   
   let visibleCount = 0;
   
-  productCards.forEach(card => {
-    const cardText = extractCardText(card);
-    const matches = searchTerm === '' || cardText.includes(searchTerm);
+  flipCardWrappers.forEach(wrapper => {
+    // Extract text from the entire wrapper (both front and back cards)
+    const wrapperText = extractCardText(wrapper);
+    const matches = searchTerm === '' || wrapperText.includes(searchTerm);
     
     if (matches) {
       // Remove any inline display style to let CSS handle the layout
-      card.style.removeProperty('display');
+      wrapper.style.removeProperty('display');
       visibleCount++;
     } else {
-      card.style.display = 'none';
+      wrapper.style.display = 'none';
     }
   });
   
-  console.log(`🔍 Search complete: ${visibleCount} of ${productCards.length} cards visible`);
+  console.log(`🔍 Search complete: ${visibleCount} of ${flipCardWrappers.length} cards visible`);
   
   // Update search input placeholder to show results
   const searchInput = document.getElementById('globalSearchInput');
@@ -4493,11 +4495,12 @@ function performGlobalSearch(searchTerm) {
 function showAllProductCards() {
   console.log('🔍 Showing all product cards');
   
-  const productCards = document.querySelectorAll('.product-card, .collection-item, .w-dyn-item');
+  // Target flip card wrappers instead of individual cards
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
-  productCards.forEach(card => {
+  flipCardWrappers.forEach(wrapper => {
     // Remove any inline display style to let CSS handle the layout
-    card.style.removeProperty('display');
+    wrapper.style.removeProperty('display');
   });
   
   // Reset search input placeholder
@@ -4506,7 +4509,7 @@ function showAllProductCards() {
     searchInput.placeholder = 'Search products...';
   }
   
-  console.log(`🔍 All ${productCards.length} cards now visible`);
+  console.log(`🔍 All ${flipCardWrappers.length} cards now visible`);
 }
 
 // Initialize global search when DOM is ready
