@@ -3909,8 +3909,6 @@ footer, .footer {
 }
 
 /* === Essential Flip Card Animation Only === */
-
-/* === Essential Flip Card Animation Only === */
 .flip-card-back {
   position: absolute;
   inset: 0%;
@@ -3918,16 +3916,16 @@ footer, .footer {
   width: 100%;
   height: 100%;
   /* Slide animation properties */
-transform: translateY(100%); /* Start from bottom */
-transition: transform 0.8s ease-in-out;
-opacity: 1; /* Always visible but transformed */
-display: flex; /* Always rendered but positioned off-screen */
+  transform: translateY(100%); /* Start from bottom */
+  transition: transform 0.8s ease-in-out;
+  opacity: 1; /* Always visible but transformed */
+  display: flex; /* Always rendered but positioned off-screen */
 }
 
 /* Slide up on hover */
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
-  transform: translateY(0%); /* Slide to original position */
+  transform: translateY(0%) !important; /* Slide to original position */
 }
 
 /* Remove underlines from all product card links */
