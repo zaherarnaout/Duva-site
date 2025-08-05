@@ -3946,32 +3946,6 @@ footer, .footer {
   padding: 40px 20px;
 }
 
-/* === Front Card Visibility Fix === */
-.flip-card-front,
-.flip-card-front *,
-.product-card,
-.product-card * {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Ensure product images are visible */
-.product-image-wrapper,
-.product-image-wrapper img {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Ensure text elements are visible */
-.main-code-card-wrapper,
-.main-code-card-wrapper * {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
 
 
 
