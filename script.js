@@ -4357,6 +4357,12 @@ function testCardNavigation() {
 
 // Initialize global search functionality
 function initializeGlobalSearch() {
+  // Prevent duplicate initialization
+  if (window.globalSearchInitialized) {
+    console.log('🔍 Global search already initialized, skipping');
+    return;
+  }
+  
   const searchInput = document.getElementById('globalSearchInput');
   
   if (!searchInput) {
@@ -4418,6 +4424,9 @@ function initializeGlobalSearch() {
     currentPageUrl: currentPageUrl,
     isOnProductsPage: isOnProductsPage
   };
+  
+  // Mark as initialized to prevent duplicates
+  window.globalSearchInitialized = true;
   
   // Add input event listener for real-time search
   actualSearchInput.addEventListener('input', function(e) {
@@ -4484,7 +4493,7 @@ function initializeGlobalSearch() {
     newInput.type = 'text';
     newInput.id = 'globalSearchInput';
     newInput.className = 'duva-global-search search-input';
-    newInput.value = searchParam;
+    // Don't set the value - let the user type naturally
     newInput.style.cssText = `
       border: none !important;
       outline: none !important;
