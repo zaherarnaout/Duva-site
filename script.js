@@ -4390,6 +4390,9 @@ function initializeGlobalSearch() {
     const searchTerm = e.target.value.toLowerCase().trim();
     
     if (searchTerm === '') {
+      // Clear sessionStorage when search is cleared
+      sessionStorage.removeItem('globalSearchTerm');
+      
       // If search is cleared and we're on products page, show all products
       if (isOnProductsPage) {
         performGlobalSearch(searchTerm);
@@ -4398,6 +4401,9 @@ function initializeGlobalSearch() {
         navigateBackToOriginalPage();
       }
     } else {
+      // Store search term in sessionStorage
+      sessionStorage.setItem('globalSearchTerm', searchTerm);
+      
       // If we're not on products page, navigate to products page with search
       if (!isOnProductsPage) {
         navigateToProductsPage(searchTerm);
@@ -4427,12 +4433,19 @@ function initializeGlobalSearch() {
   const searchParam = urlParams.get('search');
   if (searchParam && isOnProductsPage) {
     console.log(`🔍 Found search parameter: ${searchParam}`);
+    
+    // Store the search parameter in sessionStorage as backup
+    sessionStorage.setItem('globalSearchTerm', searchParam);
+    
     // Set the search input value and perform search
     searchInput.value = searchParam;
     console.log(`🔍 Set search input value to: ${searchInput.value}`);
     
     // Force the input to maintain its value
     searchInput.setAttribute('value', searchParam);
+    
+    // Also set the placeholder to show the search term
+    searchInput.placeholder = `Searching for: ${searchParam}`;
     
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
@@ -4678,16 +4691,29 @@ if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
-    if (searchParam) {
-      console.log(`🔍 Webflow initialization: Setting search parameter: ${searchParam}`);
+    const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
+    
+    // Use URL parameter first, then fallback to sessionStorage
+    const finalSearchTerm = searchParam || storedSearchTerm;
+    
+    if (finalSearchTerm) {
+      console.log(`🔍 Webflow initialization: Setting search parameter: ${finalSearchTerm}`);
+      
+      const searchInput = document.getElementById('globalSearchInput');
+      if (searchInput) {
+        searchInput.value = finalSearchTerm;
+        searchInput.setAttribute('value', finalSearchTerm);
+        searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+      }
       
       // Set up continuous monitoring
       searchValueMonitor = setInterval(() => {
         const searchInput = document.getElementById('globalSearchInput');
-        if (searchInput && searchInput.value !== searchParam) {
-          console.log(`🔍 Monitoring: Re-setting search value to: ${searchParam}`);
-          searchInput.value = searchParam;
-          searchInput.setAttribute('value', searchParam);
+        if (searchInput && searchInput.value !== finalSearchTerm) {
+          console.log(`🔍 Monitoring: Re-setting search value to: ${finalSearchTerm}`);
+          searchInput.value = finalSearchTerm;
+          searchInput.setAttribute('value', finalSearchTerm);
+          searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
         }
       }, 500);
       
