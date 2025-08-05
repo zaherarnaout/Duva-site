@@ -3933,6 +3933,19 @@ footer, .footer {
   text-decoration: none !important;
 }
 
+/* === No Results Message Styling === */
+.no-results-message {
+  margin-right: 40px;
+  font-family: var(--section-title);
+  color: var(--duva-d-grey);
+  font-size: var(--section-title-size);
+  line-height: var(--section-title-height);
+  font-weight: var(--section-title-weight);
+  text-align: center;
+  width: 100%;
+  padding: 40px 20px;
+}
+
 
 
 
