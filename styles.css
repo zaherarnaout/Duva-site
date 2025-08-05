@@ -3915,15 +3915,19 @@ footer, .footer {
   position: absolute;
   inset: 0%;
   z-index: 2;
-  display: none;
   width: 100%;
   height: 100%;
+  /* Slide animation properties */
+  transform: translateY(100%); /* Start from bottom */
+  transition: transform 0.4s ease-in-out;
+  opacity: 1; /* Always visible but transformed */
+  display: flex; /* Always rendered but positioned off-screen */
 }
 
-/* Show back card on hover */
+/* Slide up on hover */
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
-  display: flex;
+  transform: translateY(0%); /* Slide to original position */
 }
 
 /* Remove underlines from all product card links */
