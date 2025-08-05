@@ -4366,7 +4366,24 @@ function initializeGlobalSearch() {
   
   console.log('🔍 Global search input found:', searchInput);
   
-
+  // Check if this is a Webflow embed (div) or actual input
+  if (searchInput.tagName === 'DIV') {
+    console.log('🔍 Found Webflow embed div, looking for actual input inside');
+    // Look for the actual input element inside the embed
+    const actualInput = searchInput.querySelector('input');
+    if (actualInput) {
+      console.log('🔍 Found actual input inside embed:', actualInput);
+      // Use the actual input element instead
+      searchInput = actualInput;
+    } else {
+      console.log('🔍 No input found inside embed div');
+      return;
+    }
+  }
+  
+  // Check if we landed on products page with search parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchParam = urlParams.get('search');
   
   // Store the current page URL for navigation back
   let currentPageUrl = window.location.href;
@@ -4431,10 +4448,6 @@ function initializeGlobalSearch() {
   searchInput.addEventListener('blur', function(e) {
     // Keep current search results
   });
-  
-  // Check if we landed on products page with search parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchParam = urlParams.get('search');
   
   if (searchParam && isOnProductsPage) {
     // Store the search parameter in sessionStorage as backup
