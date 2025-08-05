@@ -4431,15 +4431,22 @@ function initializeGlobalSearch() {
   // Check if we landed on products page with search parameter
   const urlParams = new URLSearchParams(window.location.search);
   const searchParam = urlParams.get('search');
+  console.log(`🔍 DEBUG: URL search parameter: ${searchParam}`);
+  console.log(`🔍 DEBUG: Current page URL: ${window.location.href}`);
+  console.log(`🔍 DEBUG: Is on products page: ${isOnProductsPage}`);
+  
   if (searchParam && isOnProductsPage) {
     console.log(`🔍 Found search parameter: ${searchParam}`);
     
     // Store the search parameter in sessionStorage as backup
     sessionStorage.setItem('globalSearchTerm', searchParam);
+    console.log(`🔍 DEBUG: Stored in sessionStorage: ${sessionStorage.getItem('globalSearchTerm')}`);
     
     // Set the search input value and perform search
     searchInput.value = searchParam;
     console.log(`🔍 Set search input value to: ${searchInput.value}`);
+    console.log(`🔍 DEBUG: Input value after setting: "${searchInput.value}"`);
+    console.log(`🔍 DEBUG: Input getAttribute('value'): "${searchInput.getAttribute('value')}"`);
     
     // Force the input to maintain its value
     searchInput.setAttribute('value', searchParam);
@@ -4449,6 +4456,7 @@ function initializeGlobalSearch() {
     
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
+      console.log(`🔍 DEBUG: After 100ms delay - Input value: "${searchInput.value}"`);
       // Re-check and set value again in case it was cleared
       if (searchInput.value !== searchParam) {
         console.log(`🔍 Re-setting search input value to: ${searchParam}`);
@@ -4457,6 +4465,8 @@ function initializeGlobalSearch() {
       }
       performGlobalSearch(searchParam);
     }, 100);
+  } else {
+    console.log(`🔍 DEBUG: No search parameter or not on products page`);
   }
   
   console.log('✅ Global search initialized');
@@ -4673,14 +4683,29 @@ setTimeout(() => {
 setTimeout(() => {
   console.log('Final delayed initialization - Checking for search parameter');
   const searchInput = document.getElementById('globalSearchInput');
+  console.log(`🔍 DEBUG: Late init - Search input found: ${!!searchInput}`);
+  
   if (searchInput) {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
-    if (searchParam && searchInput.value === '') {
-      console.log(`🔍 Late initialization: Found search parameter: ${searchParam}`);
-      searchInput.value = searchParam;
-      searchInput.setAttribute('value', searchParam);
-      performGlobalSearch(searchParam);
+    const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
+    
+    console.log(`🔍 DEBUG: Late init - URL param: ${searchParam}`);
+    console.log(`🔍 DEBUG: Late init - Stored term: ${storedSearchTerm}`);
+    console.log(`🔍 DEBUG: Late init - Current input value: "${searchInput.value}"`);
+    
+    const finalSearchTerm = searchParam || storedSearchTerm;
+    
+    if (finalSearchTerm && searchInput.value === '') {
+      console.log(`🔍 Late initialization: Found search parameter: ${finalSearchTerm}`);
+      searchInput.value = finalSearchTerm;
+      searchInput.setAttribute('value', finalSearchTerm);
+      console.log(`🔍 DEBUG: Late init - After setting value: "${searchInput.value}"`);
+      performGlobalSearch(finalSearchTerm);
+    } else if (finalSearchTerm) {
+      console.log(`🔍 DEBUG: Late init - Search term exists but input not empty: "${searchInput.value}"`);
+    } else {
+      console.log(`🔍 DEBUG: Late init - No search term found`);
     }
   }
 }, 1000);
@@ -4689,21 +4714,31 @@ setTimeout(() => {
 let searchValueMonitor = null;
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
+    console.log('🔍 DEBUG: Webflow.push triggered');
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
     const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
     
+    console.log(`🔍 DEBUG: Webflow - URL search param: ${searchParam}`);
+    console.log(`🔍 DEBUG: Webflow - Stored search term: ${storedSearchTerm}`);
+    
     // Use URL parameter first, then fallback to sessionStorage
     const finalSearchTerm = searchParam || storedSearchTerm;
+    
+    console.log(`🔍 DEBUG: Webflow - Final search term: ${finalSearchTerm}`);
     
     if (finalSearchTerm) {
       console.log(`🔍 Webflow initialization: Setting search parameter: ${finalSearchTerm}`);
       
       const searchInput = document.getElementById('globalSearchInput');
+      console.log(`🔍 DEBUG: Webflow - Search input found: ${!!searchInput}`);
+      
       if (searchInput) {
+        console.log(`🔍 DEBUG: Webflow - Before setting - Input value: "${searchInput.value}"`);
         searchInput.value = finalSearchTerm;
         searchInput.setAttribute('value', finalSearchTerm);
         searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+        console.log(`🔍 DEBUG: Webflow - After setting - Input value: "${searchInput.value}"`);
       }
       
       // Set up continuous monitoring
@@ -4711,6 +4746,7 @@ if (typeof Webflow !== 'undefined') {
         const searchInput = document.getElementById('globalSearchInput');
         if (searchInput && searchInput.value !== finalSearchTerm) {
           console.log(`🔍 Monitoring: Re-setting search value to: ${finalSearchTerm}`);
+          console.log(`🔍 DEBUG: Monitoring - Current value: "${searchInput.value}"`);
           searchInput.value = finalSearchTerm;
           searchInput.setAttribute('value', finalSearchTerm);
           searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
@@ -4725,6 +4761,8 @@ if (typeof Webflow !== 'undefined') {
           console.log('🔍 Search value monitoring stopped');
         }
       }, 10000);
+    } else {
+      console.log('🔍 DEBUG: Webflow - No search term to set');
     }
   });
 }
