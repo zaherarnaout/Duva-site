@@ -4454,18 +4454,24 @@ function initializeGlobalSearch() {
     // Force the input to maintain its value
     searchInput.setAttribute('value', searchParam);
     
-    // Also set the placeholder to show the search term
-    searchInput.placeholder = `Searching for: ${searchParam}`;
+    // Clear placeholder first to avoid interference
+    searchInput.placeholder = '';
+    
+    // Set the value first
+    searchInput.value = searchParam;
+    searchInput.defaultValue = searchParam;
     
     // Force a visual refresh by triggering input event
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
     
-    // Also try setting the value using different methods
-    searchInput.defaultValue = searchParam;
-    
     // Force focus to make text visible (some inputs hide text until focused)
     searchInput.focus();
     searchInput.blur();
+    
+    // Set placeholder after a delay to show search term
+    setTimeout(() => {
+      searchInput.placeholder = `Searching for: ${searchParam}`;
+    }, 100);
     
     // Add a small delay and check if text is visible
     setTimeout(() => {
@@ -4762,9 +4768,23 @@ if (typeof Webflow !== 'undefined') {
       
       if (searchInput) {
         console.log(`🔍 DEBUG: Webflow - Before setting - Input value: "${searchInput.value}"`);
+        
+        // Clear placeholder first to avoid interference
+        searchInput.placeholder = '';
+        
+        // Set the value
         searchInput.value = finalSearchTerm;
         searchInput.setAttribute('value', finalSearchTerm);
-        searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+        searchInput.defaultValue = finalSearchTerm;
+        
+        // Force visual refresh
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        // Set placeholder after a delay
+        setTimeout(() => {
+          searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+        }, 100);
+        
         console.log(`🔍 DEBUG: Webflow - After setting - Input value: "${searchInput.value}"`);
       }
       
@@ -4774,9 +4794,22 @@ if (typeof Webflow !== 'undefined') {
         if (searchInput && searchInput.value !== finalSearchTerm) {
           console.log(`🔍 Monitoring: Re-setting search value to: ${finalSearchTerm}`);
           console.log(`🔍 DEBUG: Monitoring - Current value: "${searchInput.value}"`);
+          
+          // Clear placeholder first
+          searchInput.placeholder = '';
+          
+          // Set the value
           searchInput.value = finalSearchTerm;
           searchInput.setAttribute('value', finalSearchTerm);
-          searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+          searchInput.defaultValue = finalSearchTerm;
+          
+          // Force visual refresh
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          
+          // Set placeholder after a delay
+          setTimeout(() => {
+            searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+          }, 100);
         }
       }, 500);
       
