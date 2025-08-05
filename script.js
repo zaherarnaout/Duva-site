@@ -4430,8 +4430,18 @@ function initializeGlobalSearch() {
     // Set the search input value and perform search
     searchInput.value = searchParam;
     console.log(`🔍 Set search input value to: ${searchInput.value}`);
+    
+    // Force the input to maintain its value
+    searchInput.setAttribute('value', searchParam);
+    
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
+      // Re-check and set value again in case it was cleared
+      if (searchInput.value !== searchParam) {
+        console.log(`🔍 Re-setting search input value to: ${searchParam}`);
+        searchInput.value = searchParam;
+        searchInput.setAttribute('value', searchParam);
+      }
       performGlobalSearch(searchParam);
     }, 100);
   }
@@ -4656,10 +4666,42 @@ setTimeout(() => {
     if (searchParam && searchInput.value === '') {
       console.log(`🔍 Late initialization: Found search parameter: ${searchParam}`);
       searchInput.value = searchParam;
+      searchInput.setAttribute('value', searchParam);
       performGlobalSearch(searchParam);
     }
   }
 }, 1000);
+
+// Continuous monitoring to maintain search input value
+let searchValueMonitor = null;
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam) {
+      console.log(`🔍 Webflow initialization: Setting search parameter: ${searchParam}`);
+      
+      // Set up continuous monitoring
+      searchValueMonitor = setInterval(() => {
+        const searchInput = document.getElementById('globalSearchInput');
+        if (searchInput && searchInput.value !== searchParam) {
+          console.log(`🔍 Monitoring: Re-setting search value to: ${searchParam}`);
+          searchInput.value = searchParam;
+          searchInput.setAttribute('value', searchParam);
+        }
+      }, 500);
+      
+      // Stop monitoring after 10 seconds
+      setTimeout(() => {
+        if (searchValueMonitor) {
+          clearInterval(searchValueMonitor);
+          searchValueMonitor = null;
+          console.log('🔍 Search value monitoring stopped');
+        }
+      }, 10000);
+    }
+  });
+}
 
 console.log('✅ DUVA Global Search functionality loaded!');
 
