@@ -3929,154 +3929,140 @@ footer, .footer {
   /* Removed transform: none to allow fade animation */
 }
 
-/* Ensure flip card wrapper maintains proper structure */
+/* === Product Card Styles === */
 .flip-card-wrapper {
-  perspective: 1000px !important;
-  width: 100% !important;
-  height: 100% !important;
-  /* Test to see if CSS is loading */
-  border: 3px solid red !important;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--border-divider-light);
+  border-right-color: var(--border-divider-light);
+  border-bottom-color: var(--border-divider-light);
+  border-left-color: var(--border-divider-light);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  background-color: var(--duva-white);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
 }
 
-/* Modified flip card animations - Fade instead of flip */
 .flip-card {
-  width: 100% !important;
-  height: 100% !important;
-  position: relative !important;
-  transform-style: preserve-3d !important;
-  transition: all 0.6s ease !important;
-  /* Reset any rotation from previous CSS */
-  transform: none !important;
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute !important;
-  width: 100% !important;
-  height: 100% !important;
-  top: 0 !important;
-  left: 0 !important;
-  backface-visibility: hidden !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
+  width: 100%;
+  height: 100%;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .flip-card-front {
-  opacity: 1 !important;
-  transform: translateZ(0) rotateY(0deg) !important;
-  z-index: 2 !important;
+  width: 100%;
+  height: 100%;
+  align-self: center;
 }
 
 .flip-card-back {
-  opacity: 0 !important;
-  transform: translateZ(-10px) !important;
-  z-index: 1 !important;
-  overflow: hidden !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  padding: 20px 15px !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  border-radius: 8px !important;
-  /* Reset any rotation from previous CSS */
-  transform: translateZ(-10px) rotateY(0deg) !important;
-  /* Ensure it's positioned correctly */
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  position: absolute;
+  inset: 0%;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--border-divider-light);
+  border-right-color: var(--border-divider-light);
+  border-bottom-color: var(--border-divider-light);
+  border-left-color: var(--border-divider-light);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  background-color: var(--duva-d-grey);
 }
 
-/* Fade animation on hover */
-.flip-card-link:hover .flip-card-front,
-.flip-card-wrapper:hover .flip-card-front,
-a:hover .flip-card-front,
-[class*="link"]:hover .flip-card-front,
-.collection-item:hover .flip-card-front,
-.current-product:hover .flip-card-front {
-  opacity: 0 !important;
-  transform: translateZ(-10px) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
-  pointer-events: none !important;
+.current-product {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
 }
 
-.flip-card-link:hover .flip-card-back,
-.flip-card-wrapper:hover .flip-card-back,
-a:hover .flip-card-back,
-[class*="link"]:hover .flip-card-back,
-.collection-item:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  opacity: 1 !important;
-  transform: translateZ(0) rotateY(0deg) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
-  pointer-events: auto !important;
-  visibility: visible !important;
-  /* Show the debug border on hover */
-  border: 2px solid orange !important;
-  background-color: rgba(255, 165, 0, 0.8) !important;
+.product-card {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Test hover on any element that might be covering the cards */
-div:hover .flip-card-front,
-span:hover .flip-card-front,
-section:hover .flip-card-front {
-  opacity: 0 !important;
-  transform: translateZ(-10px) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
+.product-image-wrapper {
+  width: 250px;
+  height: 300px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--border-divider-light);
+  border-right-color: var(--border-divider-light);
+  border-bottom-color: var(--border-divider-light);
+  border-left-color: var(--border-divider-light);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  object-fit: contain;
 }
 
-div:hover .flip-card-back,
-span:hover .flip-card-back,
-section:hover .flip-card-back {
-  opacity: 1 !important;
-  transform: translateZ(0) rotateY(0deg) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
-  visibility: visible !important;
+.main-code-card-wrapper {
+  display: flex;
+  margin-top: 20px;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
 
-/* Simple test - make cards change color on hover */
-.flip-card-wrapper:hover {
-  background-color: purple !important;
+.back-card {
+  display: block;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--section-title);
+  color: var(--duva-light-grey);
+  font-weight: 300;
 }
 
-.flip-card:hover {
-  background-color: pink !important;
+.back-spec-item {
+  display: flex;
+  margin-top: 0px;
+  margin-bottom: 6px;
+  padding-bottom: 0px;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  text-align: center;
 }
 
-/* Additional fallback for any element containing flip-card */
-[class*="flip"]:hover .flip-card-front {
-  opacity: 0 !important;
-  transform: translateZ(-10px) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
-}
-
-[class*="flip"]:hover .flip-card-back {
-  opacity: 1 !important;
-  transform: translateZ(0) rotateY(0deg) !important;
-  transition: opacity 0.6s ease, transform 0.6s ease !important;
-  visibility: visible !important;
-  background-color: rgba(255, 165, 0, 0.8) !important;
-}
-
-/* Force back card to show on ANY hover */
-*:hover .flip-card-back {
-  opacity: 1 !important;
-  visibility: visible !important;
-  background-color: rgba(255, 165, 0, 0.8) !important;
-  border: 2px solid orange !important;
-}
-
-/* Clean flip card styling */
-.flip-card-wrapper {
-  perspective: 1000px !important;
-  height: 470px !important;
-}
-
-.flip-card {
-  transition: all 0.6s ease !important;
-  height: 470px !important;
+@media screen and (max-width: 479px) {
+  .flip-card-wrapper {
+    width: 300px;
+  }
 }
 
 .flip-card-front {
@@ -4121,95 +4107,12 @@ a {
   text-decoration: none !important;
 }
 
-/* Specifically target text within the current-product link */
+/* === Product Card Link Styling === */
 .current-product {
   text-decoration: none !important;
 }
 
 .current-product * {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from link-block-4 as well */
-.link-block-4 {
-  text-decoration: none !important;
-}
-
-.link-block-4 * {
-  text-decoration: none !important;
-}
-
-/* Universal underline removal for all elements */
-* {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from specific elements that might have them */
-.product-card *,
-.item-description *,
-.main-code-text *,
-.product-image-wrapper *,
-.card-overlay *,
-.back-title *,
-.back-spec-label *,
-.wattage * {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from filter and configuration sections */
-[class*="filter"] *,
-[class*="configure"] *,
-[class*="start"] * {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from product codes and descriptions */
-[class*="product"] *,
-[class*="item"] *,
-[class*="code"] *,
-[class*="number"] *,
-[class*="title"] *,
-[class*="text"] *,
-[class*="description"] *,
-[class*="name"] *,
-[class*="label"] *,
-[class*="heading"] *,
-[class*="h1"] *,
-[class*="h2"] *,
-[class*="h3"] *,
-[class*="h4"] *,
-[class*="h5"] *,
-[class*="h6"] *,
-[class*="p"] *,
-[class*="span"] *,
-[class*="div"] * {
-  text-decoration: none !important;
-}
-
-/* Force remove all underlines with higher specificity */
-body *,
-html *,
-#page-content *,
-.w-page *,
-.w-container *,
-.w-col *,
-.w-col-group *,
-.w-col-small *,
-.w-col-medium *,
-.w-col-large * {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from any element with text */
-[data-ix],
-[data-hover],
-[data-animation] {
-  text-decoration: none !important;
-}
-
-[data-ix] *,
-[data-hover] *,
-[data-animation] * {
   text-decoration: none !important;
 }
 
