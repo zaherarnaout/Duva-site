@@ -4361,15 +4361,22 @@ function initializeGlobalSearch() {
   
   if (!searchInput) {
     console.log('🔍 Global search input not found');
+    console.log('🔍 Available elements with "search" in ID:', document.querySelectorAll('[id*="search"]'));
+    console.log('🔍 Available input elements:', document.querySelectorAll('input'));
     return;
   }
   
   console.log('🔍 Global search input found:', searchInput);
+  console.log('🔍 Input type:', searchInput.type);
+  console.log('🔍 Input placeholder before:', searchInput.placeholder);
   
   // Add placeholder text if none exists
   if (!searchInput.placeholder) {
     searchInput.placeholder = 'Search products...';
+    console.log('🔍 Set placeholder to: Search products...');
   }
+  
+  console.log('🔍 Input placeholder after:', searchInput.placeholder);
   
   // Check if this is a Webflow embed (div) or actual input
   if (searchInput.tagName === 'DIV') {
