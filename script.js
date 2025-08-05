@@ -4463,6 +4463,24 @@ function initializeGlobalSearch() {
     // Also try setting the value using different methods
     searchInput.defaultValue = searchParam;
     
+    // Force focus to make text visible (some inputs hide text until focused)
+    searchInput.focus();
+    searchInput.blur();
+    
+    // Add a small delay and check if text is visible
+    setTimeout(() => {
+      console.log(`🔍 DEBUG: Final check - Input value: "${searchInput.value}"`);
+      console.log(`🔍 DEBUG: Final check - Input text color: ${window.getComputedStyle(searchInput).color}`);
+      console.log(`🔍 DEBUG: Final check - Input background: ${window.getComputedStyle(searchInput).backgroundColor}`);
+      
+      // If text color is white or transparent, force it to be visible
+      const textColor = window.getComputedStyle(searchInput).color;
+      if (textColor === 'rgb(255, 255, 255)' || textColor === 'rgba(0, 0, 0, 0)') {
+        console.log(`🔍 DEBUG: Text color issue detected: ${textColor}`);
+        searchInput.style.color = '#333';
+      }
+    }, 200);
+    
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
       console.log(`🔍 DEBUG: After 100ms delay - Input value: "${searchInput.value}"`);
