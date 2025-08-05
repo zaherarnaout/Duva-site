@@ -4470,27 +4470,6 @@ function performGlobalSearch(searchTerm) {
     if (matches) {
       // Remove any inline display style to let CSS handle the layout
       card.style.removeProperty('display');
-      // Ensure front card content is visible
-      const frontCard = card.querySelector('.flip-card-front');
-      if (frontCard) {
-        frontCard.style.display = 'block';
-        frontCard.style.visibility = 'visible';
-        frontCard.style.opacity = '1';
-      }
-      // Ensure images are visible
-      const images = card.querySelectorAll('.product-image-wrapper img');
-      images.forEach(img => {
-        img.style.display = 'block';
-        img.style.visibility = 'visible';
-        img.style.opacity = '1';
-      });
-      // Ensure text content is visible
-      const textElements = card.querySelectorAll('.main-code-card-wrapper *');
-      textElements.forEach(element => {
-        element.style.display = 'block';
-        element.style.visibility = 'visible';
-        element.style.opacity = '1';
-      });
       visibleCount++;
     } else {
       card.style.display = 'none';
@@ -4519,27 +4498,6 @@ function showAllProductCards() {
   productCards.forEach(card => {
     // Remove any inline display style to let CSS handle the layout
     card.style.removeProperty('display');
-    // Ensure front card content is visible
-    const frontCard = card.querySelector('.flip-card-front');
-    if (frontCard) {
-      frontCard.style.display = 'block';
-      frontCard.style.visibility = 'visible';
-      frontCard.style.opacity = '1';
-    }
-    // Ensure images are visible
-    const images = card.querySelectorAll('.product-image-wrapper img');
-    images.forEach(img => {
-      img.style.display = 'block';
-      img.style.visibility = 'visible';
-      img.style.opacity = '1';
-    });
-    // Ensure text content is visible
-    const textElements = card.querySelectorAll('.main-code-card-wrapper *');
-    textElements.forEach(element => {
-      element.style.display = 'block';
-      element.style.visibility = 'visible';
-      element.style.opacity = '1';
-    });
   });
   
   // Reset search input placeholder
