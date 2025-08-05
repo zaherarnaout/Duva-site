@@ -3926,6 +3926,13 @@ footer, .footer {
   display: flex;
 }
 
+/* Remove underlines from all product card links */
+.flip-card-wrapper a,
+.current-product,
+.flip-card-link {
+  text-decoration: none !important;
+}
+
 
 
 
