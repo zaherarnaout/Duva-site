@@ -4454,31 +4454,37 @@ function extractCardText(card) {
 function performGlobalSearch(searchTerm) {
   console.log('🔍 Performing global search for:', searchTerm);
   
-  // Target flip card wrappers instead of individual cards
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  // Target the same elements as the main filter to maintain grid layout
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) {
+    console.log('🔍 No cards container found');
+    return;
+  }
   
-  if (flipCardWrappers.length === 0) {
-    console.log('🔍 No flip card wrappers found');
+  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
+  
+  if (productCards.length === 0) {
+    console.log('🔍 No product cards found');
     return;
   }
   
   let visibleCount = 0;
   
-  flipCardWrappers.forEach(wrapper => {
-    // Extract text from the entire wrapper (both front and back cards)
-    const wrapperText = extractCardText(wrapper);
-    const matches = searchTerm === '' || wrapperText.includes(searchTerm);
+  productCards.forEach(card => {
+    // Extract text from the entire card (both front and back cards)
+    const cardText = extractCardText(card);
+    const matches = searchTerm === '' || cardText.includes(searchTerm);
     
     if (matches) {
       // Remove any inline display style to let CSS handle the layout
-      wrapper.style.removeProperty('display');
+      card.style.removeProperty('display');
       visibleCount++;
     } else {
-      wrapper.style.display = 'none';
+      card.style.display = 'none';
     }
   });
   
-  console.log(`🔍 Search complete: ${visibleCount} of ${flipCardWrappers.length} cards visible`);
+  console.log(`🔍 Search complete: ${visibleCount} of ${productCards.length} cards visible`);
   
   // Update search input placeholder to show results
   const searchInput = document.getElementById('globalSearchInput');
@@ -4495,12 +4501,18 @@ function performGlobalSearch(searchTerm) {
 function showAllProductCards() {
   console.log('🔍 Showing all product cards');
   
-  // Target flip card wrappers instead of individual cards
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  // Target the same elements as the main filter to maintain grid layout
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) {
+    console.log('🔍 No cards container found');
+    return;
+  }
   
-  flipCardWrappers.forEach(wrapper => {
+  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
+  
+  productCards.forEach(card => {
     // Remove any inline display style to let CSS handle the layout
-    wrapper.style.removeProperty('display');
+    card.style.removeProperty('display');
   });
   
   // Reset search input placeholder
@@ -4509,7 +4521,7 @@ function showAllProductCards() {
     searchInput.placeholder = 'Search products...';
   }
   
-  console.log(`🔍 All ${flipCardWrappers.length} cards now visible`);
+  console.log(`🔍 All ${productCards.length} cards now visible`);
 }
 
 // Initialize global search when DOM is ready
