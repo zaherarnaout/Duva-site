@@ -4456,6 +4456,7 @@ function initializeGlobalSearch() {
     
     // Clear placeholder first to avoid interference
     searchInput.placeholder = '';
+    searchInput.setAttribute('placeholder', '');
     
     // Set the value first
     searchInput.value = searchParam;
@@ -4499,6 +4500,21 @@ function initializeGlobalSearch() {
             opacity: 1 !important;
             visibility: visible !important;
             display: block !important;
+          }
+          #globalSearchInput::placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+            display: none !important;
+          }
+          .duva-global-search::placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+            display: none !important;
+          }
+          .search-input::placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+            display: none !important;
           }
         `;
         document.head.appendChild(style);
@@ -4799,8 +4815,18 @@ if (typeof Webflow !== 'undefined') {
       if (searchInput) {
         console.log(`🔍 DEBUG: Webflow - Before setting - Input value: "${searchInput.value}"`);
         
-        // Clear placeholder first to avoid interference
-        searchInput.placeholder = '';
+            // Clear placeholder first to avoid interference
+            searchInput.placeholder = '';
+            searchInput.setAttribute('placeholder', '');
+            searchInput.removeAttribute('placeholder');
+            
+            // Also remove placeholder from any parent elements that might have it
+            const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
+            parentElements.forEach(parent => {
+              if (parent.hasAttribute('placeholder')) {
+                parent.removeAttribute('placeholder');
+              }
+            });
         
         // Set the value
         searchInput.value = finalSearchTerm;
@@ -4827,6 +4853,8 @@ if (typeof Webflow !== 'undefined') {
           
           // Clear placeholder first
           searchInput.placeholder = '';
+          searchInput.setAttribute('placeholder', '');
+          searchInput.removeAttribute('placeholder');
           
           // Set the value
           searchInput.value = finalSearchTerm;
