@@ -3920,12 +3920,24 @@ footer, .footer {
   transition: transform 0.8s ease-in-out;
   opacity: 1; /* Always visible but transformed */
   display: flex; /* Always rendered but positioned off-screen */
+  /* Force animation reset */
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Slide up on hover */
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
   transform: translateY(0%) !important; /* Slide to original position */
+  transition: transform 0.8s ease-in-out !important; /* Ensure transition is applied */
+}
+
+/* Force animation reset when not hovering */
+.flip-card-wrapper:not(:hover) .flip-card-back,
+.current-product:not(:hover) .flip-card-back {
+  transform: translateY(100%) !important;
+  transition: transform 0.8s ease-in-out !important;
 }
 
 /* Remove underlines from all product card links */
