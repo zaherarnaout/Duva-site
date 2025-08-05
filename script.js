@@ -4428,33 +4428,40 @@ function initializeGlobalSearch() {
   // Mark as initialized to prevent duplicates
   window.globalSearchInitialized = true;
   
-  // Add input event listener for real-time search
+  // Add input event listener for real-time search with debounce
+  let searchTimeout;
   actualSearchInput.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
     
-    if (searchTerm === '') {
-      // Clear sessionStorage when search is cleared
-      sessionStorage.removeItem('globalSearchTerm');
-      
-      // If search is cleared and we're on products page, show all products
-      if (isOnProductsPage) {
-        performGlobalSearch(searchTerm);
+    // Clear previous timeout
+    clearTimeout(searchTimeout);
+    
+    // Debounce the search to prevent rapid-fire events
+    searchTimeout = setTimeout(() => {
+      if (searchTerm === '') {
+        // Clear sessionStorage when search is cleared
+        sessionStorage.removeItem('globalSearchTerm');
+        
+        // If search is cleared and we're on products page, show all products
+        if (isOnProductsPage) {
+          performGlobalSearch(searchTerm);
+        } else {
+          // Navigate back to original page
+          navigateBackToOriginalPage();
+        }
       } else {
-        // Navigate back to original page
-        navigateBackToOriginalPage();
+        // Store search term in sessionStorage
+        sessionStorage.setItem('globalSearchTerm', searchTerm);
+        
+        // If we're not on products page, navigate to products page with search
+        if (!isOnProductsPage) {
+          navigateToProductsPage(searchTerm);
+        } else {
+          // We're already on products page, perform search
+          performGlobalSearch(searchTerm);
+        }
       }
-    } else {
-      // Store search term in sessionStorage
-      sessionStorage.setItem('globalSearchTerm', searchTerm);
-      
-      // If we're not on products page, navigate to products page with search
-      if (!isOnProductsPage) {
-        navigateToProductsPage(searchTerm);
-      } else {
-        // We're already on products page, perform search
-        performGlobalSearch(searchTerm);
-      }
-    }
+    }, 300); // 300ms debounce delay
   });
   
   // Add focus event to show all products when search is cleared
@@ -4513,35 +4520,42 @@ function initializeGlobalSearch() {
     // Re-attach event listeners to the new input
     const updatedSearchInput = document.getElementById('globalSearchInput');
     
-    // Add input event listener for real-time search
+    // Add input event listener for real-time search with debounce
+    let searchTimeout;
     updatedSearchInput.addEventListener('input', function(e) {
       const searchTerm = e.target.value.toLowerCase().trim();
       
       console.log('🔍 Search input event triggered:', searchTerm);
       
-      if (searchTerm === '') {
-        // Clear sessionStorage when search is cleared
-        sessionStorage.removeItem('globalSearchTerm');
-        
-        // If search is cleared and we're on products page, show all products
-        if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
-          performGlobalSearch(searchTerm);
+      // Clear previous timeout
+      clearTimeout(searchTimeout);
+      
+      // Debounce the search to prevent rapid-fire events
+      searchTimeout = setTimeout(() => {
+        if (searchTerm === '') {
+          // Clear sessionStorage when search is cleared
+          sessionStorage.removeItem('globalSearchTerm');
+          
+          // If search is cleared and we're on products page, show all products
+          if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
+            performGlobalSearch(searchTerm);
+          } else {
+            // Navigate back to original page
+            navigateBackToOriginalPage();
+          }
         } else {
-          // Navigate back to original page
-          navigateBackToOriginalPage();
+          // Store search term in sessionStorage
+          sessionStorage.setItem('globalSearchTerm', searchTerm);
+          
+          // If we're not on products page, navigate to products page with search
+          if (window.globalSearchState && !window.globalSearchState.isOnProductsPage) {
+            navigateToProductsPage(searchTerm);
+          } else {
+            // We're already on products page, perform search
+            performGlobalSearch(searchTerm);
+          }
         }
-      } else {
-        // Store search term in sessionStorage
-        sessionStorage.setItem('globalSearchTerm', searchTerm);
-        
-        // If we're not on products page, navigate to products page with search
-        if (window.globalSearchState && !window.globalSearchState.isOnProductsPage) {
-          navigateToProductsPage(searchTerm);
-        } else {
-          // We're already on products page, perform search
-          performGlobalSearch(searchTerm);
-        }
-      }
+      }, 300); // 300ms debounce delay
     });
     
     // Add focus event to show all products when search is cleared
