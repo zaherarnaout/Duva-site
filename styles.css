@@ -3955,6 +3955,7 @@ footer, .footer {
 .flip-card {
   width: 100%;
   height: 100%;
+  position: relative;
   flex-flow: column;
   justify-content: center;
   align-items: center;
@@ -3974,9 +3975,9 @@ footer, .footer {
   width: 100%;
   height: 100%;
   flex-flow: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 3px;
+  gap: 0;
   border-style: solid;
   border-width: 1px;
   border-top-color: var(--border-divider-light);
@@ -3988,6 +3989,7 @@ footer, .footer {
   border-bottom-left-radius: var(--border-8px);
   border-bottom-right-radius: var(--border-8px);
   background-color: var(--duva-light-grey);
+  box-sizing: border-box;
 }
 
 .current-product {
@@ -4037,8 +4039,8 @@ footer, .footer {
 }
 
 .back-title {
-  margin-top: 40px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 10px;
   font-family: "Gotham Rounded";
   color: var(--duva-red);
   font-size: 35px;
@@ -4049,28 +4051,30 @@ footer, .footer {
 
 .back-card {
   display: flex;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  padding-right: 3px;
-  padding-bottom: 3px;
-  padding-left: 3px;
+  padding: 20px 15px;
   flex-flow: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 3px;
+  gap: 15px;
   font-family: var(--section-title);
   font-weight: 300;
+  box-sizing: border-box;
 }
 
 .back-spec-item {
   display: flex;
-  margin-top: 0px;
-  margin-bottom: 6px;
-  padding-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  padding: 0;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   align-self: center;
   text-align: center;
+  width: 100%;
 }
 
 .back-spec-label {
