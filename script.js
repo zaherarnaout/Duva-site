@@ -4500,6 +4500,11 @@ function initializeGlobalSearch() {
             opacity: 1 !important;
             visibility: visible !important;
             display: block !important;
+            font-family: var(--title-bold) !important;
+            font-size: 13px !important;
+            width: 100% !important;
+            border: none !important;
+            outline: none !important;
           }
           #globalSearchInput::placeholder {
             opacity: 0 !important;
@@ -4516,6 +4521,14 @@ function initializeGlobalSearch() {
             color: transparent !important;
             display: none !important;
           }
+          .duva-global-search {
+            color: #333 !important;
+            background-color: #fff !important;
+          }
+          .search-input {
+            color: #333 !important;
+            background-color: #fff !important;
+          }
         `;
         document.head.appendChild(style);
         
@@ -4529,8 +4542,18 @@ function initializeGlobalSearch() {
         // Force a repaint
         searchInput.style.transform = 'translateZ(0)';
         
+        // Try setting the value using different methods
+        searchInput.value = searchParam;
+        searchInput.defaultValue = searchParam;
+        searchInput.setAttribute('value', searchParam);
+        
+        // Force the input to show the text by triggering events
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+        
         console.log(`🔍 DEBUG: Input element:`, searchInput);
         console.log(`🔍 DEBUG: Input computed styles:`, window.getComputedStyle(searchInput));
+        console.log(`🔍 DEBUG: Input value after all methods: "${searchInput.value}"`);
       }, 200);
     
     // Perform search after a short delay to ensure DOM is ready
