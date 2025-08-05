@@ -4468,24 +4468,54 @@ function initializeGlobalSearch() {
     searchInput.focus();
     searchInput.blur();
     
-    // Set placeholder after a delay to show search term
-    setTimeout(() => {
-      searchInput.placeholder = `Searching for: ${searchParam}`;
-    }, 100);
+    // Hide placeholder for testing - comment out for now
+    // setTimeout(() => {
+    //   searchInput.placeholder = `Searching for: ${searchParam}`;
+    // }, 100);
     
-    // Add a small delay and check if text is visible
-    setTimeout(() => {
-      console.log(`🔍 DEBUG: Final check - Input value: "${searchInput.value}"`);
-      console.log(`🔍 DEBUG: Final check - Input text color: ${window.getComputedStyle(searchInput).color}`);
-      console.log(`🔍 DEBUG: Final check - Input background: ${window.getComputedStyle(searchInput).backgroundColor}`);
-      
-      // If text color is white or transparent, force it to be visible
-      const textColor = window.getComputedStyle(searchInput).color;
-      if (textColor === 'rgb(255, 255, 255)' || textColor === 'rgba(0, 0, 0, 0)') {
-        console.log(`🔍 DEBUG: Text color issue detected: ${textColor}`);
-        searchInput.style.color = '#333';
-      }
-    }, 200);
+          // Add a small delay and check if text is visible
+      setTimeout(() => {
+        console.log(`🔍 DEBUG: Final check - Input value: "${searchInput.value}"`);
+        console.log(`🔍 DEBUG: Final check - Input text color: ${window.getComputedStyle(searchInput).color}`);
+        console.log(`🔍 DEBUG: Final check - Input background: ${window.getComputedStyle(searchInput).backgroundColor}`);
+        
+        // Force text to be visible with multiple approaches
+        searchInput.style.color = '#333 !important';
+        searchInput.style.backgroundColor = '#fff !important';
+        searchInput.style.opacity = '1 !important';
+        searchInput.style.visibility = 'visible !important';
+        searchInput.style.display = 'block !important';
+        
+        // Force the value again
+        searchInput.value = searchParam;
+        searchInput.defaultValue = searchParam;
+        
+        // Create a temporary style element to override any CSS
+        const style = document.createElement('style');
+        style.textContent = `
+          #globalSearchInput {
+            color: #333 !important;
+            background-color: #fff !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+          }
+        `;
+        document.head.appendChild(style);
+        
+        console.log(`🔍 DEBUG: Forced text visibility with CSS overrides`);
+        
+        // Also try to force the text to show by simulating user input
+        searchInput.focus();
+        searchInput.select();
+        searchInput.setSelectionRange(0, searchInput.value.length);
+        
+        // Force a repaint
+        searchInput.style.transform = 'translateZ(0)';
+        
+        console.log(`🔍 DEBUG: Input element:`, searchInput);
+        console.log(`🔍 DEBUG: Input computed styles:`, window.getComputedStyle(searchInput));
+      }, 200);
     
     // Perform search after a short delay to ensure DOM is ready
     setTimeout(() => {
@@ -4780,10 +4810,10 @@ if (typeof Webflow !== 'undefined') {
         // Force visual refresh
         searchInput.dispatchEvent(new Event('input', { bubbles: true }));
         
-        // Set placeholder after a delay
-        setTimeout(() => {
-          searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
-        }, 100);
+        // Hide placeholder for testing - comment out for now
+        // setTimeout(() => {
+        //   searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+        // }, 100);
         
         console.log(`🔍 DEBUG: Webflow - After setting - Input value: "${searchInput.value}"`);
       }
@@ -4806,10 +4836,10 @@ if (typeof Webflow !== 'undefined') {
           // Force visual refresh
           searchInput.dispatchEvent(new Event('input', { bubbles: true }));
           
-          // Set placeholder after a delay
-          setTimeout(() => {
-            searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
-          }, 100);
+          // Hide placeholder for testing - comment out for now
+          // setTimeout(() => {
+          //   searchInput.placeholder = `Searching for: ${finalSearchTerm}`;
+          // }, 100);
         }
       }, 500);
       
