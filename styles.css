@@ -3947,27 +3947,8 @@ footer, .footer {
 }
 
 /* === Main Page Categories Hover Animation === */
-.main-page-categories-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: stretch;
-}
-
+/* Hover effects for category links - preserves Webflow styling */
 .main-page-categories-wrapper a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #212121;
-  background: #f4f5f6;
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-  padding: 20px;
-  min-width: 150px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
@@ -3982,30 +3963,33 @@ footer, .footer {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
   transition: left 0.5s ease;
+  z-index: 1;
 }
 
 .main-page-categories-wrapper a:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #C0392B;
-  background: #ffffff;
+  border-color: var(--duva-red, #C0392B) !important;
+  background-color: var(--duva-white, #ffffff) !important;
 }
 
 .main-page-categories-wrapper a:hover::before {
   left: 100%;
 }
 
+/* Text hover effects - preserves existing positioning */
 .main-page-categories-wrapper a:hover .text-block-48,
 .main-page-categories-wrapper a:hover .text-block-49,
 .main-page-categories-wrapper a:hover .text-block-50,
 .main-page-categories-wrapper a:hover .text-block-51,
 .main-page-categories-wrapper a:hover .text-block-52,
 .main-page-categories-wrapper a:hover .text-block-53 {
-  color: #C0392B;
+  color: var(--duva-red, #C0392B) !important;
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
 
+/* Image hover effects - preserves existing positioning */
 .main-page-categories-wrapper a:hover .image-24,
 .main-page-categories-wrapper a:hover .image-25,
 .main-page-categories-wrapper a:hover .image-26,
@@ -4016,42 +4000,10 @@ footer, .footer {
   transition: transform 0.3s ease;
 }
 
-/* Individual category styling for better visual hierarchy */
-.main-page-categories-wrapper .outdoor,
-.main-page-categories-wrapper .indoor,
-.main-page-categories-wrapper .flex-strip,
-.main-page-categories-wrapper .custom-light,
-.main-page-categories-wrapper .decorative-light,
-.main-page-categories-wrapper .weather-proof {
-  flex: 1;
-  min-width: 180px;
-  max-width: 220px;
-}
-
-/* Responsive adjustments */
+/* Responsive hover adjustments */
 @media screen and (max-width: 767px) {
-  .main-page-categories-wrapper {
-    gap: 15px;
-  }
-  
-  .main-page-categories-wrapper a {
-    min-width: 140px;
-    padding: 15px;
-  }
-  
   .main-page-categories-wrapper a:hover {
     transform: translateY(-2px);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .main-page-categories-wrapper {
-    gap: 10px;
-  }
-  
-  .main-page-categories-wrapper a {
-    min-width: 120px;
-    padding: 12px;
   }
 }
 
