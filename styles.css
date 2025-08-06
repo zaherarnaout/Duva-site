@@ -4268,6 +4268,26 @@ footer, .footer {
   transform: translateX(100%) !important;
 }
 
+/* Ensure main lightbox image is visible */
+.w-lightbox-view img,
+.w-lightbox-content img,
+.w-lightbox-image img {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* Fix for Webflow lightbox image visibility */
+.w-lightbox-view,
+.w-lightbox-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 200px !important;
+}
+
 
 
 /* Enhanced lightbox backdrop */
