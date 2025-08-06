@@ -4346,6 +4346,36 @@ footer, .footer {
   filter: brightness(1.1);
 }
 
+/* === Override Webflow Gallery Width Issues === */
+.gallery-section-cms {
+  width: 100% !important;
+  max-width: 2000px !important;
+  overflow-x: auto !important;
+}
+
+.gallery-image {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: cover !important;
+}
+
+/* Ensure gallery items are responsive */
+.gallery-section-cms .w-dyn-item {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+}
+
+/* Override any fixed width settings from Webflow */
+.gallery-section-cms,
+.gallery-section-cms *,
+.gallery-image,
+.gallery-image * {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 
 
 
