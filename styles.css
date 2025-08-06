@@ -4288,6 +4288,21 @@ footer, .footer {
   }
 }
 
+/* === Related Section Arrow Navigation === */
+.image-30 {
+  position: absolute;
+  inset: auto 1% auto auto;
+  z-index: 999;
+  width: 50px;
+}
+
+.image-31 {
+  position: absolute;
+  inset: auto auto auto 1%;
+  z-index: 999;
+  width: 50px;
+}
+
 
 
 
