@@ -4844,7 +4844,7 @@ function initializeGallerySectionAutoScroll() {
   console.log('🖼️ Initializing gallery section auto-scroll...');
   
   const gallerySection = document.querySelector('.gallery-section');
-  const galleryContainer = document.querySelector('.gallery-section-cms');
+  const galleryContainer = document.querySelector('.gallery-section-cms') || document.querySelector('.div-block-15');
   const arrowRight = document.querySelector('.image-33');
   const arrowLeft = document.querySelector('.image-32');
   
@@ -5022,7 +5022,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Debug: Check if elements exist
   const gallerySection = document.querySelector('.gallery-section');
-  const galleryContainer = document.querySelector('.gallery-section-cms');
+  const galleryContainer = document.querySelector('.gallery-section-cms') || document.querySelector('.div-block-15');
   const arrowRight = document.querySelector('.image-33');
   const arrowLeft = document.querySelector('.image-32');
   
