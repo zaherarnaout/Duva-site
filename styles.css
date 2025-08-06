@@ -4317,6 +4317,35 @@ footer, .footer {
   filter: brightness(1.1);
 }
 
+/* === Gallery Section Arrow Navigation === */
+.image-32 {
+  position: absolute;
+  inset: auto auto auto 1%;
+  z-index: 999;
+  width: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-32:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
+.image-33 {
+  position: absolute;
+  inset: 0% 0% 0% auto;
+  z-index: 999;
+  width: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-33:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
 
 
 
