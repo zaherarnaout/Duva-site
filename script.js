@@ -4927,6 +4927,42 @@ function initializeEnhancedLightbox() {
     });
   });
   
+  // Mouse-following zoom functionality
+  const lightboxImageContainers = document.querySelectorAll('.w-lightbox-image');
+  lightboxImageContainers.forEach(container => {
+    const img = container.querySelector('img');
+    if (!img) return;
+    
+    let isZoomed = false;
+    
+    container.addEventListener('mouseenter', function() {
+      isZoomed = true;
+      container.classList.add('zoomed');
+    });
+    
+    container.addEventListener('mouseleave', function() {
+      isZoomed = false;
+      container.classList.remove('zoomed');
+      img.style.transform = 'scale(1.2)';
+    });
+    
+    container.addEventListener('mousemove', function(e) {
+      if (!isZoomed) return;
+      
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Calculate percentage position
+      const xPercent = (x / rect.width) * 100;
+      const yPercent = (y / rect.height) * 100;
+      
+      // Apply transform with mouse tracking
+      img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+      img.style.transform = 'scale(1.5)';
+    });
+  });
+  
   console.log('✅ Enhanced lightbox functionality initialized');
 }
 
