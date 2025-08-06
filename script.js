@@ -3868,50 +3868,8 @@ function initializeEnhancedWheelScrolling() {
     let isScrolling = false;
     let scrollAnimationId = null;
     
-    function handleRelatedWheel(event) {
-      console.log('🔄 Related section wheel event triggered');
-      
-      if (relatedContainer.scrollWidth > relatedContainer.clientWidth) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        const delta = event.deltaY || event.deltaX;
-        const scrollSpeed = Math.abs(delta) * 0.5;
-        const direction = delta > 0 ? 1 : -1;
-        
-        scrollVelocity += direction * scrollSpeed;
-        
-        if (!isScrolling) {
-          isScrolling = true;
-          smoothScrollWithMomentum();
-        }
-        
-        console.log('🔄 Related wheel: direction=', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
-      }
-    }
-    
-    function smoothScrollWithMomentum() {
-      if (Math.abs(scrollVelocity) > 0.1) {
-        relatedContainer.scrollLeft += scrollVelocity;
-        scrollVelocity *= 0.9; // Friction
-        
-        scrollAnimationId = requestAnimationFrame(smoothScrollWithMomentum);
-      } else {
-        scrollVelocity = 0;
-        isScrolling = false;
-        scrollAnimationId = null;
-      }
-    }
-    
-    relatedContainer.addEventListener('wheel', handleRelatedWheel, { passive: false });
-    console.log('✅ Added wheel listener to related items');
-    
-    // Also add wheel listener to the related section for broader coverage
-    const relatedSection = document.querySelector('.related-section');
-    if (relatedSection) {
-      relatedSection.addEventListener('wheel', handleRelatedWheel, { passive: false });
-      console.log('✅ Added wheel listener to related section');
-    }
+    // Related section wheel functionality removed - now using auto-scroll with arrow navigation
+    console.log('✅ Related section wheel functionality disabled - using auto-scroll instead');
   }
   
   console.log('✅ Enhanced wheel scrolling initialized');
@@ -4945,3 +4903,162 @@ function initializeEnhancedLightbox() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeEnhancedLightbox();
 });
+
+/* === Related Section Auto-Scroll with Arrow Navigation === */
+function initializeRelatedSectionAutoScroll() {
+  console.log('🔄 Initializing related section auto-scroll...');
+  
+  const relatedSection = document.querySelector('.related-section');
+  const relatedContainer = document.querySelector('.collection-list-6');
+  const arrowRight = document.querySelector('.image-30');
+  const arrowLeft = document.querySelector('.image-31');
+  
+  if (!relatedSection || !relatedContainer) {
+    console.log('⚠️ Related section or container not found');
+    return;
+  }
+  
+  let autoScrollInterval = null;
+  let isHovered = false;
+  let scrollDirection = 1; // 1 for right, -1 for left
+  const scrollSpeed = 2; // pixels per frame
+  const scrollInterval = 50; // milliseconds between scroll updates
+  
+  // Remove existing wheel event listeners
+  const existingWheelListeners = relatedContainer.querySelectorAll('*');
+  existingWheelListeners.forEach(element => {
+    element.removeEventListener('wheel', handleRelatedWheel);
+  });
+  
+  // Remove wheel listener from related section
+  if (relatedSection) {
+    relatedSection.removeEventListener('wheel', handleRelatedWheel);
+  }
+  
+  console.log('✅ Removed mouse wheel scroll functionality');
+  
+  // Auto-scroll function
+  function startAutoScroll() {
+    if (autoScrollInterval) return;
+    
+    autoScrollInterval = setInterval(() => {
+      if (!isHovered && relatedContainer.scrollWidth > relatedContainer.clientWidth) {
+        const currentScroll = relatedContainer.scrollLeft;
+        const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+        
+        // Change direction if at the end
+        if (currentScroll >= maxScroll) {
+          scrollDirection = -1;
+        } else if (currentScroll <= 0) {
+          scrollDirection = 1;
+        }
+        
+        relatedContainer.scrollLeft += scrollDirection * scrollSpeed;
+      }
+    }, scrollInterval);
+    
+    console.log('🔄 Auto-scroll started');
+  }
+  
+  function stopAutoScroll() {
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = null;
+      console.log('⏸️ Auto-scroll stopped');
+    }
+  }
+  
+  // Arrow navigation functions
+  function scrollRight() {
+    const currentScroll = relatedContainer.scrollLeft;
+    const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+    const scrollAmount = Math.min(300, maxScroll - currentScroll);
+    
+    if (scrollAmount > 0) {
+      relatedContainer.scrollTo({
+        left: currentScroll + scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  }
+  
+  function scrollLeft() {
+    const currentScroll = relatedContainer.scrollLeft;
+    const scrollAmount = Math.min(300, currentScroll);
+    
+    if (scrollAmount > 0) {
+      relatedContainer.scrollTo({
+        left: currentScroll - scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  }
+  
+  // Event listeners
+  relatedSection.addEventListener('mouseenter', () => {
+    isHovered = true;
+    stopAutoScroll();
+    console.log('🖱️ Related section hover - auto-scroll paused');
+  });
+  
+  relatedSection.addEventListener('mouseleave', () => {
+    isHovered = false;
+    startAutoScroll();
+    console.log('🖱️ Related section leave - auto-scroll resumed');
+  });
+  
+  // Arrow click events
+  if (arrowRight) {
+    arrowRight.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollRight();
+      console.log('➡️ Right arrow clicked');
+    });
+    console.log('✅ Right arrow listener added');
+  }
+  
+  if (arrowLeft) {
+    arrowLeft.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollLeft();
+      console.log('⬅️ Left arrow clicked');
+    });
+    console.log('✅ Left arrow listener added');
+  }
+  
+  // Start auto-scroll after a delay
+  setTimeout(() => {
+    startAutoScroll();
+  }, 2000);
+  
+  console.log('✅ Related section auto-scroll initialized');
+}
+
+// Initialize related section auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🎯 DOM Content Loaded - Initializing related section auto-scroll...');
+  
+  // Debug: Check if elements exist
+  const relatedSection = document.querySelector('.related-section');
+  const relatedContainer = document.querySelector('.collection-list-6');
+  const arrowRight = document.querySelector('.image-30');
+  const arrowLeft = document.querySelector('.image-31');
+  
+  console.log('🔍 Related Section Element Debug:', {
+    relatedSection: !!relatedSection,
+    relatedContainer: !!relatedContainer,
+    arrowRight: !!arrowRight,
+    arrowLeft: !!arrowLeft
+  });
+  
+  initializeRelatedSectionAutoScroll();
+});
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeRelatedSectionAutoScroll();
+  });
+}
