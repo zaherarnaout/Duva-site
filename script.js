@@ -4752,3 +4752,100 @@ if (typeof Webflow !== 'undefined') {
     initializeRelatedSectionAutoScroll();
   });
 }
+
+// === Menu Panel Debugging ===
+function debugMenuPanel() {
+  console.log('🔍 === MENU PANEL DEBUGGING ===');
+  
+  // Check for required elements
+  const menuWrapper = document.querySelector('.menu-wrapper');
+  const menuPanel = document.querySelector('.menu-panel');
+  const menuClose = document.querySelector('.menu-close');
+  const menuOverlay = document.querySelector('.menu-overlay');
+  
+  console.log('📋 Required elements found:', {
+    menuWrapper: !!menuWrapper,
+    menuPanel: !!menuPanel,
+    menuClose: !!menuClose,
+    menuOverlay: !!menuOverlay
+  });
+  
+  // Check element properties
+  if (menuWrapper) {
+    console.log('📋 Menu wrapper properties:', {
+      display: getComputedStyle(menuWrapper).display,
+      visibility: getComputedStyle(menuWrapper).visibility,
+      position: getComputedStyle(menuWrapper).position,
+      zIndex: getComputedStyle(menuWrapper).zIndex,
+      clickable: menuWrapper.offsetWidth > 0 && menuWrapper.offsetHeight > 0
+    });
+  }
+  
+  if (menuPanel) {
+    console.log('📋 Menu panel properties:', {
+      display: getComputedStyle(menuPanel).display,
+      visibility: getComputedStyle(menuPanel).visibility,
+      position: getComputedStyle(menuPanel).position,
+      zIndex: getComputedStyle(menuPanel).zIndex,
+      top: getComputedStyle(menuPanel).top,
+      left: getComputedStyle(menuPanel).left,
+      width: getComputedStyle(menuPanel).width,
+      height: getComputedStyle(menuPanel).height,
+      opacity: getComputedStyle(menuPanel).opacity,
+      transform: getComputedStyle(menuPanel).transform
+    });
+  }
+  
+  if (menuClose) {
+    console.log('📋 Menu close button properties:', {
+      display: getComputedStyle(menuClose).display,
+      visibility: getComputedStyle(menuClose).visibility,
+      position: getComputedStyle(menuClose).position,
+      clickable: menuClose.offsetWidth > 0 && menuClose.offsetHeight > 0
+    });
+  }
+  
+  // Check if menu wrapper is clickable
+  if (menuWrapper) {
+    menuWrapper.addEventListener('click', function(e) {
+      console.log('📋 Menu wrapper clicked!', e);
+    });
+    console.log('📋 Menu wrapper click listener added for testing');
+  }
+  
+  // Test menu opening manually
+  window.testMenuOpen = function() {
+    console.log('📋 Testing menu open...');
+    if (menuPanel) {
+      menuPanel.style.display = 'flex';
+      menuPanel.style.visibility = 'visible';
+      menuPanel.style.opacity = '1';
+      menuPanel.classList.add('active');
+      console.log('📋 Menu panel manually activated');
+    } else {
+      console.log('❌ Menu panel not found');
+    }
+  };
+  
+  // Test menu closing manually
+  window.testMenuClose = function() {
+    console.log('📋 Testing menu close...');
+    if (menuPanel) {
+      menuPanel.classList.remove('active');
+      setTimeout(() => {
+        menuPanel.style.display = 'none';
+        console.log('📋 Menu panel manually deactivated');
+      }, 400);
+    } else {
+      console.log('❌ Menu panel not found');
+    }
+  };
+  
+  console.log('🔍 === MENU PANEL DEBUGGING COMPLETE ===');
+  console.log('💡 Use testMenuOpen() and testMenuClose() to test manually');
+}
+
+// Call debugging function when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  debugMenuPanel();
+});
