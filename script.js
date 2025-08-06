@@ -4938,6 +4938,69 @@ function initializeEnhancedLightbox() {
     img.style.objectPosition = 'center';
   });
   
+  // Image Counter Functionality
+  function createImageCounter() {
+    const backdrop = document.querySelector('.w-lightbox-backdrop');
+    if (!backdrop) return;
+    
+    // Remove existing counter if any
+    const existingCounter = backdrop.querySelector('.lightbox-counter');
+    if (existingCounter) existingCounter.remove();
+    
+    // Create counter element
+    const counter = document.createElement('div');
+    counter.className = 'lightbox-counter';
+    counter.textContent = '1 of 1';
+    backdrop.appendChild(counter);
+    
+    // Update counter on image change
+    updateImageCounter();
+  }
+  
+  function updateImageCounter() {
+    const counter = document.querySelector('.lightbox-counter');
+    if (!counter) return;
+    
+    const allImages = document.querySelectorAll('.w-lightbox-thumbnail');
+    const currentImage = document.querySelector('.w-lightbox-thumbnail.active');
+    
+    if (allImages.length > 0) {
+      const currentIndex = currentImage ? Array.from(allImages).indexOf(currentImage) + 1 : 1;
+      const totalImages = allImages.length;
+      counter.textContent = `${currentIndex} of ${totalImages}`;
+    }
+  }
+  
+  // Enhanced thumbnail interactions with counter update
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.w-lightbox-thumbnail')) {
+      const thumbnails = document.querySelectorAll('.w-lightbox-thumbnail');
+      thumbnails.forEach(thumb => thumb.classList.remove('active'));
+      e.target.closest('.w-lightbox-thumbnail').classList.add('active');
+      
+      // Update counter after thumbnail click
+      setTimeout(updateImageCounter, 100);
+    }
+  });
+  
+  // Update counter when lightbox opens
+  const lightboxObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList') {
+        const backdrop = document.querySelector('.w-lightbox-backdrop');
+        if (backdrop && backdrop.style.display !== 'none') {
+          setTimeout(createImageCounter, 100);
+        }
+      }
+    });
+  });
+  
+  // Observe body for lightbox changes
+  lightboxObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+  
   console.log('✅ Enhanced lightbox functionality initialized');
 }
 
