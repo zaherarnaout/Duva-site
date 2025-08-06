@@ -4268,26 +4268,6 @@ footer, .footer {
   transform: translateX(100%) !important;
 }
 
-/* Ensure main lightbox image is visible */
-.w-lightbox-view img,
-.w-lightbox-content img,
-.w-lightbox-image img {
-  display: block !important;
-  max-width: 100% !important;
-  height: auto !important;
-  object-fit: contain !important;
-  object-position: center !important;
-}
-
-/* Fix for Webflow lightbox image visibility */
-.w-lightbox-view,
-.w-lightbox-content {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 200px !important;
-}
-
 
 
 /* Enhanced lightbox backdrop */
@@ -4305,67 +4285,6 @@ footer, .footer {
   
   .w-lightbox-thumbnail:hover {
     transform: translateY(-2px) scale(1.02) !important;
-  }
-}
-
-/* Image Counter Styling */
-.lightbox-counter {
-  position: absolute !important;
-  top: 20px !important;
-  right: 20px !important;
-  background: rgba(0, 0, 0, 0.7) !important;
-  color: white !important;
-  padding: 8px 16px !important;
-  border-radius: 20px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  z-index: 1000 !important;
-  backdrop-filter: blur(4px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  transition: all 0.3s ease !important;
-}
-
-.lightbox-counter:hover {
-  background: rgba(0, 0, 0, 0.8) !important;
-  transform: scale(1.05) !important;
-}
-
-/* Enhanced Touch Targets */
-.w-lightbox-left,
-.w-lightbox-right {
-  min-width: 60px !important;
-  min-height: 60px !important;
-  padding: 10px !important;
-  margin: 0 20px !important;
-}
-
-.w-lightbox-close {
-  min-width: 50px !important;
-  min-height: 50px !important;
-  padding: 8px !important;
-  margin: 20px !important;
-}
-
-/* Mobile Touch Optimizations */
-@media screen and (max-width: 767px) {
-  .w-lightbox-left,
-  .w-lightbox-right {
-    min-width: 70px !important;
-    min-height: 70px !important;
-    margin: 0 15px !important;
-  }
-  
-  .w-lightbox-close {
-    min-width: 60px !important;
-    min-height: 60px !important;
-    margin: 15px !important;
-  }
-  
-  .lightbox-counter {
-    top: 15px !important;
-    right: 15px !important;
-    padding: 6px 12px !important;
-    font-size: 12px !important;
   }
 }
 
