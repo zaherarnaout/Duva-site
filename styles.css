@@ -4265,7 +4265,6 @@ footer, .footer {
 /* Simple zoom hover effect for main lightbox image (like accessories) */
 .w-lightbox-image {
   overflow: hidden !important;
-  cursor: zoom-in !important;
   position: relative !important;
 }
 
@@ -4277,7 +4276,6 @@ footer, .footer {
 
 .w-lightbox-image:hover img {
   transform: scale(1.2) !important;
-  cursor: zoom-out !important;
 }
 
 /* Enhanced lightbox backdrop */
