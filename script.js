@@ -2,6 +2,73 @@ console.log("DUVA script.js loaded!");
 console.log("🎯 Flip card functionality should be working!");
 console.log("TESTING - If you see this, the script is loading!");
 
+/* === Auto Filter on Page Load via URL === */
+function applyCategoryFilterFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category");
+
+  if (category) {
+    // Clean category value (just in case)
+    const cleanCategory = category.trim().toLowerCase();
+    console.log(`🔍 Auto-filter: Processing category parameter: ${cleanCategory}`);
+
+    // Wait for the filter system to be ready
+    setTimeout(() => {
+      // Method 1: Try to find and click a matching filter button
+      const filterButton = document.querySelector(`[data-category="${cleanCategory}"]`);
+      if (filterButton) {
+        filterButton.click();
+        console.log(`✅ Auto-filter: Found and clicked filter button for category: ${cleanCategory}`);
+        return;
+      }
+
+      // Method 2: Try to find filter by text content
+      const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+      let foundFilter = false;
+      
+      filterOptions.forEach(option => {
+        const textElement = option.querySelector('.sub-filter-wattage');
+        if (textElement) {
+          const optionText = textElement.textContent.trim().toLowerCase();
+          if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
+            const checkmark = option.querySelector('.filter-checkmark');
+            if (checkmark && !option.classList.contains('active')) {
+              checkmark.click();
+              foundFilter = true;
+              console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
+            }
+          }
+        }
+      });
+
+      if (!foundFilter) {
+        console.warn(`⚠️ Auto-filter: No filter button found for category: ${cleanCategory}`);
+        
+        // Method 3: Try to use the global search as fallback
+        const searchInput = document.getElementById('globalSearchInput');
+        if (searchInput) {
+          searchInput.value = cleanCategory;
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
+        }
+      }
+    }, 2000); // Wait 2 seconds for filter system to initialize
+  }
+}
+
+// Initialize auto-filter when DOM is ready
+document.addEventListener("DOMContentLoaded", applyCategoryFilterFromURL);
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    applyCategoryFilterFromURL();
+  });
+}
+
+// Retry after a delay to catch late-loading content
+setTimeout(applyCategoryFilterFromURL, 3000);
+
 // Quick test to see if flip card elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
@@ -435,9 +502,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (type) { 
 
-      window.currentSelection[type] = values[0]; 
+      window.currentSelection[type] = values[0];
 
-      window.currentSelection.defaults[type] = normalizeValue(type, values[0]); 
+      window.currentSelection.defaults[type] = normalizeValue(type, values[0]);
 
     } 
 
