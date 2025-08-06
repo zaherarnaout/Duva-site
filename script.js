@@ -2361,161 +2361,9 @@ window.testProductChange = function(newProductCode) {
 };
 
 // === Related Items Mouse Wheel Scroll Logic ===
+// DISABLED - Now using auto-scroll with arrow navigation instead of mouse wheel
 document.addEventListener("DOMContentLoaded", function () {
-  console.log('🔍 === RELATED ITEMS DEBUGGING START ===');
-  
-  // Check all possible selectors
-  const selectors = [
-    ".collection-list-6",
-    ".related-items", 
-    ".w-dyn-items",
-    "[data-collection-list]",
-    ".related-section .w-dyn-items",
-    ".related-section [class*='w-dyn']"
-  ];
-  
-  console.log('🔍 Checking all possible selectors:');
-  selectors.forEach(selector => {
-    const element = document.querySelector(selector);
-    console.log(`  ${selector}: ${element ? 'FOUND' : 'NOT FOUND'}`);
-    if (element) {
-      console.log(`    - scrollWidth: ${element.scrollWidth}`);
-      console.log(`    - clientWidth: ${element.clientWidth}`);
-      console.log(`    - canScroll: ${element.scrollWidth > element.clientWidth}`);
-      console.log(`    - classes: ${element.className}`);
-    }
-  });
-  
-  const scrollContainer = document.querySelector(".collection-list-6");
-
-  if (scrollContainer) {
-    console.log('✅ Related items mouse wheel scroll logic initialized');
-    console.log('📦 Related scroll container found:', scrollContainer);
-    console.log('📏 Container details:', {
-      tagName: scrollContainer.tagName,
-      className: scrollContainer.className,
-      id: scrollContainer.id,
-      scrollWidth: scrollContainer.scrollWidth,
-      clientWidth: scrollContainer.clientWidth,
-      scrollLeft: scrollContainer.scrollLeft,
-      maxScroll: scrollContainer.scrollWidth - scrollContainer.clientWidth,
-      canScroll: scrollContainer.scrollWidth > scrollContainer.clientWidth,
-      style: {
-        overflow: scrollContainer.style.overflow,
-        display: scrollContainer.style.display,
-        visibility: scrollContainer.style.visibility
-      }
-    });
-    
-    // Check if container has children
-    const children = scrollContainer.children;
-    console.log('👶 Container children:', children.length);
-    for (let i = 0; i < Math.min(children.length, 3); i++) {
-      const child = children[i];
-      console.log(`  Child ${i}:`, {
-        tagName: child.tagName,
-        className: child.className,
-        offsetWidth: child.offsetWidth,
-        clientWidth: child.clientWidth
-      });
-    }
-    
-    // Smooth mouse wheel scrolling
-    scrollContainer.addEventListener('wheel', function(e) {
-      console.log('🔄 Related section wheel event triggered');
-      console.log('📏 Wheel event details:', {
-        deltaY: e.deltaY,
-        deltaX: e.deltaX,
-        clientX: e.clientX,
-        clientY: e.clientY,
-        target: e.target.tagName + '.' + e.target.className
-      });
-      
-      // Only prevent default if we're actually scrolling the container
-      if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
-        console.log('✅ Container can scroll, preventing default');
-        e.preventDefault(); // Prevent default vertical scrolling
-        e.stopPropagation(); // Stop event from bubbling up
-        
-        // Get scroll direction and amount
-        const delta = e.deltaY || e.deltaX;
-        const scrollSpeed = 50; // Adjust this value to control scroll sensitivity
-        
-        console.log('📏 Scroll calculation:', {
-          delta: delta,
-          scrollSpeed: scrollSpeed,
-          direction: delta > 0 ? 'right' : 'left',
-          currentScrollLeft: scrollContainer.scrollLeft,
-          newScrollLeft: scrollContainer.scrollLeft + (delta > 0 ? scrollSpeed : -scrollSpeed)
-        });
-        
-        // Smooth scroll horizontally
-        scrollContainer.scrollBy({
-          left: delta > 0 ? scrollSpeed : -scrollSpeed,
-          behavior: 'smooth'
-        });
-        
-        console.log('🔄 Mouse wheel scrolling:', delta > 0 ? 'right' : 'left');
-      } else {
-        console.log('❌ Container cannot scroll - scrollWidth <= clientWidth');
-      }
-    }, { passive: false }); // Required for preventDefault to work
-    
-    // Add touch/swipe support for mobile
-    let isScrolling = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    
-    scrollContainer.addEventListener('touchstart', function(e) {
-      console.log('📱 Related section touch start');
-      isScrolling = true;
-      startX = e.touches[0].pageX - scrollContainer.offsetLeft;
-      scrollLeft = scrollContainer.scrollLeft;
-    });
-    
-    scrollContainer.addEventListener('touchmove', function(e) {
-      if (!isScrolling) return;
-      e.preventDefault();
-      const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed multiplier
-      scrollContainer.scrollLeft = scrollLeft - walk;
-      console.log('📱 Related section touch move');
-    });
-    
-    scrollContainer.addEventListener('touchend', function() {
-      console.log('📱 Related section touch end');
-      isScrolling = false;
-    });
-    
-  } else {
-    console.log('⚠️ Related items scroll container not found');
-    console.log('🔍 Available elements on page:');
-    
-    // List all elements that might be related
-    const allElements = document.querySelectorAll('*');
-    const relatedElements = [];
-    
-    allElements.forEach(el => {
-      if (el.className && (
-        el.className.includes('collection') || 
-        el.className.includes('related') || 
-        el.className.includes('w-dyn') ||
-        el.className.includes('scroll')
-      )) {
-        relatedElements.push({
-          tagName: el.tagName,
-          className: el.className,
-          id: el.id,
-          scrollWidth: el.scrollWidth,
-          clientWidth: el.clientWidth
-        });
-      }
-    });
-    
-    console.log('🔍 Potential related elements:', relatedElements);
-  }
-  
-  console.log('🔍 === RELATED ITEMS DEBUGGING END ===');
+  console.log('✅ Related items mouse wheel scroll logic DISABLED - using auto-scroll instead');
 });
 
 // Observer to refresh ordering code when page content changes
@@ -4924,18 +4772,8 @@ function initializeRelatedSectionAutoScroll() {
   const scrollSpeed = 2; // pixels per frame
   const scrollInterval = 50; // milliseconds between scroll updates
   
-  // Remove existing wheel event listeners
-  const existingWheelListeners = relatedContainer.querySelectorAll('*');
-  existingWheelListeners.forEach(element => {
-    element.removeEventListener('wheel', handleRelatedWheel);
-  });
-  
-  // Remove wheel listener from related section
-  if (relatedSection) {
-    relatedSection.removeEventListener('wheel', handleRelatedWheel);
-  }
-  
-  console.log('✅ Removed mouse wheel scroll functionality');
+  // Mouse wheel scroll functionality already disabled in separate function
+  console.log('✅ Mouse wheel scroll functionality disabled - using auto-scroll instead');
   
   // Auto-scroll function
   function startAutoScroll() {
@@ -4949,11 +4787,16 @@ function initializeRelatedSectionAutoScroll() {
         // Change direction if at the end
         if (currentScroll >= maxScroll) {
           scrollDirection = -1;
+          console.log('🔄 Auto-scroll: Reached end, changing direction to left');
         } else if (currentScroll <= 0) {
           scrollDirection = 1;
+          console.log('🔄 Auto-scroll: Reached start, changing direction to right');
         }
         
         relatedContainer.scrollLeft += scrollDirection * scrollSpeed;
+        console.log(`🔄 Auto-scroll: ${scrollDirection > 0 ? 'right' : 'left'}, position: ${relatedContainer.scrollLeft}/${maxScroll}`);
+      } else {
+        console.log('🔄 Auto-scroll: Skipped - hovered or no scroll needed');
       }
     }, scrollInterval);
     
@@ -5016,6 +4859,8 @@ function initializeRelatedSectionAutoScroll() {
       console.log('➡️ Right arrow clicked');
     });
     console.log('✅ Right arrow listener added');
+  } else {
+    console.log('⚠️ Right arrow (image-30) not found');
   }
   
   if (arrowLeft) {
@@ -5026,6 +4871,8 @@ function initializeRelatedSectionAutoScroll() {
       console.log('⬅️ Left arrow clicked');
     });
     console.log('✅ Left arrow listener added');
+  } else {
+    console.log('⚠️ Left arrow (image-31) not found');
   }
   
   // Start auto-scroll after a delay
