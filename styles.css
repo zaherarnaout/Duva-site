@@ -488,7 +488,7 @@ cursor: pointer;
 
   top: auto !important; 
 
-  background-color: #C0392B !important; 
+  background-color: #c0392b !important; 
 
   width: 48px; 
 
@@ -2076,7 +2076,7 @@ opacity: 1 !important;
 
 /* Override for PDF container - more specific */
 #pdf-container .div-block-4 {
-  background-color: #C0392B !important;
+  background-color: #c0392b !important;
   width: 3px !important;
   height: 50px !important;
   margin-top: 5px !important;
@@ -3177,6 +3177,8 @@ opacity: 1 !important;
   cursor: pointer;
   object-fit: cover;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .image-3 {
@@ -3186,6 +3188,8 @@ opacity: 1 !important;
   border-color: rgb(216, 216, 216);
   border-radius: 4px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .image-3.thumbnail-image {
@@ -3195,6 +3199,8 @@ opacity: 1 !important;
   border-bottom-color: var(--border-divider-light);
   border-left-color: var(--border-divider-light);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Keep active state for thumbnails */
