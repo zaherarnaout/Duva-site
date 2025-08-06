@@ -4784,13 +4784,17 @@ function initializeRelatedSectionAutoScroll() {
         const currentScroll = relatedContainer.scrollLeft;
         const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
         
-        // Change direction if at the end
+        // Seamless looping - when reaching the end, jump to start and vice versa
         if (currentScroll >= maxScroll) {
-          scrollDirection = -1;
-          console.log('🔄 Auto-scroll: Reached end, changing direction to left');
-        } else if (currentScroll <= 0) {
+          // Jump to start for seamless loop
+          relatedContainer.scrollLeft = 0;
           scrollDirection = 1;
-          console.log('🔄 Auto-scroll: Reached start, changing direction to right');
+          console.log('🔄 Auto-scroll: Reached end, looping back to start');
+        } else if (currentScroll <= 0 && scrollDirection < 0) {
+          // Jump to end for seamless loop
+          relatedContainer.scrollLeft = maxScroll;
+          scrollDirection = -1;
+          console.log('🔄 Auto-scroll: Reached start, looping to end');
         }
         
         relatedContainer.scrollLeft += scrollDirection * scrollSpeed;
@@ -4822,6 +4826,14 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll + scrollAmount,
         behavior: 'smooth'
       });
+      
+      // Ensure auto-scroll continues after arrow click
+      setTimeout(() => {
+        if (!isHovered && !autoScrollInterval) {
+          startAutoScroll();
+          console.log('🔄 Auto-scroll resumed after right arrow click');
+        }
+      }, 1000); // Resume after smooth scroll completes
     }
   }
   
@@ -4834,6 +4846,14 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll - scrollAmount,
         behavior: 'smooth'
       });
+      
+      // Ensure auto-scroll continues after arrow click
+      setTimeout(() => {
+        if (!isHovered && !autoScrollInterval) {
+          startAutoScroll();
+          console.log('🔄 Auto-scroll resumed after left arrow click');
+        }
+      }, 1000); // Resume after smooth scroll completes
     }
   }
   
@@ -4855,6 +4875,14 @@ function initializeRelatedSectionAutoScroll() {
     arrowRight.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      
+      // Temporarily pause auto-scroll during arrow click
+      const wasAutoScrolling = !!autoScrollInterval;
+      if (wasAutoScrolling) {
+        stopAutoScroll();
+        console.log('⏸️ Auto-scroll paused for right arrow click');
+      }
+      
       scrollRight();
       console.log('➡️ Right arrow clicked');
     });
@@ -4867,6 +4895,14 @@ function initializeRelatedSectionAutoScroll() {
     arrowLeft.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      
+      // Temporarily pause auto-scroll during arrow click
+      const wasAutoScrolling = !!autoScrollInterval;
+      if (wasAutoScrolling) {
+        stopAutoScroll();
+        console.log('⏸️ Auto-scroll paused for left arrow click');
+      }
+      
       scrollLeft();
       console.log('⬅️ Left arrow clicked');
     });
