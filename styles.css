@@ -4262,7 +4262,7 @@ footer, .footer {
   transform: translateX(100%) !important;
 }
 
-/* Zoom hover effect for main lightbox image */
+/* Simple zoom hover effect for main lightbox image (like accessories) */
 .w-lightbox-image {
   overflow: hidden !important;
   cursor: zoom-in !important;
@@ -4272,32 +4272,11 @@ footer, .footer {
 .w-lightbox-image img {
   transition: transform 0.3s ease-out !important;
   transform-origin: center !important;
+  object-fit: contain !important;
 }
 
 .w-lightbox-image:hover img {
   transform: scale(1.2) !important;
-  cursor: zoom-out !important;
-}
-
-/* Enhanced zoom with mouse tracking */
-.w-lightbox-image.zoomed img {
-  transform: scale(1.5) !important;
-  cursor: zoom-out !important;
-}
-
-/* Thumbnail zoom effect */
-.w-lightbox-thumbnail {
-  overflow: hidden !important;
-  cursor: zoom-in !important;
-}
-
-.w-lightbox-thumbnail img {
-  transition: transform 0.3s ease-out !important;
-  transform-origin: center !important;
-}
-
-.w-lightbox-thumbnail:hover img {
-  transform: scale(1.1) !important;
   cursor: zoom-out !important;
 }
 
