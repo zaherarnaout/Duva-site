@@ -4007,6 +4007,104 @@ footer, .footer {
   }
 }
 
+/* === Product Card Hover Animation === */
+/* Enhanced hover effects for product cards - preserves existing functionality */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect for product cards */
+.collection-item::before,
+.product-card::before,
+.related-card::before,
+.flip-card-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+/* Enhanced hover effects for product cards */
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover,
+.flip-card-wrapper:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Shimmer animation on hover */
+.collection-item:hover::before,
+.product-card:hover::before,
+.related-card:hover::before,
+.flip-card-wrapper:hover::before {
+  left: 100%;
+}
+
+/* Product code/title color change on hover */
+.collection-item:hover .main-code-text,
+.product-card:hover .main-code-text,
+.related-card:hover .related-code,
+.collection-item:hover .item-description,
+.product-card:hover .item-description {
+  color: var(--duva-red, #C0392B) !important;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Product image scaling on hover */
+.collection-item:hover img,
+.product-card:hover img,
+.related-card:hover img,
+.flip-card-wrapper:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Preserve existing flip card functionality */
+.flip-card-wrapper:hover .flip-card-back,
+.current-product:hover .flip-card-back {
+  display: flex;
+  z-index: 2; /* Ensure back card appears above shimmer */
+}
+
+/* Responsive adjustments for product cards */
+@media screen and (max-width: 767px) {
+  .collection-item:hover,
+  .product-card:hover,
+  .related-card:hover,
+  .flip-card-wrapper:hover {
+    transform: translateY(-3px);
+  }
+  
+  .collection-item:hover img,
+  .product-card:hover img,
+  .related-card:hover img,
+  .flip-card-wrapper:hover img {
+    transform: scale(1.03);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .collection-item:hover,
+  .product-card:hover,
+  .related-card:hover,
+  .flip-card-wrapper:hover {
+    transform: translateY(-2px);
+  }
+}
+
 
 
 
