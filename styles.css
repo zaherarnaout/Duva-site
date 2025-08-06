@@ -4263,28 +4263,38 @@ footer, .footer {
 }
 
 /* Simple zoom hover effect for main lightbox image (like accessories) */
-.w-lightbox-image {
+.w-lightbox-view {
   overflow: hidden !important;
   position: relative !important;
 }
 
-.w-lightbox-image img {
+.w-lightbox-view img {
   transition: transform 0.3s ease-out !important;
   transform-origin: center !important;
   object-fit: contain !important;
 }
 
-.w-lightbox-image:hover img {
+.w-lightbox-view:hover img {
   transform: scale(1.2) !important;
 }
 
 /* More specific selector to ensure it works */
-.w-lightbox-backdrop .w-lightbox-image:hover img {
+.w-lightbox-backdrop .w-lightbox-view:hover img {
   transform: scale(1.2) !important;
 }
 
 /* Even more specific for Webflow */
-.w-lightbox-backdrop .w-lightbox-image img:hover {
+.w-lightbox-backdrop .w-lightbox-view img:hover {
+  transform: scale(1.2) !important;
+}
+
+/* Target the actual lightbox image container */
+.w-lightbox-content img {
+  transition: transform 0.3s ease-out !important;
+  transform-origin: center !important;
+}
+
+.w-lightbox-content:hover img {
   transform: scale(1.2) !important;
 }
 
