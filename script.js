@@ -4839,38 +4839,38 @@ if (typeof Webflow !== 'undefined') {
   });
 }
 
-/* === Gallery Section Auto-Scroll with Arrow Navigation === */
-function initializeGallerySectionAutoScroll() {
-  console.log('🖼️ Initializing gallery section auto-scroll...');
+// Old gallery implementation removed - using new clean implementation
+
+/* === Gallery Section - Clean JavaScript Implementation === */
+
+function initializeGallerySection() {
+  console.log('🖼️ Initializing clean gallery section...');
   
+  // Get gallery elements
   const gallerySection = document.querySelector('.gallery-section');
   const galleryContainer = document.querySelector('.gallery-section-cms') || document.querySelector('.div-block-15');
-  const arrowRight = document.querySelector('.image-33');
   const arrowLeft = document.querySelector('.image-32');
+  const arrowRight = document.querySelector('.image-33');
   
+  // Validate elements exist
   if (!gallerySection || !galleryContainer) {
     console.log('⚠️ Gallery section or container not found');
     return;
   }
   
-  let autoScrollInterval = null;
-  let isHovered = false;
-  let scrollDirection = 1; // 1 for right, -1 for left
-  const scrollSpeed = 2; // pixels per frame
-  const scrollInterval = 50; // milliseconds between scroll updates
-  
-  // Remove existing wheel event listeners
-  const existingWheelListeners = galleryContainer.querySelectorAll('*');
-  existingWheelListeners.forEach(element => {
-    element.removeEventListener('wheel', handleGalleryWheel);
+  console.log('✅ Gallery elements found:', {
+    gallerySection: !!gallerySection,
+    galleryContainer: !!galleryContainer,
+    arrowLeft: !!arrowLeft,
+    arrowRight: !!arrowRight
   });
   
-  // Remove wheel listener from gallery section
-  if (gallerySection) {
-    gallerySection.removeEventListener('wheel', handleGalleryWheel);
-  }
-  
-  console.log('✅ Removed gallery mouse wheel scroll functionality');
+  // Auto-scroll variables
+  let autoScrollInterval = null;
+  let isHovered = false;
+  let scrollDirection = 1; // 1 = right, -1 = left
+  const scrollSpeed = 2; // pixels per frame
+  const scrollInterval = 50; // milliseconds between updates
   
   // Auto-scroll function
   function startAutoScroll() {
@@ -4881,23 +4881,21 @@ function initializeGallerySectionAutoScroll() {
         const currentScroll = galleryContainer.scrollLeft;
         const maxScroll = galleryContainer.scrollWidth - galleryContainer.clientWidth;
         
-        // Seamless looping - when reaching the end, jump to start and vice versa
+        // Seamless looping
         if (currentScroll >= maxScroll) {
           // Jump to start for seamless loop
           galleryContainer.scrollLeft = 0;
           scrollDirection = 1;
-          console.log('🖼️ Gallery auto-scroll: Reached end, looping back to start');
+          console.log('🖼️ Gallery: Reached end, looping to start');
         } else if (currentScroll <= 0 && scrollDirection < 0) {
           // Jump to end for seamless loop
           galleryContainer.scrollLeft = maxScroll;
           scrollDirection = -1;
-          console.log('🖼️ Gallery auto-scroll: Reached start, looping to end');
+          console.log('🖼️ Gallery: Reached start, looping to end');
         }
         
         galleryContainer.scrollLeft += scrollDirection * scrollSpeed;
         console.log(`🖼️ Gallery auto-scroll: ${scrollDirection > 0 ? 'right' : 'left'}, position: ${galleryContainer.scrollLeft}/${maxScroll}`);
-      } else {
-        console.log('🖼️ Gallery auto-scroll: Skipped - hovered or no scroll needed');
       }
     }, scrollInterval);
     
@@ -4913,6 +4911,26 @@ function initializeGallerySectionAutoScroll() {
   }
   
   // Arrow navigation functions
+  function scrollLeft() {
+    const currentScroll = galleryContainer.scrollLeft;
+    const scrollAmount = Math.min(300, currentScroll);
+    
+    if (scrollAmount > 0) {
+      galleryContainer.scrollTo({
+        left: currentScroll - scrollAmount,
+        behavior: 'smooth'
+      });
+      
+      // Resume auto-scroll after arrow click
+      setTimeout(() => {
+        if (!isHovered && !autoScrollInterval) {
+          startAutoScroll();
+          console.log('🖼️ Gallery auto-scroll resumed after left arrow');
+        }
+      }, 1000);
+    }
+  }
+  
   function scrollRight() {
     const currentScroll = galleryContainer.scrollLeft;
     const maxScroll = galleryContainer.scrollWidth - galleryContainer.clientWidth;
@@ -4924,33 +4942,13 @@ function initializeGallerySectionAutoScroll() {
         behavior: 'smooth'
       });
       
-      // Ensure auto-scroll continues after arrow click
+      // Resume auto-scroll after arrow click
       setTimeout(() => {
         if (!isHovered && !autoScrollInterval) {
           startAutoScroll();
-          console.log('🖼️ Gallery auto-scroll resumed after right arrow click');
+          console.log('🖼️ Gallery auto-scroll resumed after right arrow');
         }
-      }, 1000); // Resume after smooth scroll completes
-    }
-  }
-  
-  function scrollLeft() {
-    const currentScroll = galleryContainer.scrollLeft;
-    const scrollAmount = Math.min(300, currentScroll);
-    
-    if (scrollAmount > 0) {
-      galleryContainer.scrollTo({
-        left: currentScroll - scrollAmount,
-        behavior: 'smooth'
-      });
-      
-      // Ensure auto-scroll continues after arrow click
-      setTimeout(() => {
-        if (!isHovered && !autoScrollInterval) {
-          startAutoScroll();
-          console.log('🖼️ Gallery auto-scroll resumed after left arrow click');
-        }
-      }, 1000); // Resume after smooth scroll completes
+      }, 1000);
     }
   }
   
@@ -4958,46 +4956,26 @@ function initializeGallerySectionAutoScroll() {
   gallerySection.addEventListener('mouseenter', () => {
     isHovered = true;
     stopAutoScroll();
-    console.log('🖱️ Gallery section hover - auto-scroll paused');
+    console.log('🖱️ Gallery hover - auto-scroll paused');
   });
   
   gallerySection.addEventListener('mouseleave', () => {
     isHovered = false;
     startAutoScroll();
-    console.log('🖱️ Gallery section leave - auto-scroll resumed');
+    console.log('🖱️ Gallery leave - auto-scroll resumed');
   });
   
   // Arrow click events
-  if (arrowRight) {
-    arrowRight.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Temporarily pause auto-scroll during arrow click
-      const wasAutoScrolling = !!autoScrollInterval;
-      if (wasAutoScrolling) {
-        stopAutoScroll();
-        console.log('⏸️ Gallery auto-scroll paused for right arrow click');
-      }
-      
-      scrollRight();
-      console.log('➡️ Gallery right arrow clicked');
-    });
-    console.log('✅ Gallery right arrow listener added');
-  } else {
-    console.log('⚠️ Gallery right arrow (image-33) not found');
-  }
-  
   if (arrowLeft) {
     arrowLeft.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       
-      // Temporarily pause auto-scroll during arrow click
+      // Pause auto-scroll during arrow click
       const wasAutoScrolling = !!autoScrollInterval;
       if (wasAutoScrolling) {
         stopAutoScroll();
-        console.log('⏸️ Gallery auto-scroll paused for left arrow click');
+        console.log('⏸️ Gallery auto-scroll paused for left arrow');
       }
       
       scrollLeft();
@@ -5008,37 +4986,43 @@ function initializeGallerySectionAutoScroll() {
     console.log('⚠️ Gallery left arrow (image-32) not found');
   }
   
-  // Start auto-scroll after a delay
+  if (arrowRight) {
+    arrowRight.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Pause auto-scroll during arrow click
+      const wasAutoScrolling = !!autoScrollInterval;
+      if (wasAutoScrolling) {
+        stopAutoScroll();
+        console.log('⏸️ Gallery auto-scroll paused for right arrow');
+      }
+      
+      scrollRight();
+      console.log('➡️ Gallery right arrow clicked');
+    });
+    console.log('✅ Gallery right arrow listener added');
+  } else {
+    console.log('⚠️ Gallery right arrow (image-33) not found');
+  }
+  
+  // Start auto-scroll after delay
   setTimeout(() => {
     startAutoScroll();
   }, 2000);
   
-  console.log('✅ Gallery section auto-scroll initialized');
+  console.log('✅ Gallery section initialized successfully');
 }
 
-// Initialize gallery section auto-scroll when DOM is ready
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🎯 DOM Content Loaded - Initializing gallery section auto-scroll...');
-  
-  // Debug: Check if elements exist
-  const gallerySection = document.querySelector('.gallery-section');
-  const galleryContainer = document.querySelector('.gallery-section-cms') || document.querySelector('.div-block-15');
-  const arrowRight = document.querySelector('.image-33');
-  const arrowLeft = document.querySelector('.image-32');
-  
-  console.log('🔍 Gallery Section Element Debug:', {
-    gallerySection: !!gallerySection,
-    galleryContainer: !!galleryContainer,
-    arrowRight: !!arrowRight,
-    arrowLeft: !!arrowLeft
-  });
-  
-  initializeGallerySectionAutoScroll();
+  console.log('🎯 DOM Content Loaded - Initializing gallery section...');
+  initializeGallerySection();
 });
 
-// Also initialize when Webflow loads
+// Initialize when Webflow loads
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function() {
-    initializeGallerySectionAutoScroll();
+    initializeGallerySection();
   });
 }
