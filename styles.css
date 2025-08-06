@@ -3197,16 +3197,7 @@ opacity: 1 !important;
   transition: all 0.3s ease;
 }
 
-/* Subtle hover effect for thumbnails */
-.thumbnail-image:hover,
-.image-3:hover,
-.image-3.thumbnail-image:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-color: var(--duva-red);
-}
-
-/* Remove product image hover enlarge and add highlight effect */
+/* Keep active state for thumbnails */
 .thumbnail-image.is-active {
   border: 2px solid var(--duva-red);
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
@@ -3216,14 +3207,6 @@ opacity: 1 !important;
   .image-3.thumbnail-image {
     width: 60px;
     height: auto;
-  }
-  
-  /* Reduce hover effect on mobile */
-  .thumbnail-image:hover,
-  .image-3:hover,
-  .image-3.thumbnail-image:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -4102,6 +4085,78 @@ footer, .footer {
   .related-card:hover,
   .flip-card-wrapper:hover {
     transform: translateY(-2px);
+  }
+}
+
+/* === Product Image and Thumbnail Hover Animation === */
+/* Enhanced hover effects for product images and thumbnails */
+.product-image,
+.thumbnail-image,
+.image-3 {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect for product images and thumbnails */
+.product-image::before,
+.thumbnail-image::before,
+.image-3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+/* Enhanced hover effects for product images and thumbnails */
+.product-image:hover,
+.thumbnail-image:hover,
+.image-3:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Shimmer animation on hover */
+.product-image:hover::before,
+.thumbnail-image:hover::before,
+.image-3:hover::before {
+  left: 100%;
+}
+
+/* Product image scaling on hover */
+.product-image:hover img,
+.thumbnail-image:hover img,
+.image-3:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Responsive adjustments for product images and thumbnails */
+@media screen and (max-width: 767px) {
+  .product-image:hover,
+  .thumbnail-image:hover,
+  .image-3:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+  
+  .product-image:hover img,
+  .thumbnail-image:hover img,
+  .image-3:hover img {
+    transform: scale(1.03);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .product-image:hover,
+  .thumbnail-image:hover,
+  .image-3:hover {
+    transform: translateY(-1px) scale(1.005);
   }
 }
 
