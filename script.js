@@ -5029,6 +5029,25 @@ function initializeGallerySection() {
     console.log('⚠️ Gallery right arrow (image-33) not found');
   }
   
+  // Force image sizing after a delay to ensure all images are loaded
+  setTimeout(() => {
+    const images = galleryContainer.querySelectorAll('.gallery-image, img');
+    images.forEach(img => {
+      // Force CSS properties via JavaScript
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '100%';
+      img.style.objectFit = 'contain';
+      img.style.objectPosition = 'center';
+      img.style.boxSizing = 'border-box';
+      img.style.display = 'block';
+      img.style.flexShrink = '0';
+      
+      console.log(`🔧 Forced image sizing for: ${img.src}`);
+    });
+  }, 1000);
+  
   // Start auto-scroll after delay
   setTimeout(() => {
     startAutoScroll();
