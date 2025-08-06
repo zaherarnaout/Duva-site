@@ -4865,6 +4865,29 @@ function initializeGallerySection() {
     arrowRight: !!arrowRight
   });
   
+  // Debug: Log container and image dimensions
+  if (galleryContainer) {
+    console.log('📏 Gallery container dimensions:', {
+      clientWidth: galleryContainer.clientWidth,
+      clientHeight: galleryContainer.clientHeight,
+      scrollWidth: galleryContainer.scrollWidth,
+      scrollHeight: galleryContainer.scrollHeight
+    });
+    
+    // Check if images are causing overflow
+    const images = galleryContainer.querySelectorAll('.gallery-image');
+    images.forEach((img, index) => {
+      console.log(`🖼️ Image ${index + 1} dimensions:`, {
+        naturalWidth: img.naturalWidth,
+        naturalHeight: img.naturalHeight,
+        offsetWidth: img.offsetWidth,
+        offsetHeight: img.offsetHeight,
+        clientWidth: img.clientWidth,
+        clientHeight: img.clientHeight
+      });
+    });
+  }
+  
   // Auto-scroll variables
   let autoScrollInterval = null;
   let isHovered = false;
