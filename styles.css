@@ -4320,7 +4320,7 @@ footer, .footer {
 /* === Gallery Section Arrow Navigation === */
 .image-32 {
   position: absolute;
-  inset: auto auto auto 1%;
+  inset: auto auto 50px 1%;
   z-index: 999;
   width: 50px;
   cursor: pointer;
@@ -4334,7 +4334,7 @@ footer, .footer {
 
 .image-33 {
   position: absolute;
-  inset: 0% 0% 0% auto;
+  inset: auto 1% 50px auto;
   z-index: 999;
   width: 50px;
   cursor: pointer;
