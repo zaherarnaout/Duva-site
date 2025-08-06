@@ -4349,6 +4349,37 @@ footer, .footer {
   max-width: 100% !important;
 }
 
+/* === Force Gallery Image Sizing === */
+/* Target all possible image selectors */
+.gallery-image,
+.gallery-image img,
+.gallery-section-cms img,
+.div-block-15 img,
+.gallery-section img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+  /* Prevent any inline styles from overriding */
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+/* Override any Webflow inline styles */
+.gallery-image[style],
+.gallery-section-cms img[style],
+.div-block-15 img[style] {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
 /* === Gallery Section - Clean Implementation === */
 
 /* Main Gallery Container */
@@ -4435,15 +4466,18 @@ footer, .footer {
 
 /* Gallery Images */
 .gallery-image {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  box-sizing: border-box !important;
+  /* Force image to fit container */
+  display: block !important;
+  flex-shrink: 0 !important;
 }
 
 /* Hide scrollbar */
