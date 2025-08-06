@@ -4317,34 +4317,7 @@ footer, .footer {
   filter: brightness(1.1);
 }
 
-/* === Gallery Section Arrow Navigation === */
-.image-32 {
-  position: absolute;
-  inset: auto auto 50px 1%;
-  z-index: 999;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-32:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-.image-33 {
-  position: absolute;
-  inset: auto 1% 50px auto;
-  z-index: 999;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-33:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
+/* Old gallery arrow styles removed - using new clean implementation */
 
 /* === Override Webflow Gallery Width Issues === */
 .gallery-section-cms {
@@ -4374,6 +4347,203 @@ footer, .footer {
 .gallery-image * {
   width: 100% !important;
   max-width: 100% !important;
+}
+
+/* === Gallery Section - Clean Implementation === */
+
+/* Main Gallery Container */
+.gallery-section {
+  display: flex;
+  width: 100%;
+  max-width: 2000px;
+  margin: 20px auto;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--border-divider-light);
+  border-right-color: var(--border-divider-light);
+  border-bottom-color: var(--border-divider-light);
+  border-left-color: var(--border-divider-light);
+  border-top-left-radius: var(--border-4px-cornner);
+  border-top-right-radius: var(--border-4px-cornner);
+  border-bottom-left-radius: var(--border-4px-cornner);
+  border-bottom-right-radius: var(--border-4px-cornner);
+  background-color: var(--duva-white);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
+  position: relative;
+}
+
+/* Gallery Wrapper */
+.gallery-section-wraper {
+  position: static;
+  display: flex;
+  overflow: visible;
+  width: 100%;
+  max-width: 2000px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-flow: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 991px) {
+  .gallery-section-wraper {
+    position: relative;
+  }
+}
+
+/* Gallery Content Container */
+.div-block-15 {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  max-width: 2000px;
+  overflow: hidden;
+}
+
+/* Gallery CMS Container */
+.gallery-section-cms {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Gallery Items */
+.gallery-section-cms .w-dyn-item {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 12px;
+}
+
+/* Gallery Images */
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide scrollbar */
+.gallery-section-cms::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-section-cms {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Arrow Navigation */
+.image-32 {
+  position: absolute;
+  inset: auto auto 50px 1%;
+  z-index: 999;
+  width: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-32:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
+.image-33 {
+  position: absolute;
+  inset: auto 1% 50px auto;
+  z-index: 999;
+  width: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-33:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
+/* Subscribe Wrapper */
+.gallery-subscribe-wrapper {
+  position: absolute;
+  inset: 0% 5% 0% auto;
+  z-index: 10;
+  display: flex;
+  width: 350px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  padding-top: 20px;
+  padding-right: 4px;
+  padding-left: 4px;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--duva-light-grey);
+  border-right-color: var(--duva-light-grey);
+  border-bottom-color: var(--duva-light-grey);
+  border-left-color: var(--duva-light-grey);
+  border-top-left-radius: var(--border-4px-cornner);
+  border-top-right-radius: var(--border-4px-cornner);
+  border-bottom-left-radius: var(--border-4px-cornner);
+  border-bottom-right-radius: var(--border-4px-cornner);
+  backdrop-filter: blur(3px);
+}
+
+@media screen and (max-width: 991px) {
+  .gallery-subscribe-wrapper {
+    right: 20px;
+    bottom: 20px;
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gallery-subscribe-wrapper {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery-subscribe-wrapper {
+    right: 10px;
+    bottom: 10px;
+    display: none;
+    width: 300px;
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 991px) {
+  .div-block-15 {
+    height: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-15 {
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .div-block-15 {
+    height: 300px;
+  }
 }
 
 
