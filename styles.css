@@ -2914,16 +2914,7 @@ opacity: 1 !important;
 }
 
 /* Gallery Section Fade-in on Scroll */
-.gallery-section {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.gallery-section.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* === Remove Divider Between Related Items and Accessories === */
 .related-section + .accessories-section {
@@ -2933,33 +2924,7 @@ opacity: 1 !important;
 }
 
 /* Ensure gallery images are always visible when section is visible */
-.gallery-section.fade-in .gallery-section-cms,
-.gallery-section.fade-in .gallery-image,
-.gallery-section.fade-in img {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Force all gallery images to be visible regardless of fade state */
-.gallery-section .gallery-section-cms,
-.gallery-section .gallery-image,
-.gallery-section img,
-.gallery-section .w-dyn-item img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-/* Ensure first few images are definitely visible */
-.gallery-section .w-dyn-item:nth-child(1),
-.gallery-section .w-dyn-item:nth-child(2),
-.gallery-section .w-dyn-item:nth-child(3) {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* Accessories Dropdown Fade-in Animation */
 .accessories-content {
@@ -2988,182 +2953,14 @@ opacity: 1 !important;
 }
 
 /* === Gallery Section === */
-.gallery-section {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.gallery-section-wrapper {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0;
-}
-
-/* === Gallery Section - Webflow Structure Specific === */
-.gallery-section {
-  position: relative !important;
-  width: 100% !important;
-  overflow: visible !important; /* Changed from hidden to visible to show shadow */
-  visibility: visible !important;
-  display: block !important;
-}
-
-.gallery-section-wrapper {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 1px !important; /* Match Webflow padding */
-  overflow: visible !important; /* Allow shadow to show */
-  visibility: visible !important;
-  display: flex !important; /* Match Webflow flex */
-  flex-flow: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 12px !important;
-  border: var(--border-main) solid var(--border-main-shadow) !important;
-  border-radius: var(--border-4px-cornner) !important;
-  background-color: var(--white) !important;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px !important; /* Match Webflow shadow */
-}
-
-.gallery-section-cms {
-  display: flex !important;
-  overflow-x: auto !important;
-  scroll-behavior: smooth !important;
-  scroll-snap-type: x mandatory !important;
-  width: 100% !important;
-  height: 700px !important; /* Match Webflow height */
-  max-width: 2000px !important; /* Match Webflow max-width */
-  gap: 24px !important; /* Match Webflow gap */
-  padding: 2px !important; /* 2px padding all around */
-  margin: 0 0 4px 0 !important; /* Match Webflow margin */
-  visibility: visible !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-  flex-flow: row !important;
-  justify-content: center !important;
-  align-items: flex-start !important; /* Changed from center to flex-start */
-}
-
-/* Force single image viewport */
-.gallery-section-cms .w-dyn-items {
-  display: flex !important;
-  gap: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  visibility: visible !important;
-  min-height: 200px !important;
-  width: max-content !important;
-  flex-wrap: nowrap !important;
-}
-
-/* Target Collection List 7 specifically */
-.gallery-section-cms .w-dyn-items {
-  display: flex !important;
-  gap: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  visibility: visible !important;
-  min-height: 200px !important;
-}
-
-/* Target Collection Item 5 specifically */
-.gallery-section-cms .w-dyn-item {
-  flex-shrink: 0 !important;
-  width: 100vw !important;
-  min-width: 100vw !important;
-  max-width: 100vw !important;
-  scroll-snap-align: start !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  visibility: visible !important;
-  display: block !important;
-  min-height: 200px !important;
-  box-sizing: border-box !important;
-}
-
-/* Ensure only one item is visible at a time */
-.gallery-section-cms .w-dyn-item:not(:first-child) {
-  margin-left: 0 !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* Force single image display */
-.gallery-section-cms .w-dyn-item {
-  position: relative !important;
-  left: 0 !important;
-  right: 0 !important;
-}
+/* Gallery section CMS item styles */
+/* REMOVED - Gallery section functionality disabled */
 
-/* Target gallery-Image specifically */
-.gallery-image {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Force full width for any image inside collection items */
-.gallery-section-cms .w-dyn-item img,
-.gallery-section-cms img,
-.gallery-image img {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  cursor: pointer !important;
-  transition: cursor 0.2s ease !important;
-  box-sizing: border-box !important;
-}
-
-/* Ensure single image display - override any Webflow grid */
-.gallery-section-cms .w-dyn-item {
-  width: 100vw !important;
-  min-width: 100vw !important;
-  max-width: 100vw !important;
-  flex: 0 0 100vw !important;
-  flex-basis: 100vw !important;
-  flex-grow: 0 !important;
-  flex-shrink: 0 !important;
-}
-
-/* Override any Webflow grid classes that might interfere */
-.gallery-section-cms .w-dyn-item[class*="w-col"],
-.gallery-section-cms .w-dyn-item[class*="column"] {
-  width: 100vw !important;
-  min-width: 100vw !important;
-  max-width: 100vw !important;
-  flex: 0 0 100vw !important;
-}
-
-/* Remove pointer cursor for gallery images */
-.gallery-section-cms .w-dyn-item:hover img,
-.gallery-section-cms:hover img,
-.gallery-image:hover img {
-  cursor: default !important;
-}
-
-/* Remove pointer cursor for gallery container */
-.gallery-section-cms:hover {
-  cursor: default !important;
-}
-
-/* Hide scrollbar for cleaner look */
-.gallery-section-cms::-webkit-scrollbar {
-  display: none !important;
-}
-
-.gallery-section-cms {
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-}
+/* Gallery image styles */
+/* REMOVED - Gallery section functionality disabled */
 
 /* === Thumbnail Hover Effects === */
 .thumbnail-image {
@@ -3314,16 +3111,7 @@ opacity: 1 !important;
 }
 
 /* Skeleton for gallery images */
-.gallery-image.skeleton {
-  width: 100% !important;
-  height: 400px !important;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  display: block !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* Skeleton for accessory images */
 .accessory-image.skeleton {
@@ -3465,49 +3253,7 @@ opacity: 1 !important;
 }
 
 /* === Gallery Scroll Performance Optimizations === */
-.gallery-section-cms {
-  /* Hardware acceleration for smoother scrolling */
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  perspective: 1000px !important;
-  will-change: scroll-position !important;
-  /* Optimize for touch devices */
-  touch-action: pan-x !important;
-  /* Smooth momentum scrolling */
-  scroll-behavior: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  /* Enhanced scroll snap for better positioning */
-  scroll-snap-type: x mandatory !important;
-  scroll-snap-stop: always !important;
-  /* Prevent scroll chaining */
-  overscroll-behavior-x: contain !important;
-}
-
-/* Optimize individual gallery items for better performance */
-.gallery-section-cms .w-dyn-item {
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  will-change: transform !important;
-  /* Enhanced scroll snap alignment */
-  scroll-snap-align: start !important;
-  scroll-snap-stop: always !important;
-}
-
-/* Smooth image transitions */
-.gallery-section-cms .w-dyn-item img,
-.gallery-section-cms img,
-.gallery-image img {
-  transition: none !important; /* Remove hover effects */
-  will-change: auto !important;
-}
-
-/* Remove hover effects for gallery images */
-.gallery-section-cms .w-dyn-item:hover img,
-.gallery-section-cms:hover img,
-.gallery-image:hover img {
-  transform: none !important;
-  scale: none !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* === Arrow Hover Effects === */
 .download-arrow {
@@ -3546,20 +3292,8 @@ opacity: 1 !important;
 }
 
 /* === Gallery Subscribe Wrapper Parallax Effect === */
-.gallery-subscribe-wrapper {
-  opacity: 0.3 !important; /* 30% opacity as default */
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: opacity, transform !important;
-  /* Parallax effect */
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  perspective: 1000px !important;
-}
-
-.gallery-subscribe-wrapper:hover {
-  opacity: 1 !important; /* Full opacity on hover */
-  transform: translateZ(10px) scale(1.02) !important;
-}
+/* Gallery subscribe wrapper styles */
+/* REMOVED - Gallery section functionality disabled */
 
 /* Enhanced parallax effect on scroll */
 .gallery-section-wrapper {
@@ -3567,85 +3301,11 @@ opacity: 1 !important;
   transform-style: preserve-3d !important;
 }
 
-.gallery-subscribe-wrapper {
-  /* Parallax depth effect */
-  transform: translateZ(0) !important;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* === Gallery Subscribe Wrapper Effects === */
-.gallery-subscribe-wrapper {
-  /* Ensure proper positioning and effects */
-  position: absolute !important;
-  right: 40px !important;
-  bottom: 40px !important;
-  z-index: 10 !important;
-  display: flex !important;
-  width: 25% !important;
-  padding-right: 4px !important;
-  padding-left: 4px !important;
-  flex-flow: column !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  gap: 20px !important;
-  border-top-left-radius: var(--border-4px-cornner) !important;
-  border-top-right-radius: var(--border-4px-cornner) !important;
-  border-bottom-left-radius: var(--border-4px-cornner) !important;
-  border-bottom-right-radius: var(--border-4px-cornner) !important;
-  background-color: var(--f4f5f6-background-opc) !important;
-  
-  /* Animation properties */
-  opacity: 0.3 !important;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: opacity, transform !important;
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-}
-
-.gallery-subscribe-wrapper:hover {
-  opacity: 1 !important;
-  transform: translateZ(10px) scale(1.02) !important;
-}
-
-/* Smooth hover state transitions */
-.gallery-subscribe-wrapper * {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Responsive design for gallery subscribe wrapper */
-@media screen and (max-width: 991px) {
-  .gallery-subscribe-wrapper {
-    right: 20px !important;
-    bottom: 20px !important;
-    width: 50% !important;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .gallery-subscribe-wrapper {
-    width: 60% !important;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .gallery-subscribe-wrapper {
-    right: 10px !important;
-    bottom: 10px !important;
-    display: none !important;
-    width: 300px !important;
-  }
-}
+/* Gallery subscribe wrapper styles */
+/* REMOVED - Gallery section functionality disabled */
 
 /* === Enhanced Wheel Scrolling Styles === */
-.gallery-section-cms {
-  /* Ensure proper wheel scrolling */
-  overflow-x: auto !important;
-  scroll-behavior: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  scroll-snap-type: x mandatory !important;
-  scroll-snap-stop: always !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 .collection-list-6 {
   /* Ensure proper wheel scrolling for related items */
@@ -3657,12 +3317,7 @@ opacity: 1 !important;
 }
 
 /* Gallery section wrapper for broader wheel detection */
-.gallery-section-wrapper,
-.gallery-section {
-  /* Ensure wheel events can be captured */
-  position: relative !important;
-  overflow: visible !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* Related section wrapper for broader wheel detection */
 .related-section {
@@ -3701,8 +3356,8 @@ nav, .nav, .navigation {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
-/* Gallery and related items */
-.gallery-section, .related-section {
+/* Related items */
+.related-section {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
@@ -3717,190 +3372,16 @@ footer, .footer {
 }
 
 /* === Gallery Image Optimization === */
-/* Override Webflow gallery image styles for perfect aspect ratio */
-.gallery-image {
-  width: 100% !important;
-  height: 700px !important;
-  display: block !important;
-  padding: 3px !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  border-radius: 8px !important;
-  background: #f4f5f6 !important;
-  transition: none !important; /* Remove hover effects */
-  will-change: auto !important;
-  backface-visibility: visible !important;
-}
+/* REMOVED - Gallery section functionality disabled */
 
-/* Remove hover effects */
-.gallery-image:hover {
-  transform: none !important;
-  scale: none !important;
-}
-
-/* Gallery section wrapper optimization */
-.gallery-section-wrapper {
-  overflow: hidden !important;
-  padding: 1px !important;
-  flex-flow: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 12px !important;
-  border-style: solid !important;
-  border-top-width: var(--border-main) !important;
-  border-top-color: var(--border-divider-light) !important;
-  border-right-width: var(--border-main) !important;
-  border-right-color: var(--border-divider-light) !important;
-  border-bottom-width: var(--border-main) !important;
-  border-bottom-color: var(--border-divider-light) !important;
-  border-left-width: var(--border-main) !important;
-  border-left-color: var(--border-divider-light) !important;
-  border-top-left-radius: var(--border-4px-cornner) !important;
-  border-top-right-radius: var(--border-4px-cornner) !important;
-  border-bottom-left-radius: var(--border-4px-cornner) !important;
-  border-bottom-right-radius: var(--border-4px-cornner) !important;
-  background-color: var(--btn-light-text) !important;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px !important;
-  margin-bottom: 0 !important; /* Remove bottom margin */
-  padding-bottom: 0 !important; /* Remove bottom padding */
-}
-
-/* Gallery CMS container optimization */
-.gallery-section-cms {
-  overflow: hidden !important;
-  width: 100% !important;
-  height: 700px !important; /* Match image height */
-  max-width: 2000px !important;
-  flex-flow: row !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 24px !important;
-  scroll-snap-type: x mandatory !important;
-  scroll-snap-stop: always !important;
-  -webkit-overflow-scrolling: touch !important;
-  margin-bottom: 0 !important; /* Remove bottom margin */
-  padding-bottom: 0 !important; /* Remove bottom padding */
-}
-
-/* Gallery items optimization */
-.gallery-section-cms .w-dyn-item {
-  flex: 0 0 auto !important;
-  width: 100vw !important;
-  height: 100% !important;
-  scroll-snap-align: start !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 0 12px !important;
-  margin-bottom: 0 !important; /* Remove bottom margin */
-}
-
-/* Ensure images maintain aspect ratio */
-.gallery-section-cms img {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-}
+/* Gallery styles */
+/* REMOVED - Gallery section functionality disabled */
 
 /* Responsive gallery optimization */
-@media screen and (max-width: 991px) {
-  .gallery-section-wrapper {
-    position: relative !important;
-  }
-  
-  .gallery-image {
-    height: 600px !important;
-  }
-  
-  .gallery-section-cms {
-    height: 600px !important;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .gallery-image {
-    height: 500px !important;
-  }
-  
-  .gallery-section-cms {
-    height: 500px !important;
-  }
-  
-  .gallery-section-cms .w-dyn-item {
-    padding: 0 8px !important;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .gallery-image {
-    height: 400px !important;
-  }
-  
-  .gallery-section-cms {
-    height: 400px !important;
-  }
-  
-  .gallery-section-cms .w-dyn-item {
-    padding: 0 4px !important;
-  }
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* Gallery subscribe wrapper optimization */
-.gallery-subscribe-wrapper {
-  position: absolute !important;
-  right: 40px !important;
-  bottom: 40px !important;
-  z-index: 10 !important;
-  display: flex !important;
-  width: 25% !important;
-  padding-right: 4px !important;
-  padding-left: 4px !important;
-  flex-flow: column !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  gap: 20px !important;
-  border-top-left-radius: var(--border-4px-cornner) !important;
-  border-top-right-radius: var(--border-4px-cornner) !important;
-  border-bottom-left-radius: var(--border-4px-cornner) !important;
-  border-bottom-right-radius: var(--border-4px-cornner) !important;
-  background-color: var(--f4f5f6-background-opc) !important;
-  opacity: 0.3 !important;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: opacity, transform !important;
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-}
-
-.gallery-subscribe-wrapper:hover {
-  opacity: 1 !important;
-  transform: translateZ(10px) scale(1.02) !important;
-}
-
-@media screen and (max-width: 991px) {
-  .gallery-subscribe-wrapper {
-    right: 20px !important;
-    bottom: 20px !important;
-    width: 50% !important;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .gallery-subscribe-wrapper {
-    width: 60% !important;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .gallery-subscribe-wrapper {
-    right: 10px !important;
-    bottom: 10px !important;
-    display: none !important;
-    width: 300px !important;
-  }
-}
+/* REMOVED - Gallery section functionality disabled */
 
 /* === Essential Flip Card Animation Only === */
 
