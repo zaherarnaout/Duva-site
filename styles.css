@@ -3205,7 +3205,7 @@ opacity: 1 !important;
 
 /* Keep active state for thumbnails */
 .thumbnail-image.is-active {
-  border: 2px solid var(--duva-red);
+  border-color: var(--duva-red, #c0392b) !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
 }
 
@@ -3538,6 +3538,11 @@ opacity: 1 !important;
 .dropdown-arrow:hover {
   transform: translateY(-2px) scale(1.05) !important;
   filter: brightness(1.1) !important;
+}
+
+/* Ensure rotation is preserved when dropdown is open, even on hover */
+.dropdown-wrapper.open .dropdown-arrow:hover {
+  transform: translateY(-2px) scale(1.05) rotate(180deg) !important;
 }
 
 /* === Gallery Subscribe Wrapper Parallax Effect === */
