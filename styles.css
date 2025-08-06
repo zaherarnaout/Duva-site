@@ -4278,6 +4278,16 @@ footer, .footer {
   transform: scale(1.2) !important;
 }
 
+/* More specific selector to ensure it works */
+.w-lightbox-backdrop .w-lightbox-image:hover img {
+  transform: scale(1.2) !important;
+}
+
+/* Even more specific for Webflow */
+.w-lightbox-backdrop .w-lightbox-image img:hover {
+  transform: scale(1.2) !important;
+}
+
 /* Enhanced lightbox backdrop */
 .w-lightbox-backdrop {
   backdrop-filter: blur(8px) !important;
