@@ -2639,12 +2639,7 @@ function initializeScrollAnimations() {
     console.log('✅ Related section observer set up');
   }
   
-  // Observe Gallery section
-  const gallerySection = document.querySelector('.gallery-section');
-  if (gallerySection) {
-    observer.observe(gallerySection);
-    console.log('✅ Gallery section observer set up');
-  }
+  // Gallery section observer disabled
   
   // Enhanced accessories dropdown animation
   const accessoriesToggle = document.querySelector('.accessories-toggle');
@@ -2688,147 +2683,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize menu panel functionality
   initializeMenuPanel();
 });
-
-// === Auto-scroll Fullscreen Image Gallery ===
-/* REMOVED - Gallery section functionality disabled */
-      gallery.scrollTo({
-        left: currentScroll - viewportWidth,
-        behavior: "smooth"
-      });
-      console.log(`🔄 Scrolling to: ${currentScroll - viewportWidth}px`);
-    }
-  }
-
-  function startScrolling() {
-    if (scrollInterval) {
-      clearInterval(scrollInterval);
-    }
-    scrollInterval = setInterval(scrollToNext, scrollSpeed);
-    isAutoScrolling = true;
-    console.log('▶️ Auto-scroll started');
-  }
-
-  function stopScrolling() {
-    if (scrollInterval) {
-      clearInterval(scrollInterval);
-      scrollInterval = null;
-      isAutoScrolling = false;
-      console.log('⏸️ Auto-scroll paused');
-    }
-  }
-
-  // Mouse wheel scroll handler
-  function handleWheelScroll(event) {
-    console.log('🎯 Gallery wheel event triggered');
-    console.log('📏 Wheel event details:', {
-      deltaY: event.deltaY,
-      deltaX: event.deltaX,
-      clientX: event.clientX,
-      clientY: event.clientY,
-      target: event.target.tagName + '.' + event.target.className,
-      galleryScrollWidth: gallery.scrollWidth,
-      galleryClientWidth: gallery.clientWidth,
-      canScroll: gallery.scrollWidth > gallery.clientWidth
-    });
     
-    // Only handle wheel scroll when hovering over gallery
-    // Prevent default scroll behavior for the entire page
-    event.preventDefault();
-    event.stopPropagation();
-    
-    // Determine scroll direction
-    if (event.deltaY > 0) {
-      // Scroll down/right - go to next image
-      console.log('🔄 Gallery wheel: scrolling to next image');
-      scrollToNext();
-    } else {
-      // Scroll up/left - go to previous image
-      console.log('🔄 Gallery wheel: scrolling to previous image');
-      scrollToPrevious();
-    }
-    
-    // Return false to prevent any further scroll events
-    return false;
-  }
 
-  // Add mouse wheel event listener only when hovering over gallery
-  gallery.addEventListener('mouseenter', function() {
-    gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
-    console.log('🎯 Gallery mouse wheel enabled');
-  });
-  
-  gallery.addEventListener('mouseleave', function() {
-    gallery.removeEventListener('wheel', handleWheelScroll);
-    console.log('🎯 Gallery mouse wheel disabled');
-  });
-  
-  console.log('🎯 Mouse wheel navigation always active');
-  
-  // Add hover pause functionality
-  gallery.addEventListener('mouseenter', stopScrolling);
-  gallery.addEventListener('mouseleave', startScrolling);
-  
-  console.log('⏸️ Hover pause functionality enabled');
-  
-  // Start auto-scrolling after a short delay
-  setTimeout(() => {
-    startScrolling();
-  }, 2000); // 2 second delay to let everything load properly
-  
-  // Force scroll to first image to ensure it's visible (no auto-scroll for testing)
-  setTimeout(() => {
-    gallery.scrollTo({
-      left: 0,
-      behavior: "instant"
-    });
-    console.log('📍 Forced scroll to first image');
-    
-    // Check scroll position after forcing
-    console.log('📍 Gallery scroll position after reset:', gallery.scrollLeft);
-    
-    // Check if first item is visible
-    if (collectionItems.length > 0) {
-      const firstItem = collectionItems[0];
-      const firstItemRect = firstItem.getBoundingClientRect();
-      const galleryRect = gallery.getBoundingClientRect();
-      
-      console.log('📍 First item visibility check:', {
-        firstItemLeft: firstItemRect.left,
-        galleryLeft: galleryRect.left,
-        isVisible: firstItemRect.left >= galleryRect.left && firstItemRect.right <= galleryRect.right
-      });
-    }
-  }, 500);
-  
-  console.log('✅ Gallery initialized with auto-scroll enabled');
-  console.log('💡 Auto-scroll starts after 2 seconds, mouse wheel always available');
-  
-  // Add test functions to window for manual testing
-  window.testGalleryScroll = function() {
-    console.log('🧪 Testing gallery scroll...');
-    if (gallery) {
-      console.log('📏 Current scroll position:', gallery.scrollLeft);
-      gallery.scrollBy({ left: 100, behavior: 'smooth' });
-      console.log('✅ Gallery scroll test executed');
-    } else {
-      console.log('❌ Gallery not found for testing');
-    }
-  };
-  
-  window.testRelatedScroll = function() {
-    console.log('🧪 Testing related items scroll...');
-    const relatedContainer = document.querySelector('.collection-list-6');
-    if (relatedContainer) {
-      console.log('📏 Current scroll position:', relatedContainer.scrollLeft);
-      relatedContainer.scrollBy({ left: 100, behavior: 'smooth' });
-      console.log('✅ Related scroll test executed');
-    } else {
-      console.log('❌ Related container not found for testing');
-    }
-  };
-  
-  console.log('🎠 === GALLERY DEBUGGING END ===');
-}
 
 // === Menu Panel Functionality ===
 function initializeMenuPanel() {
@@ -3190,57 +3046,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === Gallery Subscribe Wrapper Parallax Enhancement ===
-function initializeGalleryParallax() {
-  console.log('🎨 Initializing gallery parallax effect...');
-  
-  const gallerySubscribeWrapper = document.querySelector('.gallery-subscribe-wrapper');
-  const gallerySection = document.querySelector('.gallery-section-wrapper');
-  
-  if (!gallerySubscribeWrapper || !gallerySection) {
-    console.log('⚠️ Gallery subscribe wrapper or section not found');
-    return;
-  }
-  
-  console.log('✅ Gallery parallax elements found');
-  
-  // Parallax scroll effect
-  function updateParallax() {
-    const rect = gallerySection.getBoundingClientRect();
-    const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-    
-    // Apply parallax effect based on scroll position
-    if (scrollProgress > 0 && scrollProgress < 1) {
-      const parallaxDepth = scrollProgress * 20; // 0-20px depth
-      const opacity = 0.3 + (scrollProgress * 0.7); // 30% to 100% opacity
-      
-      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.02})`;
-      gallerySubscribeWrapper.style.opacity = opacity;
-      
-      console.log(`🎨 Parallax: depth=${parallaxDepth}px, opacity=${opacity.toFixed(2)}`);
-    }
-  }
-  
-  // Throttled scroll handler for performance
-  let ticking = false;
-  function requestTick() {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }
-  
-  // Add scroll listener
-  window.addEventListener('scroll', requestTick, { passive: true });
-  
-  // Initial update
-  updateParallax();
-  
-  console.log('✅ Gallery parallax effect initialized');
-}
+// Gallery parallax functionality disabled
 
 // Initialize parallax when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  initializeGalleryParallax();
+  // Gallery parallax disabled
 });
 
 // === SVG Background Tracing Animation ===
@@ -3443,161 +3253,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === Enhanced Mouse Wheel Scrolling ===
-function initializeEnhancedWheelScrolling() {
-  console.log('🎯 Initializing enhanced mouse wheel scrolling...');
-  
-  // Gallery wheel scrolling
-  const gallery = document.querySelector('.gallery-section-cms');
-  if (gallery) {
-    console.log('✅ Gallery found for wheel scrolling');
-    
-    // Gallery wheel scrolling variables
-    let galleryWheelVelocity = 0;
-    let galleryWheelAnimationId = null;
-    
-    function handleGalleryWheel(event) {
-      console.log('🎯 Gallery wheel event triggered');
-      event.preventDefault();
-      event.stopPropagation();
-      
-      // Calculate velocity based on wheel delta
-      const delta = event.deltaY || event.deltaX;
-      const direction = delta > 0 ? 1 : -1;
-      const speed = Math.abs(delta) * 0.01;
-      
-      galleryWheelVelocity += direction * speed;
-      
-      // Stop any ongoing auto-scroll
-      if (typeof stopAutoScroll === 'function') {
-        stopAutoScroll();
-      }
-      
-      // Apply momentum scrolling
-      if (!galleryWheelAnimationId) {
-        galleryWheelAnimationId = requestAnimationFrame(applyGalleryWheelMomentum);
-      }
-      
-      console.log(`🎯 Gallery wheel: direction=${direction}, speed=${speed}`);
-    }
-    
-    function applyGalleryWheelMomentum() {
-      if (Math.abs(galleryWheelVelocity) > 0.1) {
-        // Scroll the gallery
-        gallery.scrollLeft += galleryWheelVelocity * 10;
-        
-        // Apply friction
-        galleryWheelVelocity *= 0.9;
-        
-        galleryWheelAnimationId = requestAnimationFrame(applyGalleryWheelMomentum);
-      } else {
-        galleryWheelVelocity = 0;
-        galleryWheelAnimationId = null;
-        
-        // Restart auto-scroll after a delay
-        setTimeout(() => {
-          if (typeof startAutoScroll === 'function' && typeof isAutoScrolling !== 'undefined' && isAutoScrolling) {
-            startAutoScroll();
-          }
-        }, 2000);
-      }
-    }
-    
-    gallery.addEventListener('wheel', handleGalleryWheel, { passive: false });
-    console.log('✅ Added wheel listener to gallery');
-    
-    // Also add wheel listener to the gallery section wrapper for broader coverage
-    const gallerySectionWrapper = document.querySelector('.gallery-section-wrapper') || 
-                                 document.querySelector('.gallery-section');
-    if (gallerySectionWrapper) {
-      gallerySectionWrapper.addEventListener('wheel', handleGalleryWheel, { passive: false });
-      console.log('✅ Added wheel listener to gallery section wrapper');
-    }
-  }
-  
-  // Related items wheel scrolling
-  const relatedContainer = document.querySelector('.collection-list-6');
-  if (relatedContainer) {
-    console.log('✅ Related items container found for wheel scrolling');
-    
-    let scrollVelocity = 0;
-    let isScrolling = false;
-    let scrollAnimationId = null;
-    
-    // Related section wheel functionality removed - now using auto-scroll with arrow navigation
-    console.log('✅ Related section wheel functionality disabled - using auto-scroll instead');
-  }
-  
-  console.log('✅ Enhanced wheel scrolling initialized');
-}
+// Gallery wheel scrolling functionality disabled
 
 // Initialize enhanced wheel scrolling
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🎯 DOM Content Loaded - Initializing enhanced wheel scrolling...');
   
   // Debug: Check if elements exist
-  const gallery = document.querySelector('.gallery-section-cms');
   const relatedContainer = document.querySelector('.collection-list-6');
-  const gallerySection = document.querySelector('.gallery-section');
   const relatedSection = document.querySelector('.related-section');
   
   console.log('🔍 Element Debug:', {
-    gallery: !!gallery,
     relatedContainer: !!relatedContainer,
-    gallerySection: !!gallerySection,
     relatedSection: !!relatedSection
   });
   
-  if (gallery) {
-    console.log('📏 Gallery element found:', gallery.className);
-  }
   if (relatedContainer) {
     console.log('📦 Related container found:', relatedContainer.className);
   }
   
-  initializeEnhancedWheelScrolling();
+  // Gallery wheel scrolling functionality disabled
 });
 
 // === Seamless Gallery Loop Fix ===
-function fixGallerySeamlessLoop() {
-  console.log('🔄 Fixing gallery seamless loop...');
-  
-  const gallery = document.querySelector('.gallery-section-cms');
-  if (!gallery) {
-    console.log('⚠️ Gallery not found for seamless loop fix');
-    return;
-  }
-  
-  // Override the existing scrollToNext function to use smooth scrolling
-  const originalScrollToNext = window.scrollToNext;
-  if (originalScrollToNext) {
-    window.scrollToNext = function() {
-      const totalImages = gallery.querySelectorAll('.w-dyn-item').length;
-      const viewportWidth = window.innerWidth;
-      const currentScroll = gallery.scrollLeft;
-      const currentIndex = Math.round(currentScroll / viewportWidth);
-      
-      if (currentIndex >= totalImages - 1) {
-        // At the end - smoothly scroll to first image
-        const firstImagePosition = 0;
-        smoothScrollTo(gallery, firstImagePosition, 800);
-        console.log('🔄 Seamless loop: Smoothly transitioning to first image');
-      } else {
-        // Normal progression
-        const nextIndex = currentIndex + 1;
-        const nextPosition = nextIndex * viewportWidth;
-        smoothScrollTo(gallery, nextPosition, 800);
-        console.log(`🔄 Seamless loop: Moving to image ${nextIndex + 1}/${totalImages}`);
-      }
-    };
-  }
-  
-  console.log('✅ Gallery seamless loop fix applied');
-}
-
-// Apply the seamless loop fix
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(fixGallerySeamlessLoop, 1000); // Delay to ensure gallery is initialized
-});
+// Gallery seamless loop functionality disabled
 
 // === Accessories Section Auto-Scroll and Mouse Wheel Logic ===
 document.addEventListener("DOMContentLoaded", function () {
