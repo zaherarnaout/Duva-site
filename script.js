@@ -3522,14 +3522,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     arrow.addEventListener('mouseleave', function() {
-      // Only reset scale if dropdown is not open (to preserve rotation)
-      const dropdown = this.closest('.dropdown-wrapper');
-      if (!dropdown || !dropdown.classList.contains('open')) {
-        this.style.transform = 'scale(1)';
-      } else {
-        // If dropdown is open, maintain rotation but reset scale
-        this.style.transform = 'rotate(180deg) scale(1)';
-      }
+      // Reset to default state - let CSS handle the rotation
+      this.style.transform = '';
+      this.style.transition = '';
     });
   });
 });
