@@ -16,7 +16,9 @@ html, body {
 
 /* === Menu Panel Functionality === */
 .menu-wrapper {
-  z-index: 1010;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 1000 !important;
   clear: none;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -34,7 +36,6 @@ html, body {
   display: flex;
   position: static;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .menu-wrapper:hover {
@@ -45,54 +46,37 @@ html, body {
 
 /* === Menu Panel Improvements === */
 .menu-panel {
-  z-index: 1000;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  background-color: var(--white, #fff);
-  border-radius: 8px;
-  flex-flow: column;
-  flex: 0 auto;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-columns: 1fr;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 520px;
-  max-width: 90vw;
-  height: auto;
-  margin-left: auto;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 11px;
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 60px;
-  overflow: visible;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg);
-  opacity: 0;
-  pointer-events: none;
-  /* Override Webflow hidden state */
-  visibility: visible !important;
-  transform-origin: left center;
+  z-index: 1001 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 60px !important;
+  width: 520px !important;
+  max-width: 90vw !important;
+  height: auto !important;
+  background-color: #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg) !important;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  pointer-events: none !important;
 }
 
 /* Prevent body scroll when menu is active */
 body.menu-open {
   overflow: hidden !important;
-  position: fixed;
-  width: 100%;
+  position: fixed !important;
+  width: 100% !important;
 }
 
 .menu-panel.active {
-  transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
-  opacity: 1;
-  pointer-events: auto;
   display: flex !important;
   visibility: visible !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  opacity: 1 !important;
+  transform: translateX(0) translateY(0) scale(1) rotateY(0deg) !important;
+  pointer-events: auto !important;
 }
 
 .menu-panel.active .menu-close-wrapper {
@@ -102,29 +86,28 @@ body.menu-open {
   position: absolute !important;
   top: 20px !important;
   right: 20px !important;
-  z-index: 1001 !important;
+  z-index: 1002 !important;
 }
 
 /* === Menu Overlay for Better UX === */
 .menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  pointer-events: none;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 1000 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.3s ease !important;
+  pointer-events: none !important;
 }
 
 .menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-  background-color: transparent;
-  pointer-events: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 /* === Menu Close Button === */
@@ -132,7 +115,7 @@ body.menu-open {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 1001;
+  z-index: 1002;
   display: block;
   visibility: visible;
   opacity: 1;
