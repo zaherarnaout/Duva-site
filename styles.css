@@ -3865,6 +3865,23 @@ ARROWS:
   border-color: var(--duva-red, #C0392B) !important;
 }
 
+/* Add overlay slide effect to flip card back ONLY */
+.flip-card-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.flip-card-wrapper:hover .flip-card-back::before {
+  left: 100%;
+}
+
 /* Flip card shimmer animation */
 .flip-card-wrapper:hover::before {
   left: 100%;
@@ -3909,7 +3926,6 @@ ARROWS:
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
-
 
 /* Related card image hover effects */
 .related-card:hover .related-image {
