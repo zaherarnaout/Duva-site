@@ -4220,6 +4220,35 @@ ARROWS:
   box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
 }
 
+/* 4.7. Filter Header Wrapper Main Shimmer Effect */
+.filter-header-wrapper-main {
+  position: relative !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.filter-header-wrapper-main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
+  transition: left 0.5s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.filter-header-wrapper-main:hover::before {
+  left: 100%;
+}
+
+.filter-header-wrapper-main:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
+}
+
 /* 5. Active Filter Badge */
 .filter-badge {
   background: var(--duva-red, #C0392B);
