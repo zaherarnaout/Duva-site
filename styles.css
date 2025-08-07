@@ -4875,6 +4875,59 @@ ARROWS:
 .product-info-block .spec-row:nth-child(7) { animation-delay: 2.5s; }
 .product-info-block .spec-row:nth-child(8) { animation-delay: 2.6s; }
 
+/* Spec Row Elements Load in Sequence */
+.product-info-block .wattage-p-page {
+  opacity: 0;
+  transform: translateX(-5px);
+  animation: specLabelReveal 0.4s ease-out forwards;
+}
+
+.product-info-block .product-info-wrapper {
+  opacity: 0;
+  transform: translateX(5px);
+  animation: specDropdownReveal 0.4s ease-out forwards;
+}
+
+/* Animation delays for spec row elements */
+.product-info-block .spec-row:nth-child(1) .wattage-p-page { animation-delay: 1.9s; }
+.product-info-block .spec-row:nth-child(1) .product-info-wrapper { animation-delay: 2.0s; }
+.product-info-block .spec-row:nth-child(2) .wattage-p-page { animation-delay: 2.0s; }
+.product-info-block .spec-row:nth-child(2) .product-info-wrapper { animation-delay: 2.1s; }
+.product-info-block .spec-row:nth-child(3) .wattage-p-page { animation-delay: 2.1s; }
+.product-info-block .spec-row:nth-child(3) .product-info-wrapper { animation-delay: 2.2s; }
+.product-info-block .spec-row:nth-child(4) .wattage-p-page { animation-delay: 2.2s; }
+.product-info-block .spec-row:nth-child(4) .product-info-wrapper { animation-delay: 2.3s; }
+.product-info-block .spec-row:nth-child(5) .wattage-p-page { animation-delay: 2.3s; }
+.product-info-block .spec-row:nth-child(5) .product-info-wrapper { animation-delay: 2.4s; }
+.product-info-block .spec-row:nth-child(6) .wattage-p-page { animation-delay: 2.4s; }
+.product-info-block .spec-row:nth-child(6) .product-info-wrapper { animation-delay: 2.5s; }
+.product-info-block .spec-row:nth-child(7) .wattage-p-page { animation-delay: 2.5s; }
+.product-info-block .spec-row:nth-child(7) .product-info-wrapper { animation-delay: 2.6s; }
+.product-info-block .spec-row:nth-child(8) .wattage-p-page { animation-delay: 2.6s; }
+.product-info-block .spec-row:nth-child(8) .product-info-wrapper { animation-delay: 2.7s; }
+
+@keyframes specLabelReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes specDropdownReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes specRowReveal {
   0% {
     opacity: 0;
