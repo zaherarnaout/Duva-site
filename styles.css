@@ -3866,6 +3866,10 @@ ARROWS:
 }
 
 /* Add overlay slide effect to flip card back ONLY */
+.flip-card-back {
+  position: relative; /* Required for ::before pseudo-element */
+}
+
 .flip-card-back::before {
   content: '';
   position: absolute;
