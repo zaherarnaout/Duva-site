@@ -3478,9 +3478,10 @@ function initializeFlipCardLinks() {
     if (productUrl === '#' || !productUrl) {
       const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
       if (productCode) {
-        // Set to '#' to prevent 404 errors - let the click handler deal with it
-        productUrl = '#';
-        console.log(`Product ${productCode} - no direct URL available, will show message on click`);
+        // For flip cards, try to construct a proper URL
+        // You can customize this based on your site structure
+        productUrl = `/?search=${productCode.toLowerCase()}`;
+        console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
       }
     }
     
@@ -3495,20 +3496,18 @@ function initializeFlipCardLinks() {
     
     // Add click event listener
     link.addEventListener('click', function(e) {
-      console.log('Card clicked! URL:', productUrl);
+      console.log('Flip card clicked! URL:', productUrl);
       
-      // Prevent navigation for invalid URLs to avoid 404 errors
-      if (productUrl === '#' || !productUrl || productUrl.includes('/product/')) {
+      // For flip cards, allow navigation even if URL is '#'
+      // This prevents the alert from showing on flip cards
+      if (productUrl === '#' || !productUrl) {
         e.preventDefault();
-        console.log('Invalid product URL detected, preventing navigation to avoid 404 error');
-        
-        // Show user-friendly message
-        const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
-        if (productCode) {
-          alert(`Product ${productCode} page is not available. Please use the search function to find this product.`);
-        }
+        console.log('Flip card - no URL configured, preventing navigation');
         return;
       }
+      
+      // Allow navigation for valid URLs
+      console.log('Flip card - navigating to:', productUrl);
       
       // Optional: Add loading state
       this.style.pointerEvents = 'none';
