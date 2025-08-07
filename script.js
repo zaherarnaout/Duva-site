@@ -3511,9 +3511,9 @@ function initializeFlipCardLinks() {
     if (productUrl === '#' || !productUrl) {
       const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
       if (productCode) {
-        // You can customize this URL pattern based on your site structure
-        productUrl = `/product/${productCode.toLowerCase()}`;
-        console.log(`Constructed URL for ${productCode}:`, productUrl);
+        // Set to '#' to prevent 404 errors - let the click handler deal with it
+        productUrl = '#';
+        console.log(`Product ${productCode} - no direct URL available, will show message on click`);
       }
     }
     
@@ -3530,10 +3530,16 @@ function initializeFlipCardLinks() {
     link.addEventListener('click', function(e) {
       console.log('Card clicked! URL:', productUrl);
       
-      // Prevent default if URL is not set
-      if (productUrl === '#' || !productUrl) {
+      // Prevent navigation for invalid URLs to avoid 404 errors
+      if (productUrl === '#' || !productUrl || productUrl.includes('/product/')) {
         e.preventDefault();
-        console.log('Product URL not configured, preventing navigation');
+        console.log('Invalid product URL detected, preventing navigation to avoid 404 error');
+        
+        // Show user-friendly message
+        const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+        if (productCode) {
+          alert(`Product ${productCode} page is not available. Please use the search function to find this product.`);
+        }
         return;
       }
       
