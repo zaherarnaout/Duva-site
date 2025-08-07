@@ -4664,9 +4664,6 @@ ARROWS:
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .download-selected-button::before {
@@ -4687,7 +4684,6 @@ ARROWS:
 
 .download-selected-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 /* Download All Button Enhancement */
@@ -4695,9 +4691,6 @@ ARROWS:
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .download-selected-button.download-all-button::before {
@@ -4718,7 +4711,6 @@ ARROWS:
 
 .download-selected-button.download-all-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 /* Reset Button Enhancement */
@@ -4726,9 +4718,6 @@ ARROWS:
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .download-selected-button.download-all-button.reset-button::before {
@@ -4749,7 +4738,6 @@ ARROWS:
 
 .download-selected-button.download-all-button.reset-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 
