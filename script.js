@@ -3523,9 +3523,10 @@ function initializeFlipCardLinks() {
         const shouldUseProductPage = true; // Set to true to use product pages
         
         if (shouldUseProductPage) {
-          // Try to construct a product page URL
-          productUrl = `/products/${productCode.toLowerCase()}`;
-          console.log(`Flip card ${index + 1} - constructed product URL for ${productCode}:`, productUrl);
+          // Try to construct a product page URL - but use search as fallback since product pages might not exist
+          // You can change this to `/products/${productCode.toLowerCase()}` if you have product pages
+          productUrl = `/?search=${productCode.toLowerCase()}`;
+          console.log(`Flip card ${index + 1} - constructed search URL for ${productCode}:`, productUrl);
         } else {
           // Fallback to search URL
           productUrl = `/?search=${productCode.toLowerCase()}`;
