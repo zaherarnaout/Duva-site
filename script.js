@@ -3461,8 +3461,6 @@ function initializeFlipCardLinks() {
   console.log('Processing', targetElements.length, 'target elements');
   
   targetElements.forEach((element, index) => {
-    console.log(`\n=== Processing Flip Card ${index + 1} ===`);
-    
     // Check if this element already has a link
     const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
     if (existingFlipLink) {
@@ -3481,31 +3479,23 @@ function initializeFlipCardLinks() {
                     element.querySelector('a')?.getAttribute('href') ||
                     '#';
     
-    console.log(`Flip card ${index + 1} - Initial productUrl:`, productUrl);
-    
     // Check if this is a flip card with an existing proper URL
     const existingLink = element.querySelector('a');
     if (existingLink && existingLink.href) {
       // Use the existing URL (whether it's product or search)
       productUrl = existingLink.href;
-      console.log(`Flip card ${index + 1} - using existing URL:`, productUrl);
+      console.log(`Flip card - using existing URL:`, productUrl);
     } else if (productUrl === '#' || !productUrl) {
       // Only construct search URL if no proper URL exists
       const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-      console.log(`Flip card ${index + 1} - codeElement found:`, !!codeElement);
-      
       let productCode = null;
       
       if (codeElement) {
         const text = codeElement.textContent?.trim();
-        console.log(`Flip card ${index + 1} - codeElement text:`, text);
-        
         // Extract just the product code (e.g., "C331", "4709") from the text
         if (text) {
           // Look for patterns like C331, 4709, etc.
           const codeMatch = text.match(/([A-Z]?\d+)/);
-          console.log(`Flip card ${index + 1} - codeMatch:`, codeMatch);
-          
           if (codeMatch) {
             productCode = codeMatch[1];
           } else {
@@ -3515,25 +3505,22 @@ function initializeFlipCardLinks() {
         }
       }
       
-      console.log(`Flip card ${index + 1} - extracted productCode:`, productCode);
-      
       if (productCode) {
         // For flip cards, try to construct a proper product URL first
         // Check if we should use product page or search
         const shouldUseProductPage = true; // Set to true to use product pages
         
         if (shouldUseProductPage) {
-          // Try to construct a product page URL - but use search as fallback since product pages might not exist
-          // You can change this to `/products/${productCode.toLowerCase()}` if you have product pages
-          productUrl = `/?search=${productCode.toLowerCase()}`;
-          console.log(`Flip card ${index + 1} - constructed search URL for ${productCode}:`, productUrl);
+          // Try to construct a product page URL
+          productUrl = `/products/${productCode.toLowerCase()}`;
+          console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
         } else {
           // Fallback to search URL
           productUrl = `/?search=${productCode.toLowerCase()}`;
-          console.log(`Flip card ${index + 1} - constructed search URL for ${productCode}:`, productUrl);
+          console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
         }
       } else {
-        console.log(`Flip card ${index + 1} - no product code found, keeping URL as #`);
+        console.log('Flip card - no product code found, keeping URL as #');
       }
     }
     
