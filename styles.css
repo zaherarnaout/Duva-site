@@ -703,7 +703,7 @@ cursor: pointer;
 
   left: 0; 
 
-  z-index: 9999 !important; 
+  z-index: 99999 !important; 
 
   background: #ffff00 !important; 
 
@@ -743,7 +743,7 @@ cursor: pointer;
 
   position: relative; 
 
-  z-index: 10000 !important; 
+  z-index: 100000 !important; 
 
 } 
 
