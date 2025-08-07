@@ -3440,50 +3440,17 @@ function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
   console.log('Script is working!');
   
-  // Find all possible card elements
+  // ONLY target flip card wrappers - don't affect other sections
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  const collectionItems = document.querySelectorAll('.collection-item');
-  const productCards = document.querySelectorAll('.product-card');
-  const cardWrappers = document.querySelectorAll('[class*="card"]');
-  const allCardElements = document.querySelectorAll('[class*="flip"], [class*="card"], [class*="collection"]');
   
-  console.log('Found elements:', {
-    flipCardWrappers: flipCardWrappers.length,
-    collectionItems: collectionItems.length,
-    productCards: productCards.length,
-    cardWrappers: cardWrappers.length,
-    allCardElements: allCardElements.length
-  });
+  console.log('Found flip card wrappers:', flipCardWrappers.length);
   
-  // Log first few elements to see what we're working with
-  allCardElements.forEach((el, index) => {
-    if (index < 5) {
-      console.log(`Element ${index + 1}:`, el.className, el.tagName);
-    }
-  });
+  // Only process flip card wrappers, not related items
+  const targetElements = flipCardWrappers;
   
-  // Try to find the actual card elements that need to be made clickable
-  let targetElements = [];
-  
-  // First try collection items
-  if (collectionItems.length > 0) {
-    targetElements = collectionItems;
-    console.log('Using collection items as targets');
-  }
-  // Then try flip card wrappers
-  else if (flipCardWrappers.length > 0) {
-    targetElements = flipCardWrappers;
-    console.log('Using flip card wrappers as targets');
-  }
-  // Then try any element with "card" in class name
-  else if (cardWrappers.length > 0) {
-    targetElements = cardWrappers;
-    console.log('Using card wrappers as targets');
-  }
-  // Finally, try any element that might be a card
-  else {
-    targetElements = allCardElements;
-    console.log('Using all card elements as targets');
+  if (targetElements.length === 0) {
+    console.log('No flip card wrappers found, skipping');
+    return;
   }
   
   console.log('Processing', targetElements.length, 'target elements');
@@ -4442,34 +4409,47 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeRelatedItemsSingleClick() {
   console.log('🖱️ Initializing related items single-click fix...');
   
+  // ONLY target related items, not other sections
   const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item');
   
+  console.log(`Found ${relatedItems.length} related items to process`);
+  
   relatedItems.forEach((item, index) => {
-    // Remove any existing double-click listeners
+    // Check if this item already has a link
+    const existingLink = item.querySelector('a');
+    if (existingLink) {
+      console.log(`Related item ${index + 1} already has a link, skipping`);
+      return;
+    }
+    
+    // Create a simple click handler for the item
     item.addEventListener('click', function(e) {
       console.log(`🖱️ Related item ${index + 1} clicked`);
       
-      // Prevent double-click behavior
+      // Prevent default behavior
       e.preventDefault();
       e.stopPropagation();
       
-      // Find the link within the item
-      const link = item.querySelector('a');
-      if (link) {
-        console.log(`🖱️ Navigating to: ${link.href}`);
-        // Simulate a single click on the link
-        link.click();
+      // Get product code for user feedback
+      const productCode = item.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      
+      if (productCode) {
+        // Show user-friendly message instead of 404 error
+        alert(`Product ${productCode} - Please use the search function to find this product.`);
+      } else {
+        alert('Product page not available. Please use the search function.');
       }
-    }, { once: false });
+    });
     
-    // Ensure links work with single click
-    const links = item.querySelectorAll('a');
-    links.forEach(link => {
-      link.addEventListener('click', function(e) {
-        console.log(`🖱️ Link clicked: ${link.href}`);
-        // Allow the link to work normally
-        e.stopPropagation();
-      });
+    // Add hover effect for better UX
+    item.addEventListener('mouseenter', function() {
+      this.style.cursor = 'pointer';
+      this.style.transform = 'translateY(-2px)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
     });
   });
   
