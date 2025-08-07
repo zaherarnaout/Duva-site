@@ -3354,19 +3354,6 @@ footer, .footer {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
-/* === Gallery Image Optimization === */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Gallery styles */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Responsive gallery optimization */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Gallery subscribe wrapper optimization */
-/* REMOVED - Gallery section functionality disabled */
-
-/* === Essential Flip Card Animation Only === */
 
 /* === Essential Flip Card Animation Only === */
 .flip-card-back {
@@ -3495,8 +3482,7 @@ footer, .footer {
 /* Enhanced hover effects for product cards */
 .collection-item:hover,
 .product-card:hover,
-.related-card:hover,
-.flip-card-wrapper:hover {
+.related-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
@@ -3505,8 +3491,7 @@ footer, .footer {
 /* Shimmer animation on hover */
 .collection-item:hover::before,
 .product-card:hover::before,
-.related-card:hover::before,
-.flip-card-wrapper:hover::before {
+.related-card:hover::before {
   left: 100%;
 }
 
@@ -3524,8 +3509,7 @@ footer, .footer {
 /* Product image scaling on hover */
 .collection-item:hover img,
 .product-card:hover img,
-.related-card:hover img,
-.flip-card-wrapper:hover img {
+.related-card:hover img {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
@@ -3541,15 +3525,13 @@ footer, .footer {
 @media screen and (max-width: 767px) {
   .collection-item:hover,
   .product-card:hover,
-  .related-card:hover,
-  .flip-card-wrapper:hover {
+  .related-card:hover {
     transform: translateY(-3px);
   }
   
   .collection-item:hover img,
   .product-card:hover img,
-  .related-card:hover img,
-  .flip-card-wrapper:hover img {
+  .related-card:hover img {
     transform: scale(1.03);
   }
 }
@@ -3557,8 +3539,7 @@ footer, .footer {
 @media screen and (max-width: 479px) {
   .collection-item:hover,
   .product-card:hover,
-  .related-card:hover,
-  .flip-card-wrapper:hover {
+  .related-card:hover {
     transform: translateY(-2px);
   }
 }
