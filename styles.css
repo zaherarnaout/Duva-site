@@ -4447,43 +4447,7 @@ ARROWS:
   50% { transform: scale(1.1); }
 }
 
-/* 6. Enhanced Dropdown Styling - Subtle Approach */
-.dropdown-wrapper {
-  position: relative;
-  z-index: 1;
-}
 
-.dropdown-field {
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-}
-
-.dropdown-arrow {
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-  transition: transform 0.3s ease;
-}
-
-.dropdown-wrapper.open .dropdown-arrow {
-  transform: rotate(180deg);
-}
-
-.dropdown-options {
-  position: relative;
-  z-index: 3;
-  pointer-events: auto;
-}
-
-.dropdown-option {
-  transition: background-color 0.2s ease;
-  pointer-events: auto;
-}
-
-.dropdown-option:hover {
-  background: rgba(192, 57, 43, 0.05);
-}
 
 /* 7. Filter Section Container Enhancement */
 .filter-sections-wrapper {
