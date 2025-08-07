@@ -659,6 +659,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!isOpen) { 
 
+        // Move dropdown to body to avoid stacking context issues
+        if (optionsBox.parentNode !== document.body) {
+          document.body.appendChild(optionsBox);
+        }
+        
+        // Position the dropdown relative to the dropdown field
+        const fieldRect = field.getBoundingClientRect();
+        optionsBox.style.position = 'fixed';
+        optionsBox.style.top = (fieldRect.bottom + 4) + 'px';
+        optionsBox.style.left = fieldRect.left + 'px';
+        optionsBox.style.width = fieldRect.width + 'px';
+        optionsBox.style.zIndex = '999999';
+        
         optionsBox.style.display = "block"; 
 
         dropdown.classList.add("open"); 
