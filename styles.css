@@ -4395,9 +4395,6 @@ ARROWS:
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .menu-tab::before {
