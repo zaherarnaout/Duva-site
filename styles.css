@@ -4390,6 +4390,43 @@ ARROWS:
   transform: scale(1.1);
 }
 
+/* 5. Menu Tab Enhancement - Filter Apply Button Style */
+.menu-tab {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.menu-tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.menu-tab:hover::before {
+  left: 100%;
+}
+
+.menu-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+}
+
+.menu-tab.active {
+  color: var(--duva-red, #C0392B);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+}
+
 /* 5. Active Filter Badge */
 .filter-badge {
   background: var(--duva-red, #C0392B);
