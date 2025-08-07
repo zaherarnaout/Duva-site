@@ -3781,6 +3781,52 @@ footer, .footer {
   filter: brightness(1.1);
 }
 
+/* === Related Section Card Navigation Styles === */
+.collection-list-6 .w-dyn-item,
+.collection-list-6 .collection-item,
+.collection-list-6 [class*="card"],
+.collection-list-6 [class*="product"] {
+  cursor: pointer !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.collection-list-6 .w-dyn-item:hover,
+.collection-list-6 .collection-item:hover,
+.collection-list-6 [class*="card"]:hover,
+.collection-list-6 [class*="product"]:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Ensure cards have proper spacing and visual hierarchy */
+.collection-list-6 .w-dyn-item {
+  margin: 0 10px !important;
+  background: #fff !important;
+  border: 1px solid #E4E3E3 !important;
+}
+
+/* Add a subtle indicator that cards are clickable */
+.collection-list-6 .w-dyn-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(192, 57, 43, 0.05) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.collection-list-6 .w-dyn-item:hover::after {
+  opacity: 1;
+}
+
+/* === Related Section Card Navigation Styles === */
+
 
 
 
