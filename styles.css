@@ -4939,15 +4939,7 @@ ARROWS:
   transform: translateY(-1px);
 }
 
-/* Selected Value (no hover effects) */
-.selected-value {
-  transition: all 0.3s ease;
-}
 
-/* Dropdown Arrow (no hover effects) */
-.dropdown-arrow {
-  transition: all 0.3s ease;
-}
 
 /* Download Divider Enhanced */
 .download-divider {
@@ -5023,12 +5015,7 @@ ARROWS:
   transition: all 0.2s ease;
 }
 
-/* Enhanced Focus States (keeping dropdown main style unchanged) */
-.dropdown-field:focus-within {
-  outline: 2px solid var(--duva-red, #C0392B);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+
 
 /* Loading State Animation */
 .product-info-block.loading {
