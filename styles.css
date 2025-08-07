@@ -4058,6 +4058,246 @@ ARROWS:
   text-decoration: none !important;
 }
 
+/* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
+
+/* 1. Enhanced Filter Checkmark Animations */
+.filter-checkmark {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.filter-checkmark:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.filter-checkmark.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+/* 2. Filter Checkmark Shimmer Effect */
+.filter-checkmark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.filter-checkmark:hover::before {
+  left: 100%;
+}
+
+/* 3. Filter Section Header Shimmer */
+.filter-header-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-header-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.filter-header-wrapper:hover::before {
+  left: 100%;
+}
+
+/* 4. Enhanced Filter Buttons */
+.filter-apply-button,
+.filter-reset-button {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.filter-apply-button::before,
+.filter-reset-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.filter-apply-button:hover::before,
+.filter-reset-button:hover::before {
+  left: 100%;
+}
+
+.filter-apply-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+}
+
+.filter-reset-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 5. Active Filter Badge */
+.filter-badge {
+  background: var(--duva-red, #C0392B);
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 6. Enhanced Dropdown Styling */
+.dropdown-wrapper {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dropdown-wrapper:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.dropdown-wrapper.open {
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2);
+}
+
+.dropdown-option {
+  transition: all 0.2s ease;
+}
+
+.dropdown-option:hover {
+  background: rgba(192, 57, 43, 0.1);
+  transform: translateX(5px);
+}
+
+/* 7. Filter Section Container Enhancement */
+.filter-sections-wrapper {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(228, 227, 227, 0.2);
+}
+
+.filter-sections-wrapper:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* 8. Mobile Responsiveness Improvements */
+@media screen and (max-width: 767px) {
+  .filter-sections-wrapper {
+    padding: 20px 15px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin: 10px;
+  }
+  
+  .filter-checkmark {
+    min-height: 48px; /* Better touch targets */
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  
+  .filter-apply-button,
+  .filter-reset-button {
+    min-height: 48px;
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+  
+  .filter-header-wrapper {
+    padding: 15px 0;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .filter-checkmark {
+    min-height: 52px;
+    padding: 14px 18px;
+  }
+  
+  .filter-apply-button,
+  .filter-reset-button {
+    min-height: 52px;
+    padding: 14px 28px;
+  }
+}
+
+/* 9. Loading State for Filter Actions */
+.filter-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.filter-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--duva-red, #C0392B);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 10. Filter Section Focus States */
+.filter-checkmark:focus,
+.filter-apply-button:focus,
+.filter-reset-button:focus {
+  outline: 2px solid var(--duva-red, #C0392B);
+  outline-offset: 2px;
+}
+
 
 
 
