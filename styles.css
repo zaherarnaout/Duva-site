@@ -4906,7 +4906,6 @@ ARROWS:
 .wattage-p-page {
   position: relative;
   transition: all 0.3s ease;
-  font-weight: 600;
 }
 
 .wattage-p-page::after {
