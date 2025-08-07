@@ -705,7 +705,9 @@ cursor: pointer;
 
   z-index: 9999 !important; 
 
-  background: #ffffff !important; 
+  background: #ffff00 !important; 
+
+  background-color: #ffff00 !important; 
 
   border: 1px solid #ddd; 
 
@@ -4982,6 +4984,7 @@ ARROWS:
   opacity: 1 !important;
   transform: none !important;
   animation: none !important;
+  background: #ffff00 !important;
 }
 
 .spec-row:nth-child(1) { animation-delay: 1.1s; }
