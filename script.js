@@ -3505,10 +3505,21 @@ function initializeFlipCardLinks() {
         }
       }
       
+            
       if (productCode) {
-        // For flip cards, try to construct a proper URL
-        productUrl = `/?search=${productCode.toLowerCase()}`;
-        console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+        // For flip cards, try to construct a proper product URL first
+        // Check if we should use product page or search
+        const shouldUseProductPage = true; // Set to true to use product pages
+        
+        if (shouldUseProductPage) {
+          // Try to construct a product page URL
+          productUrl = `/products/${productCode.toLowerCase()}`;
+          console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
+        } else {
+          // Fallback to search URL
+          productUrl = `/?search=${productCode.toLowerCase()}`;
+          console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+        }
       } else {
         console.log('Flip card - no product code found, keeping URL as #');
       }
@@ -3518,7 +3529,7 @@ function initializeFlipCardLinks() {
     link.setAttribute('data-product-url', productUrl);
     
     console.log(`Element ${index + 1} - URL:`, productUrl);
-    
+
     // Wrap the element in the link
     element.parentNode.insertBefore(link, element);
     link.appendChild(element);
