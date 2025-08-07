@@ -3436,6 +3436,23 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* === Flip Card Linking Functionality === */
+// Helper function to extract product code from element
+function extractProductCode(element) {
+  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+  if (codeElement) {
+    const text = codeElement.textContent?.trim();
+    if (text) {
+      const codeMatch = text.match(/([A-Z]?\d+)/);
+      if (codeMatch) {
+        return codeMatch[1];
+      } else {
+        return text.split(' ')[0];
+      }
+    }
+  }
+  return null;
+}
+
 function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
   console.log('Script is working!');
@@ -3464,7 +3481,14 @@ function initializeFlipCardLinks() {
     // Check if this element already has a link
     const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
     if (existingFlipLink) {
-      console.log(`Element ${index + 1} already has a link, skipping`);
+      console.log(`Element ${index + 1} already has a link, updating URL...`);
+      // Update the existing link instead of skipping
+      const productCode = extractProductCode(element);
+      if (productCode) {
+        const newUrl = `/products/${productCode.toLowerCase()}`;
+        existingFlipLink.href = newUrl;
+        console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
+      }
       return;
     }
     
