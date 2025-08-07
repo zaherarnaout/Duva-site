@@ -4122,8 +4122,7 @@ ARROWS:
 }
 
 /* 4. Enhanced Filter Buttons */
-.filter-apply-button,
-.filter-reset-button {
+.filter-apply-button {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
@@ -4132,8 +4131,7 @@ ARROWS:
   letter-spacing: 0.5px;
 }
 
-.filter-apply-button::before,
-.filter-reset-button::before {
+.filter-apply-button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -4145,8 +4143,7 @@ ARROWS:
   z-index: 1;
 }
 
-.filter-apply-button:hover::before,
-.filter-reset-button:hover::before {
+.filter-apply-button:hover::before {
   left: 100%;
 }
 
@@ -4155,9 +4152,12 @@ ARROWS:
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
-.filter-reset-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+/* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
+.filter-reset-button {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* 4.5. Button 2 Specific Shimmer Effect (NOT reset-button div) */
