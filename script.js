@@ -3462,8 +3462,8 @@ function initializeFlipCardLinks() {
   
   targetElements.forEach((element, index) => {
     // Check if this element already has a link
-    const existingLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
-    if (existingLink) {
+    const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
+    if (existingFlipLink) {
       console.log(`Element ${index + 1} already has a link, skipping`);
       return;
     }
@@ -3479,9 +3479,14 @@ function initializeFlipCardLinks() {
                     element.querySelector('a')?.getAttribute('href') ||
                     '#';
     
-    // If no URL found, try to construct one based on product code
-    if (productUrl === '#' || !productUrl) {
-      // Look for product code more specifically
+    // Check if this is a flip card with an existing proper URL
+    const existingLink = element.querySelector('a');
+    if (existingLink && existingLink.href && !existingLink.href.includes('search')) {
+      // Use the existing URL if it's a proper product URL
+      productUrl = existingLink.href;
+      console.log(`Flip card - using existing URL:`, productUrl);
+    } else if (productUrl === '#' || !productUrl) {
+      // Only construct search URL if no proper URL exists
       const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
       let productCode = null;
       
