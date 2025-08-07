@@ -3902,13 +3902,13 @@ ARROWS:
   left: 100%;
 }
 
-/* Related card text hover effects */
+/* Related card text hover effects - NO COLOR CHANGE */
 .related-card:hover .related-code,
 .related-card:hover .related-name {
-  color: var(--duva-red, #C0392B) !important;
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
+
 
 /* Related card image hover effects */
 .related-card:hover .related-image {
