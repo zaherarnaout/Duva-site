@@ -4747,7 +4747,6 @@ ARROWS:
 /* 7.9. Product Info Block Advanced Effects */
 .product-info-block {
   position: relative;
-  overflow: hidden;
 }
 
 /* Product Title Underline Effect */
