@@ -3440,22 +3440,12 @@ function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
   console.log('Script is working!');
   
-  // Only work on product template pages, not related sections
-  const isProductPage = document.querySelector('.product-template') || 
-                       document.querySelector('[class*="product"]') ||
-                       window.location.pathname.includes('/product/');
-  
-  if (!isProductPage) {
-    console.log('⚠️ Not a product page - skipping flip card initialization');
-    return;
-  }
-  
-  // Find all possible card elements (excluding related section)
+  // Find all possible card elements
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  const collectionItems = document.querySelectorAll('.collection-item:not(.related-item)');
+  const collectionItems = document.querySelectorAll('.collection-item');
   const productCards = document.querySelectorAll('.product-card');
-  const cardWrappers = document.querySelectorAll('[class*="card"]:not([class*="related"])');
-  const allCardElements = document.querySelectorAll('[class*="flip"], [class*="card"]:not([class*="related"]), [class*="collection"]:not([class*="related"])');
+  const cardWrappers = document.querySelectorAll('[class*="card"]');
+  const allCardElements = document.querySelectorAll('[class*="flip"], [class*="card"], [class*="collection"]');
   
   console.log('Found elements:', {
     flipCardWrappers: flipCardWrappers.length,
@@ -3643,7 +3633,6 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
-  initializeRelatedSectionCardNavigation(); // Remove interfering links
   
   // Test if cards are clickable
   setTimeout(() => {
@@ -3658,7 +3647,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded timeout - Re-initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
-    initializeRelatedSectionCardNavigation(); // Remove interfering links
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -3673,7 +3661,6 @@ if (typeof Webflow !== 'undefined') {
     console.log('Webflow.push - Initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
-    initializeRelatedSectionCardNavigation(); // Remove interfering links
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -3686,7 +3673,7 @@ if (typeof Webflow !== 'undefined') {
 function testCardNavigation() {
   console.log('🧪 Testing card navigation...');
   
-  const allLinks = document.querySelectorAll('.flip-card-link, .related-card-link, a[href]');
+  const allLinks = document.querySelectorAll('.flip-card-link, a[href]');
   console.log('Found links:', allLinks.length);
   
   allLinks.forEach((link, index) => {
@@ -3715,20 +3702,6 @@ function testCardNavigation() {
         dataHref: el.getAttribute('data-href'),
         dataUrl: el.getAttribute('data-url'),
         className: el.className
-      });
-    }
-  });
-  
-  // Test related section specifically
-  const relatedCards = document.querySelectorAll('.collection-list-6 .w-dyn-item');
-  console.log('🧪 Related section cards found:', relatedCards.length);
-  
-  relatedCards.forEach((card, index) => {
-    if (index < 3) {
-      console.log(`Related card ${index + 1}:`, {
-        className: card.className,
-        hasLink: !!card.querySelector('a'),
-        productCode: card.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim()
       });
     }
   });
@@ -4555,58 +4528,3 @@ function debugMenuPanel() {
 document.addEventListener('DOMContentLoaded', function() {
   debugMenuPanel();
 });
-
-// === Related Section Card Navigation ===
-// Only handle related section cards, not flip cards
-function initializeRelatedSectionCardNavigation() {
-  console.log('🎯 Related section navigation: Handling only related cards');
-  
-  const relatedContainer = document.querySelector('.collection-list-6');
-  if (relatedContainer) {
-    const existingLinks = relatedContainer.querySelectorAll('a');
-    console.log(`📦 Found ${existingLinks.length} existing CMS links`);
-    
-    // Only remove flip-card-links from related section, not from other sections
-    const flipCardLinks = relatedContainer.querySelectorAll('.flip-card-link');
-    flipCardLinks.forEach(link => {
-      console.log('🗑️ Removing flip-card-link from related section:', link.href);
-      // Unwrap the link but keep the content
-      const content = link.innerHTML;
-      link.parentNode.insertBefore(content, link);
-      link.remove();
-    });
-    
-    // Make sure arrows are still clickable
-    const arrowRight = document.querySelector('.image-30');
-    const arrowLeft = document.querySelector('.image-31');
-    
-    if (arrowRight) {
-      console.log('✅ Right arrow found and preserved');
-    } else {
-      console.log('⚠️ Right arrow not found');
-    }
-    
-    if (arrowLeft) {
-      console.log('✅ Left arrow found and preserved');
-    } else {
-      console.log('⚠️ Left arrow not found');
-    }
-    
-    // Add hover effects to the remaining CMS links
-    existingLinks.forEach((link, index) => {
-      if (!link.classList.contains('flip-card-link')) {
-        console.log(`🔗 CMS Link ${index + 1}:`, link.href);
-        
-        // Add hover effects to existing CMS links
-        link.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-2px)';
-          this.style.transition = 'transform 0.3s ease';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
-        });
-      }
-    });
-  }
-}
