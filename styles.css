@@ -3827,37 +3827,7 @@ footer, .footer {
 }
 
 /* === Flip Card Image Border Fix === */
-.flip-card-wrapper img,
-.flip-card img,
-.flip-card-front img,
-.flip-card-back img {
-  border-top: 1px solid #E4E3E3 !important;
-  border-left: 1px solid #E4E3E3 !important;
-  border-right: 1px solid #E4E3E3 !important;
-  border-bottom: 1px solid #E4E3E3 !important;
-  border-radius: 4px !important;
-}
-
-/* Ensure flip card images maintain borders during hover */
-.flip-card-wrapper:hover img,
-.flip-card:hover img,
-.flip-card-front:hover img,
-.flip-card-back:hover img {
-  border-top: 1px solid #E4E3E3 !important;
-  border-left: 1px solid #E4E3E3 !important;
-  border-right: 1px solid #E4E3E3 !important;
-  border-bottom: 1px solid #E4E3E3 !important;
-}
-
-/* Fix for any missing borders on flip card elements */
-.flip-card-wrapper,
-.flip-card,
-.flip-card-front,
-.flip-card-back {
-  border: 1px solid #E4E3E3 !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-}
+/* Reverted - keeping original card styles intact */
 
 
 
