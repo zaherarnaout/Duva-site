@@ -4238,9 +4238,9 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeEnhancedLightbox();
 });
 
-/* === Related Section Auto-Scroll with Arrow Navigation === */
+/* === Related Section Arrow Navigation === */
 function initializeRelatedSectionAutoScroll() {
-  console.log('🔄 Initializing related section auto-scroll...');
+  console.log('🔄 Initializing related section arrow navigation...');
   
   const relatedSection = document.querySelector('.related-section');
   const relatedContainer = document.querySelector('.collection-list-6');
@@ -4250,55 +4250,6 @@ function initializeRelatedSectionAutoScroll() {
   if (!relatedSection || !relatedContainer) {
     console.log('⚠️ Related section or container not found');
     return;
-  }
-  
-  let autoScrollInterval = null;
-  let isHovered = false;
-  let scrollDirection = 1; // 1 for right, -1 for left
-  const scrollSpeed = 2; // pixels per frame
-  const scrollInterval = 50; // milliseconds between scroll updates
-  
-  // Mouse wheel scroll functionality already disabled in separate function
-  console.log('✅ Mouse wheel scroll functionality disabled - using auto-scroll instead');
-  
-  // Auto-scroll function
-  function startAutoScroll() {
-    if (autoScrollInterval) return;
-    
-    autoScrollInterval = setInterval(() => {
-      if (!isHovered && relatedContainer.scrollWidth > relatedContainer.clientWidth) {
-        const currentScroll = relatedContainer.scrollLeft;
-        const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
-        
-        // Seamless looping - when reaching the end, jump to start and vice versa
-        if (currentScroll >= maxScroll) {
-          // Jump to start for seamless loop
-          relatedContainer.scrollLeft = 0;
-          scrollDirection = 1;
-          console.log('🔄 Auto-scroll: Reached end, looping back to start');
-        } else if (currentScroll <= 0 && scrollDirection < 0) {
-          // Jump to end for seamless loop
-          relatedContainer.scrollLeft = maxScroll;
-          scrollDirection = -1;
-          console.log('🔄 Auto-scroll: Reached start, looping to end');
-        }
-        
-        relatedContainer.scrollLeft += scrollDirection * scrollSpeed;
-        console.log(`🔄 Auto-scroll: ${scrollDirection > 0 ? 'right' : 'left'}, position: ${relatedContainer.scrollLeft}/${maxScroll}`);
-      } else {
-        console.log('🔄 Auto-scroll: Skipped - hovered or no scroll needed');
-      }
-    }, scrollInterval);
-    
-    console.log('🔄 Auto-scroll started');
-  }
-  
-  function stopAutoScroll() {
-    if (autoScrollInterval) {
-      clearInterval(autoScrollInterval);
-      autoScrollInterval = null;
-      console.log('⏸️ Auto-scroll stopped');
-    }
   }
   
   // Arrow navigation functions
@@ -4312,14 +4263,7 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll + scrollAmount,
         behavior: 'smooth'
       });
-      
-      // Ensure auto-scroll continues after arrow click
-      setTimeout(() => {
-        if (!isHovered && !autoScrollInterval) {
-          startAutoScroll();
-          console.log('🔄 Auto-scroll resumed after right arrow click');
-        }
-      }, 1000); // Resume after smooth scroll completes
+      console.log('➡️ Right arrow clicked - scrolling right');
     }
   }
   
@@ -4332,43 +4276,15 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll - scrollAmount,
         behavior: 'smooth'
       });
-      
-      // Ensure auto-scroll continues after arrow click
-      setTimeout(() => {
-        if (!isHovered && !autoScrollInterval) {
-          startAutoScroll();
-          console.log('🔄 Auto-scroll resumed after left arrow click');
-        }
-      }, 1000); // Resume after smooth scroll completes
+      console.log('⬅️ Left arrow clicked - scrolling left');
     }
   }
-  
-  // Event listeners
-  relatedSection.addEventListener('mouseenter', () => {
-    isHovered = true;
-    stopAutoScroll();
-    console.log('🖱️ Related section hover - auto-scroll paused');
-  });
-  
-  relatedSection.addEventListener('mouseleave', () => {
-    isHovered = false;
-    startAutoScroll();
-    console.log('🖱️ Related section leave - auto-scroll resumed');
-  });
   
   // Arrow click events
   if (arrowRight) {
     arrowRight.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      // Temporarily pause auto-scroll during arrow click
-      const wasAutoScrolling = !!autoScrollInterval;
-      if (wasAutoScrolling) {
-        stopAutoScroll();
-        console.log('⏸️ Auto-scroll paused for right arrow click');
-      }
-      
       scrollRight();
       console.log('➡️ Right arrow clicked');
     });
@@ -4381,14 +4297,6 @@ function initializeRelatedSectionAutoScroll() {
     arrowLeft.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      // Temporarily pause auto-scroll during arrow click
-      const wasAutoScrolling = !!autoScrollInterval;
-      if (wasAutoScrolling) {
-        stopAutoScroll();
-        console.log('⏸️ Auto-scroll paused for left arrow click');
-      }
-      
       scrollLeft();
       console.log('⬅️ Left arrow clicked');
     });
@@ -4397,12 +4305,7 @@ function initializeRelatedSectionAutoScroll() {
     console.log('⚠️ Left arrow (image-31) not found');
   }
   
-  // Start auto-scroll after a delay
-  setTimeout(() => {
-    startAutoScroll();
-  }, 2000);
-  
-  console.log('✅ Related section auto-scroll initialized');
+  console.log('✅ Related section arrow navigation initialized');
 }
 
 // Initialize related section auto-scroll when DOM is ready
