@@ -4452,6 +4452,8 @@ ARROWS:
   transition: all 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .dropdown-wrapper:hover {
@@ -4463,8 +4465,27 @@ ARROWS:
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2);
 }
 
+.dropdown-field {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.dropdown-arrow {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.dropdown-options {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
+
 .dropdown-option {
   transition: all 0.2s ease;
+  pointer-events: auto;
 }
 
 .dropdown-option:hover {
