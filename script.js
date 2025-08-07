@@ -4431,3 +4431,53 @@ function debugMenuPanel() {
 document.addEventListener('DOMContentLoaded', function() {
   debugMenuPanel();
 });
+
+// === Related Items Single-Click Fix ===
+function initializeRelatedItemsSingleClick() {
+  console.log('🖱️ Initializing related items single-click fix...');
+  
+  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item');
+  
+  relatedItems.forEach((item, index) => {
+    // Remove any existing double-click listeners
+    item.addEventListener('click', function(e) {
+      console.log(`🖱️ Related item ${index + 1} clicked`);
+      
+      // Prevent double-click behavior
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Find the link within the item
+      const link = item.querySelector('a');
+      if (link) {
+        console.log(`🖱️ Navigating to: ${link.href}`);
+        // Simulate a single click on the link
+        link.click();
+      }
+    }, { once: false });
+    
+    // Ensure links work with single click
+    const links = item.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        console.log(`🖱️ Link clicked: ${link.href}`);
+        // Allow the link to work normally
+        e.stopPropagation();
+      });
+    });
+  });
+  
+  console.log(`✅ Single-click fix applied to ${relatedItems.length} related items`);
+}
+
+// Initialize single-click fix when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeRelatedItemsSingleClick();
+});
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeRelatedItemsSingleClick();
+  });
+}
