@@ -1,5050 +1,4564 @@
-/* === CSS Reset for PDF Generation === */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+console.log("DUVA script.js loaded!");
+console.log("🎯 Flip card functionality should be working!");
+console.log("TESTING - If you see this, the script is loading!");
 
-html, body {
-  width: 100%;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  font-family: Arial, sans-serif;
-}
+/* === Auto Filter on Page Load via URL === */
+function applyCategoryFilterFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category");
 
-/* === Menu Panel Functionality === */
-.menu-wrapper {
-  cursor: pointer !important;
-  position: relative !important;
-  z-index: 1000 !important;
-  clear: none;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-  background-color: var(--white, #fff);
-  object-fit: fill;
-  border-radius: 4px;
-  flex-flow: row;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-columns: 1fr;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: auto;
-  padding: 10px;
-  display: flex;
-  position: static;
-  transition: all 0.3s ease;
-}
+  if (category) {
+    // Clean category value (just in case)
+    const cleanCategory = category.trim().toLowerCase();
+    console.log(`🔍 Auto-filter: Processing category parameter: ${cleanCategory}`);
 
-.menu-wrapper:hover {
-  border-radius: 4px;
-  background-color: #f5f5f5;
-  transform: translateY(-1px);
-}
+    // Wait for the filter system to be ready
+    setTimeout(() => {
+      // Method 1: Try to find and click a matching filter button
+      const filterButton = document.querySelector(`[data-category="${cleanCategory}"]`);
+      if (filterButton) {
+        filterButton.click();
+        console.log(`✅ Auto-filter: Found and clicked filter button for category: ${cleanCategory}`);
+        return;
+      }
 
-/* === Menu Panel Improvements === */
-.menu-panel {
-  z-index: 1001 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 60px !important;
-  width: 520px !important;
-  max-width: 90vw !important;
-  height: auto !important;
-  background-color: #fff !important;
-  border-radius: 8px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg) !important;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  pointer-events: none !important;
-}
+      // Method 2: Try to find filter by text content
+      const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+      let foundFilter = false;
+      
+      filterOptions.forEach(option => {
+        const textElement = option.querySelector('.sub-filter-wattage');
+        if (textElement) {
+          const optionText = textElement.textContent.trim().toLowerCase();
+          if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
+            const checkmark = option.querySelector('.filter-checkmark');
+            if (checkmark && !option.classList.contains('active')) {
+              checkmark.click();
+              foundFilter = true;
+              console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
+            }
+          }
+        }
+      });
 
-/* Prevent body scroll when menu is active */
-body.menu-open {
-  overflow: hidden !important;
-  position: fixed !important;
-  width: 100% !important;
-}
-
-.menu-panel.active {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  transform: translateX(0) translateY(0) scale(1) rotateY(0deg) !important;
-  pointer-events: auto !important;
-}
-
-.menu-panel.active .menu-close-wrapper {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: absolute !important;
-  top: 20px !important;
-  right: 20px !important;
-  z-index: 1002 !important;
-}
-
-/* === Menu Overlay for Better UX === */
-.menu-overlay {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  z-index: 1000 !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transition: all 0.3s ease !important;
-  pointer-events: none !important;
-}
-
-.menu-overlay.active {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-/* === Menu Close Button === */
-.menu-close-wrapper {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1002;
-  display: block;
-  visibility: visible;
-  opacity: 1;
-}
-
-.menu-close {
-  position: relative;
-  top: 0;
-  right: 0;
-  padding-right: 35px;
-  padding-left: 35px;
-  border-radius: 3px;
-  background-color: var(--duva-d-grey, #333);
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: block;
-  border: none;
-  line-height: 1;
-}
-
-.menu-close:hover {
-  border-top-left-radius: var(--border-4px-cornner, 4px);
-  border-top-right-radius: var(--border-4px-cornner, 4px);
-  border-bottom-left-radius: var(--border-4px-cornner, 4px);
-  border-bottom-right-radius: var(--border-4px-cornner, 4px);
-  background-color: var(--duva-red, #c0392b);
-}
-
-.menu-close .bold-text {
-  color: #fff;
-  font-weight: bold;
-}
-
-/* Override any Webflow button styles */
-.menu-close.w-button {
-  position: relative !important;
-  top: 0 !important;
-  right: 0 !important;
-  padding-right: 35px !important;
-  padding-left: 35px !important;
-  border-radius: 3px !important;
-  background-color: var(--duva-d-grey, #333) !important;
-  color: #fff !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-  text-decoration: none !important;
-  display: block !important;
-  cursor: pointer !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  border: none !important;
-}
-
-.menu-close.w-button:hover {
-  border-top-left-radius: var(--border-4px-cornner, 4px) !important;
-  border-top-right-radius: var(--border-4px-cornner, 4px) !important;
-  border-bottom-left-radius: var(--border-4px-cornner, 4px) !important;
-  border-bottom-right-radius: var(--border-4px-cornner, 4px) !important;
-  background-color: var(--duva-red, #c0392b) !important;
-}
-
-/* Force close button visibility when menu is active */
-.menu-panel.active .menu-close.w-button {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  z-index: 1002 !important;
-  margin: 0 !important;
-  left: auto !important;
-}
-
-/* === Menu Links === */
-.link-13 {
-  color: #333;
-  margin-top: 52px;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  font-family: Exo, sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideInFromLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.link-13:nth-child(1) { animation-delay: 0.1s; }
-.link-13:nth-child(2) { animation-delay: 0.15s; }
-.link-13:nth-child(3) { animation-delay: 0.2s; }
-.link-13:nth-child(4) { animation-delay: 0.25s; }
-.link-13:nth-child(5) { animation-delay: 0.3s; }
-.link-13:nth-child(6) { animation-delay: 0.35s; }
-.link-13:nth-child(7) { animation-delay: 0.4s; }
-.link-13:nth-child(8) { animation-delay: 0.45s; }
-.link-13:nth-child(9) { animation-delay: 0.5s; }
-.link-13:nth-child(10) { animation-delay: 0.55s; }
-
-.link-13:hover {
-  color: #c0392b;
-  transform: translateX(8px) scale(1.05);
-  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
-}
-
-@keyframes slideInFromLeft {
-  to {
-    opacity: 1;
-    transform: translateX(0);
+      if (!foundFilter) {
+        console.warn(`⚠️ Auto-filter: No filter button found for category: ${cleanCategory}`);
+        
+        // Method 3: Try to use the global search as fallback
+        const searchInput = document.getElementById('globalSearchInput');
+        if (searchInput) {
+          searchInput.value = cleanCategory;
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
+        }
+      }
+    }, 2000); // Wait 2 seconds for filter system to initialize
   }
 }
 
-.link-14 {
-  color: #333;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  font-family: Exo, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  text-decoration: none;
-  transition: all 0.3s ease;
+// Initialize auto-filter when DOM is ready
+document.addEventListener("DOMContentLoaded", applyCategoryFilterFromURL);
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    applyCategoryFilterFromURL();
+  });
 }
 
-.link-14:hover {
-  color: #c0392b;
-}
-
-/* === Menu Icon === */
-.menu-icon {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  margin-right: 5px;
-}
-
-/* === Center Controls Layout === */
-.center-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  grid-auto-columns: 1fr;
-  gap: 16px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  position: relative;
-  width: 100%;
-}
-
-
-/* === Download Checkbox Styling === */ 
-
-.download-checkbox { 
-
-  width: 20px; 
-
-  height: 20px; 
-
-  border: 1px solid #ccc; 
-
-  border-radius: 4px; 
-
-  position: relative; 
-
-  cursor: pointer; 
-
-  transition: border-color 0.2s ease; 
-
-} 
-
-
-
-/* === Checkmark Styling (Hidden by Default) === */ 
-
-.download-checkbox .checkmark { 
-
-  position: absolute; 
-
-  top: 50%; 
-
-  left: 50%; 
-
-  width: 10px; 
-
-  height: 5px; 
-
-  border-left: 2px solid white; 
-
-  border-bottom: 2px solid white; 
-
-  transform: translate(-50%, -60%) rotate(-45deg) scale(0); 
-
-  opacity: 0; 
-
-  transition: all 0.2s ease; 
-
-} 
-
-
-
-/* === Active State Styling === */ 
-
-.download-checkbox.active { 
-
-  background-color: #c0392b; /* red on select */ 
-
-  border-color: #c0392b; 
-
-} 
-
-
-
-.download-checkbox.active .checkmark { 
-
-  opacity: 1; 
-
-  transform: translate(-50%, -60%) rotate(-45deg) scale(1); 
-
-} 
-
-
-
-/* === 2. Thumbnail Image Hover and Active Styling === */ 
-
-.thumbnail-image { 
-
-border: 1px solid #d8d8d8; 
-
-border-radius: 4px; 
-
-transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
-
-cursor: pointer; 
-
-} 
-
-
-
-
-
-
-
-/* === 3. Webflow Lightbox Styling === */ 
-
-/* === Lightbox Backdrop - More Transparent === */
-.w-lightbox-backdrop {
-  background-color: rgba(0, 0, 0, 0.3) !important; /* More transparent background */
-  backdrop-filter: blur(2px) !important; /* Optional: slight blur effect */
-}
-
-.w-lightbox-close { 
-
-  background-color: transparent !important; 
-
-  color: white !important; 
-
-  width: 36px; 
-
-  height: 36px; 
-
-  font-size: 24px; 
-
-  top: 20px; 
-
-  right: 20px; 
-
-} 
-
-
-
-/* === Webflow Lightbox Arrows === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  background-color: rgba(0, 0, 0, 0.5) !important; 
-
-  width: 40px; 
-
-  height: 40px; 
-
-  border-radius: 50%; 
-
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-} 
-
-
-
-
-
-
-
-/* === Lightbox Image Size === */ 
+// Retry after a delay to catch late-loading content
+setTimeout(applyCategoryFilterFromURL, 3000);
+
+// Quick test to see if flip card elements exist
+setTimeout(() => {
+  console.log("TIMEOUT TEST - Script is still running after 1 second");
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  const flipCardLinks = document.querySelectorAll('.flip-card-link');
+  console.log('🔍 Quick test - Flip card elements found:', {
+    wrappers: flipCardWrappers.length,
+    links: flipCardLinks.length
+  });
+}, 1000);
+
+/* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
+
+document.querySelectorAll('.accessory-image').forEach(container => { 
+
+  const img = container.querySelector('img'); 
 
  
 
-.w-lightbox-frame, 
-
-.w-lightbox-img { 
-
-  width: 600px !important; 
-
-  height: 600px !important; 
-
-  object-fit: contain; 
-
-  margin: 0 auto; 
-
-} 
-
-
-
-/* === Lightbox Navigation Arrows Styling (Bottom, Bold, Red) === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  bottom: 40px !important; 
-
-  top: auto !important; 
-
-  background-color: #c0392b !important; 
-
-  width: 48px; 
-
-  height: 48px; 
-
-  font-weight: bold; 
-
-  border-radius: 4px; 
-
-  display: flex !important; 
-
-  align-items: center; 
-
-  justify-content: center; 
-
-  z-index: 9999; 
-
-  color: white !important; 
-
-}
-
-/* === Lightbox Arrow Margins === */
-.w-lightbox-left {
-  left: 100px !important; /* 100px margin from left edge */
-}
-
-.w-lightbox-right {
-  right: 100px !important; /* 100px margin from right edge */
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-  font-weight: 700; 
-
-} 
-
-
-
-/* === Lightbox Close Button Styling (Square with Border) === */ 
-
-.w-lightbox-close { 
-
-  top: 20px; 
-
-  right: 100px; /* 100px margin from right edge */
-
-  width: 44px; 
-
-  height: 44px; 
-
-  background-color: rgba(0, 0, 0, 0.6); 
-
-  border: 2px solid white !important; 
-
-  border-radius: 0 !important; /* Square corners */ 
-
-  color: white !important; 
-
-  font-size: 20px; 
-
-  font-weight: bold; 
-
-  z-index: 9999; 
-
-} 
-
-
-
-
-
-
-
-/* === Specs Grid === */ 
+  container.style.overflow = 'hidden'; // Keeps zoomed image inside the box 
 
  
 
+  container.addEventListener('mouseenter', () => { 
 
+    img.classList.add('zoomed'); 
 
-/* === 4. Specs Grid and Dropdowns === */ 
-
-.specs-grid { 
-
-  display: grid; 
-
-  grid-template-columns: 1fr 1fr; 
-
-  gap: 16px 32px; 
-
-  align-items: start; 
-
-} 
-
-
+  }); 
 
  
 
+  container.addEventListener('mousemove', e => { 
 
+    const rect = container.getBoundingClientRect(); 
 
-/* === 5. Divider Styling === */ 
+    const x = ((e.clientX - rect.left) / rect.width) * 100; 
 
-.download-divider { 
+    const y = ((e.clientY - rect.top) / rect.height) * 100; 
 
-  margin-top: 4px; 
+    img.style.transformOrigin = `${x}% ${y}%`; 
 
-  border-bottom: 1px solid #ddd; 
+  }); 
 
-  display: block; 
+ 
 
-} 
+  container.addEventListener('mouseleave', () => { 
 
+    img.classList.remove('zoomed'); 
 
+    img.style.transformOrigin = 'center center'; 
 
+  }); 
 
-/* === Specs Grid + Dropdown Styling === */ 
+}); 
 
-.specs-grid { 
+ 
 
-  display: grid; 
+/* === 2. Thumbnail Image Selector === */ 
 
-  grid-template-columns: 1fr 1fr; 
+document.addEventListener("DOMContentLoaded", function () { 
 
-  gap: 16px 32px; 
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
 
-  align-items: start; 
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
 
-} 
+    thumbnails.forEach(thumb => { 
 
+        thumb.addEventListener("click", function () { 
 
+            thumbnails.forEach(t => t.classList.remove("is-active")); 
 
-.specs-grid > .spec-row { 
+            this.classList.add("is-active"); 
 
-  align-self: start; 
+            const newImg = this.getAttribute("data-image"); 
 
-} 
+            if (mainImage) mainImage.setAttribute("href", newImg); 
 
+        }); 
 
+    }); 
 
-.spec-row { 
+}); 
 
-  display: flex; 
+ 
 
-  flex-direction: column; 
+/* === 3. Dropdown + Code Generator + Accessories Logic === */ 
 
-  font-size: 18px; 
+// Full working logic from your working file, manually verified and retained 
 
-  width: 100%; 
+document.querySelectorAll('.accessory-image').forEach(container => { 
 
-  transition: all 0.3s ease; 
+    const img = container.querySelector('img'); 
 
-} 
+ 
 
+    // Zoom in on hover 
 
+    container.addEventListener('mouseenter', () => { 
 
-.dropdown-wrapper { 
+      img.classList.add('zoomed'); 
 
-  position: relative; 
+    }); 
 
-  width: 100%; 
+ 
 
-} 
+    // Track mouse position for dynamic zoom focus 
 
+    container.addEventListener('mousemove', e => { 
 
+      const rect = container.getBoundingClientRect(); 
 
-.dropdown-field { 
+      const x = ((e.clientX - rect.left) / rect.width) * 100; 
 
-  cursor: default; 
+      const y = ((e.clientY - rect.top) / rect.height) * 100; 
 
-  display: flex; 
+      img.style.transformOrigin = `${x}% ${y}%`; 
 
-  align-items: center; 
+    }); 
 
-  justify-content: space-between; 
+ 
 
-  padding: 0; 
+    // Reset on mouse leave 
 
-  border: none; 
+    container.addEventListener('mouseleave', () => { 
 
-  border-radius: 0; 
+      img.classList.remove('zoomed'); 
 
-  background: none; 
+      img.style.transformOrigin = 'center center'; 
 
-} 
+    }); 
 
+  }); 
 
+ 
 
-.selected-value { 
+ 
 
-  font-size: 18px; 
+ 
 
-  font-weight: bold; 
+  document.addEventListener("DOMContentLoaded", function () { 
 
-  color: #111; 
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
 
-} 
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
 
+ 
 
+    thumbnails.forEach((thumb) => { 
 
-.dropdown-arrow { 
+      thumb.addEventListener("click", function () { 
 
-  transition: transform 0.3s ease; 
+        // === Get the source of the clicked thumbnail 
 
-  pointer-events: auto; 
+        const newSrc = thumb.getAttribute("src"); 
 
-  cursor: pointer; 
+ 
 
-} 
+        // === Update the main image 
 
+        if (newSrc && mainImage) { 
 
+          mainImage.setAttribute("src", newSrc); 
 
-.dropdown-wrapper.open .dropdown-arrow { 
+        } 
 
-  transform: rotate(180deg); 
+      }); 
 
-} 
+    }); 
 
+  }); 
 
+ 
 
-.dropdown-wrapper.disabled .dropdown-arrow { 
+ 
 
-  display: none !important; 
+ 
 
-} 
+  document.addEventListener("DOMContentLoaded", function () { 
 
+    const mainTrigger = document.getElementById("main-lightbox-trigger"); 
 
+    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
-.dropdown-options { 
+ 
 
-  position: absolute; 
+    // === When main image is clicked, open the Webflow lightbox 
 
-  top: calc(100% + 4px); 
+    if (mainTrigger && firstGalleryItem) { 
 
-  left: 0; 
+      mainTrigger.addEventListener("click", () => { 
 
-  z-index: 10; 
+        firstGalleryItem.click(); 
 
-  background: white; 
+      }); 
 
-  border: 1px solid #ddd; 
+    } 
 
-  border-radius: 6px; 
+  }); 
 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+ 
 
-  min-width: 100%; 
+ 
 
-  display: none; 
+ 
 
-  flex-direction: column; 
+document.addEventListener("DOMContentLoaded", function () { 
 
-  padding: 8px 0; 
+  // === Global Selectors & State === 
 
-} 
+  const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
 
+  const ralInput = document.querySelector("#ral-input"); 
 
+ 
 
-.dropdown-option { 
+  // === RAL Input Initial Setup === 
 
-  padding: 10px 12px; 
+  if (ralInput) { 
 
-  font-size: 18px; 
+    ralInput.style.display = "none"; 
 
-  cursor: pointer; 
+    ralInput.textContent = "Enter RAL color number (e.g., 1015)"; 
 
-  width: 100%; 
+    ralInput.setAttribute("contenteditable", "true"); 
 
-  box-sizing: border-box; 
+    ralInput.style.color = "#999"; 
 
-  white-space: nowrap; 
+    ralInput.style.padding = "12px 16px"; 
 
-} 
+    ralInput.style.minHeight = "48px"; 
 
-/* === 1. Dropdown Option Hover Color === */ 
+    ralInput.style.backgroundColor = "#fff"; 
 
-.dropdown-option:hover { 
+    ralInput.style.borderRadius = "20px"; 
 
-  background-color: #f4f5f6; 
+    ralInput.style.cursor = "text"; 
+    
+    ralInput.style.border = "1px solid var(--border-main-shadow)";
+    
+    ralInput.style.width = "280px";
+    
+    ralInput.style.fontSize = "14px";
+    
+    ralInput.style.fontFamily = "inherit";
+    
+    ralInput.style.lineHeight = "1.4";
+    
+    ralInput.style.transition = "all 0.3s ease";
+    
+    ralInput.style.outline = "none";
+    
+    ralInput.style.resize = "none";
+    
+    ralInput.style.overflow = "hidden";
 
-} 
+  } 
 
+ 
 
+  // === Global Selection State === 
 
-/* === Divider Below Dropdown === */ 
+  window.currentSelection = { 
 
-/* === Lumen Dropdown: Hide Arrow via Class === */ 
+    product: document.querySelector("#product-code-heading")?.textContent.trim() || null, 
 
-.dropdown-wrapper.lumen-static .hide-arrow { 
+    watt: null, 
 
-display: none !important; 
+    cct: null, 
 
+    cri: null, 
+
+    finish: null, 
+
+    defaults: {} 
+
+  }; 
+
+ 
+
+  // === Reset Button Setup === 
+
+  const resetButton = document.querySelector(".reset-button"); 
+
+  if (resetButton) { 
+
+    resetButton.style.display = "flex"; 
+
+    resetButton.style.alignItems = "center"; 
+
+    resetButton.style.justifyContent = "center"; 
+
+  } 
+
+ 
+
+  // === Reset Button Handler === 
+
+  resetButton?.addEventListener("click", () => { 
+
+    dropdowns.forEach(dropdown => { 
+
+      const type = dropdown.getAttribute("data-type"); 
+
+      const selected = dropdown.querySelector(".selected-value"); 
+
+      const source = dropdown.querySelector(".dropdown-source"); 
+
+ 
+
+      if (!type || !selected || !source) return; 
+
+ 
+
+      const rawText = source.textContent.trim(); 
+
+      const values = [...new Set(rawText.split(",").map(v => v.trim()).filter(v => v))]; 
+
+      const firstValue = values[0] || "XX"; 
+
+ 
+
+      selected.textContent = firstValue; 
+
+      window.currentSelection[type] = firstValue; 
+
+      window.currentSelection.defaults[type] = normalizeValue(type, firstValue); 
+
+ 
+
+      // RAL reset logic 
+
+      if (type === "finish") { 
+
+        if (firstValue.toLowerCase() === "ral") { 
+
+          ralInput.style.display = "block"; 
+
+          ralInput.textContent = "Enter RAL number here"; 
+
+          ralInput.style.color = "#999"; 
+
+          window.currentSelection.finish = "RAL"; 
+
+        } else { 
+
+          ralInput.style.display = "none"; 
+
+          ralInput.textContent = "Enter RAL number here"; 
+
+          ralInput.style.color = "#999"; 
+
+        } 
+
+      } 
+
+    }); 
+
+ 
+
+    updateLumenValue(); 
+
+    updateOrderingCode(); 
+
+  }); 
+
+ 
+
+  // === Dropdown Setup & Interactions === 
+
+  dropdowns.forEach(dropdown => { 
+
+    const type = dropdown.getAttribute("data-type"); 
+
+    const source = dropdown.querySelector(".dropdown-source"); 
+
+    const field = dropdown.querySelector(".dropdown-field"); 
+
+    const selected = dropdown.querySelector(".selected-value"); 
+
+    const arrow = dropdown.querySelector(".dropdown-arrow"); 
+
+ 
+
+    if (!field || !selected || !source) return; 
+
+ 
+
+    // Disable static dropdowns (e.g., lumen) 
+
+    if (type === "lumen") { 
+
+      dropdown.classList.add("disabled"); 
+
+      arrow && (arrow.style.display = "none"); 
+
+      return; 
+
+    } 
+
+ 
+
+    // Parse values 
+
+    const rawText = source.textContent.trim(); 
+
+    const values = [...new Set( 
+
+      rawText.split(",") 
+
+             .map(v => v.trim()) 
+
+             .filter(v => v && !["na", "n/a", "none", "0", "--"].includes(v.toLowerCase())) 
+
+    )]; 
+
+ 
+
+    if (values.length === 0) { 
+
+      dropdown.closest(".spec-row")?.remove(); 
+
+      return; 
+
+    } 
+
+ 
+
+    // Set default selected value 
+
+    selected.textContent = values[0] || "N/A"; 
+
+    if (type) { 
+
+      window.currentSelection[type] = values[0];
+
+      window.currentSelection.defaults[type] = normalizeValue(type, values[0]);
+
+    } 
+
+ 
+
+    if (values.length <= 1) { 
+
+      dropdown.classList.add("disabled"); 
+
+      arrow && (arrow.style.display = "none"); 
+
+      return; 
+
+    } 
+
+ 
+
+    // Create dropdown options 
+
+    const optionsBox = document.createElement("div"); 
+
+    optionsBox.className = "dropdown-options"; 
+
+    dropdown.appendChild(optionsBox); 
+
+ 
+
+    values.forEach(value => { 
+
+      const opt = document.createElement("div"); 
+
+      opt.className = "dropdown-option"; 
+
+      opt.textContent = value; 
+
+      opt.addEventListener("click", () => { 
+
+        if (selected.textContent === value) return; 
+
+        selected.textContent = value; 
+
+        optionsBox.style.display = "none"; 
+
+        dropdown.classList.remove("open"); 
+
+ 
+
+        if (type) { 
+
+          // RAL logic 
+
+          if (type === "finish" && value.toLowerCase() === "ral") { 
+
+            if (ralInput) { 
+
+              ralInput.style.display = "block"; 
+
+              ralInput.textContent = "Enter RAL number here"; 
+
+              ralInput.style.color = "#999"; 
+
+              ralInput.addEventListener("focus", () => { 
+
+                if (ralInput.textContent === "Enter RAL color number (e.g., 1015)") { 
+
+                  ralInput.textContent = ""; 
+
+                  ralInput.style.color = "#111"; 
+
+                } 
+                
+                // Focus effects
+                ralInput.style.borderColor = "var(--duva-red)";
+                ralInput.style.boxShadow = "0 0 0 3px rgba(192, 57, 43, 0.1)";
+
+              });
+              
+              // Hover effects
+              ralInput.addEventListener("mouseenter", () => {
+                ralInput.style.borderColor = "var(--duva-red)";
+              });
+              
+              ralInput.addEventListener("mouseleave", () => {
+                if (document.activeElement !== ralInput) {
+                  ralInput.style.borderColor = "var(--border-divider-light)";
+                  ralInput.style.boxShadow = "none";
+                }
+              });
+              
+              ralInput.addEventListener("blur", () => {
+                ralInput.style.borderColor = "var(--border-divider-light)";
+                ralInput.style.boxShadow = "none";
+              }); 
+
+              ralInput.addEventListener("input", () => { 
+
+                const typedRAL = ralInput.textContent.trim(); 
+
+                window.currentSelection.finish = typedRAL ? "RAL" + typedRAL : "RAL"; 
+
+                updateLumenValue(); 
+
+                updateOrderingCode(); 
+
+              }); 
+
+            } 
+
+            window.currentSelection.finish = "RAL"; 
+
+          } else { 
+
+            if (ralInput) { 
+
+              ralInput.style.display = "none"; 
+
+              ralInput.textContent = "Enter RAL number here"; 
+
+              ralInput.style.color = "#999"; 
+
+            } 
+
+            window.currentSelection[type] = value; 
+
+          } 
+
+        } 
+
+        if (["watt", "cct", "cri"].includes(type)) {
+          updateLumenValue();
+        }
+        updateOrderingCode(); 
+      }); 
+
+      optionsBox.appendChild(opt); 
+
+    }); 
+
+ 
+
+    // Toggle dropdown 
+
+    arrow?.addEventListener("click", (e) => { 
+
+      e.stopPropagation(); 
+
+      const isOpen = optionsBox.style.display === "block"; 
+
+      document.querySelectorAll(".dropdown-options").forEach(opt => opt.style.display = "none"); 
+
+      document.querySelectorAll(".dropdown-wrapper").forEach(d => d.classList.remove("open")); 
+
+      if (!isOpen) { 
+
+        optionsBox.style.display = "block"; 
+
+        dropdown.classList.add("open"); 
+
+      } 
+
+    }); 
+
+ 
+
+    // Close on outside click 
+
+    document.addEventListener("click", () => { 
+
+      optionsBox.style.display = "none"; 
+
+      dropdown.classList.remove("open"); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Update Lumen Value Based on Dropdown Selections === */ 
+
+  function updateLumenValue() {
+    const { product, watt, cct, cri } = window.currentSelection;
+    let match = null;
+    const lumenData = Array.from(document.querySelectorAll('.lumen-cms-data'));
+    for (const el of lumenData) {
+      const matches =
+        el.dataset.product === product &&
+        el.dataset.watt === watt &&
+        el.dataset.cct === cct &&
+        (!el.dataset.cri || el.dataset.cri === cri);
+      if (matches) {
+        match = el;
+        break;
+      }
+    }
+    const lumenSelected = document.querySelector('[data-type="lumen"].selected-value, [data-type="lumen"] .selected-value');
+    if (lumenSelected) {
+      if (match) {
+        const lumen = match.dataset.lumen || match.textContent.trim();
+        lumenSelected.textContent = lumen;
+        lumenSelected.style.color = "#111";
+        lumenSelected.style.fontWeight = "bold";
+        window.currentSelection.lumen = lumen;
+      } else {
+        lumenSelected.textContent = "Not Available";
+        lumenSelected.style.color = "red";
+        lumenSelected.style.fontWeight = "bold";
+        window.currentSelection.lumen = null;
+      }
+    }
+  }
+
+  /* === End Update Lumen Value Based on Dropdown Selections === */ 
+
+  // === Normalize Value for Code Generation === 
+
+  function normalizeValue(type, val) { 
+
+    val = val?.toLowerCase(); 
+
+    if (!val) return "XX"; 
+
+ 
+
+    if (type === "cct") return val.replace("k", "").substring(0, 2); 
+
+    if (type === "beam") return val.replace("°", ""); 
+
+    if (type === "ip-rating") return val.replace("ip", ""); 
+
+    if (type === "finish") { 
+
+      if (val.startsWith("ral")) { 
+
+        return "RAL" + val.replace("ral", "").replace(/\s+/g, ""); 
+
+      } 
+
+      const colorMap = { 
+
+        "white": "WH", 
+
+        "black": "BK", 
+
+        "grey": "GR", 
+
+        "gray": "GR", 
+
+        "silver": "SV", 
+
+        "satin-nickel": "SN" 
+
+      }; 
+
+      return colorMap[val] || val.toUpperCase(); 
+
+    } 
+
+    return val; 
+
+  } 
+
+ 
+
+  // === Get Text Value for a Dropdown === 
+
+  function getTextValue(type) { 
+
+    const el = document.querySelector(`.dropdown-wrapper[data-type="${type}"] .selected-value`); 
+
+    if (!el) return null; 
+
+    if (type === "finish" && window.currentSelection.finish?.startsWith("RAL")) { 
+
+      return window.currentSelection.finish; 
+
+    } 
+
+    return normalizeValue(type, el.textContent.trim()); 
+
+  } 
+
+ 
+
+  // === Generate & Display Ordering Code === 
+
+  function updateOrderingCode() { 
+
+    ensureProductCode();
+    // Get current product code dynamically from CMS
+    const baseCode = getCurrentProductCode();
+    console.log("🔄 updateOrderingCode: product =", baseCode); 
+
+    const keys = ["watt", "ip-rating", "beam", "cct", "cri", "finish"]; 
+
+    const labels = ["Wattage", "IP Rating", "Beam", "CCT", "CRI", "Finish"]; 
+
+    const codeElement = document.querySelector(".ordering-code-value"); 
+    const pdfCodeElement = document.getElementById("pdf-code"); // <-- Add this
+
+    console.log("🔍 updateOrderingCode: codeElement found =", !!codeElement);
+    console.log("🔍 updateOrderingCode: pdfCodeElement found =", !!pdfCodeElement);
+
+  if (codeElement) { 
+    const styledParts = keys.map((key, i) => { 
+      const val = getTextValue(key) || "XX"; 
+      const defaultVal = window.currentSelection.defaults?.[key] || "XX"; 
+      const isDefault = val === defaultVal; 
+      const color = isDefault ? "#999" : "#C0392B"; 
+      return `<span title="${labels[i]}" style="color:${color}; font-weight: bold;">${val}</span>`; 
+    }); 
+
+    const newOrderingCode = `<span title="Product Code" style="color: #111; font-weight: bold;">${baseCode}</span>.` + styledParts.join(".");
+    console.log("🔄 updateOrderingCode: Setting new ordering code =", newOrderingCode);
+
+    // For on-screen display
+    codeElement.innerHTML = newOrderingCode;
+    console.log("✅ updateOrderingCode: Ordering code updated successfully");
+
+    // For PDF filename (plain text, no HTML)
+    if (pdfCodeElement) {
+      // Build plain code string for filename
+      const plainParts = keys.map(key => getTextValue(key) || "XX");
+      const plainCode = `${baseCode}.${plainParts.join(".")}`;
+      pdfCodeElement.textContent = plainCode;
+      console.log("📄 updateOrderingCode: PDF code set =", plainCode);
+    }
+  } else {
+    console.log("⚠️ updateOrderingCode: No ordering-code-value element found!");
+  } 
 } 
 
  
 
+  // === Trigger Initial Update on Load === 
 
+  setTimeout(() => { 
 
-/* === 6. Accessories Wrapper and Checkbox === */ 
+    updateLumenValue(); 
 
-.accessories-wrapper { 
-  display: flex;
-  width: 100%;
-  max-width: 2000px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 20px;
-  padding-left: 20px;
-  flex-flow: column; /* Changed to column for vertical layout */
-  justify-content: flex-start; /* Changed to flex-start for vertical alignment */
-  align-items: flex-start;
-  gap: 16px;
-  border: none; /* Remove border when closed */
-  border-radius: 0; /* Remove border radius when closed */
-  background-color: transparent; /* Remove background */
-  box-shadow: none; /* Remove shadow when closed */
-  max-height: 0; 
-  overflow: hidden; 
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              border 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-}
+    updateOrderingCode(); 
 
-.accessories-section.open .accessories-wrapper {
-  max-height: 10000px; /* Much larger height to ensure all content including final divider is contained */
-  overflow: visible !important; /* Allow all content to be visible */
-  scroll-behavior: smooth !important; /* Smooth scrolling */
-  -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
-  border: none; /* Remove border when open */
-  border-radius: 0; /* Remove border radius when open */
-  box-shadow: none; /* Remove shadow when open */
-  padding-bottom: 20px; /* Add extra padding at bottom to ensure divider is inside */
-  transform: scaleY(1);
-  /* Hide scrollbar */
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
-}
+  }, 300); 
 
-/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
-.accessories-section.open .accessories-wrapper::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* Hide accessories section when empty */
-.accessories-section:empty,
-.accessories-section:not(:has(.accessories-wrapper)),
-.accessories-wrapper:empty {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  height: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-} 
-
-
-
-/* Open State */ 
-
-/* === 7. Accessories Checkbox Styling === */ 
-
-.accessory-checkbox { 
-
-width: 20px; 
-
-height: 20px; 
-
-border: 1px solid #ccc; 
-
-border-radius: 4px; 
-
-position: relative; 
-
-cursor: pointer; 
-
-transition: border-color 0.2s ease; 
-
-} 
-
-
+}); 
 
  
 
+ 
 
+ 
 
-/* Checkmark hidden by default */ 
+document.addEventListener("DOMContentLoaded", function () { 
 
-.accessory-checkbox .checkmark { 
+ 
 
-position: absolute; 
+  /* === Main Image Thumbnail Click Logic === */ 
 
-top: 50%; 
+  const mainImage = document.getElementById("main-lightbox-trigger"); 
 
-left: 50%; 
+  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
 
-width: 10px; 
+ 
 
-height: 5px; 
+  thumbnails.forEach((thumb) => { 
 
-border-left: 2px solid white; 
+    thumb.addEventListener("click", function () { 
 
-border-bottom: 2px solid white; 
+      const newSrc = this.getAttribute("src"); 
 
-transform: translate(-50%, -60%) rotate(-45deg) scale(0); 
+      if (mainImage && newSrc) { 
 
-opacity: 0; 
+        mainImage.setAttribute("src", newSrc); 
 
-transition: all 0.2s ease; 
+      } 
 
-} 
+ 
 
+      // Update active state 
 
+      thumbnails.forEach(t => t.classList.remove("is-active")); 
 
-/* Checked state */ 
+      this.classList.add("is-active"); 
 
-.accessory-checkbox.active { 
+    }); 
 
-background-color: #c0392b; 
+  }); 
 
-border-color: #c0392b; 
+ 
 
-} 
+  /* === Trigger Hidden Webflow Lightbox Gallery === */ 
 
+  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
+  if (mainImage && firstGalleryItem) { 
 
-.accessory-checkbox.active .checkmark { 
+    mainImage.addEventListener("click", () => { 
 
-opacity: 1; 
+      firstGalleryItem.click(); 
 
-transform: translate(-50%, -60%) rotate(-45deg) scale(1); 
+    }); 
 
-}
+  } 
 
-/* === 8. Accessories Arrow Rotation === */ 
+ 
 
-.accessories-arrow { 
+  /* === Dropdown + Configurator Logic === */ 
 
-transition: transform 0.3s ease; 
+  const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
 
-} 
+  const ralInput = document.querySelector("#ral-input"); 
 
+ 
 
+  // RAL input styling and default setup 
 
-.accessories-arrow.rotated { 
+  if (ralInput) { 
 
-transform: rotate(180deg); 
+    ralInput.style.display = "none"; 
 
-} 
+    ralInput.textContent = "Enter RAL number here"; 
 
-/* === Custom Zoom Classes for JS Refactor === */
-.zoomed {
-transform: scale(2.7) !important;
-transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-.zoom-origin-custom {
-/* This will be set dynamically via inline style for transform-origin, as CSS cannot set this via class alone. */
-}
+    ralInput.setAttribute("contenteditable", "true"); 
 
-/* === PDF Export Utility Classes === */
-.hidden {
-display: none !important;
-visibility: hidden !important;
-opacity: 0 !important;
-}
+    ralInput.style.color = "#999"; 
 
-.visible {
-display: block !important;
-visibility: visible !important;
-opacity: 1 !important;
-}
+    ralInput.style.padding = "12px 16px"; 
 
-/* === PDF Container Layout Fix (Centered, No border, no background) === */
-.pdf-container {
-  width: 100%;
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 12px auto 0 auto;
-  padding: 20mm;
-  box-sizing: border-box;
-  position: relative;
-  border: none;
-  background: none;
-  display: block;
-}
+    ralInput.style.minHeight = "48px"; 
 
-/* === PDF Icon Styling === */
-#pdf-container .icon-cms {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-}
+    ralInput.style.backgroundColor = "#fff"; 
 
-#pdf-container .icon-cms img {
-  width: 25px;
-  height: 25px;
-  object-fit: contain;
-  display: block;
-}
+    ralInput.style.borderRadius = "20px"; 
 
-/* === PDF Image Container Styling === */
-#pdf-container .main-product-pdf-img,
-#pdf-container .diagram-pdf-img,
-#pdf-container .photometric-pdf-img {
-  width: 160px !important;
-  max-width: 160px !important;
-  height: 160px !important;
-  min-height: 160px !important;
-  max-height: 160px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid #ccc !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-  background-color: #f8f8f8 !important;
-}
+    ralInput.style.cursor = "text"; 
+    
+    ralInput.style.border = "1px solid var(--border-main-shadow)";
+    
+    ralInput.style.width = "280px";
+    
+    ralInput.style.fontSize = "14px";
+    
+    ralInput.style.fontFamily = "inherit";
+    
+    ralInput.style.lineHeight = "1.4";
+    
+    ralInput.style.transition = "all 0.3s ease";
+    
+    ralInput.style.outline = "none";
+    
+    ralInput.style.resize = "none";
+    
+    ralInput.style.overflow = "hidden";
 
-#pdf-container .main-product-pdf-img img,
-#pdf-container .diagram-pdf-img img,
-#pdf-container .photometric-pdf-img img {
-  width: 160px !important;
-  height: 160px !important;
-  object-fit: contain !important;
-  display: block !important;
-}
+  } 
 
-/* === PDF Specifications Styling === */
-#pdf-container .wattage,
-#pdf-container .lumen,
-#pdf-container .cct,
-#pdf-container .cri,
-#pdf-container .beam-angle,
-#pdf-container .ip-rating,
-#pdf-container .finish-volor {
-  text-align: center !important;
-  padding: 4px 2px !important;
-  border-right: 1px solid #ddd !important;
-}
+ 
 
-#pdf-container .finish-volor {
-  border-right: none !important;
-}
+  // Global selection state 
 
-#pdf-container .text-block-16 {
-  font-size: 12px !important;
-  line-height: 1.2 !important;
-  font-weight: 500 !important;
-  color: #111 !important;
-}
+  window.currentSelection = { 
 
-/* === Force PDF Container Visibility During Generation === */
-#pdf-container {
-  width: 794px;
-  max-width: 794px;
-  height: 1123px;
-  max-height: 1123px;
-  margin: 12px auto 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-  position: relative;
-  border: none;
-  background: white;
-  display: block;
-}
+    product: document.querySelector("#product-code-heading")?.textContent.trim() || null, 
 
-/* === Override hidden class for PDF generation === */
-#pdf-container:not(.hidden) {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
+    watt: null, 
 
-/* === Ensure all content inside PDF container is visible === */
-#pdf-container:not(.hidden) * {
-  visibility: visible !important;
-  opacity: 1 !important;
-}
+    cct: null, 
 
-/* === PDF Product Image Styling === */
-.pdf-container .product-image {
-  width: 200px;
-  height: 200px;
-}
+    cri: null, 
 
-/* Force full width usage */
-.pdf-container * {
-  max-width: none !important;
-}
+    finish: null, 
 
-.pdf-container .pdf-title-block {
-  width: 100% !important;
-  max-width: none !important;
-}
+    defaults: {} 
 
-.pdf-container .pdf-info {
-  flex: 1 !important;
-  width: calc(100% - 110px) !important;
-  max-width: none !important;
-}
+  }; 
 
-.pdf-container .pdf-options table,
-.pdf-container .pdf-accessories table {
-  width: 100% !important;
-  table-layout: fixed !important;
-  max-width: none !important;
-}
+ 
 
-/* Ensure content uses full width */
-.pdf-container .pdf-title-block {
-  width: 100%;
-}
+  /* === Reset Button Logic === */ 
 
-.pdf-container .pdf-info {
-  flex: 1;
-  width: calc(100% - 110px); /* Full width minus image width */
-}
+  const resetButton = document.querySelector(".reset-button"); 
 
-.pdf-container .pdf-options table,
-.pdf-container .pdf-accessories table {
-  width: 100%;
-  table-layout: fixed;
-}
+  if (resetButton) { 
 
-/* Ensure tables have proper spacing */
-.pdf-options table,
-.pdf-accessories table {
-  margin-bottom: 20px;
-}
+    resetButton.style.display = "flex"; 
 
-.pdf-options td,
-.pdf-accessories td {
-  padding: 8px;
-  border: 1px solid #ddd;
-}
+    resetButton.style.alignItems = "center"; 
 
-.pdf-features ul {
-  margin-bottom: 20px;
-}
+    resetButton.style.justifyContent = "center"; 
 
-.pdf-features li {
-  margin-bottom: 8px;
-}
+ 
 
-.pdf-container h1,
-.pdf-container h2 {
-  color: #111;
-}
-.pdf-container h1 {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-.pdf-container h2 {
-  font-size: 14px;
-  margin-top: 15px;
-  margin-bottom: 8px;
-}
-/* === PDF Header Alignment Fix === */
-.pdf-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #111;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-}
-.pdf-header .brand {
-  text-align: right;
-  flex: 1;
-}
-#pdf-family {
-  text-align: left;
-  flex: 1;
-}
-.pdf-title-block {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 15px;
-}
-.pdf-title-block .product-image {
-  width: 70px;
-  height: 70px;
-  border: 1px solid #ccc;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  color: #444;
-  flex-shrink: 0;
-}
-.pdf-info h1 {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.pdf-info #pdf-code {
-  font-weight: bold;
-}
-.pdf-info #pdf-subtitle {
-  font-weight: 600;
-  font-size: 11px;
-  margin-top: 4px;
-}
-.pdf-description {
-  margin-top: 6px;
-  font-size: 11px;
-  line-height: 1.3;
-}
-.pdf-features ul {
-  padding-left: 16px;
-  font-size: 11px;
-  line-height: 1.4;
-}
-.pdf-options table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
-  table-layout: fixed;
-}
-.pdf-options th,
-.pdf-options td {
-  border: 1px solid #999;
-  padding: 4px;
-  text-align: left;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-.pdf-photometric img {
-  max-width: 100px;
-  margin-right: 16px;
-}
-.pdf-accessories table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
-  table-layout: fixed;
-}
-.pdf-accessories th,
-.pdf-accessories td {
-  border: 1px solid #999;
-  padding: 4px;
-  text-align: left;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-.pdf-footer {
-  font-size: 10px;
-  margin-top: 20px;
-  text-align: center;
-  color: #666;
-}
+    resetButton.addEventListener("click", () => { 
 
-/* === PDF Header Layout Matching Reference === */
-.pdf-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-bottom: 1px solid #111;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-  min-height: 80px;
-  gap: 16px;
-}
+      dropdowns.forEach(dropdown => { 
 
-.header-left {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
+        const type = dropdown.getAttribute("data-type"); 
 
-.series-vertical {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #111;
-  margin-bottom: 2px;
-  font-family: Arial, sans-serif;
-}
+        const selected = dropdown.querySelector(".selected-value"); 
 
-.lucero-title {
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #111;
-  line-height: 1;
-  font-family: Arial, sans-serif;
-}
+        const source = dropdown.querySelector(".dropdown-source"); 
 
-.lucero-subtitle {
-  font-size: 12px;
-  color: #444;
-  margin-top: 2px;
-  font-family: Arial, sans-serif;
-}
+        if (!type || !selected || !source) return; 
 
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
+ 
 
-.header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-}
+        const values = source.textContent.split(",").map(v => v.trim()).filter(Boolean); 
 
-.duva-logo-vertical {
-  height: 80px;
-}
+        const firstValue = values[0] || "XX"; 
 
-/* === PDF Header Section (Base64 Logo, Series Label) === */
-.pdf-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #333;
-  margin-bottom: 20px;
-}
+ 
 
-.series-label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 10px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #000;
-}
+        selected.textContent = firstValue; 
 
-.family-wrapper {
-  flex-grow: 1;
-}
+        window.currentSelection[type] = firstValue; 
 
-.family-wrapper h1 {
-  font-size: 22px;
-  margin: 0;
-}
+        window.currentSelection.defaults[type] = normalizeValue(type, firstValue); 
 
-.family-subtitle {
-  font-size: 12px;
-  color: #333;
-}
+ 
 
-.duva-logo {
-  height: 60px;
-  display: block;
-  margin-left: auto;
-}
-/* === End PDF Header Section === */
-
-/* === Header Layout (Row Flex, Centered, No Absolute) === */
-.pdf-header {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 0 20px;
-  border-bottom: 1px solid #333;
-  margin-bottom: 30px;
-  min-height: 100px;
-}
+        if (type === "finish") { 
 
-.series-label {
-  writing-mode: vertical-lr;
-  text-orientation: upright;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-right: 24px;
-  margin-left: 10px;
-  color: #111;
-}
+          if (firstValue.toLowerCase() === "ral") { 
 
-.pdf-header-text {
-  text-align: left;
-  min-width: 200px;
-}
+            ralInput.style.display = "block"; 
 
-.pdf-header-text h1,
-#FamilyName {
-  font-size: 36px;
-  font-weight: bold;
-  margin: 0;
-  line-height: 1;
-}
+          } else { 
+
+            ralInput.style.display = "none"; 
+
+          } 
+
+        } 
+
+      }); 
+
+ 
+
+      updateLumenValue(); 
+
+      updateOrderingCode(); 
+
+    }); 
+
+  } 
+
+ 
+
+  /* === Initialize Each Dropdown === */ 
+
+  dropdowns.forEach(dropdown => { 
+
+    const type = dropdown.getAttribute("data-type"); 
+
+    const field = dropdown.querySelector(".dropdown-field"); 
+
+    const selected = dropdown.querySelector(".selected-value"); 
+
+    const source = dropdown.querySelector(".dropdown-source"); 
+
+    const arrow = dropdown.querySelector(".dropdown-arrow"); 
+
+ 
+
+    if (!field || !selected || !source) return; 
+
+ 
+
+    const values = source.textContent.split(",").map(v => v.trim()).filter(v => 
+
+      v && !["na", "n/a", "none", "0", "--"].includes(v.toLowerCase()) 
+
+    ); 
+
+ 
+
+    if (type === "lumen" || values.length === 0) { 
+
+      dropdown.closest(".spec-row")?.remove(); 
+
+      return; 
+
+    } 
+
+ 
+
+    selected.textContent = values[0] || "N/A"; 
+
+    window.currentSelection[type] = values[0]; 
+    window.currentSelection.defaults[type] = normalizeValue(type, values[0]); 
+
+ 
+
+    if (values.length <= 1) { 
+
+      dropdown.classList.add("disabled"); 
+
+      arrow && (arrow.style.display = "none"); 
+
+      return; 
+
+    } 
+
+ 
+
+    const optionsBox = document.createElement("div"); 
+
+    optionsBox.className = "dropdown-options"; 
+
+    dropdown.appendChild(optionsBox); 
+
+ 
+
+    values.forEach(value => { 
+
+      const opt = document.createElement("div"); 
+
+      opt.className = "dropdown-option"; 
+
+      opt.textContent = value; 
+
+ 
+
+      opt.addEventListener("click", () => { 
+
+        if (selected.textContent === value) return; 
+
+ 
+
+        selected.textContent = value; 
+
+        optionsBox.style.display = "none"; 
+
+        dropdown.classList.remove("open"); 
+
+ 
+
+        if (type === "finish" && value.toLowerCase() === "ral") { 
+
+          ralInput.style.display = "block"; 
+
+          ralInput.textContent = "Enter RAL number here"; 
+
+          ralInput.style.color = "#999"; 
+
+ 
+
+          ralInput.addEventListener("focus", () => { 
+
+            if (ralInput.textContent === "Enter RAL number here") { 
+
+              ralInput.textContent = ""; 
+
+              ralInput.style.color = "#111"; 
+
+            } 
+
+          }); 
+
+ 
+
+          ralInput.addEventListener("input", () => { 
+
+            const typedRAL = ralInput.textContent.trim(); 
+
+            window.currentSelection.finish = typedRAL ? "RAL" + typedRAL : "RAL"; 
+
+            updateLumenValue(); 
+
+            updateOrderingCode(); 
+
+          }); 
+
+ 
+
+          window.currentSelection.finish = "RAL"; 
+
+        } else { 
+
+          ralInput.style.display = "none"; 
+
+          window.currentSelection[type] = value;
+
+        } 
+
+ 
+
+        if (["watt", "cct", "cri"].includes(type)) {
+          updateLumenValue();
+        }
+        updateOrderingCode(); 
+      }); 
+
+ 
+
+      optionsBox.appendChild(opt); 
+
+    }); 
+
+ 
+
+    // Arrow toggle 
+
+    arrow?.addEventListener("click", (e) => { 
+
+      e.stopPropagation(); 
+
+      const isOpen = optionsBox.style.display === "block"; 
+
+      document.querySelectorAll(".dropdown-options").forEach(opt => opt.style.display = "none"); 
+
+      document.querySelectorAll(".dropdown-wrapper").forEach(d => d.classList.remove("open")); 
+
+ 
+
+      if (!isOpen) { 
+
+        optionsBox.style.display = "block"; 
+
+        dropdown.classList.add("open"); 
+
+      } 
+
+    }); 
+
+ 
+
+    // Close all dropdowns on outside click 
+
+    document.addEventListener("click", () => { 
+
+      optionsBox.style.display = "none"; 
+
+      dropdown.classList.remove("open"); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Update Lumen Value === */ 
+
+  function updateLumenValue() {
+    const { product, watt, cct, cri } = window.currentSelection;
+    let match = null;
+    const lumenData = Array.from(document.querySelectorAll('.lumen-cms-data'));
+    for (const el of lumenData) {
+      const matches =
+        el.dataset.product === product &&
+        el.dataset.watt === watt &&
+        el.dataset.cct === cct &&
+        (!el.dataset.cri || el.dataset.cri === cri);
+      if (matches) {
+        match = el;
+        break;
+      }
+    }
+    const lumenSelected = document.querySelector('[data-type="lumen"].selected-value, [data-type="lumen"] .selected-value');
+    if (lumenSelected) {
+      if (match) {
+        const lumen = match.dataset.lumen || match.textContent.trim();
+        lumenSelected.textContent = lumen;
+        lumenSelected.style.color = "#111";
+        lumenSelected.style.fontWeight = "bold";
+        window.currentSelection.lumen = lumen;
+      } else {
+        lumenSelected.textContent = "Not Available";
+        lumenSelected.style.color = "red";
+        lumenSelected.style.fontWeight = "bold";
+        window.currentSelection.lumen = null;
+      }
+    }
+  }
+
+ 
+
+  /* === Normalize Value for Code Generation === */ 
+
+  function normalizeValue(type, val) { 
+
+    val = val?.toLowerCase(); 
+
+    if (!val) return "XX"; 
+
+    if (type === "cct") return val.replace("k", "").substring(0, 2); 
+
+    if (type === "beam") return val.replace("°", ""); 
+
+    if (type === "ip-rating") return val.replace("ip", ""); 
+
+    if (type === "finish") { 
+
+      if (val.startsWith("ral")) return "RAL" + val.replace("ral", "").replace(/\s+/g, ""); 
+
+      const map = { white: "WH", black: "BK", grey: "GR", gray: "GR", silver: "SV", "satin-nickel": "SN" }; 
+
+      return map[val] || val.toUpperCase(); 
+
+    } 
+
+    return val; 
+
+  } 
+
+ 
+
+  /* === Get Normalized Value for Each Field === */ 
+
+  function getTextValue(type) { 
+
+    const el = document.querySelector(`.dropdown-wrapper[data-type="${type}"] .selected-value`); 
+
+    if (!el) return null; 
+
+    if (type === "finish" && window.currentSelection.finish?.startsWith("RAL")) { 
+
+      return window.currentSelection.finish; 
+
+    } 
+
+    return normalizeValue(type, el.textContent.trim()); 
+
+  } 
+
+ 
+
+  /* === Update Ordering Code Display === */ 
+
+  function updateOrderingCode() { 
+
+    // Get current product code dynamically from CMS
+    const baseCode = getCurrentProductCode(); 
+
+    const keys = ["watt", "ip-rating", "beam", "cct", "cri", "finish"]; 
+
+    const labels = ["Wattage", "IP Rating", "Beam", "CCT", "CRI", "Finish"]; 
+
+    const codeEl = document.querySelector(".ordering-code-value"); 
+
+ 
+
+    if (codeEl) { 
+
+      const parts = keys.map((key, i) => { 
+
+        const val = getTextValue(key) || "XX"; 
+
+        const isDefault = val === window.currentSelection.defaults?.[key]; 
+
+        const color = isDefault ? "#999" : "#C0392B"; 
+
+        return `<span title="${labels[i]}" style="color:${color}; font-weight: bold;">${val}</span>`; 
+
+      }); 
+
+ 
+
+      codeEl.innerHTML = `<span title="Product Code" style="color: #111; font-weight: bold;">${baseCode}</span>.${parts.join(".")}`; 
+
+    } 
+
+  } 
+
+ 
+
+  // Initial update after load 
+
+  setTimeout(() => { 
+
+    updateLumenValue(); 
+
+    updateOrderingCode(); 
 
-#duva-logo {
-  height: 60px;
-  margin-left: auto;
-  margin-right: 40px;
-  display: block;
+    updateProductCodeInjection();
+    updateGeneratedCodeInjection();
+
+  }, 300); 
+
+ 
+
+}); 
+
+ 
+
+ 
+
+ 
+
+document.addEventListener('DOMContentLoaded', function () { 
+
+ 
+
+  /* === Get Product Code Based on Current Selection === */ 
+
+  function getProductCode() { 
+
+    const selection = window.currentSelection || {}; 
+
+    // Get current product code dynamically from CMS
+    const code = getCurrentProductCode(); 
+
+    const watt = selection.watt || '12'; 
+
+    const ip = selection.ip || '65'; 
+
+    const beam = selection.beam || '30'; 
+
+ 
+
+    const cctMap = { '2700K': '27', '3000K': '30', '4000K': '40', '5000K': '50' }; 
+
+    const finishMap = { 'White': 'WH', 'Black': 'BK', 'Grey': 'GR', 'Silver': 'SV' }; 
+
+ 
+
+    let cct = selection.cct || '30'; 
+
+    let cri = selection.cri || '80'; 
+
+    let finish = selection.finish || 'BK'; 
+
+ 
+
+    cct = cctMap[cct] || cct.replace('K', ''); 
+
+    finish = finishMap[finish] || finish; 
+
+ 
+
+    return `${code}.${watt}.${ip}.${beam}.${cct}.${cri}.${finish}`; 
+
+  } 
+
+ 
+
+  /* === Inject PDF Datasheet URL into First Row === */ 
+
+  const datasheetCode = getProductCode(); 
+
+  const datasheetUrl = `https://duva-lighting.com/pdfs/${datasheetCode}.pdf`; 
+
+ 
+
+  const firstRow = document.querySelector('.download-row'); 
+
+  if (firstRow) { 
+
+    const fileDiv = firstRow.querySelector('[data-file]'); 
+
+    if (fileDiv) { 
+
+      fileDiv.setAttribute('data-file', datasheetUrl); 
+
+      firstRow.setAttribute('data-type', 'pdf'); 
+
+    } 
+
+  } 
+
+ 
+
+  function updateDatasheetRow() { 
+
+    const code = getProductCode(); 
+
+    const newUrl = `https://duva-lighting.com/pdfs/${code}.pdf`; 
+
+    const row = document.querySelector('.download-row'); 
+
+    const fileDiv = row?.querySelector('[data-file]'); 
+
+    if (fileDiv) { 
+
+      fileDiv.setAttribute('data-file', newUrl); 
+
+    } 
+
+  } 
+
+ 
+
+  /* === Watch for Selection Changes and Update File URL === */ 
+
+  document.querySelectorAll('.selected-value').forEach(item => { 
+
+    item.addEventListener('DOMSubtreeModified', () => { 
+
+      updateDatasheetRow(); 
+
+ 
+
+      const selection = window.currentSelection || {}; 
+
+      const row = item.closest('.spec-row'); 
+
+      if (!row) return; 
+
+ 
+
+      const type = row.getAttribute('data-type'); 
+
+      const value = item.textContent.trim(); 
+
+ 
+
+      if (type) { 
+
+        selection[type] = value; 
+
+        window.currentSelection = selection; 
+
+      } 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Generate PDF Datasheet Dynamically === */ 
+
+  // This function is now handled by html2pdf.generatePDF()
+
+ 
+
+  /* === Hide Rows with Missing Files === */ 
+
+  document.querySelectorAll('.download-row').forEach(row => { 
+
+    const fileDiv = row.querySelector('[data-file]'); 
+
+    const fileUrl = fileDiv?.getAttribute('data-file'); 
+
+    const divider = row.nextElementSibling?.classList.contains('download-divider') ? row.nextElementSibling : null; 
+
+ 
+
+    if (!fileUrl || fileUrl === 'null' || fileUrl === '0') { 
+
+      row.style.display = 'none'; 
+
+      if (divider) divider.style.display = 'none'; 
+
+    } else { 
+
+      const fileExtension = fileUrl.split('.').pop().toLowerCase(); 
+
+      row.setAttribute('data-type', fileExtension); 
+
+    } 
+
+  }); 
+
+ 
+
+  /* === Toggle Checkbox Active Class === */ 
+
+  document.querySelectorAll('.download-checkbox').forEach(box => { 
+
+    box.addEventListener('click', function () { 
+
+      this.classList.toggle('active'); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Download Selected Files === */ 
+
+  document.querySelector('#download-selected')?.addEventListener('click', function () { 
+
+    const selectedBoxes = document.querySelectorAll('.download-checkbox.active'); 
+
+    const selectedFiles = []; 
+
+ 
+
+    selectedBoxes.forEach(box => { 
+
+      const row = box.closest('.download-row'); 
+
+      if (!row || row.offsetParent === null) return; 
+
+ 
+
+      const fileDiv = row.querySelector('[data-file]'); 
+
+      const fileUrl = fileDiv?.getAttribute('data-file'); 
+
+      if (fileUrl) { 
+
+        selectedFiles.push(fileUrl); 
+
+      } 
+
+    }); 
+
+ 
+
+    if (selectedFiles.length === 0) { 
+
+      alert('No files selected!'); 
+
+      return; 
+
+    } 
+
+ 
+
+    selectedFiles.forEach(url => { 
+
+      const a = document.createElement('a'); 
+
+      a.href = url; 
+
+      a.download = ''; 
+
+      document.body.appendChild(a); 
+
+      a.click(); 
+
+      a.remove(); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Download All Files === */ 
+
+  document.querySelector('#download-all')?.addEventListener('click', () => { 
+
+    document.querySelectorAll('.download-row').forEach(row => { 
+
+      if (row.offsetParent === null) return; 
+
+ 
+
+      const fileDiv = row.querySelector('[data-file]'); 
+
+      const fileUrl = fileDiv?.getAttribute('data-file'); 
+
+ 
+
+      if (fileUrl && fileUrl !== 'null' && fileUrl !== '0' && !fileUrl.includes('undefined')) { 
+
+        const a = document.createElement('a'); 
+
+        a.href = fileUrl; 
+
+        a.download = ''; 
+
+        document.body.appendChild(a); 
+
+        a.click(); 
+
+        a.remove(); 
+
+      } 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Handle Arrow Download Buttons === */ 
+
+  document.querySelectorAll('.download-arrow').forEach(icon => { 
+
+    icon.addEventListener('click', function () { 
+
+      const row = this.closest('.download-row'); 
+
+      const isGenerated = row === document.querySelector('.download-row'); 
+
+ 
+
+      if (isGenerated) { 
+
+        return; // already handled by main export listener
+
+      } 
+
+ 
+
+      const fileUrl = this.getAttribute('data-file'); 
+
+      if (fileUrl) { 
+
+        const a = document.createElement('a'); 
+
+        a.href = fileUrl; 
+
+        a.download = ''; 
+
+        document.body.appendChild(a); 
+
+        a.click(); 
+
+        a.remove(); 
+
+      } 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Inject Accessories Divider (Max Width 2000px) === */ 
+  /* DISABLED - Divider removed as requested
+  const accessoriesSection = document.querySelector(".accessories-section"); 
+
+  if (accessoriesSection) { 
+
+    const wrapper = document.createElement("div"); 
+
+    wrapper.style.display = "flex"; 
+
+    wrapper.style.justifyContent = "center"; 
+
+    wrapper.style.marginTop = "24px"; 
+
+ 
+
+    const divider = document.createElement("div"); 
+
+    divider.style.width = "100%"; 
+
+    divider.style.maxWidth = "2000px"; 
+
+    divider.style.height = "1px"; 
+
+    divider.style.backgroundColor = "#e0e0e0"; 
+
+ 
+
+    wrapper.appendChild(divider); 
+
+    accessoriesSection.after(wrapper); 
+
+  }
+  */ 
+
+ 
+
+}); 
+
+ 
+
+ 
+
+ 
+
+  document.addEventListener("DOMContentLoaded", function () { 
+
+    const toggle = document.querySelector(".accessories-toggle"); 
+
+    const wrapper = document.querySelector(".accessories-wrapper"); 
+
+    const arrow = document.querySelector(".accessories-arrow"); 
+
+    const section = document.querySelector(".accessories-section"); 
+
+ 
+
+    if (toggle && wrapper && arrow && section) { 
+
+      toggle.addEventListener("click", function () { 
+
+        const isOpen = section.classList.toggle("open"); 
+
+        arrow.classList.toggle("rotated"); 
+
+ 
+
+        if (isOpen) { 
+
+          // Expand to actual scroll height 
+
+          wrapper.style.maxHeight = wrapper.scrollHeight + "px"; 
+
+        } else { 
+
+          // Collapse 
+
+          wrapper.style.maxHeight = "0px"; 
+
+        } 
+
+      }); 
+
+    } 
+
+  }); 
+
+  // === 7. Accessories Checkbox Script === 
+
+document.querySelectorAll('.accessory-checkbox').forEach(box => { 
+
+  box.addEventListener('click', function () { 
+
+    this.classList.toggle('active'); 
+
+  }); 
+
+}); 
+
+// === PDF Export Logic for DUVA ===
+let isExporting = false; // Guard to prevent double export
+function showPDFContainer() {
+  const pdfContainer = document.querySelector('#pdf-container');
+  if (pdfContainer) {
+    pdfContainer.classList.remove('hidden');
+    pdfContainer.style.display = 'block';
+    pdfContainer.style.visibility = 'visible';
+    pdfContainer.style.opacity = '1';
+    pdfContainer.style.position = 'relative';
+    pdfContainer.style.left = '0';
+    pdfContainer.style.width = '100vw';
+  }
 }
+function hidePDFContainer() {
+  const pdfContainer = document.querySelector('#pdf-container');
+  if (pdfContainer) {
+    pdfContainer.classList.add('hidden');
+    pdfContainer.style.display = 'none';
+    pdfContainer.style.visibility = 'hidden';
+    pdfContainer.style.opacity = '0';
+    pdfContainer.style.position = '';
+    pdfContainer.style.top = '';
+    pdfContainer.style.left = '';
+    pdfContainer.style.width = '';
+  }
+}
 
-.subhead {
-  font-size: 12px;
-  color: #555;
+function waitForImagesToLoad(container, callback) {
+  if (!container) return callback(); // If container is null, just proceed
+  const images = container.querySelectorAll('img');
+  let loaded = 0;
+  if (images.length === 0) return callback();
+  images.forEach(img => {
+    if (img.complete) {
+      loaded++;
+      if (loaded === images.length) callback();
+    } else {
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === images.length) callback();
+      };
+    }
+  });
 }
 
-.pdf-family-name {
-  margin: 0;
-  padding: 0;
+function injectPdfOrderingCode() {
+  // === Inject Generated Ordering Code into PDF ===
+  const orderingCode = document.querySelector('#ordering-code-value');
+  const pdfCodeTarget = document.querySelector('#pdf-container .generated-code');
+  if (orderingCode && pdfCodeTarget) {
+    pdfCodeTarget.textContent = orderingCode.textContent.trim();
+  }
 }
+
+function injectPdfContent() {
+  // === Inject Family Name - Updated for vertical layout ===
+  const familyName = document.querySelector('.product-title-source');
+  const pdfFamilyNameContainer = document.querySelector('#pdf-container .family-name');
+  
+  if (familyName && pdfFamilyNameContainer) {
+    const familyText = familyName.textContent.trim();
+    
+    // Clear existing family name elements
+    pdfFamilyNameContainer.innerHTML = '';
+    
+    // Create vertical family name elements based on the family name
+    // For "ELDORA", we'll create vertical text elements
+    const familyWords = familyText.split(' ');
+    familyWords.forEach(word => {
+      const verticalElement = document.createElement('div');
+      verticalElement.className = 'family-name-vertical';
+      verticalElement.textContent = word;
+      pdfFamilyNameContainer.appendChild(verticalElement);
+    });
+  }
 
-.pdf-header > div:nth-child(2) {
-  margin: 0;
-  padding: 0;
+  // === Inject Product Description - Updated for Webflow template structure ===
+  const desc = document.querySelector('.product-description-source');
+  const pdfDesc = document.querySelector('#pdf-container .text-block-14');
+  if (desc && pdfDesc) {
+    pdfDesc.textContent = desc.textContent.trim();
+  }
+
+  // === Inject Feature Key / Key Features - Updated for Webflow template structure ===
+  const featuresSource = document.querySelector('.product-features');
+  const featuresTarget = document.querySelector('#pdf-container .key-features');
+  if (featuresSource && featuresTarget) {
+    featuresTarget.innerHTML = featuresSource.innerHTML;
+  }
+  injectPdfIcons();
+  injectPdfImages();
+  injectSelectedAccessories();
 }
+
+// === Dynamic Product Code Functions ===
 
-/* === Print Styles for PDF Export === */
-@media print {
-  * {
-    margin: 0;
-    padding: 0;
+// Get current product code dynamically from CMS
+function getCurrentProductCode() {
+  // PRIORITY 1: Check window.currentSelection first (most current)
+  if (window.currentSelection && window.currentSelection.product) {
+    return window.currentSelection.product;
   }
   
-  body, html {
-    background: #fff !important;
-    color: #111 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  // PRIORITY 2: Check for visible product code elements (not hidden)
+  const visibleSelectors = [
+    '.product-code-heading:not([style*="display: none"])',
+    '.product-code:not([style*="display: none"])',
+    '[data-product-code]:not([style*="display: none"])',
+    '.product-title-source:not([style*="display: none"])',
+    'h1.product-code:not([style*="display: none"])',
+    '.product-title:not([style*="display: none"])'
+  ];
+  
+  for (const selector of visibleSelectors) {
+    const element = document.querySelector(selector);
+    if (element && element.textContent.trim()) {
+      return element.textContent.trim();
+    }
   }
   
-  .pdf-container {
-    box-shadow: none !important;
-    background: #fff !important;
-    color: #111 !important;
-    padding: 20px !important;
-    margin: 0 !important;
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    width: 794px !important;
-    height: 1123px !important;
+  // PRIORITY 3: Check for any visible element containing a product code pattern
+  const allElements = document.querySelectorAll('*:not([style*="display: none"])');
+  for (const element of allElements) {
+    if (element.textContent && element.textContent.match(/^C\d{3,4}$/)) {
+      return element.textContent.trim();
+    }
   }
   
-  .pdf-header, .pdf-title-block, .pdf-features, .pdf-options, .pdf-photometric, .pdf-accessories, .pdf-footer {
-    page-break-inside: avoid;
+  // PRIORITY 4: Fallback to hidden elements (last resort)
+  const hiddenSelectors = [
+    '#product-code',
+    '.product-code-heading',
+    '.product-code',
+    '[data-product-code]',
+    '.product-title-source'
+  ];
+  
+  for (const selector of hiddenSelectors) {
+    const element = document.querySelector(selector);
+    if (element && element.textContent.trim()) {
+      return element.textContent.trim();
+    }
   }
   
-  .pdf-footer {
-    color: #888 !important;
-  }
-}
-
-/* === Series Label Rotated as One Word === */
-.series-label {
-  transform: rotate(-90deg); /* Rotate the whole word */
-  transform-origin: left top;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  position: absolute;
-  left: 0;
-  top: 80px;
-}
-
-.pdf-header {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.pdf-series-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  margin-right: 24px;
-  height: auto;
-  padding: 0;
-}
-
-.pdf-series-label-inner {
-  writing-mode: vertical-lr;
-  text-orientation: upright;
-  font-family: Arial, sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  color: #222;
-  line-height: 1;
-  margin-right: 2px;
-  margin-left: 14px;
-}
-
-.pdf-series-label-line {
-  width: 4px;
-  height: 4.2em;
-  background: #C0392B;
-  margin-left: 2px;
-  margin-right: 2px;
-}
-
-/* === PDF Header Layout === */
-.pdf-header {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.pdf-logo img {
-  height: 40px;
-  width: auto;
-}
-
-/* Series + Family container */
-.pdf-series-family {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-/* Vertical SERIES text */
-.pdf-series-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.pdf-series-label-inner {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 12px;
-  font-weight: 600;
-  color: #212121;
-  letter-spacing: 2px;
-}
-
-/* Red divider */
-.pdf-series-label-line {
-  width: 4px;
-  height: 40px;
-  background-color: #C0392B;
-  margin-top: 8px;
-}
-
-/* Family name */
-.pdf-family h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #212121;
-  margin: 0;
-}
-
-/* Subtitle */
-.pdf-subtitle {
-  font-size: 12px;
-  font-weight: 500;
-  color: #212121;
-  margin-left: auto;
-}
-
-/* === PDF Header Main Container === */
-.pdf-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 24px 0;
-  border-bottom: 1px solid #ccc;
-  gap: 24px;
-  color: #212121;
-}
-
-/* === Left Section === */
-.header-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.series-text {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #212121;
-  margin-bottom: 8px;
-}
-
-.series-divider {
-  width: 3px;
-  height: 35px;
-  background-color: #C0392B;
-  margin: 0 !important;
-}
-
-.logo-red-divider {
-  width: 3px;
-  height: 35px;
-  background-color: #C0392B;
-  margin: 0 !important;
-}
-
-
-
-/* === Center Section === */
-.header-center {
-  flex: 1;
-}
-
-.family-name {
-  font-size: 36px;
-  font-weight: 600;
-  color: #212121;
-  margin-bottom: 4px;
-}
-
-.family-subtitle {
-  font-size: 12px;
-  font-weight: 400;
-  color: #212121;
-}
-
-/* === Right Section === */
-.header-right {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.header-icons {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-}
-
-.header-icons-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-  align-items: flex-end;
-  justify-content: flex-end;
-  margin-right: 8px;
-  text-align: right;
-  flex-shrink: 0;
-  align-self: center;
-}
-
-.header-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.duva-logo {
-  height: 80px;
-  transform: rotate(90deg);
-  margin-left: 8px;
-}
-
-/* === PDF Export Layout === */
-.pdf-export-wrapper {
-  width: 794px;
-  max-width: 794px;
-  height: 1123px;
-  max-height: 1123px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-  background: #fff;
-  font-family: Arial, sans-serif;
-  color: #212121;
-}
-
-/* === Header Top Margin === */
-.header-wrapper {
-  margin-top: 10px !important;
-  padding-top: 10px !important;
-  border-bottom: none !important;
-}
-
-#pdf-container .header-wrapper {
-  margin-top: 10px !important;
-  padding-top: 0 !important;
-  border-bottom: none !important;
-}
-
-/* === Ensure Single Divider Below Header === */
-      .header-wrapper + .left-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 16px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-      #pdf-container .header-wrapper + .left-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 16px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-      /* === Specifications Divider === */
-      .specifications-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 12px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-      #pdf-container .specifications-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 12px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-      /* === Footer Divider === */
-      .footer-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 12px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-      #pdf-container .footer-divider {
-        display: block !important;
-        border-bottom: 1px solid #ccc !important;
-        margin: 12px 40px !important;
-        height: 1px !important;
-        background: #ccc !important;
-      }
-
-.header-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 0;
-}
-
-.header-left-wrapper {
-  display: flex;
-  align-items: baseline;
-  margin-right: 32px;
-}
-
-.series-label {
-  display: flex;
-  align-items: flex-start;
-}
-
-
-
-
-
-/* Override for PDF container - more specific */
-#pdf-container .series-divaider {
-  width: 3px !important;
-  height: 50px !important;
-  background: #c0392b !important;
-  margin-left: 4px !important;
-  border: none !important;
-}
-
-/* Original styles for non-PDF elements */
-.series-divaider {
-  width: 3px;
-  height: 50px;
-  background: #c0392b;
-  margin-left: 20px;
-  border: none;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .family-name .text-block-13 {
-  writing-mode: horizontal-tb !important;
-  transform: none !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  color: #212121 !important;
-  line-height: 20px !important;
-  margin-bottom: 4px !important;
-  text-align: right !important;
-  padding-left: 4px !important;
-  font-family: "Gotham", Arial, sans-serif !important;
-  font-style: normal !important;
-  font-variant: normal !important;
-  text-decoration: none !important;
-}
-
-/* Original styles for non-PDF elements */
-.family-name {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.text-block-12 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #212121;
-  margin-bottom: 2px;
-}
-
-.text-block-13 {
-  font-size: 14px;
-  color: #333;
-  font-weight: 400;
-}
-
-.header-right-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  flex-direction: row;
-}
-
-.icon-cms {
-  display: flex;
-  align-items: center;
-}
-
-.image-9 {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.logo-img .image-8 {
-  height: 48px;
-  width: auto;
-  margin-left: 0px;
-}
-
-.hero-section, #pdf-container .hero-section {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  gap: 32px !important; /* adjust as needed */
-}
-
-.left-section, #pdf-container .left-section {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: 70% !important; /* or 66.66% */
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-.right-section, #pdf-container .right-section {
-  flex: none !important;
-  width: 220px !important;
-  max-width: 220px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-.right-hero-wrapper, #pdf-container .right-hero-wrapper {
-  width: 100% !important;
-  max-width: 220px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-}
-
-.product-code {
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: #212121;
-  margin-bottom: 2px;
-}
-
-.generated-code {
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: #212121;
-  margin-bottom: 6px;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .overview-header {
-  font-size: 15px !important;
-  font-weight: 500 !important;
-  margin-bottom: 4px !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  max-width: 100% !important;
-}
-
-/* Original styles for non-PDF elements */
-.overview-header {
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.title-text {
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 8px;
-  margin-bottom: 6px;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .text-block-14 {
-  font-size: 13px !important;
-  color: #222 !important;
-  margin-bottom: 4px !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  max-width: 100% !important;
-}
-
-/* Original styles for non-PDF elements */
-.text-block-14 {
-  font-size: 13px;
-  color: #222;
-  margin-bottom: 4px;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .key-features {
-  font-size: 13px !important;
-  color: #222 !important;
-  margin-bottom: 4px !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  max-width: 100% !important;
-}
-
-/* Original styles for non-PDF elements */
-.key-features {
-  font-size: 13px;
-  color: #222;
-  margin-bottom: 4px;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .left-divider {
-  background-color: #ccc !important;
-  height: 1px !important;
-  margin-top: 6px !important;
-  margin-bottom: 6px !important;
-  border: none !important;
-}
-
-/* Original styles for non-PDF elements */
-.left-divider {
-  border-bottom: 1px solid #ccc;
-  margin: 8px 0;
-}
-
-.specifications {
-  margin-top: 0px;
-  margin-bottom: 16px;
-}
-
-.w-layout-grid.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0;
-  border-bottom: none;
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-.wattage, .lumen, .cct, .cri, .beam-angle, .ip-rating, .finish-volor {
-  border-right: none;
-  padding: 8px 10px 8px 0;
-  min-width: 80px;
-}
-
-.wattage { border-left: none; }
-
-.text-block-16 {
-  font-size: 13px;
-  color: #222;
-  text-align: left;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .divider-specific {
-  background-color: #212121 !important;
-  width: 2px !important;
-  height: 40px !important;
-  margin-top: 18px !important;
-  margin-bottom: 18px !important;
-  margin-right: 20px !important;
-  display: block !important;
-}
-
-/* Original styles for non-PDF elements */
-.divider-specific {
-  display: none;
-}
-
-.right-hero-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.main-product-pdf-img, .diagram-pdf-img, .photometric-pdf-img {
-  width: 100%;
-  min-height: 80px;
-  border: 1px solid #ccc;
-  background: #fafafa;
-  margin-bottom: 8px;
-}
-
-.accessories-pdf-section {
-  margin-top: 24px !important;
-  margin-left: 24px !important;
-  margin-right: 24px !important;
-  margin-bottom: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-  width: auto !important;
-  max-width: 100% !important;
-}
-
-/* Old accessory classes removed - now using dynamic injection */
-
-.footer-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  border-top: 1px solid #ccc;
-  margin-top: 32px;
-  padding-top: 12px;
-  font-size: 11px;
-  color: #666;
-}
-
-.text-block-17 {
-  font-size: 12px;
-  font-weight: 600;
-  color: #222;
-}
-
-.text-block-18 {
-  font-size: 10px;
-  color: #888;
-  margin-top: 4px;
-}
-
-/* Override for PDF container - more specific */
-#pdf-container .div-block-4 {
-  background-color: #c0392b !important;
-  width: 3px !important;
-  height: 50px !important;
-  margin-top: 5px !important;
-  margin-left: 10px !important;
-  margin-right: 20px !important;
-  flex: none !important;
-}
-
-/* Original styles for non-PDF elements */
-.div-block-4 {
-  flex: 1;
-}
-
-/* === PDF Page Layout === */
-.pdf-page {
-  width: 210mm;
-  height: 297mm;
-  page-break-after: always;
-  position: relative;
-  overflow: hidden;
-  background-color: white;
-}
-
-/* Header pinned at top */
-.pdf-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  padding: 20px 40px;
-}
-
-/* Footer pinned at bottom */
-.pdf-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  padding: 20px 40px;
-}
-
-/* Page content fits between header and footer */
-.pdf-content {
-  padding: 120px 40px 80px 40px;
-  height: calc(100% - 180px);
-  overflow: hidden;
-}
-
-/* Ensure all content fits A4 width */
-.pdf-content *, .pdf-header *, .pdf-footer * {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* === PDF Print Styles for Page Header/Footer === */
-@media print {
-  #pdf-header,
-  #pdf-footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    z-index: 10;
-  }
-  #pdf-header {
-    top: 0;
-  }
-  #pdf-footer {
-    bottom: 0;
-  }
-  #pdf-content {
-    margin-top: 100px;   /* Adjust to height of header */
-    margin-bottom: 80px; /* Adjust to height of footer */
-  }
-}
-
-/* === PDF Page Break Rules === */
-@media print {
-  /* Avoid breaking in the middle of these sections */
-  .product-features,
-  .specs-block,
-  .accessories-pdf-section,
-  .pdf-options-table,
-  .photometric-img {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* Always start on a new page if needed */
-  .pdf-section-break {
-    page-break-before: always;
-    break-before: page;
-  }
-}
-
-#pdf-container .hero-section {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  gap: 32px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .left-section {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .right-section {
-  flex: 0 0 200px !important;
-  max-width: 200px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .right-hero-wrapper {
-  width: 100% !important;
-  max-width: 200px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-}
-
-/* === Header Left + Right Section Layout Fix === */
-.left-section, #pdf-container .left-section {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  min-width: 60px !important;
-  margin-right: 12px !important;
-}
-
-.right-section, #pdf-container .right-section {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  justify-content: flex-end !important;
-  gap: 8px !important;
-}
-
-.pdf-header {
-  justify-content: space-between !important;
-  padding: 0 24px !important;
-}
-
-.header-wrapper {
-  max-width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 0 24px !important;
-}
-
-#pdf-container, #pdf-container .pdf-export-wrapper, #pdf-container .w-row {
-  width: 100% !important;
-  display: block !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .hero-section {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: flex-start !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  gap: 32px !important;
-}
-
-#pdf-container .left-section {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .right-section {
-  flex: 0 0 220px !important;
-  width: 220px !important;
-  max-width: 220px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .right-hero-wrapper {
-  width: 100% !important;
-  max-width: 220px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-}
-
-/* Remove any width or max-width from left-hero-wrapper for PDF */
-#pdf-container .left-hero-wrapper {
-  padding-right: 16px !important;
-  overflow-wrap: break-word !important;
-  word-break: break-word !important;
-}
-
-/* === PDF Hero Section Two-Column Fix === */
-#pdf-container .hero-section {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  gap: 24px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .left-section {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .right-section {
-  width: 200px !important;
-  max-width: 200px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 20px !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .specifications {
-  max-width: 100% !important;
-  margin-top: 24px !important;
-  overflow-wrap: break-word !important;
-}
-
-/* === FINAL BULLETPROOF TWO-COLUMN LAYOUT === */
-/* === Hero Section Container === */
-.hero-section, 
-#pdf-container .hero-section,
-.pdf-export-wrapper .hero-section,
-.w-row.hero-section {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  gap: 24px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === Left Section (Text/Specs) === */
-.left-section, 
-#pdf-container .left-section,
-.pdf-export-wrapper .left-section,
-.hero-section .left-section {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: calc(100% - 220px - 24px) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: flex-start !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === Right Section (Images) === */
-.right-section, 
-#pdf-container .right-section,
-.pdf-export-wrapper .right-section,
-.hero-section .right-section {
-  flex: 0 0 220px !important;
-  width: 220px !important;
-  max-width: 220px !important;
-  min-width: 220px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === Right Hero Wrapper (Image Container) === */
-.right-hero-wrapper, 
-#pdf-container .right-hero-wrapper,
-.pdf-export-wrapper .right-hero-wrapper,
-.right-section .right-hero-wrapper {
-  width: 100% !important;
-  max-width: 220px !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 16px !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === Left Hero Wrapper (Text Container) === */
-.left-hero-wrapper, 
-#pdf-container .left-hero-wrapper,
-.pdf-export-wrapper .left-hero-wrapper,
-.left-section .left-hero-wrapper {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: flex-start !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-wrap: break-word !important;
-  word-break: break-word !important;
-}
-
-/* === Image Sizing in Right Section === */
-.main-product-pdf-img,
-.diagram-pdf-img,
-.photometric-pdf-img,
-#pdf-container .main-product-pdf-img,
-#pdf-container .diagram-pdf-img,
-#pdf-container .photometric-pdf-img,
-.right-hero-wrapper .main-product-pdf-img,
-.right-hero-wrapper .diagram-pdf-img,
-.right-hero-wrapper .photometric-pdf-img {
-  width: 160px !important;
-  max-width: 160px !important;
-  height: 160px !important;
-  min-height: 160px !important;
-  max-height: 160px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  border: 1px solid #ccc !important;
-  border-radius: 4px !important;
-}
-
-/* === Image Content Inside Containers === */
-.main-product-pdf-img img,
-.diagram-pdf-img img,
-.photometric-pdf-img img,
-#pdf-container .main-product-pdf-img img,
-#pdf-container .diagram-pdf-img img,
-#pdf-container .photometric-pdf-img img,
-.right-hero-wrapper .main-product-pdf-img img,
-.right-hero-wrapper .diagram-pdf-img img,
-.right-hero-wrapper .photometric-pdf-img img {
-  width: 160px !important;
-  height: 160px !important;
-  max-width: 160px !important;
-  max-height: 160px !important;
-  object-fit: contain !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* === Text Content Overflow Prevention === */
-.overview-header,
-.text-block-14,
-.key-features,
-#pdf-container .overview-header,
-#pdf-container .text-block-14,
-#pdf-container .key-features,
-.left-hero-wrapper .overview-header,
-.left-hero-wrapper .text-block-14,
-.left-hero-wrapper .key-features {
-  max-width: 100% !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  box-sizing: border-box !important;
-}
-
-/* === Specifications Grid === */
-.specifications,
-#pdf-container .specifications,
-.left-hero-wrapper .specifications {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  margin-top: 16px !important;
-  margin-bottom: 16px !important;
-}
-
-/* === Force Full Width for Specifications Grid === */
-#pdf-container .w-layout-grid.grid {
-  width: 100% !important;
-  max-width: 100% !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 0 !important;
-}
-
-#pdf-container .wattage,
-#pdf-container .lumen,
-#pdf-container .cct,
-#pdf-container .cri,
-#pdf-container .beam-angle,
-#pdf-container .ip-rating,
-#pdf-container .finish-volor {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* === Full Width Specifications Section === */
-.specifications-full-width {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 24px 20px !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#pdf-container .specifications-full-width {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 24px 20px !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* === Footer Right Alignment === */
-.footer-wrapper {
-  text-align: right !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-end !important;
-  justify-content: flex-end !important;
-  gap: 16px !important;
-  margin: 24px 40px !important;
-}
-
-#pdf-container .footer-wrapper {
-  text-align: right !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-end !important;
-  justify-content: flex-end !important;
-  gap: 16px !important;
-  margin: 24px 40px !important;
-}
-
-.footer-wrapper > div:first-child {
-  text-align: right !important;
-  align-self: flex-end !important;
-}
-
-#pdf-container .footer-wrapper > div:first-child {
-  text-align: right !important;
-  align-self: flex-end !important;
-}
-
-.specifications-full-width .specifications {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.specifications-full-width .w-layout-grid.grid {
-  width: 100% !important;
-  max-width: 100% !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 0 !important;
-}
-
-/* === Remove All Borders from Specifications Grid === */
-#pdf-container .w-layout-grid.grid,
-#pdf-container .wattage,
-#pdf-container .lumen,
-#pdf-container .cct,
-#pdf-container .cri,
-#pdf-container .beam-angle,
-#pdf-container .ip-rating,
-#pdf-container .finish-volor {
-  border: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-}
-
-#pdf-container .w-layout-grid.grid {
-  border-bottom: none !important;
-}
-
-/* === Remove Any Conflicting Widths === */
-.left-section *,
-.right-section *,
-#pdf-container .left-section *,
-#pdf-container .right-section * {
-  max-width: none !important;
-}
-
-/* === Ensure Parent Container Supports Flex === */
-.pdf-export-wrapper,
-#pdf-container,
-.w-row {
-  width: 100% !important;
-  max-width: 100% !important;
-  display: block !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === Override Any Webflow Grid Conflicts === */
-.w-row {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-}
-
-/* === Force Remove Any Webflow Column Classes === */
-.column,
-.column-2,
-.w-col,
-.w-col-1,
-.w-col-2,
-.w-col-3,
-.w-col-4,
-.w-col-5,
-.w-col-6,
-.w-col-7,
-.w-col-8,
-.w-col-9,
-.w-col-10,
-.w-col-11,
-.w-col-12 {
-  display: flex !important;
-  flex-direction: column !important;
-  width: auto !important;
-  max-width: none !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* === End FINAL BULLETPROOF TWO-COLUMN LAYOUT === */
-
-/* === PDF Icon Sizing and Spacing === */
-#pdf-container .pdf-cms-icon,
-.pdf-cms-icon,
-.header-icons-wrapper .pdf-cms-icon,
-.header-icons-wrapper .icon-cms {
-  width: 20px !important;
-  height: 20px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 1px !important;
-  background: none !important;
-  box-sizing: border-box !important;
-  flex: 0 0 20px !important;
-  padding: 0 !important;
-  border: 1px solid #ccc !important;
-  border-radius: 4px !important;
-  position: relative !important;
-  top: 8px !important;
-  min-width: 20px !important;
-  min-height: 20px !important;
-  max-width: 20px !important;
-  max-height: 20px !important;
-}
-#pdf-container .pdf-cms-icon img,
-.pdf-cms-icon img,
-.header-icons-wrapper .pdf-cms-icon img,
-.header-icons-wrapper .icon-cms img {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 20px !important;
-  max-height: 20px !important;
-  object-fit: contain !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: none !important;
-  box-sizing: border-box !important;
-}
-
-/* === PDF Header Logo and Divider Styling === */
-#pdf-container .logo-img {
-  display: flex !important;
-  align-items: center !important;
-  flex-direction: row !important;
-  gap: 12px !important;
-}
-#pdf-container .logo-img img {
-  width: 110px !important;
-  min-width: 110px !important;
-  max-width: 110px !important;
-  height: 40px !important;
-  object-fit: contain !important;
-  display: block !important;
-}
-
-#pdf-container .product-code {
-  color: #C0392B !important;
-  font-weight: 700 !important;
-  font-size: 15px !important;
-  margin-bottom: 8px !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  max-width: 100% !important;
-}
-#pdf-container .generated-code {
-  color: #111 !important;
-  font-weight: 700 !important;
-  font-size: 15px !important;
-  margin-bottom: 8px !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  max-width: 100% !important;
-}
-#pdf-container {
-  color: #212121 !important;
-}
-#pdf-container .product-code,
-#pdf-container .product-code * {
-  color: #C0392B !important;
-}
-#pdf-container .specifications-full-width .text-block-16 {
-  color: #C0392B !important;
-}
-#pdf-container .specifications-full-width .text-block-16 .label {
-  color: #212121 !important;
-  font-weight: 500 !important;
-}
-#pdf-container .specifications-full-width .text-block-16 .value {
-  color: #C0392B !important;
-  font-weight: 500 !important;
-}
-
-/* === PDF Accessory Styling (Override Conflicts) === */
-#pdf-container .accessories-pdf-section .accessory-item {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  margin-bottom: 16px !important;
-  gap: 16px !important;
-  border: none !important;
-  background: none !important;
-  padding: 0 !important;
-}
-#pdf-container .accessories-pdf-section .accessory-image {
-  flex: 0 0 80px !important;
-  width: 80px !important;
-  height: 80px !important;
-  max-width: 80px !important;
-  max-height: 80px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid #ddd !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-  background: #f8f8f8 !important;
-  box-sizing: border-box !important;
-}
-#pdf-container .accessories-pdf-section .accessory-details {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  overflow: hidden !important;
-}
-#pdf-container .accessories-pdf-section .accessory-code,
-#pdf-container .accessories-pdf-section .accessory-title,
-#pdf-container .accessories-pdf-section .accessory-description {
-  white-space: normal !important;
-  overflow-wrap: break-word !important;
-  word-break: break-word !important;
-}
-#pdf-container .accessories-pdf-section .accessory-image img {
-  width: 80px !important;
-  height: 80px !important;
-  object-fit: contain !important;
-  display: block !important;
-  border: none !important;
-  border-radius: 0 !important;
-}
-#pdf-container .accessories-pdf-section .accessory-title {
-  font-size: 13px !important;
-  font-weight: bold !important;
-  color: #212121 !important;
-  margin: 0 !important;
-}
-#pdf-container .accessories-pdf-section .accessory-code {
-  font-size: 14px !important;
-  font-weight: bold !important;
-  color: #C0392B !important;
-  margin: 0 !important;
-}
-
-/* === Related Items Horizontal Scroll Enhancement === */
-
-.collection-list-6 {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 24px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scroll-behavior: smooth !important;
-  -webkit-overflow-scrolling: touch !important;
-  flex-wrap: nowrap !important;
-  position: relative !important;
-  /* Calculate proper padding to show exactly 3 cards */
-  /* 3 cards = (500px × 3) + (24px gap × 2) = 1500px + 48px = 1548px */
-  /* Since we removed arrows, we can reduce padding */
-  padding: 0 40px !important; /* Reduced padding since arrows are hidden */
-  /* Hide scrollbar */
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
-}
-
-/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
-.collection-list-6::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* Hide arrows since we're using mouse wheel scrolling */
-.related-arrow-left,
-.related-arrow-right {
-  display: none !important;
-}
-
-@media screen and (max-width: 991px) {
-  .related-arrow-left,
-  .related-arrow-right {
-    display: none !important;
+  return 'CXXX';
+}
+
+// Get current product family from CMS
+function getCurrentProductFamily() {
+  // This should pull from your CMS - adjust selector as needed
+  const familyElement = document.querySelector('.product-title-source');
+  return familyElement ? familyElement.textContent.trim() : null;
+}
+
+function generatePDF() {
+  if (isExporting) return; // Prevent double export
+  isExporting = true;
+  
+  // --- Accessories block temporarily removed for testing ---
+  // const pdfAccessories = document.querySelector('.pdf-accessories');
+  // if (pdfAccessories) {
+  //   pdfAccessories.innerHTML = '';
+  // }
+  // document.querySelectorAll('.accessory-checkbox.active').forEach(box => {
+  //   const accessoryItem = box.closest('.accessory-item');
+  //   if (!accessoryItem) return;
+  //   const imageEl = accessoryItem.querySelector('.accessory-image img, img.accessory-image');
+  //   const titleEl = accessoryItem.querySelector('.accessory-title');
+  //   const descEl  = accessoryItem.querySelector('.accessory-desc');
+  //   if (imageEl?.src && !imageEl.src.includes('undefined') && titleEl) {
+  //     const wrapper = document.createElement('div');
+  //     wrapper.className = 'accessory-item';
+  //     wrapper.innerHTML = `
+  //       <img src="${imageEl.src}" class="accessory-image">
+  //       <div class="accessory-title">${titleEl.textContent}</div>
+  //       <div class="accessory-desc">${descEl?.textContent || ''}</div>
+  //     `;
+  //     pdfAccessories.appendChild(wrapper);
+  //   }
+  // });
+  // --- End accessories block ---
+  // 3. Show the PDF container (off-screen but rendered)
+  showPDFContainer();
+  // 4. Prepare PDF export
+  const element = document.querySelector('#pdf-container');
+  
+  // Get the generated code for filename
+  const orderingCodeElement = document.querySelector('.ordering-code-value');
+  let code = 'file'; // default fallback
+  
+  if (orderingCodeElement) {
+    // Get the plain text content (without HTML styling)
+    const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
+    code = plainText.trim();
+    
+    // Sanitize filename for file system compatibility
+    code = code.replace(/[<>:"/\\|?*]/g, '_'); // Replace invalid characters
+    code = code.replace(/\s+/g, '_'); // Replace spaces with underscores
+    code = code.replace(/\.+/g, '.'); // Replace multiple dots with single dot
+    
+    console.log('📄 PDF filename will be:', code);
+  } else {
+    console.log('⚠️ Ordering code element not found, using default filename');
   }
   
-  .collection-list-6 {
-    padding: 0 20px !important; /* Reduce padding on mobile */
+  if (!element) {
+    hidePDFContainer();
+    alert('PDF container not found!');
+    isExporting = false;
+    return;
+  }
+  // === Inject Product Image Dynamically ===
+  const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
+  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+  if (imageElement && pdfImageContainer) {
+    const imageUrl = imageElement.src;
+    pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
+  }
+  // === Inject Product, Dimension, and Photometric Images into PDF ===
+  injectPdfImages();
+  // === Inject Generated Ordering Code into PDF ===
+  injectPdfOrderingCode();
+  // === Inject Product Code into PDF ===
+  updateProductCodeInjection();
+  // === Inject Generated Code into PDF ===
+  updateGeneratedCodeInjection();
+  // === Update Specifications Table ===
+  updateSpecsTable();
+  // === Inject Family Name, Subtitle, Description, and Features into PDF ===
+  injectPdfContent();
+  // 5. Export PDF
+  waitForImagesToLoad(document.querySelector('#pdf-container .header-right-wrapper'), function() {
+    injectPdfIcons(); // Inject icons into PDF container
+    html2pdf()
+      .from(element)
+      .set({
+        margin: 0,
+        filename: `${code}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          width: 794,
+          height: 1123,
+          useCORS: true
+        },
+        jsPDF: { 
+          unit: 'px', 
+          format: [794, 1123], 
+          orientation: 'portrait' 
+        }
+      })
+      .save()
+      .then(() => {
+        // 6. Cleanup after export
+        // if (pdfAccessories) {
+        //   pdfAccessories.innerHTML = '';
+        // }
+        hidePDFContainer();
+        isExporting = false;
+      })
+      .catch(() => {
+        isExporting = false;
+      });
+  });
+}
+// === PDF Download Button Binding by Class ===
+document.addEventListener("DOMContentLoaded", function () {
+  const downloadBtn = document.querySelector(".download-arrow");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      generatePDF(); // Make sure this function exists
+    });
+  } else {
+    console.warn("Download arrow button not found!");
+  }
+});
+// === End PDF Download Button Binding ===
+
+// === Utility: Ensure Product Code is Set from DOM ===
+function ensureProductCode() {
+  const code = document.querySelector("#product-code-heading")?.textContent.trim();
+  console.log("ensureProductCode: found code =", code);
+  if (code) {
+    window.currentSelection.product = code;
+  }
+  console.log("window.currentSelection.product =", window.currentSelection.product);
+}
+
+// Removed duplicate icon injection - using injectPdfIcons() function instead
+
+function updateSpecsTable() {
+  // Get current dropdown values from the DOM
+  const getDropdownValue = (type) => {
+    const dropdown = document.querySelector(`.dropdown-wrapper[data-type="${type}"] .selected-value`);
+    return dropdown ? dropdown.textContent.trim() : null;
+  };
+
+  // Get current values from dropdowns or use defaults
+  const currentValues = {
+    watt: getDropdownValue('watt') || window.currentSelection?.watt || '12',
+    lumen: window.currentSelection?.lumen || '1900',
+    cct: getDropdownValue('cct') || window.currentSelection?.cct || '3000K',
+    cri: getDropdownValue('cri') || window.currentSelection?.cri || '80',
+    beam: getDropdownValue('beam') || window.currentSelection?.beam || '24',
+    'ip-rating': getDropdownValue('ip-rating') || window.currentSelection?.['ip-rating'] || '65',
+    finish: getDropdownValue('finish') || window.currentSelection?.finish || 'White'
+  };
+
+  console.log('📊 Current specification values:', currentValues);
+
+  // Update both the main page specs and PDF container specs
+  const selectors = [
+    '.wattage .text-block-16',
+    '#pdf-container .wattage .text-block-16'
+  ];
+
+  // Wattage
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector);
+    if (element) {
+      const wattValue = currentValues.watt;
+      element.innerHTML = `Wattage<br>${wattValue}${wattValue.includes('W') ? '' : 'W'}`;
+    }
+  });
+
+  // Lumen
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'lumen'));
+    if (element) {
+      const lumenValue = currentValues.lumen;
+      element.innerHTML = `Lumen<br>${lumenValue}${lumenValue.includes('lm') ? '' : 'lm'}`;
+    }
+  });
+
+  // CCT
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'cct'));
+    if (element) {
+      element.innerHTML = `CCT<br>${currentValues.cct}`;
+    }
+  });
+
+  // CRI
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'cri'));
+    if (element) {
+      const criValue = currentValues.cri;
+      element.innerHTML = `CRI<br>&gt;${criValue}`;
+    }
+  });
+
+  // Beam
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'beam-angle'));
+    if (element) {
+      const beamValue = currentValues.beam;
+      element.innerHTML = `Beam<br>${beamValue}${beamValue.includes('°') ? '' : '°'}`;
+    }
+  });
+
+  // IP Rating
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'ip-rating'));
+    if (element) {
+      element.innerHTML = `IP<br>${currentValues['ip-rating']}`;
+    }
+  });
+
+  // Finish
+  selectors.forEach(selector => {
+    const element = document.querySelector(selector.replace('wattage', 'finish-volor'));
+    if (element) {
+      let finishValue = currentValues.finish;
+      if (finishValue && finishValue.toLowerCase().startsWith('ral')) {
+        finishValue = 'RAL ' + finishValue.replace(/ral/i, '').trim();
+      }
+      element.innerHTML = `Finish<br>${finishValue}`;
+    }
+  });
+
+  console.log('✅ Specifications table updated with current values');
+}
+
+// Call updateSpecsTable at the end of updateLumenValue and updateOrderingCode
+const origUpdateLumenValue = typeof updateLumenValue === 'function' ? updateLumenValue : null;
+window.updateLumenValue = function() {
+  if (origUpdateLumenValue) origUpdateLumenValue.apply(this, arguments);
+  updateSpecsTable();
+  updateProductCodeInjection();
+  updateGeneratedCodeInjection();
+  updatePdfImages();
+};
+const origUpdateOrderingCode = typeof updateOrderingCode === 'function' ? updateOrderingCode : null;
+window.updateOrderingCode = function() {
+  if (origUpdateOrderingCode) origUpdateOrderingCode.apply(this, arguments);
+  updateSpecsTable();
+  updateProductCodeInjection();
+  updateGeneratedCodeInjection();
+  updatePdfImages();
+};
+
+// === Update PDF Images Function ===
+function updatePdfImages() {
+  // This function can be called to update images when CMS data changes
+  // For now, we'll just call the main injection function
+  injectPdfImages();
+}
+
+// === Product Code Injection Function ===
+function updateProductCodeInjection() {
+  // Get the current CMS product code (dynamically updated)
+  const cmsProductCode = document.querySelector("#product-code-heading")?.textContent.trim();
+  const codeTarget = document.querySelector(".product-code");
+  
+  if (cmsProductCode && codeTarget) {
+    codeTarget.innerHTML = `<span style='color: #C0392B !important;'>${cmsProductCode}</span>`;
+    console.log("Product code injected from CMS:", cmsProductCode);
+  } else if (codeTarget) {
+    // Fallback to static source if CMS element not found
+    const codeSource = document.getElementById("product-code");
+    if (codeSource) {
+      codeTarget.innerHTML = `<span style='color: #C0392B !important;'>${codeSource.textContent}</span>`;
+      console.log("Product code injected from static source:", codeSource.textContent);
+    }
   }
 }
 
-/* === Related Items Fade-out Edges === */
-
-/* Container with relative positioning for overlays */
-.related-slider-wrapper {
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-/* Fade-out overlay for left edge */
-.related-slider-wrapper::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 21px !important; /* Account for wrapper padding + 1px */
-  left: 1px !important; /* 1px padding from edge */
-  width: 80px !important;
-  height: 248px !important; /* Match related-card height - 2px for padding */
-  background: linear-gradient(to right, 
-    #FFFFFF 0%, 
-    rgba(255, 255, 255, 0.95) 20%, 
-    rgba(255, 255, 255, 0.7) 40%, 
-    rgba(255, 255, 255, 0.3) 70%, 
-    rgba(255, 255, 255, 0) 100%) !important;
-  z-index: 5 !important;
-  pointer-events: none !important;
-}
-
-/* Fade-out overlay for right edge */
-.related-slider-wrapper::after {
-  content: '' !important;
-  position: absolute !important;
-  top: 21px !important; /* Account for wrapper padding + 1px */
-  right: 1px !important; /* 1px padding from edge */
-  width: 80px !important;
-  height: 248px !important; /* Match related-card height - 2px for padding */
-  background: linear-gradient(to left, 
-    #FFFFFF 0%, 
-    rgba(255, 255, 255, 0.95) 20%, 
-    rgba(255, 255, 255, 0.7) 40%, 
-    rgba(255, 255, 255, 0.3) 70%, 
-    rgba(255, 255, 255, 0) 100%) !important;
-  z-index: 5 !important;
-  pointer-events: none !important;
-}
-
-/* Ensure the scroll container is above the fade overlays */
-.collection-list-6 {
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* === Fade-in Animations === */
-
-/* Related Items Section Fade-in on Scroll */
-.related-section {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.related-section.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* Gallery Section Fade-in on Scroll */
-/* REMOVED - Gallery section functionality disabled */
-
-/* === Remove Divider Between Related Items and Accessories === */
-.related-section + .accessories-section {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  border-top: none !important;
-}
-
-/* Ensure gallery images are always visible when section is visible */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Accessories Dropdown Fade-in Animation */
-.accessories-content {
-  opacity: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-  transition: opacity 0.4s ease, max-height 0.4s ease !important;
-}
-
-.accessories-section.open .accessories-content {
-  opacity: 1 !important;
-  max-height: 1000px !important; /* Adjust based on your content height */
-}
-
-/* Smooth fade-in for accessories items */
-.accessories-item {
-  opacity: 0 !important;
-  transform: translateY(10px) !important;
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-  transition-delay: calc(var(--item-index, 0) * 0.1s) !important;
-}
-
-.accessories-section.open .accessories-item {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* === Gallery Section === */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Force single image display */
-/* Gallery section CMS item styles */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Gallery image styles */
-/* REMOVED - Gallery section functionality disabled */
-
-/* === Thumbnail Hover Effects === */
-.thumbnail-image {
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  margin-top: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(221, 218, 218);
-  cursor: pointer;
-  object-fit: cover;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.image-3 {
-  width: 80px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(216, 216, 216);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.image-3.thumbnail-image {
-  width: 80px;
-  border-top-color: var(--border-divider-light);
-  border-right-color: var(--border-divider-light);
-  border-bottom-color: var(--border-divider-light);
-  border-left-color: var(--border-divider-light);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Keep active state for thumbnails */
-.thumbnail-image.is-active {
-  border-color: var(--duva-red, #c0392b) !important;
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
-}
-
-@media screen and (max-width: 991px) {
-  .image-3.thumbnail-image {
-    width: 60px;
-    height: auto;
+// === Generated Code Injection Function ===
+function updateGeneratedCodeInjection() {
+  // Get the current dynamically generated ordering code
+  const orderingCodeElement = document.querySelector(".ordering-code-value");
+  const genTarget = document.querySelector(".generated-code");
+  
+  if (orderingCodeElement && genTarget) {
+    // Get the plain text content (without HTML styling)
+    const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
+    genTarget.textContent = plainText;
+    console.log("Generated code injected from dynamic source:", plainText);
+  } else if (genTarget) {
+    // Fallback to static source if dynamic element not found
+    const genSource = document.getElementById("ordering-code-value");
+    if (genSource) {
+      genTarget.textContent = genSource.textContent;
+      console.log("Generated code injected from static source:", genSource.textContent);
+    }
   }
 }
 
-/* === Product Page Section Fade-in Animation === */
-.product-page-section {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.product-page-section.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* === Product Visuals Fade-in Animation === */
-.product-visuals {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.product-visuals.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* === Product Info Block Fade-in Animation === */
-.product-info-block {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.product-info-block.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* === Download Panel Fade-in Animation === */
-.download-panel {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.download-panel.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-
-/* === Skeleton Loaders for Product Images === */
-.skeleton-loader {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+function updateAccessoriesSectionVisibility() {
+  // Find all accessories sections
+  const accessoriesSections = document.querySelectorAll('.accessories-pdf-section');
+  // Find all selected accessories (customize selector as needed)
+  const selectedAccessories = document.querySelectorAll('.accessory-checkbox.active, .accessory-selected, .accessory-item.selected');
+  // If none selected, hide all accessories sections
+  if (selectedAccessories.length === 0) {
+    accessoriesSections.forEach(section => section.style.display = 'none');
+  } else {
+    accessoriesSections.forEach(section => section.style.display = '');
   }
 }
 
-/* Skeleton for main product image */
-.main-product-pdf-img.skeleton,
-.diagram-pdf-img.skeleton,
-.photometric-pdf-img.skeleton {
-  width: 160px !important;
-  height: 160px !important;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+// Call this after any accessory selection change
+// Example: document.querySelectorAll('.accessory-checkbox').forEach(cb => cb.addEventListener('change', updateAccessoriesSectionVisibility));
+// Or call after updating accessories dynamically
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateAccessoriesSectionVisibility();
+  // If you have accessory checkboxes, add listeners:
+  document.querySelectorAll('.accessory-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateAccessoriesSectionVisibility);
+  });
+  
+  // Set up observer to refresh ordering code when content changes
+  setupOrderingCodeObserver();
+});
+
+// Manual refresh function for ordering code
+function refreshOrderingCode() {
+  console.log('🔄 Manually refreshing ordering code...');
+  setTimeout(() => {
+    updateOrderingCode();
+    updateProductCodeInjection();
+    updateGeneratedCodeInjection();
+  }, 100);
 }
 
-/* Skeleton for thumbnail images */
-.thumbnail-image.skeleton,
-.image-3.skeleton {
-  width: 80px !important;
-  height: 80px !important;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  display: block !important;
+// Global function that can be called from Webflow
+window.refreshProductCode = function() {
+  console.log('🌐 Global refresh called from Webflow');
+  refreshOrderingCode();
+};
+
+// Debug function to test product code detection
+window.debugProductCode = function() {
+  console.log('🔍 Debugging product code detection...');
+  console.log('Current product code:', getCurrentProductCode());
+  console.log('Window currentSelection:', window.currentSelection);
+  console.log('All elements with product code pattern:');
+  document.querySelectorAll('*').forEach(el => {
+    if (el.textContent && el.textContent.match(/^C\d{3,4}$/)) {
+      console.log('Found:', el.tagName, el.className, el.textContent.trim());
+    }
+  });
+};
+
+// Force refresh function for testing
+window.forceRefreshOrderingCode = function() {
+  console.log('🔄 Force refreshing ordering code...');
+  updateOrderingCode();
+  updateProductCodeInjection();
+  updateGeneratedCodeInjection();
+};
+
+// Test function to simulate product change
+window.testProductChange = function(newProductCode) {
+  console.log('🧪 Testing product change to:', newProductCode);
+  
+  // Find and update a product code element
+  const selectors = ['#product-code', '.product-code-heading', '.product-code', '.product-title-source'];
+  let updated = false;
+  
+  for (const selector of selectors) {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.textContent = newProductCode;
+      console.log(`✅ Updated ${selector} to ${newProductCode}`);
+      updated = true;
+      break;
+    }
+  }
+  
+  if (!updated) {
+    console.log('⚠️ No product code element found to update');
+  }
+  
+  // Force refresh
+  setTimeout(() => {
+    forceRefreshOrderingCode();
+  }, 100);
+};
+
+// === Related Items Mouse Wheel Scroll Logic ===
+// DISABLED - Now using auto-scroll with arrow navigation instead of mouse wheel
+document.addEventListener("DOMContentLoaded", function () {
+  console.log('✅ Related items mouse wheel scroll logic DISABLED - using auto-scroll instead');
+});
+
+// Observer to refresh ordering code when page content changes
+function setupOrderingCodeObserver() {
+  console.log('🔧 Setting up ordering code observer...');
+  
+  // Watch for changes in the product code element
+  const selectors = ['#product-code', '.product-code-heading', '.product-code', '.product-title-source'];
+  let productCodeElement = null;
+  
+  for (const selector of selectors) {
+    productCodeElement = document.querySelector(selector);
+    if (productCodeElement) {
+      console.log(`✅ Found element to observe: ${selector}`);
+      break;
+    }
+  }
+  
+  if (productCodeElement) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          console.log('🔄 Product code changed, refreshing ordering code...');
+          setTimeout(() => {
+            updateOrderingCode();
+            updateProductCodeInjection();
+            updateGeneratedCodeInjection();
+          }, 100);
+        }
+      });
+    });
+    
+    observer.observe(productCodeElement, {
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
+    
+    console.log('✅ Ordering code observer set up for:', productCodeElement);
+  } else {
+    console.log('⚠️ No product code element found for observer, setting up periodic check');
+    // Set up periodic check as backup
+    setInterval(() => {
+      const currentCode = getCurrentProductCode();
+      if (currentCode !== 'CXXX' && currentCode !== window.lastProductCode) {
+        console.log('🔄 Product code changed via periodic check:', currentCode);
+        window.lastProductCode = currentCode;
+        updateOrderingCode();
+        updateProductCodeInjection();
+        updateGeneratedCodeInjection();
+      }
+    }, 2000); // Check every 2 seconds
+  }
+  
+  // Also watch for URL changes (for SPA navigation)
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      console.log('🔄 URL changed, refreshing ordering code...');
+      setTimeout(() => {
+        updateOrderingCode();
+        updateProductCodeInjection();
+        updateGeneratedCodeInjection();
+      }, 500);
+    }
+  }).observe(document, {subtree: true, childList: true});
 }
 
-/* Skeleton for gallery images */
-/* REMOVED - Gallery section functionality disabled */
+// === Inject PDF Icons from CMS to #pdf-container ===
+function injectPdfIcons() {
+  // Find all CMS icons for this product (from the main page, not PDF container)
+  const cmsIcons = document.querySelectorAll('#pdf-icons .pdf-cms-icon');
+  const targetContainer = document.querySelector('#pdf-container .header-icons-wrapper');
 
-/* Skeleton for accessory images */
-.accessory-image.skeleton {
-  width: 80px !important;
-  height: 80px !important;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  if (!cmsIcons.length) {
+    console.log('⚠️ No CMS icons found in #pdf-icons for this product.');
+    return;
+  }
+  if (!targetContainer) {
+    console.log('⚠️ PDF icon target container not found.');
+    return;
+  }
+
+  // Clear existing icons
+  targetContainer.innerHTML = '';
+
+  // Inject all icons into the icons wrapper
+  cmsIcons.forEach((icon, i) => {
+    const clone = icon.cloneNode(true);
+    clone.removeAttribute('id');
+    targetContainer.appendChild(clone);
+    console.log(`✅ Injected icon #${i+1}:`, clone);
+  });
+
+  console.log(`✅ Injected ${cmsIcons.length} icons into PDF container.`);
 }
 
-/* Hide skeleton when image is loaded */
-.skeleton-loader.loaded {
-  display: none !important;
+// === Inject Product, Dimension, and Photometric Images into PDF ===
+function injectPdfImages() {
+  // Product Image
+  const productSource = document.querySelector('#main-lightbox-trigger.product-image');
+  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+  if (productSource && pdfImageContainer) {
+    pdfImageContainer.innerHTML = `<img src="${productSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Product image injected:', productSource.src);
+  } else {
+    console.log('⚠️ Product image source or container not found');
+  }
+
+  // Dimension Image
+  const dimensionSource = document.querySelector('#diagram.dimension');
+  const pdfDimContainer = document.querySelector('#pdf-container .diagram-pdf-img');
+  if (dimensionSource && pdfDimContainer) {
+    pdfDimContainer.innerHTML = `<img src="${dimensionSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Dimension image injected:', dimensionSource.src);
+  } else {
+    console.log('⚠️ Dimension image source or container not found');
+  }
+
+  // Photometric Image
+  const photometricSource = document.querySelector('#Photometric.photometric');
+  const pdfPhotoContainer = document.querySelector('#pdf-container .photometric-pdf-img');
+  if (photometricSource && pdfPhotoContainer) {
+    pdfPhotoContainer.innerHTML = `<img src="${photometricSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
+    console.log('✅ Photometric image injected:', photometricSource.src);
+  } else {
+    console.log('⚠️ Photometric image source or container not found');
+  }
 }
 
-/* Skeleton text placeholders */
-.skeleton-text {
-  height: 16px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border-radius: 2px;
-  margin-bottom: 8px;
+function styleSpecLabelsAndValues() {
+  const specBlocks = document.querySelectorAll('#pdf-container .specifications-full-width .text-block-16');
+  specBlocks.forEach(block => {
+    // Split by <br> or line break
+    const html = block.innerHTML.trim();
+    const parts = html.split(/<br\s*\/?>(.*)/i);
+    if (parts.length >= 2) {
+      const label = parts[0].replace(/<[^>]+>/g, '').trim();
+      const value = parts[1].replace(/<[^>]+>/g, '').trim();
+      block.innerHTML = `<span class='label'>${label}</span><br><span class='value'>${value}</span>`;
+    }
+  });
+}
+// Call this after PDF content is injected
+if (typeof injectPdfContent === 'function') {
+  const originalInjectPdfContent = injectPdfContent;
+  injectPdfContent = function() {
+    originalInjectPdfContent.apply(this, arguments);
+    styleSpecLabelsAndValues();
+  };
 }
 
-.skeleton-text.short {
-  width: 60%;
+// === Accessory Injection for PDF ===
+function injectSelectedAccessories() {
+  // Find the PDF accessories container
+  const pdfAccessoriesContainer = document.querySelector('#pdf-container .accessories-pdf-section');
+  if (!pdfAccessoriesContainer) {
+    console.log('⚠️ PDF accessories container not found');
+    return;
+  }
+
+  // Find all selected accessories (checkboxes that are active/checked)
+  const selectedAccessories = document.querySelectorAll('.accessory-checkbox.active, .accessory-checkbox.checked, .accessory-checkbox[data-selected="true"]');
+  
+  console.log('🔍 Found selected accessories:', selectedAccessories.length);
+  selectedAccessories.forEach((acc, i) => {
+    console.log(`  ${i + 1}. Checkbox:`, acc);
+    console.log(`     Classes:`, acc.className);
+    console.log(`     Parent item:`, acc.closest('.accessory-item'));
+  });
+  
+  if (selectedAccessories.length === 0) {
+    // Hide accessories section if none selected
+    pdfAccessoriesContainer.style.display = 'none';
+    console.log('ℹ️ No accessories selected, hiding accessories section');
+    return;
+  }
+
+  // Show accessories section
+  pdfAccessoriesContainer.style.display = 'block';
+  
+  // Clear existing accessories in PDF
+  const existingAccessories = pdfAccessoriesContainer.querySelectorAll('.accessory-item');
+  console.log('🧹 Clearing existing accessories:', existingAccessories.length);
+  existingAccessories.forEach(item => item.remove());
+
+  // Inject each selected accessory
+  selectedAccessories.forEach((checkbox, index) => {
+    const accessoryItem = checkbox.closest('.accessory-item');
+    if (!accessoryItem) {
+      console.log(`⚠️ No accessory item found for checkbox ${index + 1}`);
+      return;
+    }
+
+    // Collect accessory data
+    const code = accessoryItem.querySelector('.acc-code')?.textContent?.trim() || '';
+    const title = accessoryItem.querySelector('.acc-title')?.textContent?.trim() || '';
+    const description = accessoryItem.querySelector('.acc-description')?.textContent?.trim() || '';
+    
+    console.log(`📋 Accessory ${index + 1} data:`, { code, title, description });
+    
+    // Get image - try multiple selectors
+    const image = accessoryItem.querySelector('.accessory-image .acc-img, .accessory-image img, .acc-img');
+    const imageSrc = image?.src || image?.getAttribute('src') || '';
+    
+    console.log(`🔍 Accessory ${index + 1} image src:`, imageSrc);
+
+    // Create accessory HTML for PDF
+    const accessoryHTML = `
+      <div class="accessory-item">
+        <div class="accessory-image">
+          ${imageSrc ? `<img src="${imageSrc}" alt="${title}" style="width: 80px; height: 60px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; display: block;">` : ''}
+        </div>
+        <div class="accessory-details">
+          <div class="accessory-code">${code}</div>
+          <div class="accessory-title">${title}</div>
+          <div class="accessory-description">${description}</div>
+        </div>
+      </div>
+    `;
+
+    // Add to PDF container
+    pdfAccessoriesContainer.insertAdjacentHTML('beforeend', accessoryHTML);
+    console.log(`✅ Injected accessory ${index + 1}: ${title}`);
+  });
+
+  console.log(`✅ Total accessories injected: ${selectedAccessories.length}`);
 }
 
-.skeleton-text.medium {
-  width: 80%;
+// === Scroll-triggered Fade-in Animations ===
+function initializeScrollAnimations() {
+  console.log('✨ Initializing scroll animations...');
+  
+  // Create a single observer for all sections
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        console.log(`🎬 ${entry.target.className} fade-in triggered`);
+      }
+    });
+  }, {
+    threshold: 0.3, // Trigger when 30% of section is visible
+    rootMargin: '0px 0px -50px 0px' // Trigger slightly before section comes into view
+  });
+  
+  // Observe specific product page elements (NOT the wrapper)
+  const productVisuals = document.querySelector('.product-visuals');
+  const productInfoBlock = document.querySelector('.product-info-block');
+  const downloadPanel = document.querySelector('.download-panel');
+  
+  if (productVisuals) {
+    observer.observe(productVisuals);
+    console.log('✅ Product visuals observer set up');
+  }
+  
+  if (productInfoBlock) {
+    observer.observe(productInfoBlock);
+    console.log('✅ Product info block observer set up');
+  }
+  
+  if (downloadPanel) {
+    observer.observe(downloadPanel);
+    console.log('✅ Download panel observer set up');
+  }
+  
+  // Observe Related Items section
+  const relatedSection = document.querySelector('.related-section');
+  if (relatedSection) {
+    observer.observe(relatedSection);
+    console.log('✅ Related section observer set up');
+  }
+  
+  // Gallery section observer disabled
+  
+  // Enhanced accessories dropdown animation
+  const accessoriesToggle = document.querySelector('.accessories-toggle');
+  if (accessoriesToggle) {
+    accessoriesToggle.addEventListener('click', function() {
+      const accessoriesSection = this.closest('.accessories-section');
+      const accessoriesItems = accessoriesSection.querySelectorAll('.accessories-item');
+      
+      // Add staggered animation delays to accessories items
+      accessoriesItems.forEach((item, index) => {
+        item.style.setProperty('--item-index', index);
+      });
+      
+      console.log('🎬 Accessories dropdown animation triggered');
+    });
+  }
 }
 
-.skeleton-text.long {
-  width: 100%;
+// === Smooth Scroll to Related Section ===
+function scrollToRelatedSection() {
+  const relatedSection = document.querySelector('.related-section');
+  if (relatedSection) {
+    relatedSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    console.log('📜 Smooth scrolling to related section');
+  }
 }
 
-/* === Product Page Section Fade-in Animation === */
-.product-page-section {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
+// Initialize animations when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeScrollAnimations();
+  
+  // Add smooth scroll button if needed (optional)
+  const scrollToRelatedBtn = document.querySelector('.scroll-to-related');
+  if (scrollToRelatedBtn) {
+    scrollToRelatedBtn.addEventListener('click', scrollToRelatedSection);
+  }
+  
+  // Initialize menu panel functionality
+  initializeMenuPanel();
+});
+    
+
+
+// === Menu Panel Functionality ===
+function initializeMenuPanel() {
+  const menuWrapper = document.querySelector('.menu-wrapper');
+  const menuPanel = document.querySelector('.menu-panel');
+  const menuClose = document.querySelector('.menu-close');
+  const menuOverlay = document.querySelector('.menu-overlay');
+  
+  console.log('📋 Menu elements found:', {
+    menuWrapper: !!menuWrapper,
+    menuPanel: !!menuPanel,
+    menuClose: !!menuClose,
+    menuOverlay: !!menuOverlay
+  });
+  
+  if (menuWrapper && menuPanel) {
+    // Open menu
+    menuWrapper.addEventListener('click', function(e) {
+      console.log('📋 Menu wrapper clicked!');
+      e.preventDefault();
+      e.stopPropagation();
+      openMenu();
+    });
+    
+    // Close menu
+    if (menuClose) {
+      console.log('📋 Close button found:', menuClose);
+      menuClose.addEventListener('click', function(e) {
+        console.log('📋 Close button clicked!');
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+      });
+    } else {
+      console.log('⚠️ Close button not found!');
+    }
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && menuPanel.classList.contains('active')) {
+        closeMenu();
+      }
+    });
+    
+    // Prevent wheel scrolling when menu is open
+    document.addEventListener('wheel', function(e) {
+      if (menuPanel.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, { passive: false });
+    
+    // Prevent touch scrolling when menu is open (mobile)
+    document.addEventListener('touchmove', function(e) {
+      if (menuPanel.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, { passive: false });
+    
+    // Close menu on overlay click
+    if (menuOverlay) {
+      menuOverlay.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeMenu();
+      });
+      
+      // Prevent scroll on overlay
+      menuOverlay.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, { passive: false });
+      
+      menuOverlay.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, { passive: false });
+    }
+    
+    // Close menu on outside click (backup method)
+    document.addEventListener('click', function(e) {
+      if (menuPanel.classList.contains('active') && 
+          !menuPanel.contains(e.target) && 
+          !menuWrapper.contains(e.target) &&
+          !menuOverlay.contains(e.target)) {
+        closeMenu();
+      }
+    });
+    
+    // Prevent menu panel clicks from closing the menu
+    menuPanel.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // Close menu when menu links are clicked
+    const menuLinks = menuPanel.querySelectorAll('a[href]');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        console.log('📋 Menu link clicked, closing menu...');
+        closeMenu();
+      });
+    });
+  }
+  
+  function openMenu() {
+    console.log('📋 Opening menu...');
+    
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open');
+    
+    // Calculate header height to position menu panel at bottom of header
+    const headerSection = document.querySelector('.header-section');
+    const headerHeight = headerSection ? headerSection.offsetHeight : 0;
+    
+    console.log('📋 Header height:', headerHeight);
+    
+    // Position menu panel at bottom of header
+    menuPanel.style.top = headerHeight + 'px';
+    
+    // Show overlay first
+    if (menuOverlay) {
+      menuOverlay.style.display = 'block';
+      setTimeout(() => {
+        menuOverlay.classList.add('active');
+      }, 10);
+    }
+    
+    // Show menu panel
+    menuPanel.style.display = 'flex';
+    menuPanel.style.visibility = 'visible';
+    menuPanel.style.opacity = '1';
+    
+    console.log('📋 Menu panel display set to flex');
+    console.log('📋 Menu panel visibility:', menuPanel.style.visibility);
+    console.log('📋 Menu panel opacity:', menuPanel.style.opacity);
+    
+    // Trigger animation after display change
+    setTimeout(() => {
+      menuPanel.classList.add('active');
+      console.log('📋 Menu panel active class added');
+      
+      // Check close button visibility
+      const closeBtn = menuPanel.querySelector('.menu-close');
+      if (closeBtn) {
+        console.log('📋 Close button found in active menu:', closeBtn);
+        console.log('📋 Close button display:', closeBtn.style.display);
+        console.log('📋 Close button visibility:', closeBtn.style.visibility);
+        console.log('📋 Close button opacity:', closeBtn.style.opacity);
+      } else {
+        console.log('⚠️ Close button not found in active menu');
+      }
+    }, 50);
+    
+    // Update ARIA state
+    menuWrapper.setAttribute('aria-expanded', 'true');
+    
+    console.log('📋 Menu opened at header bottom:', headerHeight + 'px');
+  }
+  
+  function closeMenu() {
+    console.log('📋 Closing menu...');
+    
+    // Restore body scrolling
+    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
+    
+    // Remove active class from menu panel
+    menuPanel.classList.remove('active');
+    
+    // Remove active class from overlay
+    if (menuOverlay) {
+      menuOverlay.classList.remove('active');
+    }
+    
+    // Hide elements after animation
+    setTimeout(() => {
+      menuPanel.style.display = 'none';
+      if (menuOverlay) {
+        menuOverlay.style.display = 'none';
+      }
+    }, 400); // Match CSS transition duration
+    
+    // Update ARIA state
+    menuWrapper.setAttribute('aria-expanded', 'false');
+    
+    console.log('📋 Menu closed');
+  }
 }
 
-.product-page-section.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+/* === Skeleton Loader Functionality === */
+
+// Initialize skeleton loaders for all images
+function initializeSkeletonLoaders() {
+  const images = document.querySelectorAll('img[src]');
+  
+  images.forEach(img => {
+    // Add skeleton class initially
+    img.classList.add('skeleton');
+    
+    // Create a wrapper if it doesn't exist
+    let wrapper = img.parentElement;
+    if (!wrapper.classList.contains('skeleton-wrapper')) {
+      wrapper.classList.add('skeleton-wrapper');
+    }
+    
+    // Handle image load
+    if (img.complete) {
+      handleImageLoad(img);
+    } else {
+      img.addEventListener('load', () => handleImageLoad(img));
+      img.addEventListener('error', () => handleImageError(img));
+    }
+  });
 }
 
-/* === Product Visuals Fade-in Animation === */
-.product-visuals {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
+// Handle successful image load
+function handleImageLoad(img) {
+  img.classList.remove('skeleton');
+  img.classList.add('loaded');
+  
+  // Add fade-in effect
+  img.style.opacity = '0';
+  img.style.transition = 'opacity 0.3s ease';
+  
+  setTimeout(() => {
+    img.style.opacity = '1';
+  }, 50);
 }
 
-.product-visuals.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+// Handle image load error
+function handleImageError(img) {
+  img.classList.remove('skeleton');
+  img.classList.add('error');
+  
+  // Show error placeholder
+  img.style.display = 'none';
+  const errorPlaceholder = document.createElement('div');
+  errorPlaceholder.className = 'image-error-placeholder';
+  errorPlaceholder.innerHTML = '<span>Image not available</span>';
+  errorPlaceholder.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    color: #999;
+    font-size: 12px;
+  `;
+  img.parentElement.appendChild(errorPlaceholder);
 }
 
-/* === Product Info Block Fade-in Animation === */
-.product-info-block {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
+// Initialize skeleton loaders when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeSkeletonLoaders();
+});
+
+// Handle dynamically added images (for CMS content)
+function handleDynamicImages() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          const images = node.querySelectorAll ? node.querySelectorAll('img[src]') : [];
+          images.forEach(img => {
+            if (!img.classList.contains('skeleton')) {
+              img.classList.add('skeleton');
+              if (img.complete) {
+                handleImageLoad(img);
+              } else {
+                img.addEventListener('load', () => handleImageLoad(img));
+                img.addEventListener('error', () => handleImageError(img));
+              }
+            }
+          });
+        }
+      });
+    });
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 }
 
-.product-info-block.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+// Initialize dynamic image handling
+document.addEventListener('DOMContentLoaded', function() {
+  handleDynamicImages();
+});
+
+// Preload critical images
+function preloadCriticalImages() {
+  const criticalImages = [
+    'main-lightbox-trigger',
+    'thumbnail-image',
+    'gallery-image'
+  ];
+  
+  criticalImages.forEach(selector => {
+    const images = document.querySelectorAll(selector);
+    images.forEach(img => {
+      if (img.src) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = img.src;
+        document.head.appendChild(link);
+      }
+    });
+  });
 }
 
-/* === Download Panel Fade-in Animation === */
-.download-panel {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.download-panel.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* === RAL Input Styling - No Blue Border === */
-#ral-input {
-  outline: none !important;
-  border: 1px solid #e4e3e3 !important;
-  border-color: #e4e3e3 !important;
-  box-shadow: none !important;
-}
-
-#ral-input:focus {
-  outline: none !important;
-  border: 1px solid #e4e3e3 !important;
-  border-color: #e4e3e3 !important;
-  box-shadow: none !important;
-}
-
-#ral-input:hover {
-  outline: none !important;
-  border: 1px solid #e4e3e3 !important;
-  border-color: #e4e3e3 !important;
-  box-shadow: none !important;
-}
-
-#ral-input:active {
-  outline: none !important;
-  border: 1px solid #e4e3e3 !important;
-  border-color: #e4e3e3 !important;
-  box-shadow: none !important;
-}
-
-/* === Related Items Scroll Performance Optimizations === */
-.collection-list-6 {
-  /* Hardware acceleration for smoother scrolling */
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  perspective: 1000px !important;
-  will-change: scroll-position !important;
-  /* Optimize for touch devices */
-  touch-action: pan-x !important;
-  /* Reduce scroll sensitivity for smoother feel */
-  scroll-snap-type: x proximity !important;
-}
-
-/* Optimize individual items for better performance */
-.collection-list-6 .w-dyn-item {
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  will-change: transform !important;
-  flex-shrink: 0 !important;
-}
-
-/* === Gallery Scroll Performance Optimizations === */
-/* REMOVED - Gallery section functionality disabled */
+// Initialize preloading
+document.addEventListener('DOMContentLoaded', function() {
+  preloadCriticalImages();
+});
 
 /* === Arrow Hover Effects === */
-.download-arrow {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform !important;
-}
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Download arrow hover effects
+  document.querySelectorAll('.download-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+  
+  // Dropdown arrow hover effects
+  document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+    arrow.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    arrow.addEventListener('mouseleave', function() {
+      // Reset to default state - let CSS handle the rotation
+      this.style.transform = '';
+      this.style.transition = '';
+    });
+  });
+});
 
-.download-arrow:hover {
-  transform: translateY(-2px) scale(1.05) !important;
-  filter: brightness(1.1) !important;
-}
+// Initialize gallery auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Gallery auto-scroll disabled
+});
 
-.accessories-arrow {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform !important;
-}
+// === Gallery Subscribe Wrapper Parallax Enhancement ===
+// Gallery parallax functionality disabled
 
-.accessories-arrow:hover {
-  transform: translateY(-2px) scale(1.05) !important;
-  filter: brightness(1.1) !important;
-}
+// Initialize parallax when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Gallery parallax disabled
+});
 
-.dropdown-arrow {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform !important;
-}
-
-.dropdown-arrow:hover {
-  transform: translateY(-2px) scale(1.05) !important;
-  filter: brightness(1.1) !important;
-}
-
-/* Ensure rotation is preserved when dropdown is open, even on hover */
-.dropdown-wrapper.open .dropdown-arrow:hover {
-  transform: translateY(-2px) scale(1.05) rotate(180deg) !important;
-}
-
-/* === Gallery Subscribe Wrapper Parallax Effect === */
-/* Gallery subscribe wrapper styles */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Enhanced parallax effect on scroll */
-.gallery-section-wrapper {
-  perspective: 1000px !important;
-  transform-style: preserve-3d !important;
-}
-
-/* Gallery subscribe wrapper styles */
-/* REMOVED - Gallery section functionality disabled */
-
-/* === Enhanced Wheel Scrolling Styles === */
-/* REMOVED - Gallery section functionality disabled */
-
-.collection-list-6 {
-  /* Ensure proper wheel scrolling for related items */
-  overflow-x: auto !important;
-  scroll-behavior: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  scroll-snap-type: x proximity !important;
-  scroll-snap-stop: always !important;
-}
-
-/* Gallery section wrapper for broader wheel detection */
-/* REMOVED - Gallery section functionality disabled */
-
-/* Related section wrapper for broader wheel detection */
-.related-section {
-  /* Ensure wheel events can be captured */
-  position: relative !important;
-  overflow: visible !important;
-}
-
-/* === Global Gotham Font Implementation === */
-/* Override all font families to use Gotham */
-* {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Specific overrides for elements that might need different font weights */
-h1, h2, h3, h4, h5, h6 {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-p, span, div, a, button, input, textarea, select {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Ensure form elements use Gotham */
-input, textarea, select, button {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Navigation elements */
-nav, .nav, .navigation {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Menu elements */
-.menu-wrapper, .menu-panel, .menu-overlay {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Related items */
-.related-section {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Product elements */
-.product-title, .product-description, .product-price {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-/* Footer elements */
-footer, .footer {
-  font-family: Gotham, Arial, sans-serif !important;
-}
-
-
-/* === Essential Flip Card Animation Only === */
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  display: none;
-  width: 100%;
-  height: 100%;
-}
-
-/* Show back card on hover */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-}
-
-/* Remove underlines from all product card links */
-.flip-card-wrapper a,
-.current-product,
-.flip-card-link {
-  text-decoration: none !important;
-}
-
-/* === No Results Message Styling === */
-.no-results-message {
-  margin-right: 40px;
-  font-family: var(--section-title);
-  color: var(--duva-d-grey);
-  font-size: var(--section-title-size);
-  line-height: var(--section-title-height);
-  font-weight: var(--section-title-weight);
-  text-align: center;
-  width: 100%;
-  padding: 40px 20px;
-}
-
-/* === Main Page Categories Hover Animation === */
-/* Hover effects for category links - preserves Webflow styling */
-.main-page-categories-wrapper a {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.main-page-categories-wrapper a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.main-page-categories-wrapper a:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: var(--duva-red, #C0392B) !important;
-  background-color: var(--duva-white, #ffffff) !important;
-}
-
-.main-page-categories-wrapper a:hover::before {
-  left: 100%;
-}
-
-/* Text hover effects - preserves existing positioning */
-.main-page-categories-wrapper a:hover .text-block-48,
-.main-page-categories-wrapper a:hover .text-block-49,
-.main-page-categories-wrapper a:hover .text-block-50,
-.main-page-categories-wrapper a:hover .text-block-51,
-.main-page-categories-wrapper a:hover .text-block-52,
-.main-page-categories-wrapper a:hover .text-block-53 {
-  color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-}
-
-/* Image hover effects - preserves existing positioning */
-.main-page-categories-wrapper a:hover .image-24,
-.main-page-categories-wrapper a:hover .image-25,
-.main-page-categories-wrapper a:hover .image-26,
-.main-page-categories-wrapper a:hover .image-27,
-.main-page-categories-wrapper a:hover .image-28,
-.main-page-categories-wrapper a:hover .image-29 {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
-}
-
-/* Responsive hover adjustments */
-@media screen and (max-width: 767px) {
-  .main-page-categories-wrapper a:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* === Product Card Hover Animation === */
-/* Enhanced hover effects for product cards - preserves existing functionality */
-.collection-item,
-.product-card,
-.related-card,
-.flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shimmer effect for product cards */
-.collection-item::before,
-.product-card::before,
-.related-card::before,
-.flip-card-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Enhanced hover effects for product cards */
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Shimmer animation on hover */
-.collection-item:hover::before,
-.product-card:hover::before,
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Product code/title color change on hover */
-.collection-item:hover .main-code-text,
-.product-card:hover .main-code-text,
-.related-card:hover .related-code,
-.collection-item:hover .item-description,
-.product-card:hover .item-description {
-  color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Product image scaling on hover */
-.collection-item:hover img,
-.product-card:hover img,
-.related-card:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* Preserve existing flip card functionality */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-  z-index: 2; /* Ensure back card appears above shimmer */
-}
-
-/* Responsive adjustments for product cards */
-@media screen and (max-width: 767px) {
-  .collection-item:hover,
-  .product-card:hover,
-  .related-card:hover {
-    transform: translateY(-3px);
+// === SVG Background Tracing Animation ===
+function initializeSVGTracingAnimation() {
+  console.log('🎨 Initializing SVG tracing animation...');
+  
+  // Find the background SVG
+  const backgroundSVG = document.querySelector('svg[class*="duva-main-background"], svg[class*="background"], svg[id*="background"], svg[data-background="true"]');
+  
+  if (!backgroundSVG) {
+    console.log('⚠️ Background SVG not found, creating demo animation');
+    createDemoSVGAnimation();
+    return;
   }
   
-  .collection-item:hover img,
-  .product-card:hover img,
-  .related-card:hover img {
-    transform: scale(1.03);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .collection-item:hover,
-  .product-card:hover,
-  .related-card:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* === Product Image and Thumbnail Hover Animation === */
-/* Enhanced hover effects for product images and thumbnails */
-.product-image,
-.thumbnail-image,
-.image-3 {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid transparent;
-}
-
-/* Override Webflow's overflow setting for product images */
-.product-image {
-  overflow: hidden !important;
-  position: relative !important;
-}
-
-/* Shimmer effect for product images and thumbnails */
-.product-image::before,
-.thumbnail-image::before,
-.image-3::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Enhanced hover effects for product images and thumbnails */
-.product-image:hover,
-.thumbnail-image:hover,
-.image-3:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: var(--duva-red, #c0392b) !important;
-}
-
-/* Shimmer animation on hover */
-.product-image:hover::before,
-.thumbnail-image:hover::before,
-.image-3:hover::before {
-  left: 100%;
-}
-
-/* Product image scaling on hover */
-.product-image:hover img,
-.thumbnail-image:hover img,
-.image-3:hover img {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
-}
-
-/* Responsive adjustments for product images and thumbnails */
-@media screen and (max-width: 767px) {
-  .product-image:hover,
-  .thumbnail-image:hover,
-  .image-3:hover {
-    transform: translateY(-2px);
+  console.log('✅ Background SVG found:', backgroundSVG);
+  
+  // Get all paths in the SVG
+  const paths = backgroundSVG.querySelectorAll('path');
+  console.log(`📊 Found ${paths.length} paths to trace`);
+  
+  if (paths.length === 0) {
+    console.log('⚠️ No paths found in SVG');
+    return;
   }
   
-  .product-image:hover img,
-  .thumbnail-image:hover img,
-  .image-3:hover img {
-    transform: scale(1.1);
-  }
+  // Create tracing dot
+  const tracingDot = createTracingDot();
+  backgroundSVG.appendChild(tracingDot);
+  
+  // Create stroke overlay for drawing effect
+  const strokeOverlay = createStrokeOverlay();
+  backgroundSVG.appendChild(strokeOverlay);
+  
+  // Start the tracing animation
+  startTracingAnimation(paths, tracingDot, strokeOverlay);
 }
 
-@media screen and (max-width: 479px) {
-  .product-image:hover,
-  .thumbnail-image:hover,
-  .image-3:hover {
-    transform: translateY(-1px);
-  }
+function createTracingDot() {
+  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot.setAttribute('cx', '0');
+  dot.setAttribute('cy', '0');
+  dot.setAttribute('r', '3');
+  dot.setAttribute('fill', '#C0392B');
+  dot.setAttribute('class', 'tracing-dot');
+  dot.style.filter = 'drop-shadow(0 0 4px #C0392B)';
+  dot.style.opacity = '0';
+  dot.style.transition = 'opacity 0.3s ease';
+  
+  return dot;
 }
 
-/* === Enhanced Lightbox Gallery Styling === */
-/* Custom arrow and close button styling */
-.w-lightbox-left {
-  background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef5902e311c1a22c5086_arrow-red-left-white.png') !important;
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  width: 60px !important;
-  height: 60px !important;
+function createStrokeOverlay() {
+  const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  overlay.setAttribute('class', 'stroke-overlay');
+  overlay.style.pointerEvents = 'none';
+  
+  return overlay;
 }
 
-.w-lightbox-right {
-  background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef59b929fb7d96d535ae_arrow-red-right-white.png') !important;
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  width: 60px !important;
-  height: 60px !important;
-}
-
-.w-lightbox-close {
-  background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef59d29de9f4afd08f52_Close-X-White.png') !important;
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  border: none !important;
-  background-color: transparent !important;
-  width: 50px !important;
-  height: 50px !important;
-}
-
-/* Enhanced hover effects for arrows and close button */
-.w-lightbox-left:hover,
-.w-lightbox-right:hover {
-  transform: scale(1.1) !important;
-  filter: brightness(1.2) !important;
-  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3) !important;
-}
-
-.w-lightbox-close:hover {
-  transform: scale(1.1) rotate(90deg) !important;
-  filter: brightness(1.2) !important;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Enhanced thumbnail styling inside lightbox */
-.w-lightbox-thumbnail {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  border: 2px solid transparent !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  position: relative !important;
-}
-
-/* Fix thumbnail image sizing to show full image */
-.w-lightbox-thumbnail img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-}
-
-.w-lightbox-thumbnail:hover {
-  transform: translateY(-4px) scale(1.05) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
-  border-color: var(--duva-red, #c0392b) !important;
-}
-
-.w-lightbox-thumbnail.active {
-  border-color: var(--duva-red, #c0392b) !important;
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.3) !important;
-}
-
-/* Main image slide animations */
-.w-lightbox-image {
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
-
-.w-lightbox-image.sliding-left {
-  transform: translateX(-100%) !important;
-}
-
-.w-lightbox-image.sliding-right {
-  transform: translateX(100%) !important;
-}
-
-
-
-/* Enhanced lightbox backdrop */
-.w-lightbox-backdrop {
-  backdrop-filter: blur(8px) !important;
-  background-color: rgba(0, 0, 0, 0.85) !important;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 767px) {
-  .w-lightbox-left:hover,
-  .w-lightbox-right:hover {
-    transform: scale(1.05) !important;
+function startTracingAnimation(paths, tracingDot, strokeOverlay) {
+  let currentPathIndex = 0;
+  let currentProgress = 0;
+  const animationSpeed = 0.02; // Adjust for speed
+  const pathDelay = 500; // Delay between paths in ms
+  
+  function animatePath() {
+    if (currentPathIndex >= paths.length) {
+      console.log('✅ Tracing animation complete');
+      return;
+    }
+    
+    const path = paths[currentPathIndex];
+    const pathLength = path.getTotalLength();
+    
+    console.log(`🎨 Tracing path ${currentPathIndex + 1}/${paths.length}`);
+    
+    function tracePath() {
+      if (currentProgress >= 1) {
+        // Path complete, move to next
+        currentPathIndex++;
+        currentProgress = 0;
+        
+        if (currentPathIndex < paths.length) {
+          setTimeout(animatePath, pathDelay);
+        } else {
+          console.log('✅ All paths traced');
+        }
+        return;
+      }
+      
+      // Get point along path
+      const point = path.getPointAtLength(currentProgress * pathLength);
+      
+      // Update tracing dot position
+      tracingDot.setAttribute('cx', point.x);
+      tracingDot.setAttribute('cy', point.y);
+      tracingDot.style.opacity = '1';
+      
+      // Create stroke segment
+      createStrokeSegment(path, currentProgress, strokeOverlay);
+      
+      // Update progress
+      currentProgress += animationSpeed;
+      
+      // Continue animation
+      requestAnimationFrame(tracePath);
+    }
+    
+    // Start tracing this path
+    tracePath();
   }
   
-  .w-lightbox-thumbnail:hover {
-    transform: translateY(-2px) scale(1.02) !important;
+  // Start the animation
+  setTimeout(animatePath, 1000); // Initial delay
+}
+
+function createStrokeSegment(path, progress, strokeOverlay) {
+  const pathLength = path.getTotalLength();
+  const segmentLength = pathLength * 0.02; // Segment size
+  
+  // Create a stroke segment
+  const strokePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  strokePath.setAttribute('d', path.getAttribute('d'));
+  strokePath.setAttribute('fill', 'none');
+  strokePath.setAttribute('stroke', '#C0392B');
+  strokePath.setAttribute('stroke-width', '2');
+  strokePath.setAttribute('stroke-linecap', 'round');
+  strokePath.setAttribute('stroke-linejoin', 'round');
+  strokePath.style.strokeDasharray = `${segmentLength} ${pathLength}`;
+  strokePath.style.strokeDashoffset = pathLength - (progress * pathLength);
+  strokePath.style.opacity = '0.8';
+  
+  strokeOverlay.appendChild(strokePath);
+  
+  // Remove old segments to prevent memory issues
+  setTimeout(() => {
+    if (strokePath.parentNode) {
+      strokePath.parentNode.removeChild(strokePath);
+    }
+  }, 5000);
+}
+
+function createDemoSVGAnimation() {
+  console.log('🎨 Creating demo SVG animation...');
+  
+  // Create a demo SVG if no background SVG is found
+  const demoContainer = document.createElement('div');
+  demoContainer.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+  `;
+  
+  const demoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  demoSVG.setAttribute('width', '100%');
+  demoSVG.setAttribute('height', '100%');
+  demoSVG.setAttribute('viewBox', '0 0 1000 600');
+  
+  // Create demo paths
+  const paths = [
+    'M 100,300 Q 200,100 300,300 T 500,300',
+    'M 500,300 Q 600,100 700,300 T 900,300',
+    'M 100,400 L 300,400 L 300,200 L 500,200',
+    'M 500,200 L 700,200 L 700,400 L 900,400'
+  ];
+  
+  paths.forEach((pathData, index) => {
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', pathData);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#333');
+    path.setAttribute('stroke-width', '1');
+    path.setAttribute('opacity', '0.3');
+    demoSVG.appendChild(path);
+  });
+  
+  demoContainer.appendChild(demoSVG);
+  document.body.appendChild(demoContainer);
+  
+  // Start animation with demo paths
+  const demoPaths = demoSVG.querySelectorAll('path');
+  const tracingDot = createTracingDot();
+  const strokeOverlay = createStrokeOverlay();
+  
+  demoSVG.appendChild(tracingDot);
+  demoSVG.appendChild(strokeOverlay);
+  
+  startTracingAnimation(demoPaths, tracingDot, strokeOverlay);
+}
+
+// Initialize SVG tracing animation when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeSVGTracingAnimation();
+});
+
+// === Enhanced Mouse Wheel Scrolling ===
+// Gallery wheel scrolling functionality disabled
+
+// Initialize enhanced wheel scrolling
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🎯 DOM Content Loaded - Initializing enhanced wheel scrolling...');
+  
+  // Debug: Check if elements exist
+  const relatedContainer = document.querySelector('.collection-list-6');
+  const relatedSection = document.querySelector('.related-section');
+  
+  console.log('🔍 Element Debug:', {
+    relatedContainer: !!relatedContainer,
+    relatedSection: !!relatedSection
+  });
+  
+  if (relatedContainer) {
+    console.log('📦 Related container found:', relatedContainer.className);
+  }
+  
+  // Gallery wheel scrolling functionality disabled
+});
+
+// === Seamless Gallery Loop Fix ===
+// Gallery seamless loop functionality disabled
+
+// === Accessories Section Auto-Scroll and Mouse Wheel Logic ===
+document.addEventListener("DOMContentLoaded", function () {
+  const accessoriesContainer = document.querySelector(".accessories-wrapper");
+  const accessoriesSection = document.querySelector(".accessories-section");
+
+  if (accessoriesContainer && accessoriesSection) {
+    console.log('✅ Accessories auto-scroll and mouse wheel logic initialized');
+    console.log('📦 Accessories container found:', accessoriesContainer);
+    
+    // Auto-scroll variables
+    let isAccessoriesAutoScrolling = true;
+    let accessoriesScrollInterval = null;
+    let accessoriesScrollSpeed = 1; // pixels per frame
+    let accessoriesScrollDirection = 1; // 1 for right, -1 for left
+    
+    // Mouse wheel scrolling variables
+    let accessoriesWheelVelocity = 0;
+    let accessoriesIsWheelScrolling = false;
+    let accessoriesWheelAnimationId = null;
+    
+    // Define smooth scroll function for accessories
+    function smoothAccessoriesScrollWithMomentum() {
+      if (Math.abs(accessoriesWheelVelocity) > 0.1) {
+        accessoriesContainer.scrollLeft += accessoriesWheelVelocity;
+        accessoriesWheelVelocity *= 0.9; // Friction
+        
+        accessoriesWheelAnimationId = requestAnimationFrame(smoothAccessoriesScrollWithMomentum);
+      } else {
+        accessoriesWheelVelocity = 0;
+        accessoriesIsWheelScrolling = false;
+        accessoriesWheelAnimationId = null;
+      }
+    }
+    
+    // Auto-scroll function for accessories
+    function startAccessoriesAutoScroll() {
+      if (accessoriesScrollInterval) return; // Already running
+      
+      accessoriesScrollInterval = setInterval(() => {
+        if (!accessoriesIsWheelScrolling && isAccessoriesAutoScrolling) {
+          const maxScroll = accessoriesContainer.scrollWidth - accessoriesContainer.clientWidth;
+          
+          if (accessoriesContainer.scrollLeft >= maxScroll) {
+            accessoriesScrollDirection = -1; // Change direction to left
+          } else if (accessoriesContainer.scrollLeft <= 0) {
+            accessoriesScrollDirection = 1; // Change direction to right
+          }
+          
+          accessoriesContainer.scrollLeft += accessoriesScrollSpeed * accessoriesScrollDirection;
+        }
+      }, 50); // 20 FPS for smooth scrolling
+      
+      console.log('▶️ Accessories auto-scroll started');
+    }
+    
+    function stopAccessoriesAutoScroll() {
+      if (accessoriesScrollInterval) {
+        clearInterval(accessoriesScrollInterval);
+        accessoriesScrollInterval = null;
+        console.log('⏸️ Accessories auto-scroll paused');
+      }
+    }
+    
+    // Mouse wheel event handler for accessories
+    function handleAccessoriesWheel(event) {
+      console.log('🔄 Accessories wheel event triggered');
+      
+      // Only handle if accessories section is open
+      if (!accessoriesSection.classList.contains('open')) {
+        return;
+      }
+      
+      // Only prevent default if we're actually scrolling the container
+      if (accessoriesContainer.scrollWidth > accessoriesContainer.clientWidth) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Stop auto-scroll during wheel interaction
+        stopAccessoriesAutoScroll();
+        
+        // Get scroll direction and amount
+        const delta = event.deltaY || event.deltaX;
+        const scrollSpeed = Math.abs(delta) * 0.5;
+        const direction = delta > 0 ? 1 : -1;
+        
+        // Add to velocity for momentum effect
+        accessoriesWheelVelocity += direction * scrollSpeed;
+        
+        // Smooth scroll with momentum
+        if (!accessoriesIsWheelScrolling) {
+          accessoriesIsWheelScrolling = true;
+          smoothAccessoriesScrollWithMomentum();
+        }
+        
+        console.log('🔄 Accessories wheel scrolling:', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
+        
+        // Restart auto-scroll after a delay
+        setTimeout(() => {
+          if (isAccessoriesAutoScrolling) {
+            startAccessoriesAutoScroll();
+          }
+        }, 2000);
+      }
+    }
+    
+    // Add wheel listeners to accessories container and section
+    accessoriesContainer.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
+    accessoriesSection.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
+    
+    // Pause auto-scroll on hover
+    accessoriesContainer.addEventListener('mouseenter', () => {
+      stopAccessoriesAutoScroll();
+      console.log('🎯 Accessories auto-scroll paused on hover');
+    });
+    
+    accessoriesContainer.addEventListener('mouseleave', () => {
+      if (isAccessoriesAutoScrolling) {
+        startAccessoriesAutoScroll();
+        console.log('🎯 Accessories auto-scroll resumed');
+      }
+    });
+    
+    // Start auto-scroll when accessories section opens
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (accessoriesSection.classList.contains('open')) {
+            // Start auto-scroll after a short delay to ensure content is loaded
+            setTimeout(() => {
+              if (isAccessoriesAutoScrolling) {
+                startAccessoriesAutoScroll();
+              }
+            }, 500);
+          } else {
+            stopAccessoriesAutoScroll();
+          }
+        }
+      });
+    });
+    
+    observer.observe(accessoriesSection, { attributes: true });
+    
+    // Start auto-scroll if section is already open
+    if (accessoriesSection.classList.contains('open')) {
+      setTimeout(() => {
+        if (isAccessoriesAutoScrolling) {
+          startAccessoriesAutoScroll();
+        }
+      }, 500);
+    }
+    
+    console.log('✅ Accessories auto-scroll and mouse wheel functionality initialized');
+  } else {
+    console.log('⚠️ Accessories container or section not found');
+  }
+});
+
+/* === Flip Card Linking Functionality === */
+// Helper function to extract product code from element
+function extractProductCode(element) {
+  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+  if (codeElement) {
+    const text = codeElement.textContent?.trim();
+    if (text) {
+      const codeMatch = text.match(/([A-Z]?\d+)/);
+      if (codeMatch) {
+        return codeMatch[1];
+      } else {
+        return text.split(' ')[0];
+      }
+    }
+  }
+  return null;
+}
+
+function initializeFlipCardLinks() {
+  console.log('=== initializeFlipCardLinks function called ===');
+  console.log('Script is working!');
+  
+  // ONLY target flip card wrappers - don't affect other sections
+  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  
+  console.log('Found flip card wrappers:', flipCardWrappers.length);
+  
+  // Log what we found to debug
+  flipCardWrappers.forEach((wrapper, index) => {
+    console.log(`Flip card ${index + 1}:`, wrapper.className, wrapper.tagName);
+  });
+  
+  // Only process flip card wrappers, not related items
+  const targetElements = flipCardWrappers;
+  
+  if (targetElements.length === 0) {
+    console.log('No flip card wrappers found, skipping');
+    return;
+  }
+  
+  console.log('Processing', targetElements.length, 'target elements');
+  
+  targetElements.forEach((element, index) => {
+    // Check if this element already has a link
+    const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
+    if (existingFlipLink) {
+      console.log(`Element ${index + 1} already has a link, updating URL...`);
+      // Update the existing link instead of skipping
+      const productCode = extractProductCode(element);
+      if (productCode) {
+        const newUrl = `/products/lucero-${productCode.toLowerCase()}`;
+        existingFlipLink.href = newUrl;
+        console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
+      }
+      return;
+    }
+    
+    // Create the link element
+    const link = document.createElement('a');
+    link.className = 'flip-card-link';
+    
+    // Try to get the product URL from various sources
+    let productUrl = element.getAttribute('data-product-url') || 
+                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
+                    element.getAttribute('href') ||
+                    element.querySelector('a')?.getAttribute('href') ||
+                    '#';
+    
+    // Check if this is a flip card with an existing proper URL
+    const existingLink = element.querySelector('a');
+    if (existingLink && existingLink.href) {
+      // Use the existing URL (whether it's product or search)
+      productUrl = existingLink.href;
+      console.log(`Flip card - using existing URL:`, productUrl);
+    } else if (productUrl === '#' || !productUrl) {
+      // Only construct search URL if no proper URL exists
+      const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+      let productCode = null;
+      
+      if (codeElement) {
+        const text = codeElement.textContent?.trim();
+        // Extract just the product code (e.g., "C331", "4709") from the text
+        if (text) {
+          // Look for patterns like C331, 4709, etc.
+          const codeMatch = text.match(/([A-Z]?\d+)/);
+          if (codeMatch) {
+            productCode = codeMatch[1];
+          } else {
+            // If no pattern found, use first word
+            productCode = text.split(' ')[0];
+          }
+        }
+      }
+      
+      if (productCode) {
+        // For flip cards, try to construct a proper product URL first
+        // Check if we should use product page or search
+        const shouldUseProductPage = true; // Set to true to use product pages
+        
+        if (shouldUseProductPage) {
+          // Try to construct a product page URL using the correct Webflow format
+          // Format: /products/lucero-{productCode}
+          productUrl = `/products/lucero-${productCode.toLowerCase()}`;
+          console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
+        } else {
+          // Fallback to search URL
+          productUrl = `/?search=${productCode.toLowerCase()}`;
+          console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+        }
+      } else {
+        console.log('Flip card - no product code found, keeping URL as #');
+      }
+    }
+    
+    link.href = productUrl;
+    link.setAttribute('data-product-url', productUrl);
+    
+    console.log(`Element ${index + 1} - URL:`, productUrl);
+    
+    // Wrap the element in the link
+    element.parentNode.insertBefore(link, element);
+    link.appendChild(element);
+    
+    // Add click event listener
+    link.addEventListener('click', function(e) {
+      console.log('Flip card clicked! URL:', productUrl);
+      
+      // For flip cards, allow navigation even if URL is '#'
+      // This prevents the alert from showing on flip cards
+      if (productUrl === '#' || !productUrl) {
+        e.preventDefault();
+        console.log('Flip card - no URL configured, preventing navigation');
+        return;
+      }
+      
+      // Allow navigation for valid URLs
+      console.log('Flip card - navigating to:', productUrl);
+      
+      // Navigate to the URL
+      window.location.href = productUrl;
+      
+      // Optional: Add loading state
+      this.style.pointerEvents = 'none';
+      setTimeout(() => {
+        this.style.pointerEvents = 'auto';
+      }, 1000);
+    });
+    
+    // Add hover effects for fade animation
+    link.addEventListener('mouseenter', function() {
+      console.log('Mouse enter triggered on flip card link');
+      this.style.transform = 'translateY(-2px)';
+      // Ensure fade animation works
+      const flipCard = this.querySelector('.flip-card');
+      const flipCardFront = this.querySelector('.flip-card-front');
+      const flipCardBack = this.querySelector('.flip-card-back');
+      
+      console.log('Flip card elements found:', {
+        flipCard: !!flipCard,
+        flipCardFront: !!flipCardFront,
+        flipCardBack: !!flipCardBack
+      });
+      
+      if (flipCard) {
+        flipCard.style.transition = 'all 0.6s ease';
+      }
+      if (flipCardFront) {
+        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '0';
+        flipCardFront.style.transform = 'translateZ(-10px)';
+      }
+      if (flipCardBack) {
+        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '1';
+        flipCardBack.style.visibility = 'visible';
+        flipCardBack.style.display = 'flex';
+        flipCardBack.style.transform = 'translateZ(0)';
+        flipCardBack.style.zIndex = '10';
+      }
+    });
+    
+    link.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+      // Reset fade animation
+      const flipCard = this.querySelector('.flip-card');
+      const flipCardFront = this.querySelector('.flip-card-front');
+      const flipCardBack = this.querySelector('.flip-card-back');
+      
+      if (flipCard) {
+        flipCard.style.transition = 'all 0.6s ease';
+      }
+      if (flipCardFront) {
+        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardFront.style.opacity = '1';
+        flipCardFront.style.transform = 'translateZ(0)';
+      }
+      if (flipCardBack) {
+        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        flipCardBack.style.opacity = '0';
+        flipCardBack.style.visibility = 'hidden';
+        flipCardBack.style.display = 'none';
+        flipCardBack.style.transform = 'translateZ(-10px)';
+        flipCardBack.style.zIndex = '1';
+      }
+    });
+  });
+}
+
+/* === Cards Scroll Animation === */
+function initializeCardsScrollAnimation() {
+  const cards = document.querySelectorAll('.collection-item');
+  
+  if (!cards.length) return;
+  
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+      }
+    });
+  }, observerOptions);
+  
+  cards.forEach(card => {
+    observer.observe(card);
+  });
+}
+
+// Initialize flip card links when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 DOMContentLoaded - Initializing flip card links');
+  initializeFlipCardLinks();
+  initializeCardsScrollAnimation();
+  
+  // Test if cards are clickable
+  setTimeout(() => {
+    testCardNavigation();
+  }, 500);
+});
+
+// Re-initialize when Webflow's dynamic content loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for Webflow's dynamic content to load
+  setTimeout(() => {
+    console.log('DOMContentLoaded timeout - Re-initializing flip card links');
+    initializeFlipCardLinks();
+    initializeCardsScrollAnimation();
+    
+    // Test if cards are clickable
+    setTimeout(() => {
+      testCardNavigation();
+    }, 500);
+  }, 100);
+});
+
+// Also initialize when Webflow's page loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    console.log('Webflow.push - Initializing flip card links');
+    initializeFlipCardLinks();
+    initializeCardsScrollAnimation();
+    
+    // Test if cards are clickable
+    setTimeout(() => {
+      testCardNavigation();
+    }, 500);
+  });
+}
+
+// Test function to check if cards are clickable
+function testCardNavigation() {
+  console.log('🧪 Testing card navigation...');
+  
+  const allLinks = document.querySelectorAll('.flip-card-link, a[href]');
+  console.log('Found links:', allLinks.length);
+  
+  allLinks.forEach((link, index) => {
+    if (index < 5) { // Only test first 5
+      console.log(`Link ${index + 1}:`, {
+        href: link.href,
+        className: link.className,
+        tagName: link.tagName
+      });
+      
+      // Test if link is clickable
+      link.addEventListener('click', function(e) {
+        console.log(`✅ Link ${index + 1} clicked! URL:`, this.href);
+      });
+    }
+  });
+  
+  // Also check for any clickable elements
+  const clickableElements = document.querySelectorAll('[onclick], [data-href], [data-url]');
+  console.log('Found clickable elements:', clickableElements.length);
+  
+  clickableElements.forEach((el, index) => {
+    if (index < 3) {
+      console.log(`Clickable element ${index + 1}:`, {
+        onclick: el.getAttribute('onclick'),
+        dataHref: el.getAttribute('data-href'),
+        dataUrl: el.getAttribute('data-url'),
+        className: el.className
+      });
+    }
+  });
+}
+
+/* === DUVA Global Live Search Functionality === */
+
+// Initialize global search functionality
+function initializeGlobalSearch() {
+  // Prevent duplicate initialization
+  if (window.globalSearchInitialized) {
+    console.log('🔍 Global search already initialized, skipping');
+    return;
+  }
+  
+  const searchInput = document.getElementById('globalSearchInput');
+  
+  if (!searchInput) {
+    console.log('🔍 Global search input not found');
+    console.log('🔍 Available elements with "search" in ID:', document.querySelectorAll('[id*="search"]'));
+    console.log('🔍 Available input elements:', document.querySelectorAll('input'));
+    return;
+  }
+  
+  console.log('🔍 Global search input found:', searchInput);
+  console.log('🔍 Input type:', searchInput.type);
+  console.log('🔍 Input placeholder before:', searchInput.placeholder);
+  
+  // Add placeholder text if none exists
+  if (!searchInput.placeholder) {
+    searchInput.placeholder = 'Search products...';
+    console.log('🔍 Set placeholder to: Search products...');
+  }
+  
+  console.log('🔍 Input placeholder after:', searchInput.placeholder);
+  
+  // Check if this is a Webflow embed (div) or actual input
+  let actualSearchInput = searchInput;
+  if (searchInput.tagName === 'DIV') {
+    console.log('🔍 Found Webflow embed div, looking for actual input inside');
+    // Look for the actual input element inside the embed
+    const actualInput = searchInput.querySelector('input');
+    if (actualInput) {
+      console.log('🔍 Found actual input inside embed:', actualInput);
+      // Use the actual input element instead
+      actualSearchInput = actualInput;
+    } else {
+      console.log('🔍 No input found inside embed div');
+      return;
+    }
+  }
+  
+  // Check if we landed on products page with search parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchParam = urlParams.get('search');
+  
+  // Store the current page URL for navigation back
+  let currentPageUrl = window.location.href;
+  let isOnProductsPage = window.location.pathname.includes('/products') || 
+                         window.location.pathname.includes('/product') || 
+                         window.location.pathname.includes('/collection') ||
+                         document.querySelector('.cards-container') !== null;
+  
+  // If we're on products page with search parameter, we came from another page
+  // Store the original page URL (without search parameter) for navigation back
+  if (searchParam && isOnProductsPage) {
+    // We came from another page, so we need to store the original page URL
+    // For now, we'll use the homepage as the fallback
+    currentPageUrl = window.location.origin + '/';
+  }
+  
+  // Store these values globally so they persist after element replacement
+  window.globalSearchState = {
+    currentPageUrl: currentPageUrl,
+    isOnProductsPage: isOnProductsPage
+  };
+  
+  // Mark as initialized to prevent duplicates
+  window.globalSearchInitialized = true;
+  
+  // Add input event listener for real-time search with debounce
+  let searchTimeout;
+  actualSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    
+    // Clear previous timeout
+    clearTimeout(searchTimeout);
+    
+    // Debounce the search to prevent rapid-fire events
+    searchTimeout = setTimeout(() => {
+      if (searchTerm === '') {
+        // Clear sessionStorage when search is cleared
+        sessionStorage.removeItem('globalSearchTerm');
+        
+        // If search is cleared and we're on products page, show all products
+        if (isOnProductsPage) {
+          performGlobalSearch(searchTerm);
+        } else {
+          // Navigate back to original page
+          navigateBackToOriginalPage();
+        }
+      } else {
+        // Store search term in sessionStorage
+        sessionStorage.setItem('globalSearchTerm', searchTerm);
+        
+        // If we're not on products page, navigate to products page with search
+        if (!isOnProductsPage) {
+          navigateToProductsPage(searchTerm);
+        } else {
+          // We're already on products page, perform search
+          performGlobalSearch(searchTerm);
+        }
+      }
+    }, 300); // 300ms debounce delay
+  });
+  
+  // Add focus event to show all products when search is cleared
+  actualSearchInput.addEventListener('focus', function(e) {
+    if (e.target.value === '') {
+      if (isOnProductsPage) {
+        showAllProductCards();
+      }
+    }
+  });
+  
+  // Add blur event to maintain search state
+  actualSearchInput.addEventListener('blur', function(e) {
+    // Keep current search results
+  });
+  
+  if (searchParam && isOnProductsPage) {
+    // Store the search parameter in sessionStorage as backup
+    sessionStorage.setItem('globalSearchTerm', searchParam);
+    
+    // Set the value in the existing input (don't replace it)
+    actualSearchInput.value = searchParam;
+    
+    // Perform search
+    setTimeout(() => {
+      performGlobalSearch(searchParam);
+    }, 100);
+  }
+  
+
+}
+
+// Navigate to products page with search term
+function navigateToProductsPage(searchTerm) {
+  // Try to find the products page URL from the site structure
+  let productsPageUrl = '/products';
+  
+  // Check if we can find a products link on the page
+  const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
+  if (productsLinks.length > 0) {
+    // Use the first products link found
+    productsPageUrl = productsLinks[0].getAttribute('href');
+    // Ensure it's a relative URL
+    if (productsPageUrl.startsWith('http')) {
+      const url = new URL(productsPageUrl);
+      productsPageUrl = url.pathname;
+    }
+  }
+  
+  const searchParam = encodeURIComponent(searchTerm);
+  const targetUrl = `${productsPageUrl}?search=${searchParam}`;
+  
+  console.log(`🔍 Navigating to products page with search: ${targetUrl}`);
+  window.location.href = targetUrl;
+}
+
+// Navigate back to original page
+function navigateBackToOriginalPage() {
+  console.log('🔍 navigateBackToOriginalPage called');
+  console.log('🔍 Global state:', window.globalSearchState);
+  console.log('🔍 Current URL:', window.location.href);
+  
+  // Remove search parameter from current URL if we're on products page
+  if (window.globalSearchState && window.globalSearchState.isOnProductsPage) {
+    console.log('🔍 On products page, removing search param and going to homepage');
+    // Go to homepage instead of just removing search param
+    window.location.href = window.location.origin + '/';
+  } else {
+    // Navigate back to stored original page
+    if (window.globalSearchState && window.globalSearchState.currentPageUrl) {
+      console.log('🔍 Navigating back to:', window.globalSearchState.currentPageUrl);
+      window.location.href = window.globalSearchState.currentPageUrl;
+    } else {
+      console.log('🔍 No original page URL found, going to homepage');
+      window.location.href = window.location.origin + '/';
+    }
   }
 }
+
+// Extract all searchable text from a product card
+function extractCardText(card) {
+  const searchableText = [];
+  
+  // Get all text content from the card
+  const allText = card.textContent || card.innerText || '';
+  searchableText.push(allText);
+  
+  // Get specific fields that might be in data attributes
+  const dataFields = [
+    'data-product-code', 'data-name', 'data-family', 'data-description',
+    'data-wattage', 'data-ip', 'data-cct', 'data-cri', 'data-ordering-code',
+    'data-title', 'data-short-description', 'data-full-description'
+  ];
+  
+  dataFields.forEach(field => {
+    const value = card.getAttribute(field);
+    if (value) {
+      searchableText.push(value);
+    }
+  });
+  
+  // Get text from specific elements that might contain product info
+  const specificSelectors = [
+    '.product-title', '.product-name', '.product-code', '.product-family',
+    '.product-description', '.product-specs', '.product-details',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div'
+  ];
+  
+  specificSelectors.forEach(selector => {
+    const elements = card.querySelectorAll(selector);
+    elements.forEach(element => {
+      const text = element.textContent || element.innerText || '';
+      if (text.trim()) {
+        searchableText.push(text);
+      }
+    });
+  });
+  
+  // Get text from Webflow CMS binding elements
+  const cmsElements = card.querySelectorAll('[data-wf-cms-bind]');
+  cmsElements.forEach(element => {
+    const text = element.textContent || element.innerText || '';
+    if (text.trim()) {
+      searchableText.push(text);
+    }
+  });
+  
+  return searchableText.join(' ').toLowerCase();
+}
+
+// Perform the global search
+function performGlobalSearch(searchTerm) {
+  // Target the same elements as the main filter to maintain grid layout
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) {
+    return;
+  }
+  
+  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
+  
+  if (productCards.length === 0) {
+    return;
+  }
+  
+  let visibleCount = 0;
+  
+  productCards.forEach(card => {
+    // Extract text from the entire card (both front and back cards)
+    const cardText = extractCardText(card);
+    const matches = searchTerm === '' || cardText.includes(searchTerm);
+    
+    if (matches) {
+      // Remove any inline display style to let CSS handle the layout
+      card.style.removeProperty('display');
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  // Show/hide no results message
+  const noResultsMessage = document.querySelector('.no-results-message');
+  if (noResultsMessage) {
+    if (visibleCount === 0 && searchTerm !== '') {
+      noResultsMessage.style.display = 'block';
+    } else {
+      noResultsMessage.style.display = 'none';
+    }
+  }
+  
+  // Update search input placeholder to show results
+  const searchInput = document.getElementById('globalSearchInput');
+  if (searchInput) {
+    if (searchTerm === '') {
+      searchInput.placeholder = 'Search products...';
+    } else {
+      searchInput.placeholder = `Found ${visibleCount} results...`;
+    }
+  }
+}
+
+// Show all product cards (when search is cleared)
+function showAllProductCards() {
+  // Target the same elements as the main filter to maintain grid layout
+  const cardsContainer = document.querySelector('.cards-container');
+  if (!cardsContainer) {
+    return;
+  }
+  
+  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
+  
+  productCards.forEach(card => {
+    // Remove any inline display style to let CSS handle the layout
+    card.style.removeProperty('display');
+  });
+  
+  // Hide no results message when showing all products
+  const noResultsMessage = document.querySelector('.no-results-message');
+  if (noResultsMessage) {
+    noResultsMessage.style.display = 'none';
+  }
+  
+  // Reset search input placeholder
+  const searchInput = document.getElementById('globalSearchInput');
+  if (searchInput) {
+    searchInput.placeholder = 'Search products...';
+  }
+}
+
+// Initialize global search when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 DOMContentLoaded - Initializing global search');
+  initializeGlobalSearch();
+});
+
+// Re-initialize when Webflow's dynamic content loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for Webflow's dynamic content to load
+  setTimeout(() => {
+    console.log('DOMContentLoaded timeout - Re-initializing global search');
+    initializeGlobalSearch();
+  }, 100);
+});
+
+// Also initialize when Webflow's page loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeGlobalSearch();
+  });
+}
+
+// Re-initialize search after a delay to catch late-loading content
+setTimeout(() => {
+  initializeGlobalSearch();
+}, 3000);
+
+// Additional initialization to ensure search parameter is handled
+setTimeout(() => {
+  const searchInput = document.getElementById('globalSearchInput');
+  
+  if (searchInput) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
+    const finalSearchTerm = searchParam || storedSearchTerm;
+    
+    if (finalSearchTerm && searchInput.value === '') {
+      searchInput.value = finalSearchTerm;
+      searchInput.setAttribute('value', finalSearchTerm);
+      performGlobalSearch(finalSearchTerm);
+    }
+  }
+}, 1000);
+
+// Continuous monitoring to maintain search input value
+let searchValueMonitor = null;
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    const storedSearchTerm = sessionStorage.getItem('globalSearchTerm');
+    const finalSearchTerm = searchParam || storedSearchTerm;
+    
+    if (finalSearchTerm) {
+      const searchInput = document.getElementById('globalSearchInput');
+      
+      if (searchInput) {
+        // Clear placeholder first to avoid interference
+        searchInput.placeholder = '';
+        searchInput.setAttribute('placeholder', '');
+        searchInput.removeAttribute('placeholder');
+        
+        // Remove placeholder from any parent elements
+        const parentElements = searchInput.parentElement ? [searchInput.parentElement] : [];
+        parentElements.forEach(parent => {
+          if (parent.hasAttribute('placeholder')) {
+            parent.removeAttribute('placeholder');
+          }
+        });
+        
+        // Set the value
+        searchInput.value = finalSearchTerm;
+        searchInput.setAttribute('value', finalSearchTerm);
+        searchInput.defaultValue = finalSearchTerm;
+        
+        // Force visual refresh
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      
+      // Set up continuous monitoring
+      searchValueMonitor = setInterval(() => {
+        const searchInput = document.getElementById('globalSearchInput');
+        if (searchInput && searchInput.value !== finalSearchTerm) {
+          // Clear placeholder first
+          searchInput.placeholder = '';
+          searchInput.setAttribute('placeholder', '');
+          searchInput.removeAttribute('placeholder');
+          
+          // Set the value
+          searchInput.value = finalSearchTerm;
+          searchInput.setAttribute('value', finalSearchTerm);
+          searchInput.defaultValue = finalSearchTerm;
+          
+          // Force visual refresh
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }, 500);
+      
+      // Stop monitoring after 10 seconds
+      setTimeout(() => {
+        if (searchValueMonitor) {
+          clearInterval(searchValueMonitor);
+          searchValueMonitor = null;
+        }
+      }, 10000);
+    }
+  });
+}
+
+
+
+// Let Webflow handle search icon styling naturally
+// No CSS overrides needed - using Webflow's default styling
+
+/* === Enhanced Lightbox Gallery Functionality === */
+function initializeEnhancedLightbox() {
+  console.log('🎨 Initializing enhanced lightbox functionality...');
+  
+  // Keyboard navigation for lightbox
+  document.addEventListener('keydown', function(e) {
+    const lightbox = document.querySelector('.w-lightbox-backdrop');
+    if (!lightbox || lightbox.style.display === 'none') return;
+    
+    switch(e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        const prevButton = document.querySelector('.w-lightbox-left');
+        if (prevButton) prevButton.click();
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        const nextButton = document.querySelector('.w-lightbox-right');
+        if (nextButton) nextButton.click();
+        break;
+      case 'Escape':
+        e.preventDefault();
+        const closeButton = document.querySelector('.w-lightbox-close');
+        if (closeButton) closeButton.click();
+        break;
+    }
+  });
+  
+  // Enhanced thumbnail interactions
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.w-lightbox-thumbnail')) {
+      const thumbnails = document.querySelectorAll('.w-lightbox-thumbnail');
+      thumbnails.forEach(thumb => thumb.classList.remove('active'));
+      e.target.closest('.w-lightbox-thumbnail').classList.add('active');
+    }
+  });
+  
+  // Touch/swipe support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const lightbox = document.querySelector('.w-lightbox-backdrop');
+    if (!lightbox || lightbox.style.display === 'none') return;
+    
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swipe left - next image
+        const nextButton = document.querySelector('.w-lightbox-right');
+        if (nextButton) nextButton.click();
+      } else {
+        // Swipe right - previous image
+        const prevButton = document.querySelector('.w-lightbox-left');
+        if (prevButton) prevButton.click();
+      }
+    }
+  }
+  
+  // Enhanced slide animations
+  const lightboxImages = document.querySelectorAll('.w-lightbox-image');
+  lightboxImages.forEach(img => {
+    img.addEventListener('load', function() {
+      this.style.opacity = '1';
+      this.style.transform = 'translateX(0)';
+    });
+  });
+  
+  // Simple zoom functionality for main lightbox image (like accessories)
+  const lightboxImageContainers = document.querySelectorAll('.w-lightbox-image');
+  lightboxImageContainers.forEach(container => {
+    const img = container.querySelector('img');
+    if (!img) return;
+    
+    // Ensure proper image sizing
+    img.style.objectFit = 'contain';
+    img.style.objectPosition = 'center';
+  });
+  
+  console.log('✅ Enhanced lightbox functionality initialized');
+}
+
+// Initialize enhanced lightbox when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeEnhancedLightbox();
+});
 
 /* === Related Section Arrow Navigation === */
-.image-30 {
-  position: absolute;
-  inset: auto 1% auto auto;
-  z-index: 999;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-30:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-.image-31 {
-  position: absolute;
-  inset: auto auto auto 1%;
-  z-index: 999;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-31:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-/* === Related Items Card Fixes === */
-/* Remove underlines from related item cards */
-.collection-list-6 .w-dyn-item,
-.collection-list-6 .w-dyn-item *,
-.related-section .w-dyn-item,
-.related-section .w-dyn-item * {
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-  text-decoration-line: none !important;
-  text-decoration-style: none !important;
-  text-decoration-color: transparent !important;
-}
-
-/* Ensure single-click functionality for related item cards */
-.collection-list-6 .w-dyn-item {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-}
-
-/* Prevent double-click issues */
-.collection-list-6 .w-dyn-item * {
-  pointer-events: auto !important;
-}
-
-/* Ensure links within cards work with single click */
-.collection-list-6 .w-dyn-item a,
-.related-section .w-dyn-item a {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-}
-
-/* Remove any hover underlines */
-.collection-list-6 .w-dyn-item:hover,
-.collection-list-6 .w-dyn-item:hover *,
-.related-section .w-dyn-item:hover,
-.related-section .w-dyn-item:hover * {
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-}
-
-
-
-/* === Flip Card Image Border Fix === */
-/* Reverted - keeping original card styles intact */
-
-/* === WEBFLOW CLASS REFERENCE === */
-/*
-FLIP CARDS:
-- .flip-card-wrapper (container)
-- .flip-card-front (front side)
-- .flip-card-back (back side)
-
-RELATED ITEMS:
-- .collection-list-6 (container)
-- .related-card (card container)
-- .related-code (product code text)
-- .related-name (product name text)
-- .related-image (image)
-
-MENU PANEL:
-- .menu-panel (container)
-- .menu-wrapper (toggle)
-- .link-13, .link-14 (menu links)
-
-ARROWS:
-- .image-30 (right arrow)
-- .image-31 (left arrow)
-================================
-*/
-
-/* === TARGETED FLIP CARD FIXES === */
-/* Only affect flip cards, not other cards */
-.flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Flip card shimmer effect */
-.flip-card-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Flip card hover - ONLY flip animation, no transform */
-.flip-card-wrapper:hover .flip-card-back {
-  display: flex;
-  z-index: 2;
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Add overlay slide effect to flip card back ONLY */
-.flip-card-back {
-  position: relative !important; /* Required for ::before pseudo-element - override Webflow */
-}
-
-.flip-card-back::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease 0.3s; /* Add delay to wait for back card to appear */
-  z-index: 1;
-}
-
-.flip-card-wrapper:hover .flip-card-back::before {
-  left: 100%;
-}
-
-/* Flip card shimmer animation */
-.flip-card-wrapper:hover::before {
-  left: 100%;
-}
-
-/* === TARGETED RELATED ITEMS FIXES === */
-/* Only affect related items, not flip cards */
-.related-card {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Related card shimmer effect */
-.related-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Related card hover effects */
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Related card shimmer animation */
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Related card text hover effects - NO COLOR CHANGE */
-.related-card:hover .related-code,
-.related-card:hover .related-name {
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Related card image hover effects */
-.related-card:hover .related-image {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === TARGETED MENU PANEL FIXES === */
-/* Ensure menu panel works correctly */
-.menu-panel {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transform: translateX(-100%) !important;
-  transition: all 0.3s ease !important;
-  z-index: 9999 !important;
-}
-
-.menu-panel.active {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-}
-
-/* Menu overlay */
-.menu-overlay {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transition: all 0.3s ease !important;
-}
-
-.menu-overlay.active {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* === TARGETED ARROW NAVIGATION FIXES === */
-/* Arrow hover effects */
-.image-30,
-.image-31 {
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-30:hover,
-.image-31:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-/* === RESPONSIVE FIXES === */
-@media screen and (max-width: 767px) {
-  .related-card:hover {
-    transform: translateY(-3px);
+function initializeRelatedSectionAutoScroll() {
+  console.log('🔄 Initializing related section arrow navigation...');
+  
+  const relatedSection = document.querySelector('.related-section');
+  const relatedContainer = document.querySelector('.collection-list-6');
+  const arrowRight = document.querySelector('.image-30');
+  const arrowLeft = document.querySelector('.image-31');
+  
+  if (!relatedSection || !relatedContainer) {
+    console.log('⚠️ Related section or container not found');
+    return;
   }
   
-  .related-card:hover .related-image {
-    transform: scale(1.03);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .related-card:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* === REMOVE BROAD SELECTORS === */
-/* Remove flip cards from general product card hover effects */
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Remove flip cards from shimmer effects */
-.collection-item:hover::before,
-.product-card:hover::before,
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Remove flip cards from text hover effects */
-.collection-item:hover .main-code-text,
-.product-card:hover .main-code-text,
-.related-card:hover .related-code,
-.collection-item:hover .item-description,
-.product-card:hover .item-description {
-  color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Remove flip cards from image hover effects */
-.collection-item:hover img,
-.product-card:hover img,
-.related-card:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === ESSENTIAL FLIP CARD ANIMATION ONLY === */
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  display: none;
-  width: 100%;
-  height: 100%;
-}
-
-/* Show back card on hover */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-}
-
-/* Remove underlines from all product card links */
-.flip-card-wrapper a,
-.current-product,
-.flip-card-link {
-  text-decoration: none !important;
-}
-
-/* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
-
-/* 1. Enhanced Filter Checkmark Animations */
-.filter-checkmark {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.filter-checkmark:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.filter-checkmark.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-/* 2. Filter Checkmark Shimmer Effect */
-.filter-checkmark::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.filter-checkmark:hover::before {
-  left: 100%;
-}
-
-/* 3. Filter Header Wrapper (NO SHIMMER) */
-.filter-header-wrapper {
-  transition: all 0.3s ease;
-}
-
-/* 3.5. Filter Header Wrapper Main Shimmer Effect */
-.filter-header-wrapper-main {
-  position: relative !important;
-  overflow: hidden;
-}
-
-.filter-header-wrapper-main::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.filter-header-wrapper-main:hover::before {
-  left: 100%;
-}
-
-/* 4. Enhanced Filter Buttons */
-.filter-apply-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.filter-apply-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.filter-apply-button:hover::before {
-  left: 100%;
-}
-
-.filter-apply-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
-.filter-reset-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-/* 4.5. Button 2 Specific Shimmer Effect (NOT reset-button div) */
-.button-2 {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.button-2::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.button-2:hover::before {
-  left: 100%;
-}
-
-.button-2:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 4.6. Filter Right Wrapper Shimmer Effect with Duva White */
-.filter-right-wrapper {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.filter-right-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.filter-right-wrapper:hover::before {
-  left: 100%;
-}
-
-.filter-right-wrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* 4.7. Fliter Right Wrapper Shimmer Effect (Corrected class name) */
-.fliter-right-wrapper {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.fliter-right-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.fliter-right-wrapper:hover::before {
-  left: 100%;
-}
-
-.fliter-right-wrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* === MAIN HEADER ENHANCEMENTS === */
-
-/* 1. Menu Icon Enhancement */
-.menu-icon {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.menu-icon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-icon:hover::before {
-  left: 100%;
-}
-
-.menu-icon:hover {
-  transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
-}
-
-/* 2. Logo Enhancement - Different Effect */
-.duva-logo-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-}
-
-.duva-logo-wrapper:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1) contrast(1.1);
-}
-
-.duva-logo-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.duva-logo-wrapper:hover::after {
-  width: 100%;
-}
-
-/* 3. Search Input Enhancement - Filter Checkmark Style */
-.search-input-style {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.search-input-style::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.search-input-style:hover::before {
-  left: 100%;
-}
-
-.search-input-style:focus-within {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
-}
-
-.search-icon {
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.search-icon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.4), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.search-icon:hover::before {
-  left: 100%;
-}
-
-.search-input-style:focus-within .search-icon {
-  transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
-}
-
-/* 4. Theme Toggle Enhancement */
-.lang-toggle-switch {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.lang-toggle-switch:hover {
-  transform: scale(1.05);
-}
-
-.lang-toggle-switch .lang-en {
-  transition: all 0.3s ease;
-}
-
-.lang-toggle-switch .lang-en:hover {
-  transform: rotate(15deg);
-  color: var(--duva-red, #C0392B);
-}
-
-.lang-toggle-switch .lang-en.active {
-  color: var(--duva-red, #C0392B);
-  transform: scale(1.1);
-}
-
-/* 5. Menu Tab Enhancement - Filter Apply Button Style */
-.menu-tab {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.menu-tab::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-tab:hover::before {
-  left: 100%;
-}
-
-.menu-tab:hover {
-  transform: translateY(-2px);
-}
-
-.menu-tab.active {
-  color: var(--duva-red, #C0392B);
-  transform: translateY(-1px);
-}
-
-/* 5. Active Filter Badge */
-.filter-badge {
-  background: var(--duva-red, #C0392B);
-  color: white;
-  border-radius: 50%;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  min-width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
-  animation: badgePulse 2s infinite;
-}
-
-@keyframes badgePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-
-
-/* 7. Download Panel Checkmark Enhancement - Filter Checkmark Style */
-.download-checkbox {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.download-checkbox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.download-checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-.download-checkbox::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.download-checkbox:hover::before {
-  left: 100%;
-}
-
-/* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
-.accessory-checkbox {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.accessory-checkbox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.accessory-checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-.accessory-checkbox::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.accessory-checkbox:hover::before {
-  left: 100%;
-}
-
-/* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
-.contat-block {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.contat-block::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.contat-block:hover::before {
-  left: 100%;
-}
-
-.contat-block:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* 7.7. Contact Us Button Enhancement - Filter Apply Button Style */
-.contact-us-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.contact-us-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.contact-us-button:hover::before {
-  left: 100%;
-}
-
-.contact-us-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 7. Filter Section Container Enhancement */
-.filter-sections-wrapper {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(228, 227, 227, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.filter-sections-wrapper:hover {
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-/* 8. Mobile Responsiveness Improvements */
-@media screen and (max-width: 767px) {
-  .filter-sections-wrapper {
-    padding: 20px 15px;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    margin: 10px;
+  // Arrow navigation functions
+  function scrollRight() {
+    const currentScroll = relatedContainer.scrollLeft;
+    const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+    const scrollAmount = Math.min(300, maxScroll - currentScroll);
+    
+    if (scrollAmount > 0) {
+      relatedContainer.scrollTo({
+        left: currentScroll + scrollAmount,
+        behavior: 'smooth'
+      });
+      console.log('➡️ Right arrow clicked - scrolling right');
+    }
   }
   
-  .filter-checkmark {
-    min-height: 48px; /* Better touch targets */
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 14px;
+  function scrollLeft() {
+    const currentScroll = relatedContainer.scrollLeft;
+    const scrollAmount = Math.min(300, currentScroll);
+    
+    if (scrollAmount > 0) {
+      relatedContainer.scrollTo({
+        left: currentScroll - scrollAmount,
+        behavior: 'smooth'
+      });
+      console.log('⬅️ Left arrow clicked - scrolling left');
+    }
   }
   
-  .filter-apply-button,
-  .filter-reset-button {
-    min-height: 48px;
-    padding: 12px 24px;
-    font-size: 16px;
+  // Arrow click events
+  if (arrowRight) {
+    arrowRight.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollRight();
+      console.log('➡️ Right arrow clicked');
+    });
+    console.log('✅ Right arrow listener added');
+  } else {
+    console.log('⚠️ Right arrow (image-30) not found');
   }
   
-  .filter-header-wrapper {
-    padding: 15px 0;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .filter-checkmark {
-    min-height: 52px;
-    padding: 14px 18px;
+  if (arrowLeft) {
+    arrowLeft.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollLeft();
+      console.log('⬅️ Left arrow clicked');
+    });
+    console.log('✅ Left arrow listener added');
+  } else {
+    console.log('⚠️ Left arrow (image-31) not found');
   }
   
-  .filter-apply-button,
-  .filter-reset-button {
-    min-height: 52px;
-    padding: 14px 28px;
+  console.log('✅ Related section arrow navigation initialized');
+}
+
+// Initialize related section auto-scroll when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🎯 DOM Content Loaded - Initializing related section auto-scroll...');
+  
+  // Debug: Check if elements exist
+  const relatedSection = document.querySelector('.related-section');
+  const relatedContainer = document.querySelector('.collection-list-6');
+  const arrowRight = document.querySelector('.image-30');
+  const arrowLeft = document.querySelector('.image-31');
+  
+  console.log('🔍 Related Section Element Debug:', {
+    relatedSection: !!relatedSection,
+    relatedContainer: !!relatedContainer,
+    arrowRight: !!arrowRight,
+    arrowLeft: !!arrowLeft
+  });
+  
+  initializeRelatedSectionAutoScroll();
+});
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeRelatedSectionAutoScroll();
+  });
+}
+
+// === Menu Panel Debugging ===
+function debugMenuPanel() {
+  console.log('🔍 === MENU PANEL DEBUGGING ===');
+  
+  // Check for required elements
+  const menuWrapper = document.querySelector('.menu-wrapper');
+  const menuPanel = document.querySelector('.menu-panel');
+  const menuClose = document.querySelector('.menu-close');
+  const menuOverlay = document.querySelector('.menu-overlay');
+  
+  console.log('📋 Required elements found:', {
+    menuWrapper: !!menuWrapper,
+    menuPanel: !!menuPanel,
+    menuClose: !!menuClose,
+    menuOverlay: !!menuOverlay
+  });
+  
+  // Check element properties
+  if (menuWrapper) {
+    console.log('📋 Menu wrapper properties:', {
+      display: getComputedStyle(menuWrapper).display,
+      visibility: getComputedStyle(menuWrapper).visibility,
+      position: getComputedStyle(menuWrapper).position,
+      zIndex: getComputedStyle(menuWrapper).zIndex,
+      clickable: menuWrapper.offsetWidth > 0 && menuWrapper.offsetHeight > 0
+    });
   }
-}
-
-/* 9. Loading State for Filter Actions */
-.filter-loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.filter-loading::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid var(--duva-red, #C0392B);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* 10. Filter Section Focus States */
-.filter-checkmark:focus,
-.filter-apply-button:focus,
-.filter-reset-button:focus {
-  outline: 2px solid var(--duva-red, #C0392B);
-  outline-offset: 2px;
-}
-
-/* 7.8. Product Page Download Buttons Enhancement */
-.download-selected-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Download All Button Enhancement */
-.download-selected-button.download-all-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button.download-all-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button.download-all-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button.download-all-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Reset Button Enhancement */
-.download-selected-button.download-all-button.reset-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button.download-all-button.reset-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button.download-all-button.reset-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button.download-all-button.reset-button:hover {
-  transform: translateY(-2px);
-}
-
-/* 7.9. Product Info Block Advanced Effects */
-.product-info-block {
-  position: relative;
-}
-
-/* Product Title Underline Effect */
-.product-title-source {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.product-title-source::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.4s ease;
-}
-
-.product-title-source:hover::after {
-  width: 100%;
-}
-
-.product-title-source:hover {
-  transform: translateY(-2px);
-}
-
-/* Product Code Heading Underline Effect */
-.product-code-heading {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.product-code-heading::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.4s ease;
-}
-
-.product-code-heading:hover::after {
-  width: 100%;
-}
-
-.product-code-heading:hover {
-  transform: translateY(-2px);
-}
-
-/* Overview Title Animation */
-.overview-title {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.overview-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.4s ease;
-}
-
-.overview-title:hover::after {
-  width: 100%;
-}
-
-.overview-title:hover {
-  transform: translateY(-2px);
-}
-
-/* Product Description Enhanced */
-.product-description-source {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.product-description-source:hover {
-  transform: translateY(-1px);
-}
-
-/* Section Headers with Underline Effect */
-.text-block-7 {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.text-block-7::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.4s ease;
-}
-
-.text-block-7:hover::after {
-  width: 100%;
-}
-
-.text-block-7:hover {
-  transform: translateY(-2px);
-}
-
-/* Product Features Enhanced */
-.product-features {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.product-features:hover {
-  transform: translateY(-1px);
-}
-
-/* Spec Row Advanced Hover Effects */
-.spec-row {
-  position: relative;
-}
-
-/* Wattage Page Labels Enhanced */
-.wattage-p-page {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.wattage-p-page::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.3s ease;
-}
-
-.wattage-p-page:hover::after {
-  width: 100%;
-}
-
-.wattage-p-page:hover {
-  color: var(--duva-red, #C0392B);
-  transform: translateX(3px);
-}
-
-/* Prevent wattage hover from affecting dropdown */
-.wattage-p-page:hover .dropdown-options,
-.wattage-p-page:hover .dropdown-option {
-  transform: none !important;
-}
-
-/* Product Info Wrapper Enhanced */
-.product-info-wrapper {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.product-info-wrapper:hover {
-  transform: translateY(-1px);
-}
-
-
-
-/* Download Divider Enhanced */
-.download-divider {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.download-divider::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, var(--duva-red, #C0392B), transparent);
-  transition: width 0.4s ease;
-}
-
-.download-divider:hover::before {
-  width: 100%;
-}
-
-/* Progressive Disclosure Animation */
-.product-info-block > * {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.product-info-block > *:nth-child(1) { animation-delay: 0.1s; }
-.product-info-block > *:nth-child(2) { animation-delay: 0.2s; }
-.product-info-block > *:nth-child(3) { animation-delay: 0.3s; }
-.product-info-block > *:nth-child(4) { animation-delay: 0.4s; }
-.product-info-block > *:nth-child(5) { animation-delay: 0.5s; }
-.product-info-block > *:nth-child(6) { animation-delay: 0.6s; }
-.product-info-block > *:nth-child(7) { animation-delay: 0.7s; }
-.product-info-block > *:nth-child(8) { animation-delay: 0.8s; }
-.product-info-block > *:nth-child(9) { animation-delay: 0.9s; }
-.product-info-block > *:nth-child(10) { animation-delay: 1.0s; }
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  if (menuPanel) {
+    console.log('📋 Menu panel properties:', {
+      display: getComputedStyle(menuPanel).display,
+      visibility: getComputedStyle(menuPanel).visibility,
+      position: getComputedStyle(menuPanel).position,
+      zIndex: getComputedStyle(menuPanel).zIndex,
+      top: getComputedStyle(menuPanel).top,
+      left: getComputedStyle(menuPanel).left,
+      width: getComputedStyle(menuPanel).width,
+      height: getComputedStyle(menuPanel).height,
+      opacity: getComputedStyle(menuPanel).opacity,
+      transform: getComputedStyle(menuPanel).transform
+    });
   }
-}
-
-/* Spec Row Staggered Animation */
-.spec-row {
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideInLeft 0.5s ease forwards;
-}
-
-
-
-.spec-row:nth-child(1) { animation-delay: 1.1s; }
-.spec-row:nth-child(2) { animation-delay: 1.2s; }
-.spec-row:nth-child(3) { animation-delay: 1.3s; }
-.spec-row:nth-child(4) { animation-delay: 1.4s; }
-.spec-row:nth-child(5) { animation-delay: 1.5s; }
-.spec-row:nth-child(6) { animation-delay: 1.6s; }
-.spec-row:nth-child(7) { animation-delay: 1.7s; }
-.spec-row:nth-child(8) { animation-delay: 1.8s; }
-
-@keyframes slideInLeft {
-  to {
-    opacity: 1;
-    transform: translateX(0);
+  
+  if (menuClose) {
+    console.log('📋 Menu close button properties:', {
+      display: getComputedStyle(menuClose).display,
+      visibility: getComputedStyle(menuClose).visibility,
+      position: getComputedStyle(menuClose).position,
+      clickable: menuClose.offsetWidth > 0 && menuClose.offsetHeight > 0
+    });
   }
+  
+  // Check if menu wrapper is clickable
+  if (menuWrapper) {
+    menuWrapper.addEventListener('click', function(e) {
+      console.log('📋 Menu wrapper clicked!', e);
+    });
+    console.log('📋 Menu wrapper click listener added for testing');
+  }
+  
+  // Test menu opening manually
+  window.testMenuOpen = function() {
+    console.log('📋 Testing menu open...');
+    if (menuPanel) {
+      menuPanel.style.display = 'flex';
+      menuPanel.style.visibility = 'visible';
+      menuPanel.style.opacity = '1';
+      menuPanel.classList.add('active');
+      console.log('📋 Menu panel manually activated');
+    } else {
+      console.log('❌ Menu panel not found');
+    }
+  };
+  
+  // Test menu closing manually
+  window.testMenuClose = function() {
+    console.log('📋 Testing menu close...');
+    if (menuPanel) {
+      menuPanel.classList.remove('active');
+      setTimeout(() => {
+        menuPanel.style.display = 'none';
+        console.log('📋 Menu panel manually deactivated');
+      }, 400);
+    } else {
+      console.log('❌ Menu panel not found');
+    }
+  };
+  
+  console.log('🔍 === MENU PANEL DEBUGGING COMPLETE ===');
+  console.log('💡 Use testMenuOpen() and testMenuClose() to test manually');
 }
 
-/* Micro-interactions for Interactive Elements */
-.product-info-block *:hover {
-  transition: all 0.2s ease;
+// Call debugging function when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  debugMenuPanel();
+});
+
+// === Related Items Single-Click Fix ===
+function initializeRelatedItemsSingleClick() {
+  console.log('🖱️ Initializing related items single-click fix...');
+  
+  // ONLY target related items, not flip cards or other sections
+  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item:not(.flip-card-wrapper):not([class*="flip"])');
+  
+  console.log(`Found ${relatedItems.length} related items to process`);
+  
+  // Log what we found to debug
+  relatedItems.forEach((item, index) => {
+    console.log(`Related item ${index + 1}:`, item.className, item.tagName);
+  });
+  
+  relatedItems.forEach((item, index) => {
+    // Double-check this is not a flip card
+    const isFlipCard = item.closest('.flip-card-wrapper') || item.querySelector('.flip-card') || item.classList.contains('flip-card-wrapper');
+    if (isFlipCard) {
+      console.log(`Related item ${index + 1} is actually a flip card, skipping`);
+      return;
+    }
+    
+    // Check if this item already has a link
+    const existingLink = item.querySelector('a');
+    if (existingLink) {
+      console.log(`Related item ${index + 1} already has a link, skipping`);
+      return;
+    }
+    
+    // Create a simple click handler for the item
+    item.addEventListener('click', function(e) {
+      console.log(`🖱️ Related item ${index + 1} clicked`);
+      
+      // Prevent default behavior
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get product code and construct URL (same logic as flip cards)
+      const productCode = extractProductCode(item);
+      
+      if (productCode) {
+        // Use the same URL format as flip cards
+        const productUrl = `/products/lucero-${productCode.toLowerCase()}`;
+        console.log(`Related item ${index + 1} - navigating to:`, productUrl);
+        
+        // Navigate to the product page
+        window.location.href = productUrl;
+      } else {
+        console.log(`Related item ${index + 1} - no product code found`);
+      }
+    });
+    
+    // Add hover effect for better UX - ONLY for related items, not flip cards
+    item.addEventListener('mouseenter', function() {
+      // Check if this is a flip card to avoid conflicts
+      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
+      if (isFlipCard) {
+        console.log('Skipping hover effect for flip card');
+        return;
+      }
+      
+      this.style.cursor = 'pointer';
+      this.style.transform = 'translateY(-2px)';
+      this.style.transition = 'transform 0.2s ease';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      // Check if this is a flip card to avoid conflicts
+      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
+      if (isFlipCard) {
+        return;
+      }
+      
+      this.style.transform = 'translateY(0)';
+    });
+  });
+  
+  console.log(`✅ Single-click fix applied to ${relatedItems.length} related items`);
 }
 
+// Initialize single-click fix when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeRelatedItemsSingleClick();
+});
 
-
-/* Loading State Animation */
-.product-info-block.loading {
-  position: relative;
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeRelatedItemsSingleClick();
+  });
 }
-
-.product-info-block.loading::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  animation: loadingShimmer 1.5s infinite;
-}
-
-@keyframes loadingShimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* Ordering Code Value Underline Effect */
-.ordering-code-value {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.ordering-code-value::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: width 0.4s ease;
-}
-
-.ordering-code-value:hover::after {
-  width: 100%;
-}
-
-.ordering-code-value:hover {
-  transform: translateY(-2px);
-}
-
-
-
-
-
