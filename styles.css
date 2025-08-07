@@ -4905,6 +4905,12 @@ ARROWS:
   transform: translateX(3px);
 }
 
+/* Prevent wattage hover from affecting dropdown */
+.wattage-p-page:hover .dropdown-options,
+.wattage-p-page:hover .dropdown-option {
+  transform: none !important;
+}
+
 /* Product Info Wrapper Enhanced */
 .product-info-wrapper {
   position: relative;
@@ -4968,6 +4974,14 @@ ARROWS:
   opacity: 0;
   transform: translateX(-20px);
   animation: slideInLeft 0.5s ease forwards;
+}
+
+/* Ensure dropdown options are not affected by spec-row animations */
+.spec-row .dropdown-options,
+.spec-row .dropdown-option {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 .spec-row:nth-child(1) { animation-delay: 1.1s; }
