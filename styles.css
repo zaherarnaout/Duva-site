@@ -739,6 +739,10 @@ cursor: pointer;
 
   white-space: nowrap; 
 
+  position: relative; 
+
+  z-index: 10000 !important; 
+
 } 
 
 /* === 1. Dropdown Option Hover Color === */ 
