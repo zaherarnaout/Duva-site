@@ -3812,6 +3812,231 @@ footer, .footer {
 /* === Flip Card Image Border Fix === */
 /* Reverted - keeping original card styles intact */
 
+/* === WEBFLOW CLASS REFERENCE === */
+/*
+FLIP CARDS:
+- .flip-card-wrapper (container)
+- .flip-card-front (front side)
+- .flip-card-back (back side)
+
+RELATED ITEMS:
+- .collection-list-6 (container)
+- .related-card (card container)
+- .related-code (product code text)
+- .related-name (product name text)
+- .related-image (image)
+
+MENU PANEL:
+- .menu-panel (container)
+- .menu-wrapper (toggle)
+- .link-13, .link-14 (menu links)
+
+ARROWS:
+- .image-30 (right arrow)
+- .image-31 (left arrow)
+================================
+*/
+
+/* === TARGETED FLIP CARD FIXES === */
+/* Only affect flip cards, not other cards */
+.flip-card-wrapper {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Flip card shimmer effect */
+.flip-card-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+/* Flip card hover - ONLY flip animation, no transform */
+.flip-card-wrapper:hover .flip-card-back {
+  display: flex;
+  z-index: 2;
+}
+
+/* Flip card shimmer animation */
+.flip-card-wrapper:hover::before {
+  left: 100%;
+}
+
+/* === TARGETED RELATED ITEMS FIXES === */
+/* Only affect related items, not flip cards */
+.related-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Related card shimmer effect */
+.related-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+/* Related card hover effects */
+.related-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Related card shimmer animation */
+.related-card:hover::before {
+  left: 100%;
+}
+
+/* Related card text hover effects */
+.related-card:hover .related-code,
+.related-card:hover .related-name {
+  color: var(--duva-red, #C0392B) !important;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Related card image hover effects */
+.related-card:hover .related-image {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* === TARGETED MENU PANEL FIXES === */
+/* Ensure menu panel works correctly */
+.menu-panel {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: translateX(-100%) !important;
+  transition: all 0.3s ease !important;
+  z-index: 9999 !important;
+}
+
+.menu-panel.active {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* Menu overlay */
+.menu-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.menu-overlay.active {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* === TARGETED ARROW NAVIGATION FIXES === */
+/* Arrow hover effects */
+.image-30,
+.image-31 {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-30:hover,
+.image-31:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
+/* === RESPONSIVE FIXES === */
+@media screen and (max-width: 767px) {
+  .related-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .related-card:hover .related-image {
+    transform: scale(1.03);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .related-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* === REMOVE BROAD SELECTORS === */
+/* Remove flip cards from general product card hover effects */
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Remove flip cards from shimmer effects */
+.collection-item:hover::before,
+.product-card:hover::before,
+.related-card:hover::before {
+  left: 100%;
+}
+
+/* Remove flip cards from text hover effects */
+.collection-item:hover .main-code-text,
+.product-card:hover .main-code-text,
+.related-card:hover .related-code,
+.collection-item:hover .item-description,
+.product-card:hover .item-description {
+  color: var(--duva-red, #C0392B) !important;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Remove flip cards from image hover effects */
+.collection-item:hover img,
+.product-card:hover img,
+.related-card:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* === ESSENTIAL FLIP CARD ANIMATION ONLY === */
+.flip-card-back {
+  position: absolute;
+  inset: 0%;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Show back card on hover */
+.flip-card-wrapper:hover .flip-card-back,
+.current-product:hover .flip-card-back {
+  display: flex;
+}
+
+/* Remove underlines from all product card links */
+.flip-card-wrapper a,
+.current-product,
+.flip-card-link {
+  text-decoration: none !important;
+}
+
 
 
 
