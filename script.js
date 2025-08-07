@@ -3485,7 +3485,7 @@ function initializeFlipCardLinks() {
       // Update the existing link instead of skipping
       const productCode = extractProductCode(element);
       if (productCode) {
-        const newUrl = `/products/${productCode.toLowerCase()}`;
+        const newUrl = `/products/lucero-${productCode.toLowerCase()}`;
         existingFlipLink.href = newUrl;
         console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
       }
@@ -3535,8 +3535,9 @@ function initializeFlipCardLinks() {
         const shouldUseProductPage = true; // Set to true to use product pages
         
         if (shouldUseProductPage) {
-          // Try to construct a product page URL
-          productUrl = `/products/${productCode.toLowerCase()}`;
+          // Try to construct a product page URL using the correct Webflow format
+          // Format: /products/lucero-{productCode}
+          productUrl = `/products/lucero-${productCode.toLowerCase()}`;
           console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
         } else {
           // Fallback to search URL
