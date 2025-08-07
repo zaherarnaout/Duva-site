@@ -717,7 +717,7 @@ cursor: pointer;
 
   min-width: 100% !important; 
 
-  display: none !important; 
+  display: none; 
 
   flex-direction: column !important; 
 
@@ -4989,6 +4989,13 @@ ARROWS:
   transform: none !important;
   animation: none !important;
   background: #ffff00 !important;
+}
+
+/* Ensure dropdown shows when open */
+.dropdown-wrapper.open .dropdown-options {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .spec-row:nth-child(1) { animation-delay: 1.1s; }
