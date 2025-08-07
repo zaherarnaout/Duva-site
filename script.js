@@ -3476,12 +3476,31 @@ function initializeFlipCardLinks() {
     
     // If no URL found, try to construct one based on product code
     if (productUrl === '#' || !productUrl) {
-      const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      // Look for product code more specifically
+      const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+      let productCode = null;
+      
+      if (codeElement) {
+        const text = codeElement.textContent?.trim();
+        // Extract just the product code (e.g., "C331", "4709") from the text
+        if (text) {
+          // Look for patterns like C331, 4709, etc.
+          const codeMatch = text.match(/([A-Z]?\d+)/);
+          if (codeMatch) {
+            productCode = codeMatch[1];
+          } else {
+            // If no pattern found, use first word
+            productCode = text.split(' ')[0];
+          }
+        }
+      }
+      
       if (productCode) {
         // For flip cards, try to construct a proper URL
-        // You can customize this based on your site structure
         productUrl = `/?search=${productCode.toLowerCase()}`;
         console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+      } else {
+        console.log('Flip card - no product code found, keeping URL as #');
       }
     }
     
