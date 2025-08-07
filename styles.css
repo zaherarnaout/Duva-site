@@ -4510,13 +4510,13 @@ ARROWS:
 }
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
-.contact-block {
+.contat-block {
   position: relative !important;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.contact-block::before {
+.contat-block::before {
   content: '';
   position: absolute;
   top: 0;
@@ -4529,11 +4529,11 @@ ARROWS:
   pointer-events: none;
 }
 
-.contact-block:hover::before {
+.contat-block:hover::before {
   left: 100%;
 }
 
-.contact-block:hover {
+.contat-block:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
 }
