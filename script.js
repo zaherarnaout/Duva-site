@@ -2682,7 +2682,18 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize menu panel functionality
   initializeMenuPanel();
+  
+  // Initialize related section card navigation
+  initializeRelatedSectionCardNavigation();
 });
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    console.log('🔄 Webflow loaded - Initializing related section card navigation');
+    initializeRelatedSectionCardNavigation();
+  });
+}
     
 
 
@@ -4528,3 +4539,82 @@ function debugMenuPanel() {
 document.addEventListener('DOMContentLoaded', function() {
   debugMenuPanel();
 });
+
+// === Related Section Card Navigation ===
+function initializeRelatedSectionCardNavigation() {
+  console.log('🔄 Initializing related section card navigation...');
+  
+  const relatedContainer = document.querySelector('.collection-list-6');
+  if (!relatedContainer) {
+    console.log('⚠️ Related container not found');
+    return;
+  }
+  
+  // Find all card elements within the related section
+  const relatedCards = relatedContainer.querySelectorAll('.w-dyn-item, .collection-item, [class*="card"], [class*="product"]');
+  console.log(`📦 Found ${relatedCards.length} related cards`);
+  
+  relatedCards.forEach((card, index) => {
+    console.log(`📦 Processing card ${index + 1}:`, card.className);
+    
+    // Check if card already has a link
+    const existingLink = card.querySelector('a') || card.closest('a');
+    if (existingLink) {
+      console.log(`📦 Card ${index + 1} already has a link, skipping`);
+      return;
+    }
+    
+    // Try to get product URL from various sources
+    let productUrl = card.getAttribute('data-product-url') || 
+                    card.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
+                    card.getAttribute('href') ||
+                    card.querySelector('a')?.getAttribute('href');
+    
+    // If no URL found, try to construct one based on product code or title
+    if (!productUrl) {
+      const productCode = card.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      const productTitle = card.querySelector('[class*="title"], [class*="name"], h3, h4')?.textContent?.trim();
+      
+      if (productCode) {
+        productUrl = `/product/${productCode.toLowerCase().replace(/\s+/g, '-')}`;
+        console.log(`📦 Constructed URL for ${productCode}:`, productUrl);
+      } else if (productTitle) {
+        productUrl = `/product/${productTitle.toLowerCase().replace(/\s+/g, '-')}`;
+        console.log(`📦 Constructed URL for ${productTitle}:`, productUrl);
+      } else {
+        productUrl = '#';
+        console.log(`📦 No product URL found for card ${index + 1}`);
+      }
+    }
+    
+    // Create click handler for the card
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+      console.log(`📦 Card ${index + 1} clicked! URL:`, productUrl);
+      
+      // Prevent default if URL is not set
+      if (productUrl === '#' || !productUrl) {
+        e.preventDefault();
+        console.log('📦 Product URL not configured, preventing navigation');
+        return;
+      }
+      
+      // Navigate to the product page
+      window.location.href = productUrl;
+    });
+    
+    // Add hover effects
+    card.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-2px)';
+      this.style.transition = 'transform 0.3s ease';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+    });
+    
+    console.log(`📦 Card ${index + 1} navigation configured`);
+  });
+  
+  console.log('✅ Related section card navigation initialized');
+}
