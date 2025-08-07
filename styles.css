@@ -3781,6 +3781,51 @@ footer, .footer {
   filter: brightness(1.1);
 }
 
+/* === Related Items Card Fixes === */
+/* Remove underlines from related item cards */
+.collection-list-6 .w-dyn-item,
+.collection-list-6 .w-dyn-item *,
+.related-section .w-dyn-item,
+.related-section .w-dyn-item * {
+  text-decoration: none !important;
+  -webkit-text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
+}
+
+/* Ensure single-click functionality for related item cards */
+.collection-list-6 .w-dyn-item {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Prevent double-click issues */
+.collection-list-6 .w-dyn-item * {
+  pointer-events: auto !important;
+}
+
+/* Ensure links within cards work with single click */
+.collection-list-6 .w-dyn-item a,
+.related-section .w-dyn-item a {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+/* Remove any hover underlines */
+.collection-list-6 .w-dyn-item:hover,
+.collection-list-6 .w-dyn-item:hover *,
+.related-section .w-dyn-item:hover,
+.related-section .w-dyn-item:hover * {
+  text-decoration: none !important;
+  -webkit-text-decoration: none !important;
+}
+
 
 
 
