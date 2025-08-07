@@ -671,7 +671,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close on outside click 
 
-    document.addEventListener("click", () => { 
+    document.addEventListener("click", (e) => { 
+
+      // Don't close if clicking inside the dropdown
+
+      if (dropdown.contains(e.target)) {
+
+        return;
+
+      }
 
       optionsBox.style.display = "none"; 
 
