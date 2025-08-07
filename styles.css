@@ -4191,6 +4191,34 @@ ARROWS:
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
+/* 4.6. Filter Right Wrapper Shimmer Effect with Duva White */
+.filter-right-wrapper {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.filter-right-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.4), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.filter-right-wrapper:hover::before {
+  left: 100%;
+}
+
+.filter-right-wrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
+}
+
 /* 5. Active Filter Badge */
 .filter-badge {
   background: var(--duva-red, #C0392B);
