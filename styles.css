@@ -4108,7 +4108,6 @@ ARROWS:
 .filter-header-wrapper-main {
   position: relative !important;
   overflow: hidden;
-  transition: all 0.3s ease;
 }
 
 .filter-header-wrapper-main::before {
@@ -4126,11 +4125,6 @@ ARROWS:
 
 .filter-header-wrapper-main:hover::before {
   left: 100%;
-}
-
-.filter-header-wrapper-main:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
 }
 
 /* 4. Enhanced Filter Buttons */
