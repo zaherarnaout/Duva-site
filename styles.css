@@ -4415,13 +4415,11 @@ ARROWS:
 
 .menu-tab:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 .menu-tab.active {
   color: var(--duva-red, #C0392B);
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
 }
 
 /* 5. Active Filter Badge */
