@@ -4099,26 +4099,38 @@ ARROWS:
   left: 100%;
 }
 
-/* 3. Filter Section Header Shimmer */
+/* 3. Filter Header Wrapper (NO SHIMMER) */
 .filter-header-wrapper {
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.filter-header-wrapper::before {
+/* 3.5. Filter Header Wrapper Main Shimmer Effect */
+.filter-header-wrapper-main {
+  position: relative !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.filter-header-wrapper-main::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
   transition: left 0.5s ease;
-  z-index: 1;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.filter-header-wrapper:hover::before {
+.filter-header-wrapper-main:hover::before {
   left: 100%;
+}
+
+.filter-header-wrapper-main:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
 }
 
 /* 4. Enhanced Filter Buttons */
@@ -4216,35 +4228,6 @@ ARROWS:
 }
 
 .filter-right-wrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* 4.7. Filter Header Wrapper Main Shimmer Effect */
-.filter-header-wrapper-main {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.filter-header-wrapper-main::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.filter-header-wrapper-main:hover::before {
-  left: 100%;
-}
-
-.filter-header-wrapper-main:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
 }
