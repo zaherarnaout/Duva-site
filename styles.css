@@ -4874,32 +4874,6 @@ ARROWS:
 /* Spec Row Advanced Hover Effects */
 .spec-row {
   position: relative;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 8px;
-  padding: 8px 0;
-}
-
-.spec-row::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(192, 57, 43, 0.05), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 8px;
-  z-index: -1;
-}
-
-.spec-row:hover::before {
-  opacity: 1;
-}
-
-.spec-row:hover {
-  transform: translateX(5px);
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.1);
 }
 
 /* Wattage Page Labels Enhanced */
