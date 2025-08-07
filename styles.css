@@ -4746,59 +4746,56 @@ ARROWS:
   overflow: hidden;
 }
 
-/* Product Title Shimmer Effect */
+/* Product Title Underline Effect */
 .product-title-source {
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.product-title-source::before {
+.product-title-source::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.2), transparent);
-  transition: left 0.8s ease;
-  z-index: 1;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: width 0.4s ease;
 }
 
-.product-title-source:hover::before {
-  left: 100%;
+.product-title-source:hover::after {
+  width: 100%;
 }
 
 .product-title-source:hover {
-  transform: translateX(5px);
+  transform: translateY(-2px);
 }
 
-/* Product Code Heading Special Effect */
+/* Product Code Heading Underline Effect */
 .product-code-heading {
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s ease;
 }
 
-.product-code-heading::before {
+.product-code-heading::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: width 0.4s ease;
 }
 
-.product-code-heading:hover::before {
-  left: 100%;
+.product-code-heading:hover::after {
+  width: 100%;
 }
 
 .product-code-heading:hover {
-  transform: scale(1.02);
-  color: var(--duva-red, #C0392B);
+  transform: translateY(-2px);
 }
 
 /* Overview Title Animation */
@@ -4837,33 +4834,31 @@ ARROWS:
   transform: translateY(-1px);
 }
 
-/* Section Headers with Glow Effect */
+/* Section Headers with Underline Effect */
 .text-block-7 {
   position: relative;
+  overflow: hidden;
   transition: all 0.3s ease;
   font-weight: 600;
 }
 
-.text-block-7::before {
+.text-block-7::after {
   content: '';
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: width 0.4s ease;
 }
 
-.text-block-7:hover::before {
-  opacity: 1;
+.text-block-7:hover::after {
+  width: 100%;
 }
 
 .text-block-7:hover {
-  transform: translateX(3px);
-  text-shadow: 0 0 10px rgba(192, 57, 43, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Product Features Enhanced */
@@ -4944,25 +4939,14 @@ ARROWS:
   transform: translateY(-1px);
 }
 
-/* Selected Value Enhanced (keeping dropdown main style unchanged) */
+/* Selected Value (no hover effects) */
 .selected-value {
-  position: relative;
   transition: all 0.3s ease;
 }
 
-.selected-value:hover {
-  color: var(--duva-red, #C0392B);
-  transform: scale(1.02);
-}
-
-/* Dropdown Arrow Enhanced (keeping main style unchanged) */
+/* Dropdown Arrow (no hover effects) */
 .dropdown-arrow {
   transition: all 0.3s ease;
-}
-
-.dropdown-arrow:hover {
-  transform: scale(1.1);
-  filter: brightness(1.2);
 }
 
 /* Download Divider Enhanced */
@@ -5065,6 +5049,32 @@ ARROWS:
 @keyframes loadingShimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
+}
+
+/* Ordering Code Value Underline Effect */
+.ordering-code-value {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.ordering-code-value::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: width 0.4s ease;
+}
+
+.ordering-code-value:hover::after {
+  width: 100%;
+}
+
+.ordering-code-value:hover {
+  transform: translateY(-2px);
 }
 
 
