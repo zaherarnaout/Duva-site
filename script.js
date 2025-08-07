@@ -3445,6 +3445,11 @@ function initializeFlipCardLinks() {
   
   console.log('Found flip card wrappers:', flipCardWrappers.length);
   
+  // Log what we found to debug
+  flipCardWrappers.forEach((wrapper, index) => {
+    console.log(`Flip card ${index + 1}:`, wrapper.className, wrapper.tagName);
+  });
+  
   // Only process flip card wrappers, not related items
   const targetElements = flipCardWrappers;
   
@@ -3527,6 +3532,9 @@ function initializeFlipCardLinks() {
       
       // Allow navigation for valid URLs
       console.log('Flip card - navigating to:', productUrl);
+      
+      // Navigate to the URL
+      window.location.href = productUrl;
       
       // Optional: Add loading state
       this.style.pointerEvents = 'none';
@@ -4432,7 +4440,19 @@ function initializeRelatedItemsSingleClick() {
   
   console.log(`Found ${relatedItems.length} related items to process`);
   
+  // Log what we found to debug
   relatedItems.forEach((item, index) => {
+    console.log(`Related item ${index + 1}:`, item.className, item.tagName);
+  });
+  
+  relatedItems.forEach((item, index) => {
+    // Double-check this is not a flip card
+    const isFlipCard = item.closest('.flip-card-wrapper') || item.querySelector('.flip-card') || item.classList.contains('flip-card-wrapper');
+    if (isFlipCard) {
+      console.log(`Related item ${index + 1} is actually a flip card, skipping`);
+      return;
+    }
+    
     // Check if this item already has a link
     const existingLink = item.querySelector('a');
     if (existingLink) {
