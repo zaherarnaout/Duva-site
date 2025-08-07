@@ -4508,14 +4508,18 @@ function initializeRelatedItemsSingleClick() {
       e.preventDefault();
       e.stopPropagation();
       
-      // Get product code for user feedback
-      const productCode = item.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      // Get product code and construct URL (same logic as flip cards)
+      const productCode = extractProductCode(item);
       
       if (productCode) {
-        // Show user-friendly message instead of 404 error
-        alert(`Product ${productCode} - Please use the search function to find this product.`);
+        // Use the same URL format as flip cards
+        const productUrl = `/products/lucero-${productCode.toLowerCase()}`;
+        console.log(`Related item ${index + 1} - navigating to:`, productUrl);
+        
+        // Navigate to the product page
+        window.location.href = productUrl;
       } else {
-        alert('Product page not available. Please use the search function.');
+        console.log(`Related item ${index + 1} - no product code found`);
       }
     });
     
