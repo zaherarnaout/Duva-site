@@ -3481,8 +3481,8 @@ function initializeFlipCardLinks() {
     
     // Check if this is a flip card with an existing proper URL
     const existingLink = element.querySelector('a');
-    if (existingLink && existingLink.href && !existingLink.href.includes('search')) {
-      // Use the existing URL if it's a proper product URL
+    if (existingLink && existingLink.href) {
+      // Use the existing URL (whether it's product or search)
       productUrl = existingLink.href;
       console.log(`Flip card - using existing URL:`, productUrl);
     } else if (productUrl === '#' || !productUrl) {
