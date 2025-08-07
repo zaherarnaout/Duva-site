@@ -3633,6 +3633,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
+  initializeRelatedSectionCardNavigation(); // Remove interfering links
   
   // Test if cards are clickable
   setTimeout(() => {
@@ -3647,6 +3648,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded timeout - Re-initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
+    initializeRelatedSectionCardNavigation(); // Remove interfering links
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -3661,6 +3663,7 @@ if (typeof Webflow !== 'undefined') {
     console.log('Webflow.push - Initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
+    initializeRelatedSectionCardNavigation(); // Remove interfering links
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -4544,28 +4547,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === Related Section Card Navigation ===
-// CMS navigation handled by Webflow - no custom JavaScript needed
+// DISABLED - Let Webflow handle CMS navigation without interference
 function initializeRelatedSectionCardNavigation() {
-  console.log('🎯 Related section navigation: Using Webflow CMS functionality');
+  console.log('🎯 Related section navigation: DISABLED - Using pure Webflow CMS');
   
-  // Just add hover effects to existing CMS links
+  // Don't add any JavaScript to related cards - let Webflow handle everything
   const relatedContainer = document.querySelector('.collection-list-6');
   if (relatedContainer) {
     const existingLinks = relatedContainer.querySelectorAll('a');
-    console.log(`📦 Found ${existingLinks.length} existing CMS links`);
+    console.log(`📦 Found ${existingLinks.length} existing CMS links - NO JavaScript interference`);
     
-    existingLinks.forEach((link, index) => {
-      console.log(`🔗 CMS Link ${index + 1}:`, link.href);
-      
-      // Add hover effects to existing CMS links
-      link.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-2px)';
-        this.style.transition = 'transform 0.3s ease';
-      });
-      
-      link.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-      });
+    // Remove any existing flip-card-link elements that might be interfering
+    const flipCardLinks = relatedContainer.querySelectorAll('.flip-card-link');
+    flipCardLinks.forEach(link => {
+      console.log('🗑️ Removing interfering flip-card-link:', link.href);
+      // Unwrap the link but keep the content
+      const content = link.innerHTML;
+      link.parentNode.insertBefore(content, link);
+      link.remove();
     });
   }
 }
