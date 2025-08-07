@@ -3633,7 +3633,6 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
-  initializeRelatedSectionCardNavigation();
   
   // Test if cards are clickable
   setTimeout(() => {
@@ -3648,7 +3647,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded timeout - Re-initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
-    initializeRelatedSectionCardNavigation();
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -3663,7 +3661,6 @@ if (typeof Webflow !== 'undefined') {
     console.log('Webflow.push - Initializing flip card links');
     initializeFlipCardLinks();
     initializeCardsScrollAnimation();
-    initializeRelatedSectionCardNavigation();
     
     // Test if cards are clickable
     setTimeout(() => {
@@ -4547,90 +4544,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === Related Section Card Navigation ===
+// CMS navigation handled by Webflow - no custom JavaScript needed
 function initializeRelatedSectionCardNavigation() {
-  console.log('🎯 Initializing related section card navigation...');
+  console.log('🎯 Related section navigation: Using Webflow CMS functionality');
   
-  // Find related section container
+  // Just add hover effects to existing CMS links
   const relatedContainer = document.querySelector('.collection-list-6');
-  if (!relatedContainer) {
-    console.log('⚠️ Related container not found');
-    return;
+  if (relatedContainer) {
+    const existingLinks = relatedContainer.querySelectorAll('a');
+    console.log(`📦 Found ${existingLinks.length} existing CMS links`);
+    
+    existingLinks.forEach((link, index) => {
+      console.log(`🔗 CMS Link ${index + 1}:`, link.href);
+      
+      // Add hover effects to existing CMS links
+      link.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.transition = 'transform 0.3s ease';
+      });
+      
+      link.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
   }
-  
-  // Find all card elements in the related section
-  const relatedCards = relatedContainer.querySelectorAll('.w-dyn-item');
-  console.log(`📦 Found ${relatedCards.length} related cards`);
-  
-  relatedCards.forEach((card, index) => {
-    console.log(`🎯 Processing card ${index + 1}:`, card.className);
-    
-    // Check if card already has a link
-    const existingLink = card.querySelector('a') || card.closest('a');
-    if (existingLink) {
-      console.log(`✅ Card ${index + 1} already has a link:`, existingLink.href);
-      return;
-    }
-    
-    // Try to get product URL from various sources
-    let productUrl = card.getAttribute('data-product-url') || 
-                    card.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
-                    card.querySelector('a')?.getAttribute('href') ||
-                    '#';
-    
-    // If no URL found, try to construct one based on product code
-    if (productUrl === '#' || !productUrl) {
-      const productCode = card.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
-      if (productCode) {
-        // Construct URL based on your site structure
-        productUrl = `/product/${productCode.toLowerCase()}`;
-        console.log(`🔗 Constructed URL for ${productCode}:`, productUrl);
-      }
-    }
-    
-    // Create link wrapper
-    const link = document.createElement('a');
-    link.href = productUrl;
-    link.className = 'related-card-link';
-    link.style.textDecoration = 'none';
-    link.style.color = 'inherit';
-    link.style.display = 'block';
-    
-    console.log(`🔗 Card ${index + 1} - URL:`, productUrl);
-    
-    // Wrap the card in the link
-    card.parentNode.insertBefore(link, card);
-    link.appendChild(card);
-    
-    // Add click event listener
-    link.addEventListener('click', function(e) {
-      console.log('🎯 Related card clicked! URL:', productUrl);
-      
-      // Prevent default if URL is not set
-      if (productUrl === '#' || !productUrl) {
-        e.preventDefault();
-        console.log('⚠️ Product URL not configured, preventing navigation');
-        return;
-      }
-      
-      // Add loading state
-      this.style.pointerEvents = 'none';
-      setTimeout(() => {
-        this.style.pointerEvents = 'auto';
-      }, 1000);
-    });
-    
-    // Add hover effects
-    link.addEventListener('mouseenter', function() {
-      console.log('🎯 Related card hover enter');
-      this.style.transform = 'translateY(-2px)';
-      this.style.transition = 'transform 0.3s ease';
-    });
-    
-    link.addEventListener('mouseleave', function() {
-      console.log('🎯 Related card hover leave');
-      this.style.transform = 'translateY(0)';
-    });
-  });
-  
-  console.log('✅ Related section card navigation initialized');
 }
