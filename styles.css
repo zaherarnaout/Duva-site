@@ -3867,7 +3867,7 @@ ARROWS:
 
 /* Add overlay slide effect to flip card back ONLY */
 .flip-card-back {
-  position: relative; /* Required for ::before pseudo-element */
+  position: relative !important; /* Required for ::before pseudo-element - override Webflow */
 }
 
 .flip-card-back::before {
