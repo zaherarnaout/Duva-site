@@ -4427,8 +4427,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeRelatedItemsSingleClick() {
   console.log('🖱️ Initializing related items single-click fix...');
   
-  // ONLY target related items, not other sections
-  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item');
+  // ONLY target related items, not flip cards or other sections
+  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item:not(.flip-card-wrapper):not([class*="flip"])');
   
   console.log(`Found ${relatedItems.length} related items to process`);
   
@@ -4459,14 +4459,27 @@ function initializeRelatedItemsSingleClick() {
       }
     });
     
-    // Add hover effect for better UX
+    // Add hover effect for better UX - ONLY for related items, not flip cards
     item.addEventListener('mouseenter', function() {
+      // Check if this is a flip card to avoid conflicts
+      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
+      if (isFlipCard) {
+        console.log('Skipping hover effect for flip card');
+        return;
+      }
+      
       this.style.cursor = 'pointer';
       this.style.transform = 'translateY(-2px)';
       this.style.transition = 'transform 0.2s ease';
     });
     
     item.addEventListener('mouseleave', function() {
+      // Check if this is a flip card to avoid conflicts
+      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
+      if (isFlipCard) {
+        return;
+      }
+      
       this.style.transform = 'translateY(0)';
     });
   });
