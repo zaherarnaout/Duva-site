@@ -3862,6 +3862,7 @@ ARROWS:
 .flip-card-wrapper:hover .flip-card-back {
   display: flex;
   z-index: 2;
+  border-color: var(--duva-red, #C0392B) !important;
 }
 
 /* Flip card shimmer animation */
