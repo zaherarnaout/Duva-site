@@ -299,16 +299,6 @@ body.menu-open {
 
 
 
-/* === Hover Effect === */ 
-
-.download-checkbox:hover { 
-
-  border-color: #888; 
-
-} 
-
-
-
 /* === Checkmark Styling (Hidden by Default) === */ 
 
 .download-checkbox .checkmark { 
@@ -866,13 +856,7 @@ transition: border-color 0.2s ease;
 
 
 
-/* Hover effect */ 
-
-.accessory-checkbox:hover { 
-
-border-color: #888; 
-
-} 
+ 
 
 
 
