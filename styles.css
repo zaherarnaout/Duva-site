@@ -4449,6 +4449,142 @@ ARROWS:
 
 
 
+/* 7. Download Panel Checkmark Enhancement - Filter Checkmark Style */
+.download-checkbox {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.download-checkbox:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.download-checkbox.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+.download-checkbox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.download-checkbox:hover::before {
+  left: 100%;
+}
+
+/* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
+.accessory-checkbox {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.accessory-checkbox:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.accessory-checkbox.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+.accessory-checkbox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.accessory-checkbox:hover::before {
+  left: 100%;
+}
+
+/* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
+.contact-block {
+  position: relative !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.contact-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
+  transition: left 0.5s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.contact-block:hover::before {
+  left: 100%;
+}
+
+.contact-block:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
+}
+
+/* 7.7. Contact Us Button Enhancement - Filter Apply Button Style */
+.contact-us-button {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.contact-us-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.contact-us-button:hover::before {
+  left: 100%;
+}
+
+.contact-us-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+}
+
 /* 7. Filter Section Container Enhancement */
 .filter-sections-wrapper {
   transition: all 0.3s ease;
