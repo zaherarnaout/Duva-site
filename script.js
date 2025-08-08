@@ -4681,3 +4681,79 @@ if (typeof Webflow !== 'undefined') {
     window.__parallaxResizeTimer = setTimeout(reconfigure, 150);
   });
 })();
+
+/**
+ * initializeGallerySlider
+ * Fades between CMS images inside .gallery-section-cms.
+ * - Auto-plays with configurable interval
+ * - Pauses on hover over .div-block-15
+ * - Left/Right arrows navigate: .gallery-arrow-left / .gallery-right-arrow
+ */
+(function initializeGallerySlider() {
+  const container = document.querySelector('.div-block-15');
+  const list = document.querySelector('.gallery-section-cms');
+  if (!container || !list) return;
+
+  const items = Array.from(list.querySelectorAll('.collection-item-5'));
+  if (items.length === 0) return;
+
+  let current = 0;
+  let timer = null;
+  const INTERVAL_MS = 4000;
+  const FADE_MS = 600; // keep in sync with CSS
+
+  function show(index) {
+    items.forEach((el, i) => {
+      if (i === index) {
+        el.classList.add('is-active');
+      } else {
+        el.classList.remove('is-active');
+      }
+    });
+    current = index;
+  }
+
+  function next() {
+    const idx = (current + 1) % items.length;
+    show(idx);
+  }
+
+  function prev() {
+    const idx = (current - 1 + items.length) % items.length;
+    show(idx);
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(next, INTERVAL_MS);
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  // Init first slide
+  show(0);
+  start();
+
+  // Pause on hover
+  container.addEventListener('mouseenter', stop);
+  container.addEventListener('mouseleave', start);
+
+  // Arrow navigation
+  const leftArrow = container.querySelector('.gallery-arrow-left');
+  const rightArrow = container.querySelector('.gallery-right-arrow');
+  if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAfterManual(); });
+  if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAfterManual(); });
+
+  // After manual nav, resume autoplay after a beat
+  let resumeTimer = null;
+  function restartAfterManual() {
+    if (resumeTimer) clearTimeout(resumeTimer);
+    stop();
+    resumeTimer = setTimeout(start, FADE_MS + 1000);
+  }
+})();
