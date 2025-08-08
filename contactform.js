@@ -619,7 +619,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const isPlaceholder = selectedOption && (
       selectedOption.value === '' || 
       selectedOption.value === 'Select one...' || 
-      selectedOption.value === 'Select country'
+      selectedOption.value === 'Select country' ||
+      selectedOption.disabled
     );
     
     if (isPlaceholder) {
