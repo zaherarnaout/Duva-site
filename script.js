@@ -4562,3 +4562,122 @@ if (typeof Webflow !== 'undefined') {
     initializeRelatedItemsSingleClick();
   });
 }
+
+/**
+ * initializePageParallax
+ * Adds subtle parallax to key page sections without modifying HTML.
+ * - Disabled if prefers-reduced-motion is set
+ * - Disabled on small screens (< 768px) for performance
+ * - Uses IntersectionObserver + requestAnimationFrame
+ */
+(function initializePageParallax() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function isParallaxEnabled() {
+    const isMobile = window.innerWidth < 768;
+    return !prefersReducedMotion.matches && !isMobile;
+  }
+
+  const parallaxTargetsConfig = [
+    { selector: '.hero-section', speed: 0.06, max: 18 },
+    { selector: '.right-hero-wrapper', speed: 0.05, max: 16 },
+    { selector: '.related-slider-wrapper', speed: 0.04, max: 14 },
+    { selector: '.accessories-section', speed: 0.05, max: 16 },
+    { selector: '.footer-section', speed: 0.03, max: 12 }
+  ];
+
+  let trackedElements = [];
+  let isTicking = false;
+
+  function collectParallaxElements() {
+    const elements = [];
+    parallaxTargetsConfig.forEach(cfg => {
+      document.querySelectorAll(cfg.selector).forEach(el => {
+        elements.push({ element: el, speed: cfg.speed, max: cfg.max });
+        el.style.willChange = 'transform';
+        el.dataset.__parallaxApplied = '1';
+      });
+    });
+    return elements;
+  }
+
+  function clearParallaxTransforms() {
+    trackedElements.forEach(({ element }) => {
+      element.style.transform = '';
+      element.style.willChange = '';
+      delete element.dataset.__parallaxApplied;
+    });
+  }
+
+  function applyParallax(scrollY) {
+    trackedElements.forEach(({ element, speed, max }) => {
+      const rect = element.getBoundingClientRect();
+      const elementTopOnPage = scrollY + rect.top;
+      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * speed, max), -max);
+      element.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
+    });
+  }
+
+  function onScroll() {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        applyParallax(window.scrollY || window.pageYOffset);
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }
+
+  let io;
+  function observeVisibility() {
+    if (io) io.disconnect();
+    io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const target = entry.target;
+        if (!target.dataset.__parallaxSpeed) return;
+        if (entry.isIntersecting) {
+          // Keep in tracked list (no-op here, tracked globally)
+        } else {
+          // Optional: reset transform when leaving viewport
+          target.style.transform = '';
+        }
+      });
+    }, { root: null, threshold: 0 });
+
+    trackedElements.forEach(({ element, speed }) => {
+      element.dataset.__parallaxSpeed = String(speed);
+      io.observe(element);
+    });
+  }
+
+  function enableParallax() {
+    trackedElements = collectParallaxElements();
+    if (trackedElements.length === 0) return;
+    observeVisibility();
+    applyParallax(window.scrollY || window.pageYOffset);
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  function disableParallax() {
+    window.removeEventListener('scroll', onScroll);
+    if (io) io.disconnect();
+    clearParallaxTransforms();
+    trackedElements = [];
+  }
+
+  function reconfigure() {
+    disableParallax();
+    if (isParallaxEnabled()) enableParallax();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (isParallaxEnabled()) enableParallax();
+  });
+
+  prefersReducedMotion.addEventListener('change', reconfigure);
+  window.addEventListener('resize', () => {
+    // Debounce resize reconfiguration
+    clearTimeout(window.__parallaxResizeTimer);
+    window.__parallaxResizeTimer = setTimeout(reconfigure, 150);
+  });
+})();
