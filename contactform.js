@@ -310,6 +310,43 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Simple test function to open modal manually
+  window.testModal = function() {
+    console.log('🧪 Manual modal test');
+    if (contactOverlay) {
+      contactOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('✅ Modal opened manually');
+      
+      // Auto-close after 3 seconds
+      setTimeout(() => {
+        contactOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        console.log('✅ Modal closed automatically');
+      }, 3000);
+    } else {
+      console.error('❌ Modal overlay not found');
+    }
+  };
+
+  // Function to find all buttons on the page
+  window.findAllButtons = function() {
+    const allButtons = document.querySelectorAll('a, button, .w-button, [role="button"]');
+    console.log('🔍 All buttons on page:', allButtons.length);
+    
+    allButtons.forEach((btn, index) => {
+      console.log(`Button ${index + 1}:`, {
+        text: btn.textContent.trim(),
+        id: btn.id,
+        className: btn.className,
+        href: btn.href,
+        tagName: btn.tagName
+      });
+    });
+    
+    return allButtons;
+  };
+
   // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
   if (!countrySelect) {
