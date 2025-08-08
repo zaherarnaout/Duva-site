@@ -4,17 +4,47 @@
 body.modal-open {
   overflow: hidden !important;
   padding-right: 0 !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
 body.modal-open::-webkit-scrollbar {
-  display: none;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Hide scrollbar for Firefox */
 body.modal-open {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbar for all elements when modal is open */
+body.modal-open * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+body.modal-open *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Prevent layout shift when scrollbar disappears */
+body.modal-open {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
 }
 
 /* Ensure the modal overlay covers the entire viewport */
@@ -34,12 +64,26 @@ body.modal-open {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden !important;
 }
 
 .contact-overlay.active {
   display: flex; /* Show when active class is added */
   opacity: 1;
   visibility: visible;
+}
+
+/* Additional scrollbar hiding for the entire page */
+html.modal-open {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html.modal-open::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .contact-modal {
@@ -452,6 +496,46 @@ body.modal-open {
 
 .dropdown-option:hover { 
   background-color: #f4f5f6; 
+}
+
+/* === Country Search Input Styles === */
+
+.country-search-input {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  border: 1px solid #E4E3E3 !important;
+  border-radius: 8px !important;
+  margin-bottom: 12px !important;
+  font-size: 14px !important;
+  font-family: 'Gotham', sans-serif !important;
+  background: white !important;
+  color: #212121 !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+  box-sizing: border-box !important;
+}
+
+.country-search-input:focus {
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1) !important;
+}
+
+.country-search-input::placeholder {
+  color: #D1D1D1 !important;
+  font-style: italic !important;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .country-search-input {
+    background: #212121 !important;
+    color: #F4F5F6 !important;
+    border-color: #C0392B !important;
+  }
+  
+  .country-search-input::placeholder {
+    color: #D1D1D1 !important;
+  }
 }
 
 /* Responsive Design */
