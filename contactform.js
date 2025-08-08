@@ -597,7 +597,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // === Select Field Color Management ===
   function setupSelectFieldColors() {
     const selectFields = document.querySelectorAll('select');
+    const inputFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
     
+    // Handle select fields
     selectFields.forEach(select => {
       // Set initial color based on whether a value is selected
       updateSelectColor(select);
@@ -610,6 +612,26 @@ document.addEventListener('DOMContentLoaded', function () {
       // Also listen for input events (for dynamic changes)
       select.addEventListener('input', function() {
         updateSelectColor(this);
+      });
+    });
+
+    // Handle input fields
+    inputFields.forEach(input => {
+      // Set initial color
+      updateInputColor(input);
+      
+      // Add input event listener
+      input.addEventListener('input', function() {
+        updateInputColor(this);
+      });
+      
+      // Add focus/blur listeners
+      input.addEventListener('focus', function() {
+        updateInputColor(this);
+      });
+      
+      input.addEventListener('blur', function() {
+        updateInputColor(this);
       });
     });
   }
@@ -627,6 +649,14 @@ document.addEventListener('DOMContentLoaded', function () {
       select.style.color = '#D1D1D1'; // Light grey for placeholder
     } else {
       select.style.color = '#212121'; // Dark color for selected value
+    }
+  }
+
+  function updateInputColor(input) {
+    if (input.value === '' || input.value === null) {
+      input.style.color = '#D1D1D1'; // Light grey when empty
+    } else {
+      input.style.color = '#212121'; // Dark when has value
     }
   }
 
