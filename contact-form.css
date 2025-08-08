@@ -866,3 +866,33 @@ select option:not(:first-child) {
 select:not(.has-value) {
   color: #D1D1D1 !important;
 }
+
+/* === Custom Checkbox Styling === */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #212121;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-checkbox:checked {
+  background-color: #C0392B;
+  border-color: #C0392B;
+}
+
+.custom-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
