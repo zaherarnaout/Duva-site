@@ -951,7 +951,7 @@ select:not(.has-value) {
 .duva-consent .w-checkbox-input {
   width: 20px;
   height: 20px;
-  border: 2px solid #212121;     /* DUVA dark grey */
+  border: 2px solid #D1D1D1;     /* Light grey border for unchecked */
   border-radius: 4px;             /* 0 for sharp corners if needed */
   background: #fff;
   position: relative;
@@ -991,19 +991,19 @@ select:not(.has-value) {
 
 /* Focus state (Webflow adds this class) */
 .duva-consent .w-checkbox-input.w--redirected-focus {
-  box-shadow: none;
-  outline: 2px solid #C0392B;
-  outline-offset: 2px;
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #C0392B;
 }
 
 /* Checked state with filter section effects */
 .duva-consent .w-checkbox-input.w--redirected-checked {
   background: #C0392B !important;            /* DUVA red */
-  border-color: #C0392B;
+  border-color: #C0392B !important;
   background-image: none !important;
   color: white !important;
   transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
 }
 
 /* Enhanced checkmark with filter section style */
@@ -1044,7 +1044,7 @@ select:not(.has-value) {
   transition: none !important;
   transform: none !important;
   opacity: 1 !important;
-  cursor: pointer;
+  cursor: default !important; /* Default cursor for text */
   line-height: 1.4 !important;
   letter-spacing: normal !important;
 }
@@ -1063,4 +1063,21 @@ select:not(.has-value) {
   opacity: 1 !important;
   box-shadow: none !important;
   outline: none !important;
+  cursor: default !important; /* Keep default cursor */
+}
+
+/* Special styling for Privacy Policy link */
+.duva-consent label a,
+.duva-consent .w-form-label a {
+  color: #C0392B !important; /* DUVA red for links */
+  text-decoration: underline !important;
+  cursor: pointer !important; /* Pointer cursor only for links */
+  font-weight: normal !important;
+  transition: color 0.2s ease !important;
+}
+
+.duva-consent label a:hover,
+.duva-consent .w-form-label a:hover {
+  color: #212121 !important; /* Darker on hover */
+  text-decoration: underline !important;
 }
