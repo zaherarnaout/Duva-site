@@ -871,6 +871,7 @@ select:not(.has-value) {
 .custom-checkbox {
   appearance: none;
   -webkit-appearance: none;
+  accent-color: transparent; /* Prevents blue default in modern browsers */
   width: 20px;
   height: 20px;
   border: 2px solid #212121;
@@ -878,6 +879,12 @@ select:not(.has-value) {
   background-color: white;
   cursor: pointer;
   position: relative;
+  outline: none; /* Remove focus outline */
+}
+
+.custom-checkbox:focus {
+  outline: none;
+  box-shadow: none; /* Prevent blue glow on focus */
 }
 
 .custom-checkbox:checked {
