@@ -4880,17 +4880,17 @@ ARROWS:
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.18) 28%, rgba(255,255,255,0.08) 45%, transparent 60%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.12) 28%, rgba(255,255,255,0.06) 45%, transparent 60%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Make hero image fill container cleanly */
+/* Revert hero image sizing to original to avoid layout break */
 .image-23 {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  object-fit: cover !important;
+  width: 1998px; /* original width from provided CSS */
+  max-width: none;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
@@ -4939,6 +4939,21 @@ ARROWS:
   .main-page-hero-section-img::after {
     background: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.18) 35%, transparent 65%);
   }
+}
+
+/* 9.1. Hero Text Logo */
+.duva-light-logo {
+  display: block;
+  width: auto;
+  margin-top: 10px;
+  margin-right: 20px;
+  align-self: flex-end;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.hero-text-wrapper:hover .duva-light-logo {
+  transform: scale(1.03);
+  filter: brightness(1.05) contrast(1.05);
 }
 
 
