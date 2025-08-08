@@ -3,57 +3,76 @@
 /* Contact Form Container */
 .contact-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0%; /* Match Webflow positioning */
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
+  z-index: 9999; /* Match Webflow z-index */
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.contact-overlay.active {
+  display: flex; /* Show when active class is added */
 }
 
 .contact-modal {
-  background-color: #F4F5F6;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 90vh;
+  background-color: #F4F5F6; /* duva-light-grey */
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 8px; /* border-8px */
+  color: #212121; /* duva-d-grey */
+  width: 800px; /* Match Webflow width */
+  height: 800px; /* Match Webflow height */
+  padding: 10px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Contact Form Header */
 .contact-header {
-  display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 20px 30px;
-  border-bottom: 1px solid #E4E3E3;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  position: relative;
 }
 
 .contact-divider {
+  background-color: #E4E3E3; /* border-divider-light */
+  width: 100%;
   height: 1px;
-  background-color: #E4E3E3;
+  margin-bottom: 10px;
 }
 
 /* Form Content */
 .form-hero {
-  padding: 30px;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  padding: 20px;
 }
 
 .text-block-58 {
-  font-size: 24px;
-  font-weight: 600;
+  margin-bottom: 20px;
+  font-family: Gotham Rounded, Georgia, sans-serif;
+  font-size: 28px;
+  line-height: 30px;
   color: #212121;
-  margin-bottom: 10px;
 }
 
 .text-block-57 {
+  margin-bottom: 40px;
+  font-family: Gotham Rounded, Georgia, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 25px;
   color: #666;
-  margin-bottom: 30px;
-  line-height: 1.5;
 }
 
 /* Form Fields */
@@ -62,36 +81,70 @@
 }
 
 .contact-form {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  flex-flow: column;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .subscribe-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
   gap: 20px;
 }
 
 .field-wrapper {
-  display: flex;
-  flex-direction: column;
+  flex-flow: column;
+  align-self: flex-start;
+  width: 100%;
+  margin-right: 10px;
 }
 
 .field-label,
 .field-label-2 {
-  font-weight: 500;
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-family: Gotham, Georgia, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 25px;
   color: #212121;
-  margin-bottom: 8px;
 }
 
-.text-field,
-.text-field-2,
-._w-select,
-.textarea {
-  padding: 12px 16px;
-  border: 1px solid #E4E3E3;
-  border-radius: 4px;
+.text-field {
+  border: 1px solid #D1D1D1; /* highlighted-duva-grey */
+  border-radius: 8px;
+  height: 30px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: Gotham, Georgia, sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.text-field-2 {
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 8px;
+  height: 30px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: Gotham, Georgia, sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+._w-select {
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 8px;
+  background-color: #FFFFFF; /* duva-white */
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 30px;
+  font-family: Gotham, Georgia, sans-serif;
   font-size: 14px;
   transition: border-color 0.3s ease;
 }
@@ -101,16 +154,28 @@
 ._w-select:focus,
 .textarea:focus {
   outline: none;
-  border-color: #C0392B;
+  border-color: #C0392B; /* duva-red */
 }
 
 .textarea {
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 8px;
+  font-family: Gotham, Georgia, sans-serif;
+  font-weight: 200;
   min-height: 120px;
   resize: vertical;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
 }
 
 /* Privacy Consent */
 .privacy-consent {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10px;
+  display: flex;
   margin-top: 20px;
 }
 
@@ -122,41 +187,53 @@
 }
 
 .w-checkbox-input {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #E4E3E3;
-  border-radius: 3px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 4px; /* border-4px-cornner */
   position: relative;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 .checkbox-label {
+  color: #212121; /* duva-d-grey */
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-family: Gotham Rounded, Georgia, sans-serif;
   font-size: 14px;
   line-height: 1.4;
-  color: #212121;
 }
 
 .link-15 {
-  color: #C0392B;
-  text-decoration: underline;
+  text-decoration: none;
+  color: #C0392B; /* duva-red */
+  text-decoration-color: #C0392B;
+  text-decoration-style: double;
 }
 
 /* Submit Button */
 .submit-button {
-  background-color: #C0392B;
+  border: 1px solid #E4E3E3; /* border-divider-light */
+  border-radius: 8px;
+  background-color: #212121; /* btn-dark-bg */
+  font-family: Gotham, Georgia, sans-serif;
+  font-size: 14px; /* btn-size */
+  line-height: 1.4; /* btn-height */
+  font-weight: 500; /* btn-weight */
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
   color: #F4F5F6;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
+  padding: 14px 28px;
 }
 
 .submit-button:hover {
-  background-color: #A93226;
+  background-color: #C0392B; /* duva-red */
 }
 
 /* Form Messages */
@@ -181,29 +258,41 @@
 
 /* Close Button */
 .subscribe-close {
-  background: none;
-  border: none;
-  color: #666;
-  font-size: 16px;
+  border-radius: 8px;
+  background-color: #212121; /* btn-dark-bg */
+  font-family: Gotham, Georgia, sans-serif;
+  font-size: 14px; /* btn-size */
+  line-height: 1.4; /* btn-height */
+  font-weight: 500; /* btn-weight */
+  text-align: center;
+  width: 150px;
+  margin-right: 20px;
+  display: block;
+  position: absolute;
+  left: auto;
+  right: 0%;
+  color: #F4F5F6;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
   padding: 8px;
-  border-radius: 4px;
-  transition: color 0.3s ease;
 }
 
 .subscribe-close:hover {
-  color: #C0392B;
+  background-color: #C0392B; /* duva-red */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .contact-modal {
     width: 95%;
+    height: auto;
+    max-height: 90vh;
     margin: 20px;
   }
   
   .subscribe-row {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 15px;
   }
   
