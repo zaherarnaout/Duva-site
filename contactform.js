@@ -2,10 +2,45 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Contact form script loaded');
   
-  // Modal functionality
-  let contactBtn = document.getElementById('contact-btn');
-  let contactOverlay = document.getElementById('contact-overlay');
-  let closeBtn = document.querySelector('.contact-close');
+  // Enhanced debugging - check all possible elements
+  console.log('🔍 Checking all possible contact-related elements:');
+  
+  // Check for contact button with different possible selectors
+  const contactBtnById = document.getElementById('contact-btn');
+  const contactBtnByClass = document.querySelector('.contact-btn');
+  const contactBtnByText = Array.from(document.querySelectorAll('a, button')).find(el => 
+    el.textContent.toLowerCase().includes('contact')
+  );
+  
+  // Check for modal overlay with different possible selectors
+  const contactOverlayById = document.getElementById('contact-overlay');
+  const contactOverlayByClass = document.querySelector('.contact-overlay');
+  const contactOverlayByData = document.querySelector('[data-contact-overlay]');
+  
+  // Check for close button
+  const closeBtn = document.querySelector('.contact-close');
+  
+  console.log('📋 Element Search Results:', {
+    contactBtnById: contactBtnById,
+    contactBtnByClass: contactBtnByClass,
+    contactBtnByText: contactBtnByText,
+    contactOverlayById: contactOverlayById,
+    contactOverlayByClass: contactOverlayByClass,
+    contactOverlayByData: contactOverlayByData,
+    closeBtn: closeBtn
+  });
+  
+  // Check all elements with 'contact' in their ID or class
+  const allContactElements = document.querySelectorAll('[id*="contact"], [class*="contact"]');
+  console.log('🔍 All elements with "contact" in ID or class:', allContactElements);
+  
+  // Check all buttons and links
+  const allButtons = document.querySelectorAll('button, a[href], .w-button');
+  console.log('🔍 All buttons and links found:', allButtons.length);
+  
+  // Modal functionality - use let instead of const to avoid reassignment error
+  let contactBtn = contactBtnById || contactBtnByClass || contactBtnByText;
+  let contactOverlay = contactOverlayById || contactOverlayByClass || contactOverlayByData;
 
   console.log('Elements found:', {
     contactBtn: contactBtn,
@@ -13,12 +48,32 @@ document.addEventListener('DOMContentLoaded', function () {
     closeBtn: closeBtn
   });
 
+  // Check if we should auto-open modal from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const shouldOpenModal = urlParams.get('openContact') === 'true';
+  
+  if (shouldOpenModal && contactOverlay) {
+    console.log('🔄 Auto-opening modal from URL parameter');
+    setTimeout(() => {
+      contactOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('Modal opened from URL parameter');
+    }, 500);
+  }
+
   // Fallback: Try to find elements again after a short delay
   if (!contactBtn || !contactOverlay || !closeBtn) {
     setTimeout(() => {
-      contactBtn = document.getElementById('contact-btn');
-      contactOverlay = document.getElementById('contact-overlay');
-      closeBtn = document.querySelector('.contact-close');
+      // Use let to avoid reassignment error
+      let contactBtn = document.getElementById('contact-btn') || 
+                       document.querySelector('.contact-btn') ||
+                       Array.from(document.querySelectorAll('a, button')).find(el => 
+                         el.textContent.toLowerCase().includes('contact')
+                       );
+      let contactOverlay = document.getElementById('contact-overlay') || 
+                           document.querySelector('.contact-overlay') ||
+                           document.querySelector('[data-contact-overlay]');
+      let closeBtn = document.querySelector('.contact-close');
       
       console.log('Elements found after delay:', {
         contactBtn: contactBtn,
@@ -27,14 +82,23 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       
       if (contactBtn && contactOverlay && closeBtn) {
-        setupModalEvents();
+        setupModalEvents(contactBtn, contactOverlay, closeBtn);
+      } else {
+        console.error('❌ Still missing required elements after delay');
+        console.log('💡 Please check in Webflow:');
+        console.log('   - Contact button should have id="contact-btn"');
+        console.log('   - Modal container should have id="contact-overlay"');
+        console.log('   - Close button should have class="contact-close"');
+        console.log('   - If button is on different page, use URL parameter: ?openContact=true');
       }
     }, 1000);
   } else {
-    setupModalEvents();
+    setupModalEvents(contactBtn, contactOverlay, closeBtn);
   }
 
-  function setupModalEvents() {
+  function setupModalEvents(contactBtn, contactOverlay, closeBtn) {
+    console.log('🔧 Setting up modal events with:', { contactBtn, contactOverlay, closeBtn });
+    
     // Open modal when contact button is clicked
     if (contactBtn) {
       contactBtn.addEventListener('click', function(e) {
@@ -96,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Manual trigger function (for testing)
   window.openContactModal = function() {
-    const overlay = document.getElementById('contact-overlay');
+    const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     if (overlay) {
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -108,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Test function to check if modal exists
   window.testContactModal = function() {
-    const overlay = document.getElementById('contact-overlay');
+    const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     const btn = document.getElementById('contact-btn');
     const closeBtn = document.querySelector('.contact-close');
     
@@ -126,6 +190,82 @@ document.addEventListener('DOMContentLoaded', function () {
       closeBtn: closeBtn
     };
   };
+
+  // Comprehensive test function
+  window.debugContactForm = function() {
+    console.log('🔍 === CONTACT FORM DEBUG ===');
+    
+    // Test 1: Check if elements exist
+    const elements = {
+      contactBtn: document.getElementById('contact-btn'),
+      contactOverlay: document.getElementById('contact-overlay') || document.querySelector('.contact-overlay'),
+      closeBtn: document.querySelector('.contact-close')
+    };
+    
+    console.log('📋 Element Check:', elements);
+    
+    // Test 2: Check all contact-related elements
+    const allContactElements = document.querySelectorAll('[id*="contact"], [class*="contact"]');
+    console.log('🔍 All contact elements:', allContactElements);
+    
+    // Test 3: Check all buttons
+    const allButtons = document.querySelectorAll('button, a[href], .w-button');
+    console.log('🔍 All buttons:', allButtons.length);
+    
+    // Test 4: Try to find contact button by text
+    const contactByText = Array.from(allButtons).find(el => 
+      el.textContent.toLowerCase().includes('contact')
+    );
+    console.log('🔍 Contact button by text:', contactByText);
+    
+    // Test 5: Check if modal can be opened manually
+    if (elements.contactOverlay) {
+      console.log('✅ Modal container found - testing manual open');
+      elements.contactOverlay.classList.add('active');
+      setTimeout(() => {
+        elements.contactOverlay.classList.remove('active');
+        console.log('✅ Manual modal test completed');
+      }, 2000);
+    } else {
+      console.log('❌ Modal container not found');
+    }
+    
+    return elements;
+  };
+
+  // Function to navigate to contact form page
+  window.navigateToContactForm = function() {
+    const currentUrl = window.location.href;
+    const separator = currentUrl.includes('?') ? '&' : '?';
+    const contactUrl = currentUrl + separator + 'openContact=true';
+    window.location.href = contactUrl;
+  };
+
+  // Main page header contact button handler
+  const mainPageContactBtn = document.getElementById('contact-btn');
+  if (mainPageContactBtn && !contactOverlay) {
+    console.log('📍 Main page contact button found - setting up redirect');
+    mainPageContactBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('Main page contact button clicked');
+      
+      // Get the current page URL
+      const currentPage = window.location.pathname;
+      
+      // Determine which page has the contact form
+      // You can customize this based on your page structure
+      let contactFormPage = '/contact'; // Default contact page
+      
+      // If we're already on a page with contact form, just add parameter
+      if (currentPage.includes('contact') || currentPage.includes('form')) {
+        const separator = window.location.href.includes('?') ? '&' : '?';
+        window.location.href = window.location.href + separator + 'openContact=true';
+      } else {
+        // Redirect to contact form page
+        window.location.href = contactFormPage + '?openContact=true';
+      }
+    });
+  }
 
   // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
