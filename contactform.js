@@ -101,7 +101,30 @@ document.addEventListener('DOMContentLoaded', function () {
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
       console.log('Modal opened manually');
+    } else {
+      console.error('Contact overlay not found for manual trigger');
     }
+  };
+
+  // Test function to check if modal exists
+  window.testContactModal = function() {
+    const overlay = document.getElementById('contact-overlay');
+    const btn = document.getElementById('contact-btn');
+    const closeBtn = document.querySelector('.contact-close');
+    
+    console.log('Modal Test Results:', {
+      overlay: overlay,
+      button: btn,
+      closeBtn: closeBtn,
+      overlayClasses: overlay ? overlay.className : 'N/A',
+      overlayStyle: overlay ? overlay.style.display : 'N/A'
+    });
+    
+    return {
+      overlay: overlay,
+      button: btn,
+      closeBtn: closeBtn
+    };
   };
 
   // Country dropdown enhancement
