@@ -606,11 +606,24 @@ document.addEventListener('DOMContentLoaded', function () {
       select.addEventListener('change', function() {
         updateSelectColor(this);
       });
+      
+      // Also listen for input events (for dynamic changes)
+      select.addEventListener('input', function() {
+        updateSelectColor(this);
+      });
     });
   }
 
   function updateSelectColor(select) {
-    if (select.value === '' || select.value === 'Select one...' || select.value === 'Select country') {
+    const selectedOption = select.options[select.selectedIndex];
+    const isPlaceholder = selectedOption && (
+      selectedOption.value === '' || 
+      selectedOption.value === 'Select one...' || 
+      selectedOption.value === 'Select country' ||
+      selectedOption.disabled
+    );
+    
+    if (isPlaceholder) {
       select.style.color = '#D1D1D1'; // Light grey for placeholder
     } else {
       select.style.color = '#212121'; // Dark color for selected value
