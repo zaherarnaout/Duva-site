@@ -500,43 +500,7 @@ html.modal-open::-webkit-scrollbar {
 
 /* === Country Search Input Styles === */
 
-.country-search-input {
-  width: 100% !important;
-  padding: 12px 16px !important;
-  border: 1px solid #E4E3E3 !important;
-  border-radius: 8px !important;
-  margin-bottom: 12px !important;
-  font-size: 14px !important;
-  font-family: 'Gotham', sans-serif !important;
-  background: white !important;
-  color: #212121 !important;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
-  box-sizing: border-box !important;
-}
-
-.country-search-input:focus {
-  outline: none !important;
-  border-color: #C0392B !important;
-  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1) !important;
-}
-
-.country-search-input::placeholder {
-  color: #D1D1D1 !important;
-  font-style: italic !important;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .country-search-input {
-    background: #212121 !important;
-    color: #F4F5F6 !important;
-    border-color: #C0392B !important;
-  }
-  
-  .country-search-input::placeholder {
-    color: #D1D1D1 !important;
-  }
-}
+/* Remove these styles since we're using the existing select element */
 
 /* Responsive Design */
 @media (max-width: 768px) {
