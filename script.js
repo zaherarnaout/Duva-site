@@ -48,6 +48,19 @@ document.addEventListener('DOMContentLoaded', function () {
     closeBtn: closeBtn
   });
 
+  // Check if we should auto-open modal from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const shouldOpenModal = urlParams.get('openContact') === 'true';
+  
+  if (shouldOpenModal && contactOverlay) {
+    console.log('🔄 Auto-opening modal from URL parameter');
+    setTimeout(() => {
+      contactOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('Modal opened from URL parameter');
+    }, 500);
+  }
+
   // Fallback: Try to find elements again after a short delay
   if (!contactBtn || !contactOverlay || !closeBtn) {
     setTimeout(() => {
@@ -75,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('   - Contact button should have id="contact-btn"');
         console.log('   - Modal container should have id="contact-overlay"');
         console.log('   - Close button should have class="contact-close"');
+        console.log('   - If button is on different page, use URL parameter: ?openContact=true');
       }
     }, 1000);
   } else {
@@ -215,6 +229,40 @@ document.addEventListener('DOMContentLoaded', function () {
     
     return elements;
   };
+
+  // Function to navigate to contact form page
+  window.navigateToContactForm = function() {
+    const currentUrl = window.location.href;
+    const separator = currentUrl.includes('?') ? '&' : '?';
+    const contactUrl = currentUrl + separator + 'openContact=true';
+    window.location.href = contactUrl;
+  };
+
+  // Main page header contact button handler
+  const mainPageContactBtn = document.getElementById('contact-btn');
+  if (mainPageContactBtn && !contactOverlay) {
+    console.log('📍 Main page contact button found - setting up redirect');
+    mainPageContactBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('Main page contact button clicked');
+      
+      // Get the current page URL
+      const currentPage = window.location.pathname;
+      
+      // Determine which page has the contact form
+      // You can customize this based on your page structure
+      let contactFormPage = '/contact'; // Default contact page
+      
+      // If we're already on a page with contact form, just add parameter
+      if (currentPage.includes('contact') || currentPage.includes('form')) {
+        const separator = window.location.href.includes('?') ? '&' : '?';
+        window.location.href = window.location.href + separator + 'openContact=true';
+      } else {
+        // Redirect to contact form page
+        window.location.href = contactFormPage + '?openContact=true';
+      }
+    });
+  }
 
   // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
