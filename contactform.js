@@ -263,18 +263,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (contactOverlay && closeBtn) {
     console.log('✅ Modal elements found - testing functionality');
     
-    // Test manual modal opening
+    // Test manual modal opening (but don't auto-close)
     setTimeout(() => {
       console.log('🧪 Testing modal open...');
       contactOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
-      
-      setTimeout(() => {
-        console.log('🧪 Testing modal close...');
-        contactOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-        console.log('✅ Modal test completed successfully');
-      }, 2000);
+      console.log('✅ Modal test completed successfully');
     }, 1000);
   }
 
