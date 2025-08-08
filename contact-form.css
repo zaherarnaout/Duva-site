@@ -8,15 +8,20 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3); /* Match gallery lightbox color */
   z-index: 9999; /* Match Webflow z-index */
-  display: none; /* Hidden by default */
+  display: none !important; /* Hidden by default - force hide */
   align-items: center;
   justify-content: center;
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .contact-overlay.active {
-  display: flex; /* Show when active class is added */
+  display: flex !important; /* Show when active class is added - force show */
+  opacity: 1;
+  visibility: visible;
 }
 
 .contact-modal {
