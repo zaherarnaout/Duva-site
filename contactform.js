@@ -619,5 +619,340 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize the search functionality
   setupCountrySearch();
+
+  // === Email Functionality ===
+  
+  // Initialize EmailJS (you'll need to add the EmailJS script to your HTML)
+  // Add this to your HTML head: <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  
+  // EmailJS configuration
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
+  }
+
+  // Form submission handler
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    console.log('Contact form found - setting up submission handler');
+    
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      console.log('Form submitted - processing...');
+      
+      // Validate form
+      if (!validateForm()) {
+        console.log('Form validation failed');
+        return;
+      }
+      
+      // Show loading state
+      const submitButton = contactForm.querySelector('.submit-button');
+      const originalText = submitButton.value;
+      submitButton.value = 'Sending...';
+      submitButton.disabled = true;
+      
+      // Collect form data
+      const formData = collectFormData();
+      console.log('Form data collected:', formData);
+      
+      // Send email using EmailJS
+      sendEmail(formData)
+        .then(() => {
+          console.log('Email sent successfully');
+          showSuccessMessage();
+          contactForm.reset();
+          // Reset country dropdown
+          const countrySelect = document.getElementById('country');
+          if (countrySelect) {
+            countrySelect.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = 'Select country';
+            placeholder.selected = true;
+            placeholder.disabled = true;
+            countrySelect.appendChild(placeholder);
+            
+            // Re-populate countries
+            const frag = document.createDocumentFragment();
+            for (const name of COUNTRIES) {
+              const opt = document.createElement('option');
+              opt.value = name;
+              opt.textContent = name;
+              frag.appendChild(opt);
+            }
+            countrySelect.appendChild(frag);
+          }
+        })
+        .catch((error) => {
+          console.error('Email sending failed:', error);
+          showErrorMessage();
+        })
+        .finally(() => {
+          // Reset button state
+          submitButton.value = originalText;
+          submitButton.disabled = false;
+        });
+    });
+  }
+
+  // Form validation function
+  function validateForm() {
+    const requiredFields = [
+      'first-name',
+      'surname', 
+      'email',
+      'phone',
+      'country',
+      'message'
+    ];
+    
+    const requiredSelects = [
+      'country'
+    ];
+    
+    // Check required text fields
+    for (const fieldId of requiredFields) {
+      const field = document.getElementById(fieldId);
+      if (!field || !field.value.trim()) {
+        showFieldError(fieldId, 'This field is required');
+        return false;
+      }
+    }
+    
+    // Check required selects
+    for (const selectId of requiredSelects) {
+      const select = document.getElementById(selectId);
+      if (!select || !select.value || select.value === '') {
+        showFieldError(selectId, 'Please select an option');
+        return false;
+      }
+    }
+    
+    // Validate email format
+    const emailField = document.getElementById('email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailField.value)) {
+      showFieldError('email', 'Please enter a valid email address');
+      return false;
+    }
+    
+    // Validate phone format
+    const phoneField = document.getElementById('phone');
+    const phoneRegex = /^[0-9+\-() ]{7,}$/;
+    if (!phoneRegex.test(phoneField.value)) {
+      showFieldError('phone', 'Please enter a valid phone number');
+      return false;
+    }
+    
+    // Check privacy consent checkbox
+    const privacyCheckbox = document.querySelector('input[name="consent_privacy"]');
+    if (!privacyCheckbox || !privacyCheckbox.checked) {
+      showFieldError('consent_privacy', 'You must agree to the privacy policy');
+      return false;
+    }
+    
+    return true;
+  }
+
+  // Show field error
+  function showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      // Remove existing error styling
+      field.classList.remove('error');
+      
+      // Add error styling
+      field.classList.add('error');
+      field.style.borderColor = '#C0392B';
+      
+      // Show error message
+      let errorDiv = field.parentNode.querySelector('.field-error');
+      if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error';
+        errorDiv.style.color = '#C0392B';
+        errorDiv.style.fontSize = '12px';
+        errorDiv.style.marginTop = '5px';
+        field.parentNode.appendChild(errorDiv);
+      }
+      errorDiv.textContent = message;
+      
+      // Focus on the field
+      field.focus();
+      
+      // Remove error after 5 seconds
+      setTimeout(() => {
+        field.classList.remove('error');
+        field.style.borderColor = '';
+        if (errorDiv) {
+          errorDiv.remove();
+        }
+      }, 5000);
+    }
+  }
+
+  // Collect form data
+  function collectFormData() {
+    const form = document.getElementById('contact-form');
+    const formData = new FormData(form);
+    
+    const data = {
+      firstName: formData.get('first_name'),
+      surname: formData.get('surname'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      country: formData.get('country'),
+      city: formData.get('city'),
+      company: formData.get('company'),
+      profession: formData.get('profession'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+      consentPrivacy: formData.get('consent_privacy') === 'on',
+      consentNews: formData.get('consent_news') === 'on',
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      pageUrl: window.location.href
+    };
+    
+    return data;
+  }
+
+  // Send email using EmailJS
+  function sendEmail(formData) {
+    return new Promise((resolve, reject) => {
+      if (typeof emailjs === 'undefined') {
+        // Fallback: Use a simple fetch to a form submission service
+        sendEmailFallback(formData)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+      
+      // EmailJS template parameters
+      const templateParams = {
+        to_email: 'your-email@duva.com', // Replace with your email
+        from_name: `${formData.firstName} ${formData.surname}`,
+        from_email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        city: formData.city,
+        company: formData.company,
+        profession: formData.profession,
+        subject: formData.subject,
+        message: formData.message,
+        consent_privacy: formData.consentPrivacy ? 'Yes' : 'No',
+        consent_news: formData.consentNews ? 'Yes' : 'No',
+        timestamp: formData.timestamp
+      };
+      
+      // Send email using EmailJS
+      emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams
+      )
+      .then((response) => {
+        console.log('EmailJS response:', response);
+        resolve();
+      })
+      .catch((error) => {
+        console.error('EmailJS error:', error);
+        reject(error);
+      });
+    });
+  }
+
+  // Fallback email sending method
+  function sendEmailFallback(formData) {
+    return new Promise((resolve, reject) => {
+      // Use a form submission service like Formspree, Netlify Forms, or your own backend
+      const form = document.getElementById('contact-form');
+      
+      // Option 1: Formspree (free tier available)
+      // Change the action to your Formspree endpoint
+      form.action = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+      form.method = 'POST';
+      
+      // Option 2: Netlify Forms (if hosted on Netlify)
+      // form.action = '/';
+      // form.setAttribute('data-netlify', 'true');
+      
+      // Option 3: Custom backend endpoint
+      // form.action = 'https://your-backend.com/api/contact';
+      
+      // Submit the form
+      const formDataObj = new FormData(form);
+      
+      fetch(form.action, {
+        method: 'POST',
+        body: formDataObj,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          resolve();
+        } else {
+          throw new Error('Form submission failed');
+        }
+      })
+      .catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+  // Show success message
+  function showSuccessMessage() {
+    const successDiv = document.querySelector('.w-form-done');
+    const failDiv = document.querySelector('.w-form-fail');
+    
+    if (successDiv) {
+      successDiv.style.display = 'block';
+      if (failDiv) failDiv.style.display = 'none';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        successDiv.style.display = 'none';
+      }, 5000);
+    }
+  }
+
+  // Show error message
+  function showErrorMessage() {
+    const failDiv = document.querySelector('.w-form-fail');
+    const successDiv = document.querySelector('.w-form-done');
+    
+    if (failDiv) {
+      failDiv.style.display = 'block';
+      if (successDiv) successDiv.style.display = 'none';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        failDiv.style.display = 'none';
+      }, 5000);
+    }
+  }
+
+  // Global function to test email functionality
+  window.testEmailFunctionality = function() {
+    console.log('🧪 Testing email functionality...');
+    
+    // Test form validation
+    console.log('Testing form validation...');
+    const isValid = validateForm();
+    console.log('Form validation result:', isValid);
+    
+    // Test form data collection
+    console.log('Testing form data collection...');
+    const formData = collectFormData();
+    console.log('Collected form data:', formData);
+    
+    return {
+      formValidation: isValid,
+      formData: formData
+    };
+  };
 });
 
