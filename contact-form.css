@@ -928,39 +928,73 @@ select:not(.has-value) {
   color: #D1D1D1 !important;
 }
 
-/* === Custom Checkbox Styling === */
-.custom-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  accent-color: transparent; /* Prevents blue default in modern browsers */
+/* === DUVA: Webflow checkbox fix (news + privacy) === */
+
+/* Keep the real inputs for submission, hide native paint entirely */
+.duva-consent input[type="checkbox"].custom-checkbox {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  accent-color: transparent !important;
+  outline: 0 !important;
+}
+
+/* Remove iOS tap highlight from clickable wrappers */
+.duva-consent label,
+.duva-consent .w-checkbox {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Style the visible square Webflow renders */
+.duva-consent .w-checkbox-input {
   width: 20px;
   height: 20px;
-  border: 2px solid #212121;
-  border-radius: 4px;
-  background-color: white;
-  cursor: pointer;
+  border: 2px solid #212121;     /* DUVA dark grey */
+  border-radius: 4px;             /* 0 for sharp corners if needed */
+  background: #fff;
   position: relative;
-  outline: none; /* Remove focus outline */
-}
-
-.custom-checkbox:focus {
+  box-shadow: none;
   outline: none;
-  box-shadow: none; /* Prevent blue glow on focus */
+  background-image: none !important; /* nuke Webflow's default blue SVG */
+  transition: border-color .15s, background .15s, transform .05s;
 }
 
-.custom-checkbox:checked {
-  background-color: #C0392B;
+/* Hover polish */
+.duva-consent .w-checkbox-input:hover {
+  border-color: #C0392B;          /* DUVA red */
+}
+
+/* Focus state (Webflow adds this class) */
+.duva-consent .w-checkbox-input.w--redirected-focus {
+  box-shadow: none;
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+/* Checked state (Webflow toggles this class on the visible square) */
+.duva-consent .w-checkbox-input.w--redirected-checked {
+  background: #C0392B;            /* DUVA red */
   border-color: #C0392B;
+  background-image: none !important;
 }
 
-.custom-checkbox:checked::after {
+/* Our custom white checkmark */
+.duva-consent .w-checkbox-input.w--redirected-checked::after {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 6px;
-  width: 4px;
-  height: 8px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
+  top: 2px;
+  left: 6px;                      /* tweak if needed */
+  width: 6px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
   transform: rotate(45deg);
+}
+
+/* Press feedback (optional) */
+.duva-consent .w-checkbox-input:active {
+  transform: scale(0.96);
 }
