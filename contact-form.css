@@ -689,9 +689,12 @@ select {
   font-size: 14px !important;
 }
 
-/* When a value is selected, change to dark color */
-select:not([value=""]):not([value="Select one..."]):not([value="Select country"]) {
-  color: #212121 !important; /* Dark when value selected */
+/* Force light grey for select elements by default */
+select option {
+  color: #212121 !important;
+  font-family: Gotham, Georgia, sans-serif !important;
+  font-size: 14px !important;
+  background-color: #FFFFFF !important;
 }
 
 /* Style for the first option (placeholder) */
@@ -703,6 +706,16 @@ select option:first-child {
 /* Style for actual options */
 select option:not(:first-child) {
   color: #212121 !important;
+}
+
+/* When select has a real value selected, force dark color */
+select.has-value {
+  color: #212121 !important;
+}
+
+/* Additional force for select elements */
+select:not(.has-value) {
+  color: #D1D1D1 !important;
 }
 
 /* === Form Field Consistency === */
@@ -813,4 +826,43 @@ select option:checked {
 .w-form-done,
 .w-form-fail {
   color: inherit !important;
+}
+
+/* === Ultra Aggressive Select Field Styling === */
+select,
+select:not(.has-value),
+select option:first-child {
+  color: #D1D1D1 !important; /* Force light grey for placeholder text */
+  font-family: Gotham, Georgia, sans-serif !important;
+  font-size: 14px !important;
+}
+
+/* When select has a real value selected, force dark color */
+select.has-value,
+select.has-value option {
+  color: #212121 !important;
+}
+
+/* Force light grey for select elements by default */
+select option {
+  color: #212121 !important;
+  font-family: Gotham, Georgia, sans-serif !important;
+  font-size: 14px !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Style for the first option (placeholder) */
+select option:first-child {
+  color: #D1D1D1 !important;
+  font-style: italic !important;
+}
+
+/* Style for actual options */
+select option:not(:first-child) {
+  color: #212121 !important;
+}
+
+/* Additional force for select elements */
+select:not(.has-value) {
+  color: #D1D1D1 !important;
 }
