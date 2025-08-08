@@ -267,6 +267,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Test modal functionality immediately
+  if (contactOverlay && closeBtn) {
+    console.log('✅ Modal elements found - testing functionality');
+    
+    // Test manual modal opening
+    setTimeout(() => {
+      console.log('🧪 Testing modal open...');
+      contactOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      setTimeout(() => {
+        console.log('🧪 Testing modal close...');
+        contactOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        console.log('✅ Modal test completed successfully');
+      }, 2000);
+    }, 1000);
+  }
+
+  // Enhanced button detection - look for any button with "contact" text
+  const allContactButtons = Array.from(document.querySelectorAll('a, button, .w-button')).filter(el => 
+    el.textContent.toLowerCase().includes('contact') || 
+    el.getAttribute('href')?.includes('contact') ||
+    el.className.toLowerCase().includes('contact')
+  );
+  
+  console.log('🔍 Found contact-related buttons:', allContactButtons);
+  
+  if (allContactButtons.length > 0 && contactOverlay) {
+    console.log('🎯 Setting up contact button events');
+    allContactButtons.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Contact button clicked:', btn.textContent);
+        if (contactOverlay) {
+          contactOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          console.log('Modal opened from contact button');
+        }
+      });
+    });
+  }
+
   // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
   if (!countrySelect) {
