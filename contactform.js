@@ -524,94 +524,68 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 4) Add dynamic search functionality
   function setupCountrySearch() {
-    // Create a search input field
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Type to search countries...';
-    searchInput.className = 'country-search-input';
+    console.log('Setting up country search functionality');
     
-    // Insert search input before the select
-    countrySelect.parentNode.insertBefore(searchInput, countrySelect);
-
-    // Add event listener for search
-    searchInput.addEventListener('input', function(e) {
-      const searchTerm = e.target.value.toLowerCase().trim();
-      const options = countrySelect.querySelectorAll('option:not([disabled])');
+    // Make the select element searchable
+    let searchBuffer = '';
+    let searchTimeout;
+    
+    // Add keydown event listener for search functionality
+    countrySelect.addEventListener('keydown', function(e) {
+      // Clear the search buffer after 1 second of no typing
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchBuffer = '';
+      }, 1000);
       
-      if (searchTerm === '') {
-        // Show all countries when search is empty
-        options.forEach(option => {
-          option.style.display = '';
-        });
-        return;
-      }
-
-      // Filter countries based on search term
-      let hasMatches = false;
-      options.forEach(option => {
-        const countryName = option.textContent.toLowerCase();
-        if (countryName.includes(searchTerm)) {
-          option.style.display = '';
-          hasMatches = true;
-        } else {
-          option.style.display = 'none';
-        }
-      });
-
-      // Show "No matches found" message if no results
-      if (!hasMatches) {
-        // Remove existing "no matches" option if it exists
-        const existingNoMatch = countrySelect.querySelector('option[data-no-match]');
-        if (existingNoMatch) {
-          existingNoMatch.remove();
-        }
-
-        // Add "No matches found" option
-        const noMatchOption = document.createElement('option');
-        noMatchOption.value = '';
-        noMatchOption.textContent = 'No countries found matching "' + searchTerm + '"';
-        noMatchOption.disabled = true;
-        noMatchOption.setAttribute('data-no-match', 'true');
-        countrySelect.appendChild(noMatchOption);
-      } else {
-        // Remove "no matches" option if it exists
-        const existingNoMatch = countrySelect.querySelector('option[data-no-match]');
-        if (existingNoMatch) {
-          existingNoMatch.remove();
-        }
-      }
-    });
-
-    // Clear search when select changes
-    countrySelect.addEventListener('change', function() {
-      if (this.value !== '') {
-        searchInput.value = '';
-        // Show all countries again
+      // Only handle printable characters
+      if (e.key.length === 1) {
+        searchBuffer += e.key.toLowerCase();
+        console.log('Search buffer:', searchBuffer);
+        
+        // Find matching option
         const options = this.querySelectorAll('option:not([disabled])');
+        let foundMatch = false;
+        
         options.forEach(option => {
-          option.style.display = '';
+          const countryName = option.textContent.toLowerCase();
+          if (countryName.startsWith(searchBuffer)) {
+            option.selected = true;
+            foundMatch = true;
+            return;
+          }
         });
+        
+        // If no exact match, find partial match
+        if (!foundMatch) {
+          options.forEach(option => {
+            const countryName = option.textContent.toLowerCase();
+            if (countryName.includes(searchBuffer)) {
+              option.selected = true;
+              foundMatch = true;
+              return;
+            }
+          });
+        }
       }
     });
-
-    // Focus search input when clicking on select
+    
+    // Add click event to focus the select for searching
     countrySelect.addEventListener('click', function() {
-      searchInput.focus();
+      this.focus();
     });
-
+    
+    // Add focus event to enable searching
+    countrySelect.addEventListener('focus', function() {
+      console.log('Country select focused - ready for search');
+    });
+    
     // Add keyboard shortcut (Ctrl/Cmd + K) to focus search
     document.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k' && document.activeElement === countrySelect) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        searchInput.focus();
+        countrySelect.focus();
       }
-    });
-
-    // Auto-focus search when dropdown opens
-    countrySelect.addEventListener('focus', function() {
-      setTimeout(() => {
-        searchInput.focus();
-      }, 100);
     });
 
     console.log('Country search functionality added');
