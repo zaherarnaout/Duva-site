@@ -338,7 +338,7 @@
 }
 
 /* Close Button */
-.subscribe-close {
+.contact-close {
   border-radius: 8px;
   background-color: #212121; /* btn-dark-bg */
   font-family: Gotham, Georgia, sans-serif;
@@ -359,7 +359,7 @@
   padding: 8px;
 }
 
-.subscribe-close:hover {
+.contact-close:hover {
   background-color: #C0392B; /* duva-red */
 }
 
