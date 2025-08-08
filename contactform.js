@@ -125,10 +125,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Close modal when close button is clicked
     if (closeBtn) {
       console.log('🔧 Setting up close button event for:', closeBtn.className);
-      closeBtn.addEventListener('click', function(e) {
+      
+      // Remove any existing event listeners first
+      const newCloseBtn = closeBtn.cloneNode(true);
+      closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+      
+      // Add new event listener
+      newCloseBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         console.log('Close button clicked - closing modal');
+        
         if (contactOverlay) {
           contactOverlay.classList.remove('active');
           document.body.style.overflow = '';
@@ -137,6 +145,20 @@ document.addEventListener('DOMContentLoaded', function () {
           console.error('Contact overlay not found when closing');
         }
       });
+      
+      // Also add mousedown event as backup
+      newCloseBtn.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Close button mousedown - closing modal');
+        
+        if (contactOverlay) {
+          contactOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+          console.log('Modal closed via mousedown');
+        }
+      });
+      
     } else {
       console.error('Close button not found');
     }
@@ -156,8 +178,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contactOverlay) {
       contactOverlay.classList.remove('active');
       console.log('Modal hidden on page load');
+      
+      // Force hide with CSS as backup
+      contactOverlay.style.display = 'none';
+      contactOverlay.style.opacity = '0';
+      contactOverlay.style.visibility = 'hidden';
     }
   }
+  
+  // Global close function that can be called from anywhere
+  window.forceCloseModal = function() {
+    const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+      overlay.style.display = 'none';
+      overlay.style.opacity = '0';
+      overlay.style.visibility = 'hidden';
+      document.body.style.overflow = '';
+      console.log('Modal force closed');
+    }
+  };
 
   // Close modal with Escape key
   document.addEventListener('keydown', function(e) {
@@ -177,6 +217,18 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Modal opened manually');
     } else {
       console.error('Contact overlay not found for manual trigger');
+    }
+  };
+  
+  // Global close function
+  window.closeContactModal = function() {
+    const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      console.log('Modal closed via global function');
+    } else {
+      console.error('Contact overlay not found for global close');
     }
   };
 
@@ -274,13 +326,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (contactOverlay && closeBtn) {
     console.log('✅ Modal elements found - testing functionality');
     
-    // Test manual modal opening (but don't auto-close)
-    setTimeout(() => {
-      console.log('🧪 Testing modal open...');
-      contactOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      console.log('✅ Modal test completed successfully');
-    }, 1000);
+    // Remove auto-opening test - this was causing the modal to open automatically
+    // setTimeout(() => {
+    //   console.log('🧪 Testing modal open...');
+    //   contactOverlay.classList.add('active');
+    //   document.body.style.overflow = 'hidden';
+    //   console.log('✅ Modal test completed successfully');
+    // }, 1000);
   }
 
   // Enhanced button detection - look for any button with "contact" text
@@ -435,3 +487,4 @@ document.addEventListener('DOMContentLoaded', function () {
   countrySelect.appendChild(frag);
   console.log('Country dropdown populated with', COUNTRIES.length, 'countries');
 });
+
