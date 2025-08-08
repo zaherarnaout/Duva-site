@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
       contactOverlay.classList.add('active');
       document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
       console.log('Modal opened from URL parameter');
     }, 500);
   }
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.opacity = '1';
           contactOverlay.style.visibility = 'visible';
           document.body.classList.add('modal-open');
+          document.documentElement.classList.add('modal-open');
           console.log('Modal opened');
         } else {
           console.error('Contact overlay not found');
@@ -147,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
           document.body.classList.remove('modal-open');
+          document.documentElement.classList.remove('modal-open');
           console.log('Modal closed successfully');
         } else {
           console.error('Contact overlay not found when closing');
@@ -165,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
           document.body.classList.remove('modal-open');
+          document.documentElement.classList.remove('modal-open');
           console.log('Modal closed via mousedown');
         }
       });
@@ -183,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
           document.body.classList.remove('modal-open');
+          document.documentElement.classList.remove('modal-open');
         }
       });
     }
@@ -208,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
       overlay.style.opacity = '0';
       overlay.style.visibility = 'hidden';
       document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
       console.log('Modal force closed');
     }
   };
@@ -218,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Escape key pressed');
       contactOverlay.classList.remove('active');
       document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
     }
   });
 
@@ -227,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (overlay) {
       overlay.classList.add('active');
       document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
       console.log('Modal opened manually');
     } else {
       console.error('Contact overlay not found for manual trigger');
@@ -239,6 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (overlay) {
       overlay.classList.remove('active');
       document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
       console.log('Modal closed via global function');
     } else {
       console.error('Contact overlay not found for global close');
@@ -337,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
         contactOverlay.style.opacity = '1';
         contactOverlay.style.visibility = 'visible';
         document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
         console.log('Modal opened from contact button');
       } else {
         console.error('Contact overlay not found');
@@ -388,12 +398,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contactOverlay) {
       contactOverlay.classList.add('active');
       document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
       console.log('✅ Modal opened manually');
       
       // Auto-close after 3 seconds
       setTimeout(() => {
         contactOverlay.classList.remove('active');
         document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
         console.log('✅ Modal closed automatically');
       }, 3000);
     } else {
@@ -509,5 +521,103 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   countrySelect.appendChild(frag);
   console.log('Country dropdown populated with', COUNTRIES.length, 'countries');
+
+  // 4) Add dynamic search functionality
+  function setupCountrySearch() {
+    // Create a search input field
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Type to search countries...';
+    searchInput.className = 'country-search-input';
+    
+    // Insert search input before the select
+    countrySelect.parentNode.insertBefore(searchInput, countrySelect);
+
+    // Add event listener for search
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const options = countrySelect.querySelectorAll('option:not([disabled])');
+      
+      if (searchTerm === '') {
+        // Show all countries when search is empty
+        options.forEach(option => {
+          option.style.display = '';
+        });
+        return;
+      }
+
+      // Filter countries based on search term
+      let hasMatches = false;
+      options.forEach(option => {
+        const countryName = option.textContent.toLowerCase();
+        if (countryName.includes(searchTerm)) {
+          option.style.display = '';
+          hasMatches = true;
+        } else {
+          option.style.display = 'none';
+        }
+      });
+
+      // Show "No matches found" message if no results
+      if (!hasMatches) {
+        // Remove existing "no matches" option if it exists
+        const existingNoMatch = countrySelect.querySelector('option[data-no-match]');
+        if (existingNoMatch) {
+          existingNoMatch.remove();
+        }
+
+        // Add "No matches found" option
+        const noMatchOption = document.createElement('option');
+        noMatchOption.value = '';
+        noMatchOption.textContent = 'No countries found matching "' + searchTerm + '"';
+        noMatchOption.disabled = true;
+        noMatchOption.setAttribute('data-no-match', 'true');
+        countrySelect.appendChild(noMatchOption);
+      } else {
+        // Remove "no matches" option if it exists
+        const existingNoMatch = countrySelect.querySelector('option[data-no-match]');
+        if (existingNoMatch) {
+          existingNoMatch.remove();
+        }
+      }
+    });
+
+    // Clear search when select changes
+    countrySelect.addEventListener('change', function() {
+      if (this.value !== '') {
+        searchInput.value = '';
+        // Show all countries again
+        const options = this.querySelectorAll('option:not([disabled])');
+        options.forEach(option => {
+          option.style.display = '';
+        });
+      }
+    });
+
+    // Focus search input when clicking on select
+    countrySelect.addEventListener('click', function() {
+      searchInput.focus();
+    });
+
+    // Add keyboard shortcut (Ctrl/Cmd + K) to focus search
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k' && document.activeElement === countrySelect) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    // Auto-focus search when dropdown opens
+    countrySelect.addEventListener('focus', function() {
+      setTimeout(() => {
+        searchInput.focus();
+      }, 100);
+    });
+
+    console.log('Country search functionality added');
+  }
+
+  // Initialize the search functionality
+  setupCountrySearch();
 });
 
