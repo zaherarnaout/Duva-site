@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('🔄 Auto-opening modal from URL parameter');
     setTimeout(() => {
       contactOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
       console.log('Modal opened from URL parameter');
     }, 500);
   }
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.display = 'flex';
           contactOverlay.style.opacity = '1';
           contactOverlay.style.visibility = 'visible';
-          document.body.style.overflow = 'hidden';
+          document.body.classList.add('modal-open');
           console.log('Modal opened');
         } else {
           console.error('Contact overlay not found');
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.display = 'none';
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
-          document.body.style.overflow = '';
+          document.body.classList.remove('modal-open');
           console.log('Modal closed successfully');
         } else {
           console.error('Contact overlay not found when closing');
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.display = 'none';
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
-          document.body.style.overflow = '';
+          document.body.classList.remove('modal-open');
           console.log('Modal closed via mousedown');
         }
       });
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
           contactOverlay.style.display = 'none';
           contactOverlay.style.opacity = '0';
           contactOverlay.style.visibility = 'hidden';
-          document.body.style.overflow = '';
+          document.body.classList.remove('modal-open');
         }
       });
     }
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
       overlay.style.display = 'none';
       overlay.style.opacity = '0';
       overlay.style.visibility = 'hidden';
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
       console.log('Modal force closed');
     }
   };
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && contactOverlay && contactOverlay.classList.contains('active')) {
       console.log('Escape key pressed');
       contactOverlay.classList.remove('active');
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
     }
   });
 
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     if (overlay) {
       overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
       console.log('Modal opened manually');
     } else {
       console.error('Contact overlay not found for manual trigger');
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     if (overlay) {
       overlay.classList.remove('active');
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
       console.log('Modal closed via global function');
     } else {
       console.error('Contact overlay not found for global close');
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
         contactOverlay.style.display = 'flex';
         contactOverlay.style.opacity = '1';
         contactOverlay.style.visibility = 'visible';
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
         console.log('Modal opened from contact button');
       } else {
         console.error('Contact overlay not found');
@@ -387,13 +387,13 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('🧪 Manual modal test');
     if (contactOverlay) {
       contactOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
       console.log('✅ Modal opened manually');
       
       // Auto-close after 3 seconds
       setTimeout(() => {
         contactOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        document.body.classList.remove('modal-open');
         console.log('✅ Modal closed automatically');
       }, 3000);
     } else {
