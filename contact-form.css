@@ -439,7 +439,10 @@ textarea {
 /* Select fields handled separately for placeholder styling */
 
 /* Submit Button */
-.submit-button {
+.submit-button,
+input.submit-button,
+input[type="submit"].submit-button,
+.w-button.submit-button {
   border: 1px solid #E4E3E3; /* border-divider-light */
   border-radius: 8px;
   background-color: #212121; /* btn-dark-bg */
@@ -478,10 +481,25 @@ textarea {
   left: 100%;
 }
 
-.submit-button:hover {
+.submit-button:hover,
+input.submit-button:hover,
+input[type="submit"].submit-button:hover,
+.w-button.submit-button:hover {
   background-color: #C0392B; /* duva-red */
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+  color: #F4F5F6 !important; /* Ensure text stays light on hover */
+}
+
+/* AGGRESSIVE Submit Button Text Color Override */
+.submit-button,
+.submit-button:hover,
+.submit-button:focus,
+.submit-button:active,
+input.submit-button,
+input[type="submit"].submit-button,
+.w-button.submit-button {
+  color: #F4F5F6 !important; /* Force DUVA light grey text */
 }
 
 /* Form Messages */
