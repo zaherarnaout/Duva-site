@@ -446,20 +446,42 @@ textarea {
   font-family: Gotham, Georgia, sans-serif;
   font-size: 14px; /* btn-size */
   line-height: 1.4; /* btn-height */
-  font-weight: 500; /* btn-weight */
+  font-weight: 600; /* Enhanced from filter button */
   text-align: center;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
   color: #F4F5F6;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   margin-top: 20px;
   padding: 14px 28px;
+  /* Filter Apply Button Effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.submit-button:hover::before {
+  left: 100%;
 }
 
 .submit-button:hover {
   background-color: #C0392B; /* duva-red */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 /* Form Messages */
@@ -489,7 +511,7 @@ textarea {
   font-family: Gotham, Georgia, sans-serif;
   font-size: 14px; /* btn-size */
   line-height: 1.4; /* btn-height */
-  font-weight: 500; /* btn-weight */
+  font-weight: 600; /* Enhanced from filter button */
   text-align: center;
   width: 150px;
   margin-right: 20px;
@@ -499,13 +521,34 @@ textarea {
   right: 0%;
   color: #F4F5F6;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   border: none;
   padding: 8px;
+  /* Filter Apply Button Effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.contact-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.contact-close:hover::before {
+  left: 100%;
 }
 
 .contact-close:hover {
   background-color: #C0392B; /* duva-red */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 /* === Dropdown Enhancement Styles === */
