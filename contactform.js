@@ -109,9 +109,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contactBtn) {
       contactBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         console.log('Contact button clicked');
         if (contactOverlay) {
           contactOverlay.classList.add('active');
+          contactOverlay.style.display = 'flex';
+          contactOverlay.style.opacity = '1';
+          contactOverlay.style.visibility = 'visible';
           document.body.style.overflow = 'hidden';
           console.log('Modal opened');
         } else {
@@ -139,6 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (contactOverlay) {
           contactOverlay.classList.remove('active');
+          contactOverlay.style.display = 'none';
+          contactOverlay.style.opacity = '0';
+          contactOverlay.style.visibility = 'hidden';
           document.body.style.overflow = '';
           console.log('Modal closed successfully');
         } else {
@@ -154,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (contactOverlay) {
           contactOverlay.classList.remove('active');
+          contactOverlay.style.display = 'none';
+          contactOverlay.style.opacity = '0';
+          contactOverlay.style.visibility = 'hidden';
           document.body.style.overflow = '';
           console.log('Modal closed via mousedown');
         }
@@ -169,6 +179,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target === contactOverlay) {
           console.log('Clicked outside modal');
           contactOverlay.classList.remove('active');
+          contactOverlay.style.display = 'none';
+          contactOverlay.style.opacity = '0';
+          contactOverlay.style.visibility = 'hidden';
           document.body.style.overflow = '';
         }
       });
@@ -307,13 +320,22 @@ document.addEventListener('DOMContentLoaded', function () {
   const mainPageContactBtn = document.getElementById('contact-btn');
   if (mainPageContactBtn) {
     console.log('📍 Contact button found - setting up modal open');
-    mainPageContactBtn.addEventListener('click', function(e) {
+    
+    // Remove any existing event listeners first
+    const newContactBtn = mainPageContactBtn.cloneNode(true);
+    mainPageContactBtn.parentNode.replaceChild(newContactBtn, mainPageContactBtn);
+    
+    newContactBtn.addEventListener('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       console.log('Contact button clicked - opening modal');
       
       // Open modal directly instead of navigating
       if (contactOverlay) {
         contactOverlay.classList.add('active');
+        contactOverlay.style.display = 'flex';
+        contactOverlay.style.opacity = '1';
+        contactOverlay.style.visibility = 'visible';
         document.body.style.overflow = 'hidden';
         console.log('Modal opened from contact button');
       } else {
@@ -344,20 +366,21 @@ document.addEventListener('DOMContentLoaded', function () {
   
   console.log('🔍 Found contact-related buttons:', allContactButtons);
   
-  if (allContactButtons.length > 0 && contactOverlay) {
-    console.log('🎯 Setting up contact button events');
-    allContactButtons.forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('Contact button clicked:', btn.textContent);
-        if (contactOverlay) {
-          contactOverlay.classList.add('active');
-          document.body.style.overflow = 'hidden';
-          console.log('Modal opened from contact button');
-        }
-      });
-    });
-  }
+  // Remove duplicate event handlers - we already handled the main contact button above
+  // if (allContactButtons.length > 0 && contactOverlay) {
+  //   console.log('🎯 Setting up contact button events');
+  //   allContactButtons.forEach(btn => {
+  //     btn.addEventListener('click', function(e) {
+  //       e.preventDefault();
+  //       console.log('Contact button clicked:', btn.textContent);
+  //       if (contactOverlay) {
+  //         contactOverlay.classList.add('active');
+  //         document.body.style.overflow = 'hidden';
+  //         console.log('Modal opened from contact button');
+  //       }
+  //     });
+  //   });
+  // }
 
   // Simple test function to open modal manually
   window.testModal = function() {
