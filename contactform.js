@@ -1,53 +1,117 @@
 /* === Contact Form Country Dropdown Enhancement === */
 document.addEventListener('DOMContentLoaded', function () {
+  console.log('Contact form script loaded');
+  
   // Modal functionality
-  const contactBtn = document.getElementById('contact-btn');
-  const contactOverlay = document.getElementById('contact-overlay');
-  const closeBtn = document.querySelector('.contact-close'); // Updated class name
+  let contactBtn = document.getElementById('contact-btn');
+  let contactOverlay = document.getElementById('contact-overlay');
+  let closeBtn = document.querySelector('.contact-close');
 
-  // Open modal when contact button is clicked
-  if (contactBtn) {
-    contactBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (contactOverlay) {
-        contactOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  console.log('Elements found:', {
+    contactBtn: contactBtn,
+    contactOverlay: contactOverlay,
+    closeBtn: closeBtn
+  });
+
+  // Fallback: Try to find elements again after a short delay
+  if (!contactBtn || !contactOverlay || !closeBtn) {
+    setTimeout(() => {
+      contactBtn = document.getElementById('contact-btn');
+      contactOverlay = document.getElementById('contact-overlay');
+      closeBtn = document.querySelector('.contact-close');
+      
+      console.log('Elements found after delay:', {
+        contactBtn: contactBtn,
+        contactOverlay: contactOverlay,
+        closeBtn: closeBtn
+      });
+      
+      if (contactBtn && contactOverlay && closeBtn) {
+        setupModalEvents();
       }
-    });
+    }, 1000);
+  } else {
+    setupModalEvents();
   }
 
-  // Close modal when close button is clicked
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (contactOverlay) {
-        contactOverlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-      }
-    });
-  }
+  function setupModalEvents() {
+    // Open modal when contact button is clicked
+    if (contactBtn) {
+      contactBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Contact button clicked');
+        if (contactOverlay) {
+          contactOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          console.log('Modal opened');
+        } else {
+          console.error('Contact overlay not found');
+        }
+      });
+    } else {
+      console.error('Contact button not found');
+    }
 
-  // Close modal when clicking outside the modal content
-  if (contactOverlay) {
-    contactOverlay.addEventListener('click', function(e) {
-      if (e.target === contactOverlay) {
-        contactOverlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-      }
-    });
+    // Close modal when close button is clicked
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Close button clicked');
+        if (contactOverlay) {
+          contactOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+          console.log('Modal closed');
+        }
+      });
+    } else {
+      console.error('Close button not found');
+    }
+
+    // Close modal when clicking outside the modal content
+    if (contactOverlay) {
+      contactOverlay.addEventListener('click', function(e) {
+        if (e.target === contactOverlay) {
+          console.log('Clicked outside modal');
+          contactOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    // Ensure modal is hidden on page load
+    if (contactOverlay) {
+      contactOverlay.classList.remove('active');
+      console.log('Modal hidden on page load');
+    }
   }
 
   // Close modal with Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && contactOverlay && contactOverlay.classList.contains('active')) {
+      console.log('Escape key pressed');
       contactOverlay.classList.remove('active');
-      document.body.style.overflow = ''; // Restore scrolling
+      document.body.style.overflow = '';
     }
   });
 
+  // Manual trigger function (for testing)
+  window.openContactModal = function() {
+    const overlay = document.getElementById('contact-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('Modal opened manually');
+    }
+  };
+
   // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
-  if (!countrySelect) return;
+  if (!countrySelect) {
+    console.log('Country select not found');
+    return;
+  }
+
+  console.log('Populating country dropdown');
 
   // 1) Preserve/ensure placeholder as first option
   countrySelect.innerHTML = '';
@@ -95,4 +159,5 @@ document.addEventListener('DOMContentLoaded', function () {
     frag.appendChild(opt);
   }
   countrySelect.appendChild(frag);
+  console.log('Country dropdown populated with', COUNTRIES.length, 'countries');
 });
