@@ -1,5 +1,51 @@
 /* === Contact Form Country Dropdown Enhancement === */
 document.addEventListener('DOMContentLoaded', function () {
+  // Modal functionality
+  const contactBtn = document.getElementById('contact-btn');
+  const contactOverlay = document.getElementById('contact-overlay');
+  const closeBtn = document.querySelector('.contact-close'); // Updated class name
+
+  // Open modal when contact button is clicked
+  if (contactBtn) {
+    contactBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (contactOverlay) {
+        contactOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      }
+    });
+  }
+
+  // Close modal when close button is clicked
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (contactOverlay) {
+        contactOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+  }
+
+  // Close modal when clicking outside the modal content
+  if (contactOverlay) {
+    contactOverlay.addEventListener('click', function(e) {
+      if (e.target === contactOverlay) {
+        contactOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+  }
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && contactOverlay && contactOverlay.classList.contains('active')) {
+      contactOverlay.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+  });
+
+  // Country dropdown enhancement
   const countrySelect = document.getElementById('country');
   if (!countrySelect) return;
 
