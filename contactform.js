@@ -52,12 +52,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const urlParams = new URLSearchParams(window.location.search);
   const shouldOpenModal = urlParams.get('openContact') === 'true';
   
-  if (shouldOpenModal && contactOverlay) {
-    console.log('🔄 Auto-opening modal from URL parameter');
+  // Also check if we're on the contact page and should auto-open
+  const isContactPage = window.location.pathname.includes('contact') || 
+                       window.location.pathname.includes('contact-us') ||
+                       window.location.pathname.includes('form');
+  
+  if ((shouldOpenModal || isContactPage) && contactOverlay) {
+    console.log('🔄 Auto-opening modal from URL parameter or contact page');
     setTimeout(() => {
       contactOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
-      console.log('Modal opened from URL parameter');
+      console.log('Modal opened from URL parameter or contact page');
     }, 500);
   }
 
@@ -249,21 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       console.log('Main page contact button clicked');
       
-      // Get the current page URL
-      const currentPage = window.location.pathname;
-      
-      // Determine which page has the contact form
-      // You can customize this based on your page structure
-      let contactFormPage = '/contact'; // Default contact page
-      
-      // If we're already on a page with contact form, just add parameter
-      if (currentPage.includes('contact') || currentPage.includes('form')) {
-        const separator = window.location.href.includes('?') ? '&' : '?';
-        window.location.href = window.location.href + separator + 'openContact=true';
-      } else {
-        // Redirect to contact form page
-        window.location.href = contactFormPage + '?openContact=true';
-      }
+      // Navigate to the contact-us page
+      window.location.href = '/contact-us';
     });
   }
 
