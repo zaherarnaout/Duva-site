@@ -1,0 +1,217 @@
+/* === Contact Form Styles === */
+
+/* Contact Form Container */
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-modal {
+  background-color: #F4F5F6;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Contact Form Header */
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #E4E3E3;
+}
+
+.contact-divider {
+  height: 1px;
+  background-color: #E4E3E3;
+}
+
+/* Form Content */
+.form-hero {
+  padding: 30px;
+}
+
+.text-block-58 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 10px;
+}
+
+.text-block-57 {
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* Form Fields */
+.contact-form-wrapper {
+  width: 100%;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.subscribe-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label,
+.field-label-2 {
+  font-weight: 500;
+  color: #212121;
+  margin-bottom: 8px;
+}
+
+.text-field,
+.text-field-2,
+._w-select,
+.textarea {
+  padding: 12px 16px;
+  border: 1px solid #E4E3E3;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.text-field:focus,
+.text-field-2:focus,
+._w-select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #C0392B;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Privacy Consent */
+.privacy-consent {
+  margin-top: 20px;
+}
+
+.w-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.w-checkbox-input {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #E4E3E3;
+  border-radius: 3px;
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #212121;
+}
+
+.link-15 {
+  color: #C0392B;
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #C0392B;
+  color: #F4F5F6;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #A93226;
+}
+
+/* Form Messages */
+.w-form-done,
+.w-form-fail {
+  padding: 20px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.w-form-done {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.w-form-fail {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Close Button */
+.subscribe-close {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: color 0.3s ease;
+}
+
+.subscribe-close:hover {
+  color: #C0392B;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-modal {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .subscribe-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .form-hero {
+    padding: 20px;
+  }
+  
+  .contact-header {
+    padding: 15px 20px;
+  }
+}
