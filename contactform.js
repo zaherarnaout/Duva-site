@@ -623,10 +623,18 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedOption.disabled
     );
     
+    console.log('Select field:', select.id || select.name);
+    console.log('Selected option:', selectedOption ? selectedOption.textContent : 'none');
+    console.log('Is placeholder:', isPlaceholder);
+    
     if (isPlaceholder) {
       select.style.color = '#D1D1D1'; // Light grey for placeholder
+      select.classList.remove('has-value');
+      console.log('Set to light grey');
     } else {
       select.style.color = '#212121'; // Dark color for selected value
+      select.classList.add('has-value');
+      console.log('Set to dark');
     }
   }
 
