@@ -947,7 +947,7 @@ select:not(.has-value) {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Style the visible square Webflow renders */
+/* Style the visible square Webflow renders - Filter Section Effects */
 .duva-consent .w-checkbox-input {
   width: 20px;
   height: 20px;
@@ -958,12 +958,35 @@ select:not(.has-value) {
   box-shadow: none;
   outline: none;
   background-image: none !important; /* nuke Webflow's default blue SVG */
-  transition: border-color .15s, background .15s, transform .05s;
+  /* Filter section effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  overflow: hidden;
+  cursor: pointer;
 }
 
-/* Hover polish */
+/* Filter section shimmer effect */
+.duva-consent .w-checkbox-input::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+/* Hover effects from filter section */
 .duva-consent .w-checkbox-input:hover {
   border-color: #C0392B;          /* DUVA red */
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+}
+
+.duva-consent .w-checkbox-input:hover::before {
+  left: 100%;
 }
 
 /* Focus state (Webflow adds this class) */
@@ -973,28 +996,71 @@ select:not(.has-value) {
   outline-offset: 2px;
 }
 
-/* Checked state (Webflow toggles this class on the visible square) */
+/* Checked state with filter section effects */
 .duva-consent .w-checkbox-input.w--redirected-checked {
-  background: #C0392B;            /* DUVA red */
+  background: #C0392B !important;            /* DUVA red */
   border-color: #C0392B;
   background-image: none !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
 
-/* Our custom white checkmark */
+/* Enhanced checkmark with filter section style */
 .duva-consent .w-checkbox-input.w--redirected-checked::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 6px;                      /* tweak if needed */
-  width: 6px;
-  height: 10px;
-  border: 2px solid #fff;
-  border-top: 0;
-  border-left: 0;
-  transform: rotate(45deg);
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+  opacity: 1;
+  transition: all 0.2s ease;
+  z-index: 2;
 }
 
 /* Press feedback (optional) */
 .duva-consent .w-checkbox-input:active {
   transform: scale(0.96);
+}
+
+/* === Plain text styling for checkbox labels === */
+.duva-consent .w-checkbox + .w-form-label,
+.duva-consent .field-label,
+.duva-consent label {
+  font-family: Gotham, Georgia, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+  color: #212121 !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  outline: none !important;
+  transition: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  cursor: pointer;
+  line-height: 1.4 !important;
+  letter-spacing: normal !important;
+}
+
+/* Remove any hover/focus effects on checkbox labels */
+.duva-consent .w-checkbox + .w-form-label:hover,
+.duva-consent .field-label:hover,
+.duva-consent label:hover,
+.duva-consent .w-checkbox + .w-form-label:focus,
+.duva-consent .field-label:focus,
+.duva-consent label:focus {
+  color: #212121 !important;
+  text-decoration: none !important;
+  background: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
