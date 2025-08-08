@@ -381,12 +381,13 @@ html.modal-open::-webkit-scrollbar {
 input[type="text"],
 input[type="email"],
 input[type="tel"],
-select,
 textarea {
   color: #212121 !important; /* Dark text by default (like filter section) */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
+
+/* Select fields handled separately for placeholder styling */
 
 /* All fields now use dark text by default (like filter section) */
 
@@ -410,9 +411,16 @@ input[type="tel"]::placeholder {
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
-select:focus,
 textarea:focus {
   color: #212121 !important; /* Keep dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Select fields show dark text when focused */
+select:focus {
+  color: #212121 !important; /* Dark when focused */
   outline: none !important;
   border-color: #C0392B !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
@@ -422,12 +430,13 @@ textarea:focus {
 input[type="text"],
 input[type="email"],
 input[type="tel"],
-select,
 textarea {
   color: #212121 !important; /* Dark text by default (like filter section) */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
+
+/* Select fields handled separately for placeholder styling */
 
 /* Submit Button */
 .submit-button {
@@ -675,14 +684,14 @@ textarea {
 
 /* === Select Field Placeholder Styling === */
 select {
-  color: #212121 !important; /* Dark text by default */
+  color: #D1D1D1 !important; /* Light grey by default for placeholder text */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
 
 /* When a value is selected, change to dark color */
-select:not([value=""]) {
-  color: #212121 !important;
+select:not([value=""]):not([value="Select one..."]):not([value="Select country"]) {
+  color: #212121 !important; /* Dark when value selected */
 }
 
 /* Style for the first option (placeholder) */
@@ -704,9 +713,16 @@ select option:not(:first-child) {
 input[type="text"],
 input[type="email"],
 input[type="tel"],
-select,
 textarea {
   color: #212121 !important; /* Dark text by default (like filter section) */
+  font-family: Gotham, Georgia, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+/* Select fields start with light grey for placeholder text */
+select {
+  color: #D1D1D1 !important; /* Light grey by default for placeholder text */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
   line-height: 1.4 !important;
@@ -732,9 +748,16 @@ input[type="tel"]::placeholder {
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
-select:focus,
 textarea:focus {
   color: #212121 !important; /* Keep dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Select fields show dark text when focused */
+select:focus {
+  color: #212121 !important; /* Dark when focused */
   outline: none !important;
   border-color: #C0392B !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
