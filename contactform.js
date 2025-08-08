@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const contactOverlayByClass = document.querySelector('.contact-overlay');
   const contactOverlayByData = document.querySelector('[data-contact-overlay]');
   
-  // Check for close button
-  const closeBtn = document.querySelector('.contact-close');
+  // Check for close button with more comprehensive detection
+  const closeBtn = document.querySelector('.contact-close') || 
+                   document.querySelector('.subscribe-close') ||
+                   document.querySelector('[class*="close"]');
   
   console.log('📋 Element Search Results:', {
     contactBtnById: contactBtnById,
@@ -27,7 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     contactOverlayById: contactOverlayById,
     contactOverlayByClass: contactOverlayByClass,
     contactOverlayByData: contactOverlayByData,
-    closeBtn: closeBtn
+    closeBtn: closeBtn,
+    closeBtnClasses: closeBtn ? closeBtn.className : 'N/A',
+    closeBtnText: closeBtn ? closeBtn.textContent : 'N/A'
   });
   
   // Check all elements with 'contact' in their ID or class
@@ -52,17 +56,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const urlParams = new URLSearchParams(window.location.search);
   const shouldOpenModal = urlParams.get('openContact') === 'true';
   
-  // Also check if we're on the contact page and should auto-open
-  const isContactPage = window.location.pathname.includes('contact') || 
-                       window.location.pathname.includes('contact-us') ||
-                       window.location.pathname.includes('form');
-  
-  if ((shouldOpenModal || isContactPage) && contactOverlay) {
-    console.log('🔄 Auto-opening modal from URL parameter or contact page');
+  if (shouldOpenModal && contactOverlay) {
+    console.log('🔄 Auto-opening modal from URL parameter');
     setTimeout(() => {
       contactOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
-      console.log('Modal opened from URL parameter or contact page');
+      console.log('Modal opened from URL parameter');
     }, 500);
   }
 
@@ -78,7 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
       let contactOverlay = document.getElementById('contact-overlay') || 
                            document.querySelector('.contact-overlay') ||
                            document.querySelector('[data-contact-overlay]');
-      let closeBtn = document.querySelector('.contact-close');
+      let closeBtn = document.querySelector('.contact-close') || 
+                      document.querySelector('.subscribe-close') ||
+                      document.querySelector('[class*="close"]');
       
       console.log('Elements found after delay:', {
         contactBtn: contactBtn,
@@ -123,13 +124,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Close modal when close button is clicked
     if (closeBtn) {
+      console.log('🔧 Setting up close button event for:', closeBtn.className);
       closeBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('Close button clicked');
+        e.stopPropagation();
+        console.log('Close button clicked - closing modal');
         if (contactOverlay) {
           contactOverlay.classList.remove('active');
           document.body.style.overflow = '';
-          console.log('Modal closed');
+          console.log('Modal closed successfully');
+        } else {
+          console.error('Contact overlay not found when closing');
         }
       });
     } else {
@@ -248,14 +253,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Main page header contact button handler
   const mainPageContactBtn = document.getElementById('contact-btn');
-  if (mainPageContactBtn && !contactOverlay) {
-    console.log('📍 Main page contact button found - setting up redirect');
+  if (mainPageContactBtn) {
+    console.log('📍 Contact button found - setting up modal open');
     mainPageContactBtn.addEventListener('click', function(e) {
       e.preventDefault();
-      console.log('Main page contact button clicked');
+      console.log('Contact button clicked - opening modal');
       
-      // Navigate to the contact-us page
-      window.location.href = '/contact-us';
+      // Open modal directly instead of navigating
+      if (contactOverlay) {
+        contactOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        console.log('Modal opened from contact button');
+      } else {
+        console.error('Contact overlay not found');
+      }
     });
   }
 
@@ -312,6 +323,40 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     } else {
       console.error('❌ Modal overlay not found');
+    }
+  };
+  
+  // Test close button specifically
+  window.testCloseButton = function() {
+    console.log('🧪 Testing close button functionality');
+    const closeBtn = document.querySelector('.contact-close') || document.querySelector('.subscribe-close');
+    
+    if (closeBtn) {
+      console.log('✅ Close button found:', {
+        className: closeBtn.className,
+        text: closeBtn.textContent,
+        tagName: closeBtn.tagName
+      });
+      
+      // Test if it has click event
+      const events = closeBtn.onclick;
+      console.log('Click event:', events);
+      
+      // Manually trigger click
+      console.log('🔄 Manually clicking close button...');
+      closeBtn.click();
+      
+    } else {
+      console.error('❌ Close button not found');
+      console.log('🔍 Searching for any close-related elements:');
+      const allCloseElements = document.querySelectorAll('[class*="close"]');
+      allCloseElements.forEach((el, index) => {
+        console.log(`Close element ${index + 1}:`, {
+          className: el.className,
+          text: el.textContent,
+          tagName: el.tagName
+        });
+      });
     }
   };
 
