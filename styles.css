@@ -4856,6 +4856,19 @@ ARROWS:
 .subscribe-button { transition: transform 0.2s ease; }
 .gallery-subscribe-wrapper:hover .subscribe-button { transform: translateY(-1px); }
 
+/* 8.2. Gallery Arrows - Match Related Section Arrows */
+.gallery-arrow-left,
+.gallery-right-arrow {
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gallery-arrow-left:hover,
+.gallery-right-arrow:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
+}
+
 
 
 
