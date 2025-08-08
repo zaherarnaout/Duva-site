@@ -383,25 +383,12 @@ input[type="email"],
 input[type="tel"],
 select,
 textarea {
-  color: #D1D1D1 !important; /* Light grey by default */
+  color: #212121 !important; /* Dark text by default (like filter section) */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
 
-/* When input has a value, change to dark color */
-.text-field:not(:placeholder-shown),
-.text-field-2:not(:placeholder-shown),
-.textarea:not(:placeholder-shown),
-input[type="text"]:not(:placeholder-shown),
-input[type="email"]:not(:placeholder-shown),
-input[type="tel"]:not(:placeholder-shown) {
-  color: #212121 !important; /* Dark when value entered */
-}
-
-/* When select has a value selected (not placeholder), change to dark color */
-select:not([value=""]):not([value="Select one..."]):not([value="Select country"]) {
-  color: #212121 !important; /* Dark when value selected */
-}
+/* All fields now use dark text by default (like filter section) */
 
 /* Placeholder color for input fields */
 .text-field::placeholder,
@@ -410,8 +397,9 @@ select:not([value=""]):not([value="Select one..."]):not([value="Select country"]
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="tel"]::placeholder {
-  color: #D1D1D1 !important; /* duva-mid-grey */
+  color: #D1D1D1 !important; /* Light grey placeholders only */
   font-style: italic !important;
+  opacity: 1 !important;
 }
 
 /* Focus state for input fields */
@@ -424,9 +412,10 @@ input[type="email"]:focus,
 input[type="tel"]:focus,
 select:focus,
 textarea:focus {
-  color: #212121 !important; /* Dark when focused */
+  color: #212121 !important; /* Keep dark when focused */
   outline: none !important;
   border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
 }
 
 /* Ensure consistent color across all form elements */
@@ -435,7 +424,7 @@ input[type="email"],
 input[type="tel"],
 select,
 textarea {
-  color: #212121 !important;
+  color: #212121 !important; /* Dark text by default (like filter section) */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
@@ -686,7 +675,7 @@ textarea {
 
 /* === Select Field Placeholder Styling === */
 select {
-  color: #D1D1D1 !important; /* Light grey for placeholder text */
+  color: #212121 !important; /* Dark text by default */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
 }
@@ -717,7 +706,7 @@ input[type="email"],
 input[type="tel"],
 select,
 textarea {
-  color: #D1D1D1 !important; /* Light grey by default */
+  color: #212121 !important; /* Dark text by default (like filter section) */
   font-family: Gotham, Georgia, sans-serif !important;
   font-size: 14px !important;
   line-height: 1.4 !important;
@@ -745,7 +734,7 @@ input[type="email"]:focus,
 input[type="tel"]:focus,
 select:focus,
 textarea:focus {
-  color: #212121 !important; /* Dark when focused */
+  color: #212121 !important; /* Keep dark when focused */
   outline: none !important;
   border-color: #C0392B !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
