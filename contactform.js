@@ -594,6 +594,32 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initialize the search functionality
   setupCountrySearch();
 
+  // === Select Field Color Management ===
+  function setupSelectFieldColors() {
+    const selectFields = document.querySelectorAll('select');
+    
+    selectFields.forEach(select => {
+      // Set initial color based on whether a value is selected
+      updateSelectColor(select);
+      
+      // Add change event listener
+      select.addEventListener('change', function() {
+        updateSelectColor(this);
+      });
+    });
+  }
+
+  function updateSelectColor(select) {
+    if (select.value === '' || select.value === 'Select one...' || select.value === 'Select country') {
+      select.style.color = '#D1D1D1'; // Light grey for placeholder
+    } else {
+      select.style.color = '#212121'; // Dark color for selected value
+    }
+  }
+
+  // Initialize select field colors
+  setupSelectFieldColors();
+
   // === Email Functionality ===
   
   // Initialize EmailJS (you'll need to add the EmailJS script to your HTML)
