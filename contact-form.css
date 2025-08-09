@@ -717,6 +717,37 @@ input[type="submit"].submit-button,
   display: none; /* Hidden by default, Webflow will show it */
 }
 
+/* Ensure text content is visible with white/light grey */
+.w-form-done div,
+.w-form-done p,
+.w-form-done span,
+.w-form-done *:not(::after):not(::before) {
+  color: #FFFFFF !important; /* Force white text */
+  font-family: 'Gotham', Georgia, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+}
+
+/* Ultra aggressive text color override */
+.w-form-done,
+.w-form-done > *,
+.w-form-done div,
+.w-form-done div *,
+.w-form-done span,
+.w-form-done p {
+  color: #FFFFFF !important; /* Force white text everywhere */
+}
+
+/* Override any inherited text colors */
+.contact-modal .w-form-done,
+.contact-modal .w-form-done *,
+.contact-form-wrapper .w-form-done,
+.contact-form-wrapper .w-form-done * {
+  color: #FFFFFF !important; /* Force white text with context */
+}
+
 /* Add DUVA logo to success message */
 .w-form-done::after {
   content: '';
