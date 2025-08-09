@@ -651,23 +651,27 @@ document.addEventListener('DOMContentLoaded', function () {
     emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
   }
 
-  // Form submission handler
+  // Form submission handler - Only intercept if custom submission is enabled
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
-    console.log('Contact form found - setting up submission handler');
+    console.log('Contact form found');
     
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      console.log('Form submitted - processing...');
+    // Check if custom submission is explicitly enabled
+    if (contactForm.dataset.customSubmit === 'true') {
+      console.log('Custom submission enabled - setting up custom handler');
       
-      // Validate form
-      if (!validateForm()) {
-        console.log('Form validation failed');
-        return;
-      }
-      
-      // Show loading state
-      const submitButton = contactForm.querySelector('.submit-button');
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted - processing with custom handler...');
+        
+        // Validate form
+        if (!validateForm()) {
+          console.log('Form validation failed');
+          return;
+        }
+        
+        // Show loading state
+        const submitButton = contactForm.querySelector('.submit-button');
       const originalText = submitButton.value;
       submitButton.value = 'Sending...';
       submitButton.disabled = true;
@@ -713,7 +717,12 @@ document.addEventListener('DOMContentLoaded', function () {
           submitButton.value = originalText;
           submitButton.disabled = false;
         });
-    });
+      });
+    } else {
+      console.log('Using native Webflow form submission - no custom interception');
+      // Let Webflow handle the form submission natively
+      // This will show the .w-form-done message automatically after successful submission
+    }
   }
 
   // Form validation function
