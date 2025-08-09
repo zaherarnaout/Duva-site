@@ -640,6 +640,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize select field colors
   setupSelectFieldColors();
+  
+  // Fix phone input pattern (invalid regex in HTML)
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    // Replace invalid pattern with corrected version
+    phoneInput.pattern = '^[0-9()\\-+\\s]{7,}$';
+    console.log('Phone input pattern fixed');
+  }
 
   // === Email Functionality ===
   
