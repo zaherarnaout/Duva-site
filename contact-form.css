@@ -87,7 +87,7 @@ html.modal-open::-webkit-scrollbar {
 }
 
 .contact-modal {
-  background-color: #F4F5F6; /* duva-light-grey */
+  background-color: #FFFFFF; /* duva-white */
   border: 1px solid #E4E3E3; /* border-divider-light */
   border-radius: 8px; /* border-8px */
   color: #212121; /* duva-d-grey */
