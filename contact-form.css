@@ -700,18 +700,49 @@ input[type="submit"].submit-button,
   /* Remove display: none to allow Webflow to show success message */
 }
 
-/* Webflow form success/error messages */
+/* Webflow form success/error messages - DUVA styling */
 .w-form-done {
-  background-color: #d4edda !important;
-  color: #155724 !important;
-  border: 1px solid #c3e6cb !important;
+  background-color: #212121 !important; /* DUVA dark background */
+  color: #F4F5F6 !important; /* DUVA light text */
+  border: 1px solid #212121 !important;
+  border-radius: 8px !important;
+  padding: 40px 20px !important;
+  font-family: 'Gotham', Georgia, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+  margin-top: 20px !important;
+  position: relative !important;
   display: none; /* Hidden by default, Webflow will show it */
 }
 
+/* Add DUVA logo to success message */
+.w-form-done::after {
+  content: '';
+  display: block !important;
+  width: 120px !important;
+  height: 40px !important;
+  background-image: url('images/duva-Dark-Logo-212121.svg') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: 20px auto 0 auto !important;
+  filter: invert(1) !important; /* Make logo white on dark background */
+}
+
 .w-form-fail {
-  background-color: #f8d7da !important;
-  color: #721c24 !important;
-  border: 1px solid #f5c6cb !important;
+  background-color: #C0392B !important; /* DUVA red for errors */
+  color: #F4F5F6 !important; /* DUVA light text */
+  border: 1px solid #C0392B !important;
+  border-radius: 8px !important;
+  padding: 40px 20px !important;
+  font-family: 'Gotham', Georgia, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+  margin-top: 20px !important;
   display: none; /* Hidden by default, Webflow will show it */
 }
 
