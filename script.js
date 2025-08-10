@@ -69,6 +69,82 @@ if (typeof Webflow !== 'undefined') {
 // Retry after a delay to catch late-loading content
 setTimeout(applyCategoryFilterFromURL, 3000);
 
+/* === Category Cards Navigation === */
+function initializeCategoryCards() {
+  console.log('🎯 Initializing category cards navigation...');
+  
+  // Define category mappings
+  const categoryMappings = {
+    'outdoor': 'outdoor',
+    'indoor': 'indoor', 
+    'flex-strip': 'flex-strip',
+    'custom-light': 'custom-light',
+    'decorative-light': 'decorative-light',
+    'weather-proof': 'weather-proof'
+  };
+  
+  // Find all category cards in the main page categories wrapper
+  const categoryCards = document.querySelectorAll('.main-page-categories-wrapper a');
+  
+  categoryCards.forEach((card, index) => {
+    // Get the text content to identify the category
+    const textElement = card.querySelector('.text-block-48, .text-block-49, .text-block-50, .text-block-51, .text-block-52, .text-block-53');
+    
+    if (textElement) {
+      const categoryText = textElement.textContent.trim().toLowerCase();
+      console.log(`🔍 Found category card: ${categoryText}`);
+      
+      // Find matching category key
+      let categoryKey = null;
+      for (const [key, value] of Object.entries(categoryMappings)) {
+        if (categoryText.includes(key) || key.includes(categoryText)) {
+          categoryKey = key;
+          break;
+        }
+      }
+      
+      if (categoryKey) {
+        console.log(`✅ Mapping category "${categoryText}" to "${categoryKey}"`);
+        
+        // Add click event listener
+        card.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the products page URL (you may need to adjust this)
+          const productsPageURL = '/products'; // Adjust this to your actual products page URL
+          
+          // Navigate to products page with category filter
+          const filteredURL = `${productsPageURL}?category=${categoryKey}`;
+          console.log(`🚀 Navigating to: ${filteredURL}`);
+          
+          // Navigate to the filtered products page
+          window.location.href = filteredURL;
+        });
+        
+        // Add visual feedback that it's clickable
+        card.style.cursor = 'pointer';
+        card.setAttribute('title', `View ${categoryText} products`);
+        
+        console.log(`✅ Category card "${categoryText}" is now clickable`);
+      } else {
+        console.warn(`⚠️ No mapping found for category: ${categoryText}`);
+      }
+    }
+  });
+  
+  console.log(`🎯 Category cards initialization complete. Found ${categoryCards.length} cards.`);
+}
+
+// Initialize category cards when DOM is ready
+document.addEventListener("DOMContentLoaded", initializeCategoryCards);
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeCategoryCards();
+  });
+}
+
 // Quick test to see if flip card elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
