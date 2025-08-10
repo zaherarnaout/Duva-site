@@ -54,14 +54,29 @@ html, body {
   max-width: 90vw !important;
   height: auto !important;
   background-color: #fff !important;
-  border-radius: 8px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg) !important;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+/* Menu Panel Shimmer Overlay Effect */
+.menu-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.05), transparent);
+  transition: left 0.8s ease 0.3s;
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* Prevent body scroll when menu is active */
@@ -79,6 +94,10 @@ body.menu-open {
   pointer-events: auto !important;
 }
 
+.menu-panel.active::before {
+  left: 100%;
+}
+
 .menu-panel.active .menu-close-wrapper {
   display: block !important;
   visibility: visible !important;
@@ -89,18 +108,20 @@ body.menu-open {
   z-index: 1002 !important;
 }
 
-/* === Menu Overlay for Better UX === */
+/* === Enhanced Menu Overlay for Better UX === */
 .menu-overlay {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
   z-index: 1000 !important;
   opacity: 0 !important;
   visibility: hidden !important;
-  transition: all 0.3s ease !important;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   pointer-events: none !important;
 }
 
@@ -110,7 +131,7 @@ body.menu-open {
   pointer-events: auto !important;
 }
 
-/* === Menu Close Button === */
+/* === Enhanced Menu Close Button === */
 .menu-close-wrapper {
   position: absolute;
   top: 20px;
@@ -127,25 +148,42 @@ body.menu-open {
   right: 0;
   padding-right: 35px;
   padding-left: 35px;
-  border-radius: 3px;
+  border-radius: 8px;
   background-color: var(--duva-d-grey, #333);
   color: #fff;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: block;
   border: none;
   line-height: 1;
+  overflow: hidden;
+}
+
+/* Menu Close Button Shimmer Effect */
+.menu-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.menu-close:hover::before {
+  left: 100%;
 }
 
 .menu-close:hover {
-  border-top-left-radius: var(--border-4px-cornner, 4px);
-  border-top-right-radius: var(--border-4px-cornner, 4px);
-  border-bottom-left-radius: var(--border-4px-cornner, 4px);
-  border-bottom-right-radius: var(--border-4px-cornner, 4px);
   background-color: var(--duva-red, #c0392b);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 .menu-close .bold-text {
@@ -160,25 +198,43 @@ body.menu-open {
   right: 0 !important;
   padding-right: 35px !important;
   padding-left: 35px !important;
-  border-radius: 3px !important;
+  border-radius: 8px !important;
   background-color: var(--duva-d-grey, #333) !important;
   color: #fff !important;
   font-size: 16px !important;
-  font-weight: bold !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
   text-decoration: none !important;
   display: block !important;
   cursor: pointer !important;
   visibility: visible !important;
   opacity: 1 !important;
   border: none !important;
+  overflow: hidden !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Webflow Button Shimmer Effect */
+.menu-close.w-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.menu-close.w-button:hover::before {
+  left: 100%;
 }
 
 .menu-close.w-button:hover {
-  border-top-left-radius: var(--border-4px-cornner, 4px) !important;
-  border-top-right-radius: var(--border-4px-cornner, 4px) !important;
-  border-bottom-left-radius: var(--border-4px-cornner, 4px) !important;
-  border-bottom-right-radius: var(--border-4px-cornner, 4px) !important;
   background-color: var(--duva-red, #c0392b) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
 }
 
 /* Force close button visibility when menu is active */
@@ -192,7 +248,68 @@ body.menu-open {
   left: auto !important;
 }
 
-/* === Menu Links === */
+/* === Responsive Menu Enhancements === */
+@media screen and (max-width: 767px) {
+  .menu-panel {
+    left: 20px !important;
+    width: calc(100vw - 40px) !important;
+    max-width: 400px !important;
+    border-radius: 8px !important;
+  }
+  
+  .menu-close {
+    padding-right: 25px !important;
+    padding-left: 25px !important;
+    font-size: 14px !important;
+  }
+  
+  .menu-close:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25) !important;
+  }
+  
+  .link-13 {
+    font-size: 16px !important;
+    margin-top: 40px !important;
+  }
+  
+  .link-13:hover {
+    transform: translateX(3px) scale(1.01) !important;
+  }
+  
+  .link-14 {
+    font-size: 14px !important;
+  }
+  
+  .link-14:hover {
+    transform: translateX(2px) scale(1.01) !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .menu-panel {
+    left: 10px !important;
+    width: calc(100vw - 20px) !important;
+    border-radius: 6px !important;
+  }
+  
+  .menu-close {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+    font-size: 13px !important;
+  }
+  
+  .link-13 {
+    font-size: 15px !important;
+    margin-top: 35px !important;
+  }
+  
+  .link-14 {
+    font-size: 13px !important;
+  }
+}
+
+/* === Enhanced Menu Links === */
 .link-13 {
   color: #333;
   margin-top: 52px;
@@ -209,6 +326,8 @@ body.menu-open {
   opacity: 0;
   transform: translateX(-20px);
   animation: slideInFromLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  position: relative;
+  overflow: hidden;
 }
 
 .link-13:nth-child(1) { animation-delay: 0.1s; }
@@ -247,11 +366,15 @@ body.menu-open {
   font-size: 16px;
   font-weight: 400;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
 }
 
 .link-14:hover {
-  color: #c0392b;
+  color: var(--duva-red, #c0392b);
+  transform: translateX(3px) scale(1.02);
+  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.1);
 }
 
 /* === Menu Icon === */
