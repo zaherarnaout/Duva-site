@@ -73,14 +73,14 @@ setTimeout(applyCategoryFilterFromURL, 3000);
 function initializeCategoryCards() {
   console.log('🎯 Initializing category cards navigation...');
   
-  // Define category mappings
+  // Define category mappings - updated to match actual card text
   const categoryMappings = {
     'outdoor': 'outdoor',
     'indoor': 'indoor', 
-    'flex-strip': 'flex-strip',
-    'custom-light': 'custom-light',
-    'decorative-light': 'decorative-light',
-    'weather-proof': 'weather-proof'
+    'flexstrip': 'flex-strip',
+    'customlight': 'custom-light',
+    'decorativelights': 'decorative-light',
+    'weatherproof': 'weather-proof'
   };
   
   // Find all category cards in the main page categories wrapper
