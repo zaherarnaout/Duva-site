@@ -3487,10 +3487,11 @@ function initializeFlipCardLinks() {
         flipCardFront.style.transform = 'translateZ(-10px)';
       }
       if (flipCardBack) {
+        // Remove any conflicting inline styles and let CSS handle the display
+        flipCardBack.style.removeProperty('display');
+        flipCardBack.style.removeProperty('visibility');
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '1';
-        flipCardBack.style.visibility = 'visible';
-        flipCardBack.style.display = 'flex';
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.zIndex = '10';
       }
@@ -3514,10 +3515,15 @@ function initializeFlipCardLinks() {
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '0';
-        flipCardBack.style.visibility = 'hidden';
-        flipCardBack.style.display = 'none';
         flipCardBack.style.transform = 'translateZ(-10px)';
         flipCardBack.style.zIndex = '1';
+        // Let CSS handle the display/visibility after transition
+        setTimeout(() => {
+          if (!this.matches(':hover')) {
+            flipCardBack.style.display = 'none';
+            flipCardBack.style.visibility = 'hidden';
+          }
+        }, 600);
       }
     });
   });
