@@ -3408,18 +3408,32 @@ function handle404Redirect() {
 
 // Helper function to extract product code from element
 function extractProductCode(element) {
+  console.log('🔍 extractProductCode called for element:', element);
+  
   const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+  console.log('🔍 Found code element:', codeElement);
+  
   if (codeElement) {
     const text = codeElement.textContent?.trim();
+    console.log('🔍 Code element text:', text);
+    
     if (text) {
       const codeMatch = text.match(/([A-Z]?\d+)/);
+      console.log('🔍 Code match result:', codeMatch);
+      
       if (codeMatch) {
-        return codeMatch[1];
+        const result = codeMatch[1];
+        console.log('🔍 Extracted product code:', result);
+        return result;
       } else {
-        return text.split(' ')[0];
+        const result = text.split(' ')[0];
+        console.log('🔍 Using first word as product code:', result);
+        return result;
       }
     }
   }
+  
+  console.log('🔍 No product code found');
   return null;
 }
 
@@ -3506,8 +3520,6 @@ function initializeFlipCardLinks() {
         
         if (shouldUseProductPage) {
           // Enhanced URL generation with multiple fallback options
-          let productUrl = null;
-          
           // Check if product code starts with a letter (like C330, C331)
           const isLetterCode = /^[A-Z]/.test(productCode);
           
@@ -3556,7 +3568,9 @@ function initializeFlipCardLinks() {
     link.href = productUrl;
     link.setAttribute('data-product-url', productUrl);
     
-    console.log(`Element ${index + 1} - URL:`, productUrl);
+    console.log(`Element ${index + 1} - Final URL:`, productUrl);
+    console.log(`Element ${index + 1} - Link href:`, link.href);
+    console.log(`Element ${index + 1} - Data attribute:`, link.getAttribute('data-product-url'));
     
     // Wrap the element in the link
     element.parentNode.insertBefore(link, element);
