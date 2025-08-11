@@ -3316,6 +3316,32 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* === Flip Card Linking Functionality === */
+// Global error handler for 404 redirects
+function handle404Redirect() {
+  // Check if we're on a 404 page
+  if (document.title.includes('404') || document.body.innerHTML.includes('404')) {
+    console.log('🔍 404 page detected, attempting to redirect to search');
+    
+    // Try to extract product code from URL
+    const currentUrl = window.location.pathname;
+    const productMatch = currentUrl.match(/\/products\/lucero-([^\/]+)/);
+    
+    if (productMatch) {
+      const productCode = productMatch[1];
+      console.log(`🔍 Product code from URL: ${productCode}`);
+      
+      // Redirect to search page with the product code
+      const searchUrl = `/?search=${productCode}`;
+      console.log(`🔄 Redirecting to search: ${searchUrl}`);
+      
+      // Use a small delay to ensure the page has loaded
+      setTimeout(() => {
+        window.location.href = searchUrl;
+      }, 100);
+    }
+  }
+}
+
 // Helper function to extract product code from element
 function extractProductCode(element) {
   const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
@@ -3419,6 +3445,16 @@ function initializeFlipCardLinks() {
           // Format: /products/lucero-{productCode}
           productUrl = `/products/lucero-${productCode.toLowerCase()}`;
           console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
+          
+          // Add debugging to check if the product exists
+          console.log(`🔍 Checking if product page exists for: ${productCode}`);
+          console.log(`🔍 Generated URL: ${productUrl}`);
+          console.log(`🔍 Element details:`, {
+            element: element,
+            productCode: productCode,
+            codeElement: codeElement,
+            codeElementText: codeElement?.textContent?.trim()
+          });
         } else {
           // Fallback to search URL
           productUrl = `/?search=${productCode.toLowerCase()}`;
@@ -3448,6 +3484,20 @@ function initializeFlipCardLinks() {
         e.preventDefault();
         console.log('Flip card - no URL configured, preventing navigation');
         return;
+      }
+      
+      // Check if this is a product page URL that might not exist
+      if (productUrl.includes('/products/lucero-')) {
+        const productCode = productUrl.split('/products/lucero-')[1];
+        console.log(`🔍 Attempting to navigate to product: ${productCode}`);
+        
+        // Add fallback mechanism for 404 errors
+        // Store the product code for potential fallback to search
+        link.setAttribute('data-product-code', productCode);
+        
+        // For now, let the navigation proceed and let the server handle 404s
+        // In the future, we could implement a pre-check mechanism
+        console.log(`🚀 Navigating to: ${productUrl}`);
       }
       
       // Allow navigation for valid URLs
@@ -3556,6 +3606,10 @@ function initializeCardsScrollAnimation() {
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
+  
+  // Check for 404 redirects first
+  handle404Redirect();
+  
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
   
