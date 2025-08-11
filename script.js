@@ -27,34 +27,47 @@ function applyCategoryFilterFromURL() {
   // Mark as applied immediately to prevent duplicates
   filterApplied = true;
 
-  // Optimized filter application with progressive delays
-  function attemptFilter() {
-    // Method 1: Try to find and click a matching filter button (fastest)
-    const filterButton = document.querySelector(`[data-category="${cleanCategory}"]`);
-    if (filterButton) {
-      filterButton.click();
-      console.log(`✅ Auto-filter: Found and clicked filter button for category: ${cleanCategory}`);
-      return true;
-    }
-
-    // Method 2: Try to find filter by text content
+  // Function to find and click the appropriate filter button
+  function findAndClickFilterButton() {
+    // Look for filter options that match the category
     const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+    
     for (const option of filterOptions) {
       const textElement = option.querySelector('.sub-filter-wattage');
       if (textElement) {
         const optionText = textElement.textContent.trim().toLowerCase();
+        
+        // Check if this filter option matches the category
         if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
           const checkmark = option.querySelector('.filter-checkmark');
-          if (checkmark && !option.classList.contains('active')) {
-            checkmark.click();
-            console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
-            return true;
+          if (checkmark) {
+            // Check if the filter is already active
+            const isActive = option.classList.contains('active');
+            
+            if (!isActive) {
+              // Click the checkmark to activate the filter
+              console.log(`✅ Auto-filter: Found and clicking filter button for "${optionText}"`);
+              checkmark.click();
+              return true;
+            } else {
+              console.log(`✅ Auto-filter: Filter "${optionText}" is already active`);
+              return true;
+            }
           }
         }
       }
     }
+    
+    return false;
+  }
 
-    // Method 3: Try to use the global search as fallback
+  // Try to find and click the filter button with progressive delays
+  function attemptFilter() {
+    if (findAndClickFilterButton()) {
+      return true;
+    }
+    
+    // If no filter button found, try global search as fallback
     const searchInput = document.getElementById('globalSearchInput');
     if (searchInput) {
       searchInput.value = cleanCategory;
@@ -62,7 +75,7 @@ function applyCategoryFilterFromURL() {
       console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
       return true;
     }
-
+    
     return false;
   }
 
@@ -72,8 +85,8 @@ function applyCategoryFilterFromURL() {
   }
 
   // If not found, try with progressive delays
-  const delays = [500, 1000, 1500]; // Reduced from 2000ms to 500ms initial
-  
+  const delays = [500, 1000, 1500];
+
   for (let i = 0; i < delays.length; i++) {
     setTimeout(() => {
       if (attemptFilter()) {
@@ -107,7 +120,7 @@ if (typeof Webflow !== 'undefined') {
   });
 }
 
-// Final retry with shorter delay (reduced from 3000ms to 1000ms)
+// Final retry with shorter delay
 setTimeout(() => {
   if (!filterApplied) {
     initializeAutoFilter();
