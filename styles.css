@@ -4177,14 +4177,6 @@ a .flip-card-wrapper {
 }
 /* === End Flip Card Click Fix === */
 
-/* === Reduced Motion Safe-Guard === */
-@media (prefers-reduced-motion: reduce) {
-  .flip-card, .flip-card * { 
-    transition: none !important; 
-    animation: none !important; 
-  }
-}
-
 /* Remove underlines from all product card links */
 .flip-card-wrapper a,
 .current-product,
