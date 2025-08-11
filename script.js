@@ -69,82 +69,6 @@ if (typeof Webflow !== 'undefined') {
 // Retry after a delay to catch late-loading content
 setTimeout(applyCategoryFilterFromURL, 3000);
 
-/* === Category Cards Navigation === */
-function initializeCategoryCards() {
-  console.log('🎯 Initializing category cards navigation...');
-  
-  // Define category mappings - updated to match actual card text
-  const categoryMappings = {
-    'outdoor': 'outdoor',
-    'indoor': 'indoor', 
-    'flexstrip': 'flex-strip',
-    'customlight': 'custom-light',
-    'decorativelights': 'decorative-light',
-    'weatherproof': 'weather-proof'
-  };
-  
-  // Find all category cards in the main page categories wrapper
-  const categoryCards = document.querySelectorAll('.main-page-categories-wrapper a');
-  
-  categoryCards.forEach((card, index) => {
-    // Get the text content to identify the category
-    const textElement = card.querySelector('.text-block-48, .text-block-49, .text-block-50, .text-block-51, .text-block-52, .text-block-53');
-    
-    if (textElement) {
-      const categoryText = textElement.textContent.trim().toLowerCase();
-      console.log(`🔍 Found category card: ${categoryText}`);
-      
-      // Find matching category key
-      let categoryKey = null;
-      for (const [key, value] of Object.entries(categoryMappings)) {
-        if (categoryText.includes(key) || key.includes(categoryText)) {
-          categoryKey = key;
-          break;
-        }
-      }
-      
-      if (categoryKey) {
-        console.log(`✅ Mapping category "${categoryText}" to "${categoryKey}"`);
-        
-        // Add click event listener
-        card.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          // Get the products page URL (you may need to adjust this)
-          const productsPageURL = '/products'; // Adjust this to your actual products page URL
-          
-          // Navigate to products page with category filter
-          const filteredURL = `${productsPageURL}?category=${categoryKey}`;
-          console.log(`🚀 Navigating to: ${filteredURL}`);
-          
-          // Navigate to the filtered products page
-          window.location.href = filteredURL;
-        });
-        
-        // Add visual feedback that it's clickable
-        card.style.cursor = 'pointer';
-        card.setAttribute('title', `View ${categoryText} products`);
-        
-        console.log(`✅ Category card "${categoryText}" is now clickable`);
-      } else {
-        console.warn(`⚠️ No mapping found for category: ${categoryText}`);
-      }
-    }
-  });
-  
-  console.log(`🎯 Category cards initialization complete. Found ${categoryCards.length} cards.`);
-}
-
-// Initialize category cards when DOM is ready
-document.addEventListener("DOMContentLoaded", initializeCategoryCards);
-
-// Also initialize when Webflow loads
-if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    initializeCategoryCards();
-  });
-}
-
 // Quick test to see if flip card elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
@@ -156,58 +80,127 @@ setTimeout(() => {
   });
 }, 1000);
 
-/* === Gallery: Thumbnail Click → Update Main Image (Canonical) === */
-(function initGalleryThumbnails() {
-  console.log('initGalleryThumbnails defined once');
-  
-  const mainImage = document.getElementById("main-lightbox-trigger");
-  const firstGalleryItem = document.querySelector(".first-gallery-image");
-  const thumbs = document.querySelectorAll(".thumbnail-image");
-  
-  if (!thumbs.length) return;
+/* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
-  thumbs.forEach(thumb => {
-    thumb.addEventListener("click", function () {
-      const newSrc = this.getAttribute("data-image") || this.getAttribute("src");
-      if (newSrc && mainImage) {
-        // If main is an <img>, set src; if it's a trigger/anchor, set href
-        if (mainImage.tagName === 'IMG') mainImage.src = newSrc;
-        else mainImage.setAttribute("href", newSrc);
-      }
-      thumbs.forEach(t => t.classList.remove("is-active"));
-      this.classList.add("is-active");
-    });
-  });
+document.querySelectorAll('.accessory-image').forEach(container => { 
 
-  // Keep the hidden Webflow lightbox pattern
-  if (mainImage && firstGalleryItem) {
-    mainImage.addEventListener("click", () => firstGalleryItem.click());
-  }
-})();
+  const img = container.querySelector('img'); 
 
-/* === Accessories: Image Zoom (Canonical) === */
-(function initAccessoryZoom() {
-  console.log('initAccessoryZoom defined once');
-  
-  const containers = document.querySelectorAll(".accessory-image");
-  if (!containers.length) return;
+ 
 
-  containers.forEach(container => {
-    const img = container.querySelector("img");
-    if (!img) return;
+  container.style.overflow = 'hidden'; // Keeps zoomed image inside the box 
 
-    container.style.overflow = "hidden";
-    container.addEventListener("mouseenter", () => img.classList.add("zoomed"));
-    container.addEventListener("mousemove", e => {
-      const r = container.getBoundingClientRect();
-      img.style.transformOrigin = `${((e.clientX - r.left)/r.width)*100}% ${((e.clientY - r.top)/r.height)*100}%`;
-    });
-    container.addEventListener("mouseleave", () => {
-      img.classList.remove("zoomed");
-      img.style.transformOrigin = "center center";
-    });
-  });
-})(); 
+ 
+
+  container.addEventListener('mouseenter', () => { 
+
+    img.classList.add('zoomed'); 
+
+  }); 
+
+ 
+
+  container.addEventListener('mousemove', e => { 
+
+    const rect = container.getBoundingClientRect(); 
+
+    const x = ((e.clientX - rect.left) / rect.width) * 100; 
+
+    const y = ((e.clientY - rect.top) / rect.height) * 100; 
+
+    img.style.transformOrigin = `${x}% ${y}%`; 
+
+  }); 
+
+ 
+
+  container.addEventListener('mouseleave', () => { 
+
+    img.classList.remove('zoomed'); 
+
+    img.style.transformOrigin = 'center center'; 
+
+  }); 
+
+}); 
+
+ 
+
+/* === 2. Thumbnail Image Selector === */ 
+
+document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
+    thumbnails.forEach(thumb => { 
+
+        thumb.addEventListener("click", function () { 
+
+            thumbnails.forEach(t => t.classList.remove("is-active")); 
+
+            this.classList.add("is-active"); 
+
+            const newImg = this.getAttribute("data-image"); 
+
+            if (mainImage) mainImage.setAttribute("href", newImg); 
+
+        }); 
+
+    }); 
+
+}); 
+
+ 
+
+/* === 3. Dropdown + Code Generator + Accessories Logic === */ 
+
+// Full working logic from your working file, manually verified and retained 
+
+document.querySelectorAll('.accessory-image').forEach(container => { 
+
+    const img = container.querySelector('img'); 
+
+ 
+
+    // Zoom in on hover 
+
+    container.addEventListener('mouseenter', () => { 
+
+      img.classList.add('zoomed'); 
+
+    }); 
+
+ 
+
+    // Track mouse position for dynamic zoom focus 
+
+    container.addEventListener('mousemove', e => { 
+
+      const rect = container.getBoundingClientRect(); 
+
+      const x = ((e.clientX - rect.left) / rect.width) * 100; 
+
+      const y = ((e.clientY - rect.top) / rect.height) * 100; 
+
+      img.style.transformOrigin = `${x}% ${y}%`; 
+
+    }); 
+
+ 
+
+    // Reset on mouse leave 
+
+    container.addEventListener('mouseleave', () => { 
+
+      img.classList.remove('zoomed'); 
+
+      img.style.transformOrigin = 'center center'; 
+
+    }); 
+
+  }); 
 
  
 
@@ -215,7 +208,65 @@ setTimeout(() => {
 
  
 
+  document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
  
+
+    thumbnails.forEach((thumb) => { 
+
+      thumb.addEventListener("click", function () { 
+
+        // === Get the source of the clicked thumbnail 
+
+        const newSrc = thumb.getAttribute("src"); 
+
+ 
+
+        // === Update the main image 
+
+        if (newSrc && mainImage) { 
+
+          mainImage.setAttribute("src", newSrc); 
+
+        } 
+
+      }); 
+
+    }); 
+
+  }); 
+
+ 
+
+ 
+
+ 
+
+  document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainTrigger = document.getElementById("main-lightbox-trigger"); 
+
+    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
+
+ 
+
+    // === When main image is clicked, open the Webflow lightbox 
+
+    if (mainTrigger && firstGalleryItem) { 
+
+      mainTrigger.addEventListener("click", () => { 
+
+        firstGalleryItem.click(); 
+
+      }); 
+
+    } 
+
+  }); 
 
  
 
@@ -806,7 +857,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
+document.addEventListener("DOMContentLoaded", function () { 
+
  
+
+  /* === Main Image Thumbnail Click Logic === */ 
+
+  const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
+ 
+
+  thumbnails.forEach((thumb) => { 
+
+    thumb.addEventListener("click", function () { 
+
+      const newSrc = this.getAttribute("src"); 
+
+      if (mainImage && newSrc) { 
+
+        mainImage.setAttribute("src", newSrc); 
+
+      } 
+
+ 
+
+      // Update active state 
+
+      thumbnails.forEach(t => t.classList.remove("is-active")); 
+
+      this.classList.add("is-active"); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Trigger Hidden Webflow Lightbox Gallery === */ 
+
+  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
+
+  if (mainImage && firstGalleryItem) { 
+
+    mainImage.addEventListener("click", () => { 
+
+      firstGalleryItem.click(); 
+
+    }); 
+
+  } 
 
  
 
@@ -2507,8 +2608,8 @@ function initializeScrollAnimations() {
       }
     });
   }, {
-    threshold: 0.1, // Lower threshold to trigger earlier
-    rootMargin: '0px 0px -100px 0px' // Trigger earlier
+    threshold: 0.3, // Trigger when 30% of section is visible
+    rootMargin: '0px 0px -50px 0px' // Trigger slightly before section comes into view
   });
   
   // Observe specific product page elements (NOT the wrapper)
@@ -2538,7 +2639,12 @@ function initializeScrollAnimations() {
     console.log('✅ Related section observer set up');
   }
   
-  // Gallery section observer disabled
+  // Observe Gallery section
+  const gallerySection = document.querySelector('.gallery-section');
+  if (gallerySection) {
+    observer.observe(gallerySection);
+    console.log('✅ Gallery section observer set up');
+  }
   
   // Enhanced accessories dropdown animation
   const accessoriesToggle = document.querySelector('.accessories-toggle');
@@ -2557,81 +2663,6 @@ function initializeScrollAnimations() {
   }
 }
 
-// === Force Visibility for Critical Sections ===
-function forceCriticalSectionsVisible() {
-  console.log('🔧 Force showing critical sections...');
-  
-  // Force product info block to be visible
-  const productInfoBlock = document.querySelector('.product-info-block');
-  if (productInfoBlock) {
-    productInfoBlock.classList.add('fade-in');
-    console.log('✅ Product info block forced visible');
-  }
-  
-  // Force related section to be visible
-  const relatedSection = document.querySelector('.related-section');
-  if (relatedSection) {
-    relatedSection.classList.add('fade-in');
-    console.log('✅ Related section forced visible');
-  }
-  
-  // Force product visuals to be visible
-  const productVisuals = document.querySelector('.product-visuals');
-  if (productVisuals) {
-    productVisuals.classList.add('fade-in');
-    console.log('✅ Product visuals forced visible');
-  }
-  
-  // Force download panel to be visible
-  const downloadPanel = document.querySelector('.download-panel');
-  if (downloadPanel) {
-    downloadPanel.classList.add('fade-in');
-    console.log('✅ Download panel forced visible');
-  }
-}
-
-// === Initialize All Interactive Elements ===
-function initializeAllInteractiveElements() {
-  console.log('🔧 Initializing all interactive elements...');
-  
-  // Re-initialize dropdowns
-  const dropdowns = document.querySelectorAll(".dropdown-wrapper");
-  console.log(`Found ${dropdowns.length} dropdowns`);
-  
-  // Re-initialize accessories toggle
-  const accessoriesToggle = document.querySelector(".accessories-toggle");
-  if (accessoriesToggle) {
-    console.log('✅ Accessories toggle found and functional');
-  }
-  
-  // Re-initialize related section arrows
-  const arrowRight = document.querySelector('.image-30');
-  const arrowLeft = document.querySelector('.image-31');
-  if (arrowRight && arrowLeft) {
-    console.log('✅ Related section arrows found and functional');
-  }
-  
-  // Re-initialize lightbox
-  const lightboxTrigger = document.querySelector('#main-lightbox-trigger');
-  if (lightboxTrigger) {
-    console.log('✅ Lightbox trigger found and functional');
-  }
-  
-  // Re-initialize thumbnails
-  const thumbnails = document.querySelectorAll('.thumbnail-image');
-  console.log(`Found ${thumbnails.length} thumbnails`);
-  
-  // Re-initialize download checkboxes
-  const downloadCheckboxes = document.querySelectorAll('.download-checkbox');
-  console.log(`Found ${downloadCheckboxes.length} download checkboxes`);
-  
-  // Re-initialize download arrows
-  const downloadArrows = document.querySelectorAll('.download-arrow');
-  console.log(`Found ${downloadArrows.length} download arrows`);
-  
-  console.log('✅ All interactive elements initialized');
-}
-
 // === Smooth Scroll to Related Section ===
 function scrollToRelatedSection() {
   const relatedSection = document.querySelector('.related-section');
@@ -2648,9 +2679,6 @@ function scrollToRelatedSection() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeScrollAnimations();
   
-  // Force critical sections to be visible immediately
-  forceCriticalSectionsVisible();
-  
   // Add smooth scroll button if needed (optional)
   const scrollToRelatedBtn = document.querySelector('.scroll-to-related');
   if (scrollToRelatedBtn) {
@@ -2659,21 +2687,341 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize menu panel functionality
   initializeMenuPanel();
-  
-  // Fallback: Force visibility after a short delay to ensure it works
-  setTimeout(() => {
-    forceCriticalSectionsVisible();
-    console.log('🔄 Fallback visibility check completed');
-  }, 1000);
-  
-  // Ensure all interactive elements are properly initialized
-  setTimeout(() => {
-    initializeAllInteractiveElements();
-    console.log('🔧 Interactive elements initialization completed');
-  }, 1500);
 });
-    
 
+// === Auto-scroll Fullscreen Image Gallery ===
+function initializeGalleryAutoScroll() {
+  console.log('🎠 === GALLERY DEBUGGING START ===');
+  console.log('🎠 Initializing gallery auto-scroll...');
+  
+  // Check all possible gallery selectors
+  const gallerySelectors = [
+    '.gallery-section-cms',
+    '.gallery-section .w-dyn-items',
+    '[data-collection-list]',
+    '.gallery-section [class*="w-dyn"]',
+    '.gallery-section-cms .w-dyn-items'
+  ];
+  
+  console.log('🔍 Checking all possible gallery selectors:');
+  gallerySelectors.forEach(selector => {
+    const element = document.querySelector(selector);
+    console.log(`  ${selector}: ${element ? 'FOUND' : 'NOT FOUND'}`);
+    if (element) {
+      console.log(`    - scrollWidth: ${element.scrollWidth}`);
+      console.log(`    - clientWidth: ${element.clientWidth}`);
+      console.log(`    - canScroll: ${element.scrollWidth > element.clientWidth}`);
+      console.log(`    - classes: ${element.className}`);
+    }
+  });
+  
+  const gallery = document.querySelector('.gallery-section-cms');
+  
+  if (!gallery) {
+    console.log('⚠️ Gallery section not found');
+    console.log('🔍 Available gallery-related elements:');
+    
+    // List all elements that might be gallery-related
+    const allElements = document.querySelectorAll('*');
+    const galleryElements = [];
+    
+    allElements.forEach(el => {
+      if (el.className && (
+        el.className.includes('gallery') || 
+        el.className.includes('w-dyn') ||
+        el.className.includes('collection')
+      )) {
+        galleryElements.push({
+          tagName: el.tagName,
+          className: el.className,
+          id: el.id,
+          scrollWidth: el.scrollWidth,
+          clientWidth: el.clientWidth
+        });
+      }
+    });
+    
+    console.log('🔍 Potential gallery elements:', galleryElements);
+    console.log('🎠 === GALLERY DEBUGGING END ===');
+    return;
+  }
+
+  console.log('📏 Gallery found:', gallery);
+  console.log('📏 Gallery scrollWidth:', gallery.scrollWidth);
+  console.log('📏 Gallery clientWidth:', gallery.clientWidth);
+  
+  // Check for images in the gallery
+  const images = gallery.querySelectorAll('img');
+  console.log('🖼️ Number of images found:', images.length);
+  
+  // Additional check: if no images found, hide gallery section
+  if (images.length === 0) {
+    console.log('⚠️ No images found in gallery - hiding gallery section');
+    if (gallerySection) {
+      gallerySection.style.display = 'none';
+      gallerySection.style.visibility = 'hidden';
+      gallerySection.style.opacity = '0';
+      gallerySection.style.height = '0';
+      gallerySection.style.overflow = 'hidden';
+    }
+    return; // Exit the function early
+  }
+  
+  images.forEach((img, index) => {
+    console.log(`🖼️ Image ${index + 1}:`, {
+      src: img.src,
+      loaded: img.complete,
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight,
+      offsetWidth: img.offsetWidth,
+      offsetHeight: img.offsetHeight,
+      style: {
+        display: img.style.display,
+        visibility: img.style.visibility,
+        opacity: img.style.opacity
+      }
+    });
+  });
+  
+  // Check for collection items
+  const collectionItems = gallery.querySelectorAll('.w-dyn-item');
+  console.log('📦 Number of collection items:', collectionItems.length);
+  
+  // Check if gallery has any images and hide section if empty
+  const gallerySection = document.querySelector('.gallery-section');
+  if (collectionItems.length === 0) {
+    console.log('⚠️ No images found in gallery - hiding gallery section');
+    if (gallerySection) {
+      gallerySection.style.display = 'none';
+      gallerySection.style.visibility = 'hidden';
+      gallerySection.style.opacity = '0';
+      gallerySection.style.height = '0';
+      gallerySection.style.overflow = 'hidden';
+    }
+    return; // Exit the function early
+  } else {
+    console.log(`✅ Gallery has ${collectionItems.length} images - showing gallery section`);
+    if (gallerySection) {
+      gallerySection.style.display = 'block';
+      gallerySection.style.visibility = 'visible';
+      gallerySection.style.opacity = '1';
+      gallerySection.style.height = 'auto';
+      gallerySection.style.overflow = 'visible';
+    }
+  }
+  
+  // Debug collection item dimensions
+  collectionItems.forEach((item, index) => {
+    const rect = item.getBoundingClientRect();
+    console.log(`📦 Item ${index + 1}:`, {
+      width: rect.width,
+      height: rect.height,
+      left: rect.left,
+      top: rect.top,
+      offsetWidth: item.offsetWidth,
+      clientWidth: item.clientWidth
+    });
+  });
+  
+  // Check gallery container dimensions
+  const galleryRect = gallery.getBoundingClientRect();
+  console.log('📏 Gallery container dimensions:', {
+    width: galleryRect.width,
+    height: galleryRect.height,
+    scrollWidth: gallery.scrollWidth,
+    clientWidth: gallery.clientWidth
+  });
+
+  let scrollInterval;
+  let isAutoScrolling = true;
+  const scrollSpeed = 5000; // time between slides (ms)
+
+  function scrollToNext() {
+    if (!gallery) return;
+    
+    const currentScroll = gallery.scrollLeft;
+    const viewportWidth = window.innerWidth;
+    const maxScroll = gallery.scrollWidth - viewportWidth;
+    
+    console.log(`🔄 Current scroll: ${currentScroll}px, Max scroll: ${maxScroll}px`);
+    
+    // Check if we're at the end
+    const atEnd = currentScroll >= maxScroll - 10;
+    
+    if (atEnd) {
+      // Loop back to the beginning
+      gallery.scrollTo({
+        left: 0,
+        behavior: "smooth"
+      });
+      console.log('🔄 Looping back to start');
+    } else {
+      // Scroll to next full image
+      gallery.scrollTo({
+        left: currentScroll + viewportWidth,
+        behavior: "smooth"
+      });
+      console.log(`🔄 Scrolling to: ${currentScroll + viewportWidth}px`);
+    }
+  }
+
+  function scrollToPrevious() {
+    if (!gallery) return;
+    
+    const currentScroll = gallery.scrollLeft;
+    const viewportWidth = window.innerWidth;
+    
+    console.log(`🔄 Scrolling to previous image`);
+    
+    // Check if we're at the beginning
+    if (currentScroll <= 10) {
+      // Loop to the end
+      const maxScroll = gallery.scrollWidth - viewportWidth;
+      gallery.scrollTo({
+        left: maxScroll,
+        behavior: "smooth"
+      });
+      console.log('🔄 Looping to end');
+    } else {
+      // Scroll to previous full image
+      gallery.scrollTo({
+        left: currentScroll - viewportWidth,
+        behavior: "smooth"
+      });
+      console.log(`🔄 Scrolling to: ${currentScroll - viewportWidth}px`);
+    }
+  }
+
+  function startScrolling() {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+    }
+    scrollInterval = setInterval(scrollToNext, scrollSpeed);
+    isAutoScrolling = true;
+    console.log('▶️ Auto-scroll started');
+  }
+
+  function stopScrolling() {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+      isAutoScrolling = false;
+      console.log('⏸️ Auto-scroll paused');
+    }
+  }
+
+  // Mouse wheel scroll handler
+  function handleWheelScroll(event) {
+    console.log('🎯 Gallery wheel event triggered');
+    console.log('📏 Wheel event details:', {
+      deltaY: event.deltaY,
+      deltaX: event.deltaX,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      target: event.target.tagName + '.' + event.target.className,
+      galleryScrollWidth: gallery.scrollWidth,
+      galleryClientWidth: gallery.clientWidth,
+      canScroll: gallery.scrollWidth > gallery.clientWidth
+    });
+    
+    // Only handle wheel scroll when hovering over gallery
+    // Prevent default scroll behavior for the entire page
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Determine scroll direction
+    if (event.deltaY > 0) {
+      // Scroll down/right - go to next image
+      console.log('🔄 Gallery wheel: scrolling to next image');
+      scrollToNext();
+    } else {
+      // Scroll up/left - go to previous image
+      console.log('🔄 Gallery wheel: scrolling to previous image');
+      scrollToPrevious();
+    }
+    
+    // Return false to prevent any further scroll events
+    return false;
+  }
+
+  // Add mouse wheel event listener only when hovering over gallery
+  gallery.addEventListener('mouseenter', function() {
+    gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
+    console.log('🎯 Gallery mouse wheel enabled');
+  });
+  
+  gallery.addEventListener('mouseleave', function() {
+    gallery.removeEventListener('wheel', handleWheelScroll);
+    console.log('🎯 Gallery mouse wheel disabled');
+  });
+  
+  console.log('🎯 Mouse wheel navigation always active');
+  
+  // Add hover pause functionality
+  gallery.addEventListener('mouseenter', stopScrolling);
+  gallery.addEventListener('mouseleave', startScrolling);
+  
+  console.log('⏸️ Hover pause functionality enabled');
+  
+  // Start auto-scrolling after a short delay
+  setTimeout(() => {
+    startScrolling();
+  }, 2000); // 2 second delay to let everything load properly
+  
+  // Force scroll to first image to ensure it's visible (no auto-scroll for testing)
+  setTimeout(() => {
+    gallery.scrollTo({
+      left: 0,
+      behavior: "instant"
+    });
+    console.log('📍 Forced scroll to first image');
+    
+    // Check scroll position after forcing
+    console.log('📍 Gallery scroll position after reset:', gallery.scrollLeft);
+    
+    // Check if first item is visible
+    if (collectionItems.length > 0) {
+      const firstItem = collectionItems[0];
+      const firstItemRect = firstItem.getBoundingClientRect();
+      const galleryRect = gallery.getBoundingClientRect();
+      
+      console.log('📍 First item visibility check:', {
+        firstItemLeft: firstItemRect.left,
+        galleryLeft: galleryRect.left,
+        isVisible: firstItemRect.left >= galleryRect.left && firstItemRect.right <= galleryRect.right
+      });
+    }
+  }, 500);
+  
+  console.log('✅ Gallery initialized with auto-scroll enabled');
+  console.log('💡 Auto-scroll starts after 2 seconds, mouse wheel always available');
+  
+  // Add test functions to window for manual testing
+  window.testGalleryScroll = function() {
+    console.log('🧪 Testing gallery scroll...');
+    if (gallery) {
+      console.log('📏 Current scroll position:', gallery.scrollLeft);
+      gallery.scrollBy({ left: 100, behavior: 'smooth' });
+      console.log('✅ Gallery scroll test executed');
+    } else {
+      console.log('❌ Gallery not found for testing');
+    }
+  };
+  
+  window.testRelatedScroll = function() {
+    console.log('🧪 Testing related items scroll...');
+    const relatedContainer = document.querySelector('.collection-list-6');
+    if (relatedContainer) {
+      console.log('📏 Current scroll position:', relatedContainer.scrollLeft);
+      relatedContainer.scrollBy({ left: 100, behavior: 'smooth' });
+      console.log('✅ Related scroll test executed');
+    } else {
+      console.log('❌ Related container not found for testing');
+    }
+  };
+  
+  console.log('🎠 === GALLERY DEBUGGING END ===');
+}
 
 // === Menu Panel Functionality ===
 function initializeMenuPanel() {
@@ -3031,45 +3379,418 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize gallery auto-scroll when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Gallery auto-scroll disabled
+  initializeGalleryAutoScroll();
 });
 
 // === Gallery Subscribe Wrapper Parallax Enhancement ===
-// Gallery parallax functionality disabled
+function initializeGalleryParallax() {
+  console.log('🎨 Initializing gallery parallax effect...');
+  
+  const gallerySubscribeWrapper = document.querySelector('.gallery-subscribe-wrapper');
+  const gallerySection = document.querySelector('.gallery-section-wrapper');
+  
+  if (!gallerySubscribeWrapper || !gallerySection) {
+    console.log('⚠️ Gallery subscribe wrapper or section not found');
+    return;
+  }
+  
+  console.log('✅ Gallery parallax elements found');
+  
+  // Parallax scroll effect
+  function updateParallax() {
+    const rect = gallerySection.getBoundingClientRect();
+    const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+    
+    // Apply parallax effect based on scroll position
+    if (scrollProgress > 0 && scrollProgress < 1) {
+      const parallaxDepth = scrollProgress * 20; // 0-20px depth
+      const opacity = 0.3 + (scrollProgress * 0.7); // 30% to 100% opacity
+      
+      gallerySubscribeWrapper.style.transform = `translateZ(${parallaxDepth}px) scale(${1 + scrollProgress * 0.02})`;
+      gallerySubscribeWrapper.style.opacity = opacity;
+      
+      console.log(`🎨 Parallax: depth=${parallaxDepth}px, opacity=${opacity.toFixed(2)}`);
+    }
+  }
+  
+  // Throttled scroll handler for performance
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+  
+  // Add scroll listener
+  window.addEventListener('scroll', requestTick, { passive: true });
+  
+  // Initial update
+  updateParallax();
+  
+  console.log('✅ Gallery parallax effect initialized');
+}
 
 // Initialize parallax when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Gallery parallax disabled
+  initializeGalleryParallax();
+});
+
+// === SVG Background Tracing Animation ===
+function initializeSVGTracingAnimation() {
+  console.log('🎨 Initializing SVG tracing animation...');
+  
+  // Find the background SVG
+  const backgroundSVG = document.querySelector('svg[class*="duva-main-background"], svg[class*="background"], svg[id*="background"], svg[data-background="true"]');
+  
+  if (!backgroundSVG) {
+    console.log('⚠️ Background SVG not found, creating demo animation');
+    createDemoSVGAnimation();
+    return;
+  }
+  
+  console.log('✅ Background SVG found:', backgroundSVG);
+  
+  // Get all paths in the SVG
+  const paths = backgroundSVG.querySelectorAll('path');
+  console.log(`📊 Found ${paths.length} paths to trace`);
+  
+  if (paths.length === 0) {
+    console.log('⚠️ No paths found in SVG');
+    return;
+  }
+  
+  // Create tracing dot
+  const tracingDot = createTracingDot();
+  backgroundSVG.appendChild(tracingDot);
+  
+  // Create stroke overlay for drawing effect
+  const strokeOverlay = createStrokeOverlay();
+  backgroundSVG.appendChild(strokeOverlay);
+  
+  // Start the tracing animation
+  startTracingAnimation(paths, tracingDot, strokeOverlay);
+}
+
+function createTracingDot() {
+  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot.setAttribute('cx', '0');
+  dot.setAttribute('cy', '0');
+  dot.setAttribute('r', '3');
+  dot.setAttribute('fill', '#C0392B');
+  dot.setAttribute('class', 'tracing-dot');
+  dot.style.filter = 'drop-shadow(0 0 4px #C0392B)';
+  dot.style.opacity = '0';
+  dot.style.transition = 'opacity 0.3s ease';
+  
+  return dot;
+}
+
+function createStrokeOverlay() {
+  const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  overlay.setAttribute('class', 'stroke-overlay');
+  overlay.style.pointerEvents = 'none';
+  
+  return overlay;
+}
+
+function startTracingAnimation(paths, tracingDot, strokeOverlay) {
+  let currentPathIndex = 0;
+  let currentProgress = 0;
+  const animationSpeed = 0.02; // Adjust for speed
+  const pathDelay = 500; // Delay between paths in ms
+  
+  function animatePath() {
+    if (currentPathIndex >= paths.length) {
+      console.log('✅ Tracing animation complete');
+      return;
+    }
+    
+    const path = paths[currentPathIndex];
+    const pathLength = path.getTotalLength();
+    
+    console.log(`🎨 Tracing path ${currentPathIndex + 1}/${paths.length}`);
+    
+    function tracePath() {
+      if (currentProgress >= 1) {
+        // Path complete, move to next
+        currentPathIndex++;
+        currentProgress = 0;
+        
+        if (currentPathIndex < paths.length) {
+          setTimeout(animatePath, pathDelay);
+        } else {
+          console.log('✅ All paths traced');
+        }
+        return;
+      }
+      
+      // Get point along path
+      const point = path.getPointAtLength(currentProgress * pathLength);
+      
+      // Update tracing dot position
+      tracingDot.setAttribute('cx', point.x);
+      tracingDot.setAttribute('cy', point.y);
+      tracingDot.style.opacity = '1';
+      
+      // Create stroke segment
+      createStrokeSegment(path, currentProgress, strokeOverlay);
+      
+      // Update progress
+      currentProgress += animationSpeed;
+      
+      // Continue animation
+      requestAnimationFrame(tracePath);
+    }
+    
+    // Start tracing this path
+    tracePath();
+  }
+  
+  // Start the animation
+  setTimeout(animatePath, 1000); // Initial delay
+}
+
+function createStrokeSegment(path, progress, strokeOverlay) {
+  const pathLength = path.getTotalLength();
+  const segmentLength = pathLength * 0.02; // Segment size
+  
+  // Create a stroke segment
+  const strokePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  strokePath.setAttribute('d', path.getAttribute('d'));
+  strokePath.setAttribute('fill', 'none');
+  strokePath.setAttribute('stroke', '#C0392B');
+  strokePath.setAttribute('stroke-width', '2');
+  strokePath.setAttribute('stroke-linecap', 'round');
+  strokePath.setAttribute('stroke-linejoin', 'round');
+  strokePath.style.strokeDasharray = `${segmentLength} ${pathLength}`;
+  strokePath.style.strokeDashoffset = pathLength - (progress * pathLength);
+  strokePath.style.opacity = '0.8';
+  
+  strokeOverlay.appendChild(strokePath);
+  
+  // Remove old segments to prevent memory issues
+  setTimeout(() => {
+    if (strokePath.parentNode) {
+      strokePath.parentNode.removeChild(strokePath);
+    }
+  }, 5000);
+}
+
+function createDemoSVGAnimation() {
+  console.log('🎨 Creating demo SVG animation...');
+  
+  // Create a demo SVG if no background SVG is found
+  const demoContainer = document.createElement('div');
+  demoContainer.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+  `;
+  
+  const demoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  demoSVG.setAttribute('width', '100%');
+  demoSVG.setAttribute('height', '100%');
+  demoSVG.setAttribute('viewBox', '0 0 1000 600');
+  
+  // Create demo paths
+  const paths = [
+    'M 100,300 Q 200,100 300,300 T 500,300',
+    'M 500,300 Q 600,100 700,300 T 900,300',
+    'M 100,400 L 300,400 L 300,200 L 500,200',
+    'M 500,200 L 700,200 L 700,400 L 900,400'
+  ];
+  
+  paths.forEach((pathData, index) => {
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', pathData);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#333');
+    path.setAttribute('stroke-width', '1');
+    path.setAttribute('opacity', '0.3');
+    demoSVG.appendChild(path);
+  });
+  
+  demoContainer.appendChild(demoSVG);
+  document.body.appendChild(demoContainer);
+  
+  // Start animation with demo paths
+  const demoPaths = demoSVG.querySelectorAll('path');
+  const tracingDot = createTracingDot();
+  const strokeOverlay = createStrokeOverlay();
+  
+  demoSVG.appendChild(tracingDot);
+  demoSVG.appendChild(strokeOverlay);
+  
+  startTracingAnimation(demoPaths, tracingDot, strokeOverlay);
+}
+
+// Initialize SVG tracing animation when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeSVGTracingAnimation();
 });
 
 // === Enhanced Mouse Wheel Scrolling ===
-// Gallery wheel scrolling functionality disabled
-
-// === Enhanced Mouse Wheel Scrolling ===
-// Gallery wheel scrolling functionality disabled
+function initializeEnhancedWheelScrolling() {
+  console.log('🎯 Initializing enhanced mouse wheel scrolling...');
+  
+  // Gallery wheel scrolling
+  const gallery = document.querySelector('.gallery-section-cms');
+  if (gallery) {
+    console.log('✅ Gallery found for wheel scrolling');
+    
+    // Gallery wheel scrolling variables
+    let galleryWheelVelocity = 0;
+    let galleryWheelAnimationId = null;
+    
+    function handleGalleryWheel(event) {
+      console.log('🎯 Gallery wheel event triggered');
+      event.preventDefault();
+      event.stopPropagation();
+      
+      // Calculate velocity based on wheel delta
+      const delta = event.deltaY || event.deltaX;
+      const direction = delta > 0 ? 1 : -1;
+      const speed = Math.abs(delta) * 0.01;
+      
+      galleryWheelVelocity += direction * speed;
+      
+      // Stop any ongoing auto-scroll
+      if (typeof stopAutoScroll === 'function') {
+        stopAutoScroll();
+      }
+      
+      // Apply momentum scrolling
+      if (!galleryWheelAnimationId) {
+        galleryWheelAnimationId = requestAnimationFrame(applyGalleryWheelMomentum);
+      }
+      
+      console.log(`🎯 Gallery wheel: direction=${direction}, speed=${speed}`);
+    }
+    
+    function applyGalleryWheelMomentum() {
+      if (Math.abs(galleryWheelVelocity) > 0.1) {
+        // Scroll the gallery
+        gallery.scrollLeft += galleryWheelVelocity * 10;
+        
+        // Apply friction
+        galleryWheelVelocity *= 0.9;
+        
+        galleryWheelAnimationId = requestAnimationFrame(applyGalleryWheelMomentum);
+      } else {
+        galleryWheelVelocity = 0;
+        galleryWheelAnimationId = null;
+        
+        // Restart auto-scroll after a delay
+        setTimeout(() => {
+          if (typeof startAutoScroll === 'function' && typeof isAutoScrolling !== 'undefined' && isAutoScrolling) {
+            startAutoScroll();
+          }
+        }, 2000);
+      }
+    }
+    
+    gallery.addEventListener('wheel', handleGalleryWheel, { passive: false });
+    console.log('✅ Added wheel listener to gallery');
+    
+    // Also add wheel listener to the gallery section wrapper for broader coverage
+    const gallerySectionWrapper = document.querySelector('.gallery-section-wrapper') || 
+                                 document.querySelector('.gallery-section');
+    if (gallerySectionWrapper) {
+      gallerySectionWrapper.addEventListener('wheel', handleGalleryWheel, { passive: false });
+      console.log('✅ Added wheel listener to gallery section wrapper');
+    }
+  }
+  
+  // Related items wheel scrolling
+  const relatedContainer = document.querySelector('.collection-list-6');
+  if (relatedContainer) {
+    console.log('✅ Related items container found for wheel scrolling');
+    
+    let scrollVelocity = 0;
+    let isScrolling = false;
+    let scrollAnimationId = null;
+    
+    // Related section wheel functionality removed - now using auto-scroll with arrow navigation
+    console.log('✅ Related section wheel functionality disabled - using auto-scroll instead');
+  }
+  
+  console.log('✅ Enhanced wheel scrolling initialized');
+}
 
 // Initialize enhanced wheel scrolling
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🎯 DOM Content Loaded - Initializing enhanced wheel scrolling...');
   
   // Debug: Check if elements exist
+  const gallery = document.querySelector('.gallery-section-cms');
   const relatedContainer = document.querySelector('.collection-list-6');
+  const gallerySection = document.querySelector('.gallery-section');
   const relatedSection = document.querySelector('.related-section');
   
   console.log('🔍 Element Debug:', {
+    gallery: !!gallery,
     relatedContainer: !!relatedContainer,
+    gallerySection: !!gallerySection,
     relatedSection: !!relatedSection
   });
   
+  if (gallery) {
+    console.log('📏 Gallery element found:', gallery.className);
+  }
   if (relatedContainer) {
     console.log('📦 Related container found:', relatedContainer.className);
   }
   
-  // Gallery wheel scrolling functionality disabled
+  initializeEnhancedWheelScrolling();
 });
 
 // === Seamless Gallery Loop Fix ===
-// Gallery seamless loop functionality disabled
+function fixGallerySeamlessLoop() {
+  console.log('🔄 Fixing gallery seamless loop...');
+  
+  const gallery = document.querySelector('.gallery-section-cms');
+  if (!gallery) {
+    console.log('⚠️ Gallery not found for seamless loop fix');
+    return;
+  }
+  
+  // Override the existing scrollToNext function to use smooth scrolling
+  const originalScrollToNext = window.scrollToNext;
+  if (originalScrollToNext) {
+    window.scrollToNext = function() {
+      const totalImages = gallery.querySelectorAll('.w-dyn-item').length;
+      const viewportWidth = window.innerWidth;
+      const currentScroll = gallery.scrollLeft;
+      const currentIndex = Math.round(currentScroll / viewportWidth);
+      
+      if (currentIndex >= totalImages - 1) {
+        // At the end - smoothly scroll to first image
+        const firstImagePosition = 0;
+        smoothScrollTo(gallery, firstImagePosition, 800);
+        console.log('🔄 Seamless loop: Smoothly transitioning to first image');
+      } else {
+        // Normal progression
+        const nextIndex = currentIndex + 1;
+        const nextPosition = nextIndex * viewportWidth;
+        smoothScrollTo(gallery, nextPosition, 800);
+        console.log(`🔄 Seamless loop: Moving to image ${nextIndex + 1}/${totalImages}`);
+      }
+    };
+  }
+  
+  console.log('✅ Gallery seamless loop fix applied');
+}
+
+// Apply the seamless loop fix
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(fixGallerySeamlessLoop, 1000); // Delay to ensure gallery is initialized
+});
 
 // === Accessories Section Auto-Scroll and Mouse Wheel Logic ===
 document.addEventListener("DOMContentLoaded", function () {
@@ -3229,213 +3950,113 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* === Flip Card Linking Functionality === */
-// Global error handler for 404 redirects
-function handle404Redirect() {
-  // Check if we're on a 404 page
-  if (document.title.includes('404') || document.body.innerHTML.includes('404')) {
-    console.log('🔍 404 page detected, attempting to redirect to search');
-    
-    // Try to extract product code from URL with multiple patterns
-    const currentUrl = window.location.pathname;
-    let productCode = null;
-    
-    // Try different URL patterns
-    const patterns = [
-      /\/products\/lucero-([^\/]+)/,  // /products/lucero-c330
-      /\/products\/([^\/]+)/,         // /products/c330
-      /\/products\/lucero-([A-Z][0-9]+)/,  // /products/lucero-C330
-      /\/products\/([A-Z][0-9]+)/     // /products/C330
-    ];
-    
-    for (const pattern of patterns) {
-      const match = currentUrl.match(pattern);
-      if (match) {
-        productCode = match[1];
-        console.log(`🔍 Product code extracted with pattern ${pattern}: ${productCode}`);
-        break;
-      }
-    }
-    
-    if (productCode) {
-      console.log(`🔍 Product code from URL: ${productCode}`);
-      
-      // Check if it's a letter code and try alternative URLs first
-      const isLetterCode = /^[A-Z]/.test(productCode);
-      
-      if (isLetterCode) {
-        console.log(`🔍 Letter code detected: ${productCode}, trying alternative URLs`);
-        
-        // Try alternative URL formats for letter codes
-        const alternativeUrls = [
-          `/products/${productCode.toLowerCase()}`,         // /products/c330
-          `/products/lucero-${productCode}`,               // /products/lucero-C330
-          `/products/${productCode}`,                      // /products/C330
-        ];
-        
-        // Try each alternative URL
-        let urlIndex = 0;
-        const tryAlternativeUrl = () => {
-          if (urlIndex < alternativeUrls.length) {
-            const altUrl = alternativeUrls[urlIndex];
-            console.log(`🔄 Trying alternative URL ${urlIndex + 1}: ${altUrl}`);
-            urlIndex++;
-            
-            // Check if the URL exists (simple check)
-            fetch(altUrl, { method: 'HEAD' })
-              .then(response => {
-                if (response.ok) {
-                  console.log(`✅ Alternative URL works: ${altUrl}`);
-                  window.location.href = altUrl;
-                } else {
-                  console.log(`❌ Alternative URL failed: ${altUrl}`);
-                  tryAlternativeUrl(); // Try next URL
-                }
-              })
-              .catch(() => {
-                console.log(`❌ Alternative URL error: ${altUrl}`);
-                tryAlternativeUrl(); // Try next URL
-              });
-          } else {
-            // All alternatives failed, redirect to search
-            console.log(`🔄 All alternatives failed, redirecting to search`);
-            const searchUrl = `/?search=${productCode.toLowerCase()}`;
-            window.location.href = searchUrl;
-          }
-        };
-        
-        // Start trying alternative URLs
-        setTimeout(tryAlternativeUrl, 100);
-      } else {
-        // For numeric codes, redirect directly to search
-        const searchUrl = `/?search=${productCode}`;
-        console.log(`🔄 Redirecting to search: ${searchUrl}`);
-        
-        // Use a small delay to ensure the page has loaded
-        setTimeout(() => {
-          window.location.href = searchUrl;
-        }, 100);
-      }
-    }
-  }
-}
-
-// Helper function to extract product code from element (kept for debugging)
-function extractProductCode(element) {
-  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-  if (codeElement) {
-    const text = codeElement.textContent?.trim();
-    if (text) {
-      const codeMatch = text.match(/([A-Z]?\d+)/);
-      if (codeMatch) {
-        return codeMatch[1];
-      } else {
-        return text.split(' ')[0];
-      }
-    }
-  }
-  return null;
-}
-
 function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
-  console.log('✅ Flip card structure is now correct - CMS handles navigation');
+  console.log('Script is working!');
   
-  // ONLY target flip card wrappers for animation effects only
+  // Find all possible card elements
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
+  const collectionItems = document.querySelectorAll('.collection-item');
+  const productCards = document.querySelectorAll('.product-card');
+  const cardWrappers = document.querySelectorAll('[class*="card"]');
+  const allCardElements = document.querySelectorAll('[class*="flip"], [class*="card"], [class*="collection"]');
   
-  console.log('Found flip card wrappers:', flipCardWrappers.length);
+  console.log('Found elements:', {
+    flipCardWrappers: flipCardWrappers.length,
+    collectionItems: collectionItems.length,
+    productCards: productCards.length,
+    cardWrappers: cardWrappers.length,
+    allCardElements: allCardElements.length
+  });
   
-  if (flipCardWrappers.length === 0) {
-    console.log('No flip card wrappers found, skipping');
-    return;
-  }
-  
-  console.log('Processing', flipCardWrappers.length, 'flip card wrappers for animation only');
-  
-  flipCardWrappers.forEach((element, index) => {
-    // Check if this element is already wrapped in a link (CMS structure)
-    const parentLink = element.closest('a');
-    
-    if (parentLink) {
-      console.log(`Element ${index + 1} - Already wrapped in CMS link:`, parentLink.href);
-      
-      // Add hover effects for flip animation to the parent link
-      parentLink.addEventListener('mouseenter', function() {
-        console.log('Mouse enter triggered on flip card link');
-        this.style.transform = 'translateY(-2px)';
-        
-        // Ensure fade animation works
-        const flipCard = this.querySelector('.flip-card');
-        const flipCardFront = this.querySelector('.flip-card-front');
-        const flipCardBack = this.querySelector('.flip-card-back');
-        
-        console.log('Flip card elements found:', {
-          flipCard: !!flipCard,
-          flipCardFront: !!flipCardFront,
-          flipCardBack: !!flipCardBack
-        });
-        
-        if (flipCard) {
-          flipCard.style.transition = 'all 0.6s ease';
-        }
-        if (flipCardFront) {
-          flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          flipCardFront.style.opacity = '0';
-          flipCardFront.style.transform = 'translateZ(-10px)';
-        }
-        if (flipCardBack) {
-          // Remove any conflicting inline styles and let CSS handle the display
-          flipCardBack.style.removeProperty('display');
-          flipCardBack.style.removeProperty('visibility');
-          flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          flipCardBack.style.opacity = '1';
-          flipCardBack.style.transform = 'translateZ(0)';
-          flipCardBack.style.zIndex = '10';
-        }
-      });
-      
-      parentLink.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-        // Reset fade animation
-        const flipCard = this.querySelector('.flip-card');
-        const flipCardFront = this.querySelector('.flip-card-front');
-        const flipCardBack = this.querySelector('.flip-card-back');
-        
-        if (flipCard) {
-          flipCard.style.transition = 'all 0.6s ease';
-        }
-        if (flipCardFront) {
-          flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          flipCardFront.style.opacity = '1';
-          flipCardFront.style.transform = 'translateZ(0)';
-        }
-        if (flipCardBack) {
-          flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          flipCardBack.style.opacity = '0';
-          flipCardBack.style.transform = 'translateZ(-10px)';
-          flipCardBack.style.zIndex = '1';
-          // Let CSS handle the display/visibility after transition
-          setTimeout(() => {
-            if (!this.matches(':hover')) {
-              flipCardBack.style.display = 'none';
-              flipCardBack.style.visibility = 'hidden';
-            }
-          }, 600);
-        }
-      });
-      
-      // Add click logging for debugging (no preventDefault)
-      parentLink.addEventListener('click', function(e) {
-        console.log('Flip card clicked! CMS URL:', this.href);
-        console.log('Flip card clicked! Element:', element);
-        console.log('✅ Navigation handled by CMS - no custom logic needed');
-      });
-      
-    } else {
-      console.log(`Element ${index + 1} - No parent link found, skipping`);
+  // Log first few elements to see what we're working with
+  allCardElements.forEach((el, index) => {
+    if (index < 5) {
+      console.log(`Element ${index + 1}:`, el.className, el.tagName);
     }
   });
-}
+  
+  // Try to find the actual card elements that need to be made clickable
+  let targetElements = [];
+  
+  // First try collection items
+  if (collectionItems.length > 0) {
+    targetElements = collectionItems;
+    console.log('Using collection items as targets');
+  }
+  // Then try flip card wrappers
+  else if (flipCardWrappers.length > 0) {
+    targetElements = flipCardWrappers;
+    console.log('Using flip card wrappers as targets');
+  }
+  // Then try any element with "card" in class name
+  else if (cardWrappers.length > 0) {
+    targetElements = cardWrappers;
+    console.log('Using card wrappers as targets');
+  }
+  // Finally, try any element that might be a card
+  else {
+    targetElements = allCardElements;
+    console.log('Using all card elements as targets');
+  }
+  
+  console.log('Processing', targetElements.length, 'target elements');
+  
+  targetElements.forEach((element, index) => {
+    // Check if this element already has a link
+    const existingLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
+    if (existingLink) {
+      console.log(`Element ${index + 1} already has a link, skipping`);
+      return;
+    }
+    
+    // Create the link element
+    const link = document.createElement('a');
+    link.className = 'flip-card-link';
+    
+    // Try to get the product URL from various sources
+    let productUrl = element.getAttribute('data-product-url') || 
+                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
+                    element.getAttribute('href') ||
+                    element.querySelector('a')?.getAttribute('href') ||
+                    '#';
+    
+    // If no URL found, try to construct one based on product code
+    if (productUrl === '#' || !productUrl) {
+      const productCode = element.querySelector('[class*="code"], [class*="number"], [class*="product"]')?.textContent?.trim();
+      if (productCode) {
+        // You can customize this URL pattern based on your site structure
+        productUrl = `/product/${productCode.toLowerCase()}`;
+        console.log(`Constructed URL for ${productCode}:`, productUrl);
+      }
+    }
+    
+    link.href = productUrl;
+    link.setAttribute('data-product-url', productUrl);
+    
+    console.log(`Element ${index + 1} - URL:`, productUrl);
+    
+    // Wrap the element in the link
+    element.parentNode.insertBefore(link, element);
+    link.appendChild(element);
+    
+    // Add click event listener
+    link.addEventListener('click', function(e) {
+      console.log('Card clicked! URL:', productUrl);
+      
+      // Prevent default if URL is not set
+      if (productUrl === '#' || !productUrl) {
+        e.preventDefault();
+        console.log('Product URL not configured, preventing navigation');
+        return;
+      }
+      
+      // Optional: Add loading state
+      this.style.pointerEvents = 'none';
+      setTimeout(() => {
+        this.style.pointerEvents = 'auto';
+      }, 1000);
+    });
     
     // Add hover effects for fade animation
     link.addEventListener('mouseenter', function() {
@@ -3461,11 +4082,10 @@ function initializeFlipCardLinks() {
         flipCardFront.style.transform = 'translateZ(-10px)';
       }
       if (flipCardBack) {
-        // Remove any conflicting inline styles and let CSS handle the display
-        flipCardBack.style.removeProperty('display');
-        flipCardBack.style.removeProperty('visibility');
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '1';
+        flipCardBack.style.visibility = 'visible';
+        flipCardBack.style.display = 'flex';
         flipCardBack.style.transform = 'translateZ(0)';
         flipCardBack.style.zIndex = '10';
       }
@@ -3489,15 +4109,10 @@ function initializeFlipCardLinks() {
       if (flipCardBack) {
         flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         flipCardBack.style.opacity = '0';
+        flipCardBack.style.visibility = 'hidden';
+        flipCardBack.style.display = 'none';
         flipCardBack.style.transform = 'translateZ(-10px)';
         flipCardBack.style.zIndex = '1';
-        // Let CSS handle the display/visibility after transition
-        setTimeout(() => {
-          if (!this.matches(':hover')) {
-            flipCardBack.style.display = 'none';
-            flipCardBack.style.visibility = 'hidden';
-          }
-        }, 600);
       }
     });
   });
@@ -3530,11 +4145,6 @@ function initializeCardsScrollAnimation() {
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
-  console.log('🚀 Script version: 2024-01-27-v2'); // Version marker for cache busting
-  
-  // Check for 404 redirects first
-  handle404Redirect();
-  
   initializeFlipCardLinks();
   initializeCardsScrollAnimation();
   
@@ -4142,9 +4752,9 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeEnhancedLightbox();
 });
 
-/* === Related Section Arrow Navigation === */
+/* === Related Section Auto-Scroll with Arrow Navigation === */
 function initializeRelatedSectionAutoScroll() {
-  console.log('🔄 Initializing related section arrow navigation...');
+  console.log('🔄 Initializing related section auto-scroll...');
   
   const relatedSection = document.querySelector('.related-section');
   const relatedContainer = document.querySelector('.collection-list-6');
@@ -4154,6 +4764,55 @@ function initializeRelatedSectionAutoScroll() {
   if (!relatedSection || !relatedContainer) {
     console.log('⚠️ Related section or container not found');
     return;
+  }
+  
+  let autoScrollInterval = null;
+  let isHovered = false;
+  let scrollDirection = 1; // 1 for right, -1 for left
+  const scrollSpeed = 2; // pixels per frame
+  const scrollInterval = 50; // milliseconds between scroll updates
+  
+  // Mouse wheel scroll functionality already disabled in separate function
+  console.log('✅ Mouse wheel scroll functionality disabled - using auto-scroll instead');
+  
+  // Auto-scroll function
+  function startAutoScroll() {
+    if (autoScrollInterval) return;
+    
+    autoScrollInterval = setInterval(() => {
+      if (!isHovered && relatedContainer.scrollWidth > relatedContainer.clientWidth) {
+        const currentScroll = relatedContainer.scrollLeft;
+        const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+        
+        // Seamless looping - when reaching the end, jump to start and vice versa
+        if (currentScroll >= maxScroll) {
+          // Jump to start for seamless loop
+          relatedContainer.scrollLeft = 0;
+          scrollDirection = 1;
+          console.log('🔄 Auto-scroll: Reached end, looping back to start');
+        } else if (currentScroll <= 0 && scrollDirection < 0) {
+          // Jump to end for seamless loop
+          relatedContainer.scrollLeft = maxScroll;
+          scrollDirection = -1;
+          console.log('🔄 Auto-scroll: Reached start, looping to end');
+        }
+        
+        relatedContainer.scrollLeft += scrollDirection * scrollSpeed;
+        console.log(`🔄 Auto-scroll: ${scrollDirection > 0 ? 'right' : 'left'}, position: ${relatedContainer.scrollLeft}/${maxScroll}`);
+      } else {
+        console.log('🔄 Auto-scroll: Skipped - hovered or no scroll needed');
+      }
+    }, scrollInterval);
+    
+    console.log('🔄 Auto-scroll started');
+  }
+  
+  function stopAutoScroll() {
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = null;
+      console.log('⏸️ Auto-scroll stopped');
+    }
   }
   
   // Arrow navigation functions
@@ -4167,7 +4826,14 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll + scrollAmount,
         behavior: 'smooth'
       });
-      console.log('➡️ Right arrow clicked - scrolling right');
+      
+      // Ensure auto-scroll continues after arrow click
+      setTimeout(() => {
+        if (!isHovered && !autoScrollInterval) {
+          startAutoScroll();
+          console.log('🔄 Auto-scroll resumed after right arrow click');
+        }
+      }, 1000); // Resume after smooth scroll completes
     }
   }
   
@@ -4180,15 +4846,43 @@ function initializeRelatedSectionAutoScroll() {
         left: currentScroll - scrollAmount,
         behavior: 'smooth'
       });
-      console.log('⬅️ Left arrow clicked - scrolling left');
+      
+      // Ensure auto-scroll continues after arrow click
+      setTimeout(() => {
+        if (!isHovered && !autoScrollInterval) {
+          startAutoScroll();
+          console.log('🔄 Auto-scroll resumed after left arrow click');
+        }
+      }, 1000); // Resume after smooth scroll completes
     }
   }
+  
+  // Event listeners
+  relatedSection.addEventListener('mouseenter', () => {
+    isHovered = true;
+    stopAutoScroll();
+    console.log('🖱️ Related section hover - auto-scroll paused');
+  });
+  
+  relatedSection.addEventListener('mouseleave', () => {
+    isHovered = false;
+    startAutoScroll();
+    console.log('🖱️ Related section leave - auto-scroll resumed');
+  });
   
   // Arrow click events
   if (arrowRight) {
     arrowRight.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      
+      // Temporarily pause auto-scroll during arrow click
+      const wasAutoScrolling = !!autoScrollInterval;
+      if (wasAutoScrolling) {
+        stopAutoScroll();
+        console.log('⏸️ Auto-scroll paused for right arrow click');
+      }
+      
       scrollRight();
       console.log('➡️ Right arrow clicked');
     });
@@ -4201,6 +4895,14 @@ function initializeRelatedSectionAutoScroll() {
     arrowLeft.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      
+      // Temporarily pause auto-scroll during arrow click
+      const wasAutoScrolling = !!autoScrollInterval;
+      if (wasAutoScrolling) {
+        stopAutoScroll();
+        console.log('⏸️ Auto-scroll paused for left arrow click');
+      }
+      
       scrollLeft();
       console.log('⬅️ Left arrow clicked');
     });
@@ -4209,7 +4911,12 @@ function initializeRelatedSectionAutoScroll() {
     console.log('⚠️ Left arrow (image-31) not found');
   }
   
-  console.log('✅ Related section arrow navigation initialized');
+  // Start auto-scroll after a delay
+  setTimeout(() => {
+    startAutoScroll();
+  }, 2000);
+  
+  console.log('✅ Related section auto-scroll initialized');
 }
 
 // Initialize related section auto-scroll when DOM is ready
@@ -4238,390 +4945,6 @@ if (typeof Webflow !== 'undefined') {
     initializeRelatedSectionAutoScroll();
   });
 }
-
-// === Menu Panel Debugging ===
-function debugMenuPanel() {
-  console.log('🔍 === MENU PANEL DEBUGGING ===');
-  
-  // Check for required elements
-  const menuWrapper = document.querySelector('.menu-wrapper');
-  const menuPanel = document.querySelector('.menu-panel');
-  const menuClose = document.querySelector('.menu-close');
-  const menuOverlay = document.querySelector('.menu-overlay');
-  
-  console.log('📋 Required elements found:', {
-    menuWrapper: !!menuWrapper,
-    menuPanel: !!menuPanel,
-    menuClose: !!menuClose,
-    menuOverlay: !!menuOverlay
-  });
-  
-  // Check element properties
-  if (menuWrapper) {
-    console.log('📋 Menu wrapper properties:', {
-      display: getComputedStyle(menuWrapper).display,
-      visibility: getComputedStyle(menuWrapper).visibility,
-      position: getComputedStyle(menuWrapper).position,
-      zIndex: getComputedStyle(menuWrapper).zIndex,
-      clickable: menuWrapper.offsetWidth > 0 && menuWrapper.offsetHeight > 0
-    });
-  }
-  
-  if (menuPanel) {
-    console.log('📋 Menu panel properties:', {
-      display: getComputedStyle(menuPanel).display,
-      visibility: getComputedStyle(menuPanel).visibility,
-      position: getComputedStyle(menuPanel).position,
-      zIndex: getComputedStyle(menuPanel).zIndex,
-      top: getComputedStyle(menuPanel).top,
-      left: getComputedStyle(menuPanel).left,
-      width: getComputedStyle(menuPanel).width,
-      height: getComputedStyle(menuPanel).height,
-      opacity: getComputedStyle(menuPanel).opacity,
-      transform: getComputedStyle(menuPanel).transform
-    });
-  }
-  
-  if (menuClose) {
-    console.log('📋 Menu close button properties:', {
-      display: getComputedStyle(menuClose).display,
-      visibility: getComputedStyle(menuClose).visibility,
-      position: getComputedStyle(menuClose).position,
-      clickable: menuClose.offsetWidth > 0 && menuClose.offsetHeight > 0
-    });
-  }
-  
-  // Check if menu wrapper is clickable
-  if (menuWrapper) {
-    menuWrapper.addEventListener('click', function(e) {
-      console.log('📋 Menu wrapper clicked!', e);
-    });
-    console.log('📋 Menu wrapper click listener added for testing');
-  }
-  
-  // Test menu opening manually
-  window.testMenuOpen = function() {
-    console.log('📋 Testing menu open...');
-    if (menuPanel) {
-      menuPanel.style.display = 'flex';
-      menuPanel.style.visibility = 'visible';
-      menuPanel.style.opacity = '1';
-      menuPanel.classList.add('active');
-      console.log('📋 Menu panel manually activated');
-    } else {
-      console.log('❌ Menu panel not found');
-    }
-  };
-  
-  // Test menu closing manually
-  window.testMenuClose = function() {
-    console.log('📋 Testing menu close...');
-    if (menuPanel) {
-      menuPanel.classList.remove('active');
-      setTimeout(() => {
-        menuPanel.style.display = 'none';
-        console.log('📋 Menu panel manually deactivated');
-      }, 400);
-    } else {
-      console.log('❌ Menu panel not found');
-    }
-  };
-  
-  console.log('🔍 === MENU PANEL DEBUGGING COMPLETE ===');
-  console.log('💡 Use testMenuOpen() and testMenuClose() to test manually');
-}
-
-// Call debugging function when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  debugMenuPanel();
-});
-
-// === Related Items Single-Click Fix ===
-function initializeRelatedItemsSingleClick() {
-  console.log('🖱️ Initializing related items single-click fix...');
-  
-  // ONLY target related items, not flip cards or other sections
-  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item:not(.flip-card-wrapper):not([class*="flip"])');
-  
-  console.log(`Found ${relatedItems.length} related items to process`);
-  
-  // Log what we found to debug
-  relatedItems.forEach((item, index) => {
-    console.log(`Related item ${index + 1}:`, item.className, item.tagName);
-  });
-  
-  relatedItems.forEach((item, index) => {
-    // Double-check this is not a flip card
-    const isFlipCard = item.closest('.flip-card-wrapper') || item.querySelector('.flip-card') || item.classList.contains('flip-card-wrapper');
-    if (isFlipCard) {
-      console.log(`Related item ${index + 1} is actually a flip card, skipping`);
-      return;
-    }
-    
-    // Check if this item already has a link
-    const existingLink = item.querySelector('a');
-    if (existingLink) {
-      console.log(`Related item ${index + 1} already has a link, skipping`);
-      return;
-    }
-    
-    // Create a simple click handler for the item
-    item.addEventListener('click', function(e) {
-      console.log(`🖱️ Related item ${index + 1} clicked`);
-      
-      // Prevent default behavior
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Get product code and construct URL (same logic as flip cards)
-      const productCode = extractProductCode(item);
-      
-      if (productCode) {
-        // Use the same URL format as flip cards
-        const productUrl = `/products/lucero-${productCode.toLowerCase()}`;
-        console.log(`Related item ${index + 1} - navigating to:`, productUrl);
-        
-        // Navigate to the product page
-        window.location.href = productUrl;
-      } else {
-        console.log(`Related item ${index + 1} - no product code found`);
-      }
-    });
-    
-    // Add hover effect for better UX - ONLY for related items, not flip cards
-    item.addEventListener('mouseenter', function() {
-      // Check if this is a flip card to avoid conflicts
-      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
-      if (isFlipCard) {
-        console.log('Skipping hover effect for flip card');
-        return;
-      }
-      
-      this.style.cursor = 'pointer';
-      this.style.transform = 'translateY(-2px)';
-      this.style.transition = 'transform 0.2s ease';
-    });
-    
-    item.addEventListener('mouseleave', function() {
-      // Check if this is a flip card to avoid conflicts
-      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
-      if (isFlipCard) {
-        return;
-      }
-      
-      this.style.transform = 'translateY(0)';
-    });
-  });
-  
-  console.log(`✅ Single-click fix applied to ${relatedItems.length} related items`);
-}
-
-// Initialize single-click fix when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  initializeRelatedItemsSingleClick();
-});
-
-// Also initialize when Webflow loads
-if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    initializeRelatedItemsSingleClick();
-  });
-}
-
-/**
- * initializePageParallax
- * Adds subtle parallax to key page sections without modifying HTML.
- * - Disabled if prefers-reduced-motion is set
- * - Disabled on small screens (< 768px) for performance
- * - Uses IntersectionObserver + requestAnimationFrame
- */
-(function initializePageParallax() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function isParallaxEnabled() {
-    const isMobile = window.innerWidth < 768;
-    return !prefersReducedMotion.matches && !isMobile;
-  }
-
-  const parallaxTargetsConfig = [
-    { selector: '.hero-section', speed: 0.06, max: 18 },
-    { selector: '.right-hero-wrapper', speed: 0.05, max: 16 },
-    { selector: '.related-slider-wrapper', speed: 0.04, max: 14 },
-    { selector: '.accessories-section', speed: 0.05, max: 16 },
-    { selector: '.footer-section', speed: 0.03, max: 12 }
-  ];
-
-  let trackedElements = [];
-  let isTicking = false;
-
-  function collectParallaxElements() {
-    const elements = [];
-    parallaxTargetsConfig.forEach(cfg => {
-      document.querySelectorAll(cfg.selector).forEach(el => {
-        elements.push({ element: el, speed: cfg.speed, max: cfg.max });
-        el.style.willChange = 'transform';
-        el.dataset.__parallaxApplied = '1';
-      });
-    });
-    return elements;
-  }
-
-  function clearParallaxTransforms() {
-    trackedElements.forEach(({ element }) => {
-      element.style.transform = '';
-      element.style.willChange = '';
-      delete element.dataset.__parallaxApplied;
-    });
-  }
-
-  function applyParallax(scrollY) {
-    trackedElements.forEach(({ element, speed, max }) => {
-      const rect = element.getBoundingClientRect();
-      const elementTopOnPage = scrollY + rect.top;
-      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * speed, max), -max);
-      element.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-    });
-  }
-
-  function onScroll() {
-    if (!isTicking) {
-      window.requestAnimationFrame(() => {
-        applyParallax(window.scrollY || window.pageYOffset);
-        isTicking = false;
-      });
-      isTicking = true;
-    }
-  }
-
-  let io;
-  function observeVisibility() {
-    if (io) io.disconnect();
-    io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const target = entry.target;
-        if (!target.dataset.__parallaxSpeed) return;
-        if (entry.isIntersecting) {
-          // Keep in tracked list (no-op here, tracked globally)
-        } else {
-          // Optional: reset transform when leaving viewport
-          target.style.transform = '';
-        }
-      });
-    }, { root: null, threshold: 0 });
-
-    trackedElements.forEach(({ element, speed }) => {
-      element.dataset.__parallaxSpeed = String(speed);
-      io.observe(element);
-    });
-  }
-
-  function enableParallax() {
-    trackedElements = collectParallaxElements();
-    if (trackedElements.length === 0) return;
-    observeVisibility();
-    applyParallax(window.scrollY || window.pageYOffset);
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  function disableParallax() {
-    window.removeEventListener('scroll', onScroll);
-    if (io) io.disconnect();
-    clearParallaxTransforms();
-    trackedElements = [];
-  }
-
-  function reconfigure() {
-    disableParallax();
-    if (isParallaxEnabled()) enableParallax();
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    if (isParallaxEnabled()) enableParallax();
-  });
-
-  prefersReducedMotion.addEventListener('change', reconfigure);
-  window.addEventListener('resize', () => {
-    // Debounce resize reconfiguration
-    clearTimeout(window.__parallaxResizeTimer);
-    window.__parallaxResizeTimer = setTimeout(reconfigure, 150);
-  });
-})();
-
-/**
- * initializeGallerySlider
- * Fades between CMS images inside .gallery-section-cms.
- * - Auto-plays with configurable interval
- * - Pauses on hover over .div-block-15
- * - Left/Right arrows navigate: .gallery-arrow-left / .gallery-right-arrow
- */
-(function initializeGallerySlider() {
-  const container = document.querySelector('.div-block-15');
-  const list = document.querySelector('.gallery-section-cms');
-  if (!container || !list) return;
-
-  const items = Array.from(list.querySelectorAll('.collection-item-5'));
-  if (items.length === 0) return;
-
-  let current = 0;
-  let timer = null;
-  const INTERVAL_MS = 4000;
-  const FADE_MS = 600; // keep in sync with CSS
-
-  function show(index) {
-    items.forEach((el, i) => {
-      if (i === index) {
-        el.classList.add('is-active');
-      } else {
-        el.classList.remove('is-active');
-      }
-    });
-    current = index;
-  }
-
-  function next() {
-    const idx = (current + 1) % items.length;
-    show(idx);
-  }
-
-  function prev() {
-    const idx = (current - 1 + items.length) % items.length;
-    show(idx);
-  }
-
-  function start() {
-    stop();
-    timer = setInterval(next, INTERVAL_MS);
-  }
-
-  function stop() {
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
-    }
-  }
-
-  // Init first slide
-  show(0);
-  start();
-
-  // Pause on hover
-  container.addEventListener('mouseenter', stop);
-  container.addEventListener('mouseleave', start);
-
-  // Arrow navigation
-  const leftArrow = container.querySelector('.gallery-arrow-left');
-  const rightArrow = container.querySelector('.gallery-right-arrow');
-  if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAfterManual(); });
-  if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAfterManual(); });
-
-  // After manual nav, resume autoplay after a beat
-  let resumeTimer = null;
-  function restartAfterManual() {
-    if (resumeTimer) clearTimeout(resumeTimer);
-    stop();
-    resumeTimer = setTimeout(start, FADE_MS + 1000);
-  }
-})();
 
 /* === DUVA PRODUCT TEMPLATE HOTFIX GUARD === */
 (function () {
