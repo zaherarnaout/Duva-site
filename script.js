@@ -3524,25 +3524,16 @@ function initializeFlipCardLinks() {
           const isLetterCode = /^[A-Z]/.test(productCode);
           
           if (isLetterCode) {
-            // For letter codes (C330, C331, etc.), try multiple URL formats
-            const possibleUrls = [
-              `/products/lucero-${productCode.toLowerCase()}`,  // /products/lucero-c330
-              `/products/${productCode.toLowerCase()}`,         // /products/c330
-              `/products/lucero-${productCode}`,               // /products/lucero-C330
-              `/products/${productCode}`,                      // /products/C330
-              `/?search=${productCode.toLowerCase()}`          // Fallback to search
-            ];
-            
-            // For now, use the first format but store alternatives for future use
-            productUrl = possibleUrls[0];
+            // For letter codes (C330, C331, etc.), we know they don't exist as product pages
+            // So we'll redirect directly to search instead of trying product URLs
+            productUrl = `/?search=${productCode.toLowerCase()}`;
             console.log(`🔍 Letter code detected: ${productCode}`);
-            console.log(`🔍 Possible URLs:`, possibleUrls);
-            console.log(`🔍 Using URL: ${productUrl}`);
+            console.log(`🔍 Letter codes don't have product pages, redirecting to search: ${productUrl}`);
           } else {
             // For numeric codes (4711, 4709, etc.), use the standard format
             productUrl = `/products/lucero-${productCode.toLowerCase()}`;
             console.log(`🔍 Numeric code detected: ${productCode}`);
-            console.log(`🔍 Using URL: ${productUrl}`);
+            console.log(`🔍 Using product page URL: ${productUrl}`);
           }
           
           // Add debugging to check if the product exists
