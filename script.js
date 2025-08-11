@@ -6,6 +6,7 @@ console.log("TESTING - If you see this, the script is loading!");
 function applyCategoryFilterFromURL() {
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category");
+  const product = params.get("product");
 
   if (category) {
     // Clean category value (just in case)
@@ -51,6 +52,23 @@ function applyCategoryFilterFromURL() {
           searchInput.dispatchEvent(new Event('input', { bubbles: true }));
           console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
         }
+      }
+    }, 2000); // Wait 2 seconds for filter system to initialize
+  }
+
+  if (product) {
+    // Handle product-specific filtering
+    const cleanProduct = product.trim().toLowerCase();
+    console.log(`🔍 Auto-filter: Processing product parameter: ${cleanProduct}`);
+
+    // Wait for the filter system to be ready
+    setTimeout(() => {
+      // Use global search to find the specific product
+      const searchInput = document.getElementById('globalSearchInput');
+      if (searchInput) {
+        searchInput.value = cleanProduct;
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        console.log(`🔍 Auto-filter: Using global search for product: ${cleanProduct}`);
       }
     }, 2000); // Wait 2 seconds for filter system to initialize
   }
@@ -110,14 +128,12 @@ function initializeCategoryCards() {
         card.addEventListener('click', function(e) {
           e.preventDefault();
           
-          // Get the products page URL (you may need to adjust this)
-          const productsPageURL = 'products.html'; // Adjust this to your actual products page URL
-          
-          // Navigate to products page with category filter
-          const filteredURL = `${productsPageURL}?category=${categoryKey}`;
+          // Navigate to main page and trigger category filter
+          // Use the filter system instead of trying to navigate to non-existent pages
+          const filteredURL = `/?category=${categoryKey}`;
           console.log(`🚀 Navigating to: ${filteredURL}`);
           
-          // Navigate to the filtered products page
+          // Navigate to the main page with category filter
           window.location.href = filteredURL;
         });
         
@@ -3365,7 +3381,7 @@ function initializeFlipCardLinks() {
       // Update the existing link instead of skipping
       const productCode = extractProductCode(element);
       if (productCode) {
-        const newUrl = `/?search=${productCode.toLowerCase()}`;
+        const newUrl = `/?product=${productCode.toLowerCase()}`;
         existingFlipLink.href = newUrl;
         console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
       }
@@ -3410,10 +3426,10 @@ function initializeFlipCardLinks() {
       }
       
       if (productCode) {
-        // For flip cards, use search functionality instead of non-existent product pages
-        // Navigate to products page with search parameter to filter to this specific product
-        productUrl = `/?search=${productCode.toLowerCase()}`;
-        console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+        // For flip cards, use the filter system to show this specific product
+        // Navigate to main page with product filter
+        productUrl = `/?product=${productCode.toLowerCase()}`;
+        console.log(`Flip card - constructed product filter URL for ${productCode}:`, productUrl);
       } else {
         console.log('Flip card - no product code found, keeping URL as #');
       }
@@ -3679,6 +3695,7 @@ function initializeGlobalSearch() {
                          window.location.pathname.includes('/product') || 
                          window.location.pathname.includes('/collection') ||
                          window.location.pathname.includes('products.html') ||
+                         window.location.pathname === '/' ||
                          document.querySelector('.cards-container') !== null;
   
   // If we're on products page with search parameter, we came from another page
@@ -3764,27 +3781,13 @@ function initializeGlobalSearch() {
 
 }
 
-// Navigate to products page with search term
+// Navigate to main page with search term
 function navigateToProductsPage(searchTerm) {
-  // Try to find the products page URL from the site structure
-  let productsPageUrl = 'products.html';
-  
-  // Check if we can find a products link on the page
-  const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
-  if (productsLinks.length > 0) {
-    // Use the first products link found
-    productsPageUrl = productsLinks[0].getAttribute('href');
-    // Ensure it's a relative URL
-    if (productsPageUrl.startsWith('http')) {
-      const url = new URL(productsPageUrl);
-      productsPageUrl = url.pathname;
-    }
-  }
-  
+  // Navigate to the main page with search parameter
   const searchParam = encodeURIComponent(searchTerm);
-  const targetUrl = `${productsPageUrl}?search=${searchParam}`;
+  const targetUrl = `/?search=${searchParam}`;
   
-  console.log(`🔍 Navigating to products page with search: ${targetUrl}`);
+  console.log(`🔍 Navigating to main page with search: ${targetUrl}`);
   window.location.href = targetUrl;
 }
 
@@ -4389,11 +4392,11 @@ function initializeRelatedItemsSingleClick() {
       const productCode = extractProductCode(item);
       
       if (productCode) {
-        // Use search functionality instead of non-existent product pages
-        const productUrl = `/?search=${productCode.toLowerCase()}`;
+        // Use the filter system to show this specific product
+        const productUrl = `/?product=${productCode.toLowerCase()}`;
         console.log(`Related item ${index + 1} - navigating to:`, productUrl);
         
-        // Navigate to the search results
+        // Navigate to the main page with product filter
         window.location.href = productUrl;
       } else {
         console.log(`Related item ${index + 1} - no product code found`);
