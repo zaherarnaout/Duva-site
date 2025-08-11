@@ -106,20 +106,12 @@ function initializeCategoryCards() {
       if (categoryKey) {
         console.log(`✅ Mapping category "${categoryText}" to "${categoryKey}"`);
         
-        // Add click event listener
-        card.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          // Get the products page URL (you may need to adjust this)
-          const productsPageURL = '/products'; // Adjust this to your actual products page URL
-          
-          // Navigate to products page with category filter
-          const filteredURL = `${productsPageURL}?category=${categoryKey}`;
-          console.log(`🚀 Navigating to: ${filteredURL}`);
-          
-          // Navigate to the filtered products page
-          window.location.href = filteredURL;
-        });
+        // Update the href to include category filter
+        const productsPageURL = '/products';
+        const filteredURL = `${productsPageURL}?category=${categoryKey}`;
+        card.href = filteredURL;
+        
+        console.log(`✅ Category card "${categoryText}" href set to: ${filteredURL}`);
         
         // Add visual feedback that it's clickable
         card.style.cursor = 'pointer';
@@ -144,6 +136,38 @@ if (typeof Webflow !== 'undefined') {
     initializeCategoryCards();
   });
 }
+
+// Check if we're on a product page and fix CSS/JS paths if needed
+document.addEventListener("DOMContentLoaded", function() {
+  // Check if we're on a product page (URL contains /products/)
+  if (window.location.pathname.includes('/products/')) {
+    console.log('🔧 Product page detected - checking for CSS/JS path issues');
+    
+    // Check if CSS files are loading correctly
+    const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
+    cssLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('css/') && !href.startsWith('http')) {
+        // Fix relative paths to be absolute from root
+        const fixedHref = href.startsWith('/') ? href : '/' + href;
+        console.log(`🔧 Fixing CSS path: ${href} → ${fixedHref}`);
+        link.setAttribute('href', fixedHref);
+      }
+    });
+    
+    // Check if JS files are loading correctly
+    const jsScripts = document.querySelectorAll('script[src]');
+    jsScripts.forEach(script => {
+      const src = script.getAttribute('src');
+      if (src && src.startsWith('js/') && !src.startsWith('http')) {
+        // Fix relative paths to be absolute from root
+        const fixedSrc = src.startsWith('/') ? src : '/' + src;
+        console.log(`🔧 Fixing JS path: ${src} → ${fixedSrc}`);
+        script.setAttribute('src', fixedSrc);
+      }
+    });
+  }
+});
 
 // Quick test to see if flip card elements exist
 setTimeout(() => {
