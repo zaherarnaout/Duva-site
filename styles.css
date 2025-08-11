@@ -16,9 +16,7 @@ html, body {
 
 /* === Menu Panel Functionality === */
 .menu-wrapper {
-  cursor: pointer !important;
-  position: relative !important;
-  z-index: 1000 !important;
+  z-index: 1010;
   clear: none;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -36,6 +34,7 @@ html, body {
   display: flex;
   position: static;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .menu-wrapper:hover {
@@ -46,76 +45,54 @@ html, body {
 
 /* === Menu Panel Improvements === */
 .menu-panel {
-  z-index: 1001 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 60px !important;
-  width: 520px !important;
-  max-width: 90vw !important;
-  height: auto !important;
-  background-color: #fff !important;
-  border-radius: 12px !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg) !important;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  pointer-events: none !important;
-  overflow: hidden !important;
-}
-
-/* Menu Panel Shimmer Overlay Effect */
-.menu-panel::before {
-  content: '';
-  position: absolute;
+  z-index: 1000;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  background-color: var(--white, #fff);
+  border-radius: 8px;
+  flex-flow: column;
+  flex: 0 auto;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-columns: 1fr;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 520px;
+  max-width: 90vw;
+  height: auto;
+  margin-left: auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 11px;
+  display: none;
+  position: fixed;
   top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.05), transparent);
-  transition: left 0.8s ease 0.3s;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.menu-panel.active::before {
-  left: 100%;
-}
-
-/* Menu Panel Hover Shimmer Effect */
-.menu-panel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.08), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-  pointer-events: none;
+  left: 60px;
+  overflow: visible;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(-100%) translateY(-20px) scale(0.9) rotateY(-15deg);
   opacity: 0;
-}
-
-.menu-panel:hover::after {
-  left: 100%;
-  opacity: 1;
+  pointer-events: none;
+  /* Override Webflow hidden state */
+  visibility: visible !important;
+  transform-origin: left center;
 }
 
 /* Prevent body scroll when menu is active */
 body.menu-open {
   overflow: hidden !important;
-  position: fixed !important;
-  width: 100% !important;
+  position: fixed;
+  width: 100%;
 }
 
 .menu-panel.active {
+  transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+  opacity: 1;
+  pointer-events: auto;
   display: flex !important;
   visibility: visible !important;
-  opacity: 1 !important;
-  transform: translateX(0) translateY(0) scale(1) rotateY(0deg) !important;
-  pointer-events: auto !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .menu-panel.active .menu-close-wrapper {
@@ -125,38 +102,37 @@ body.menu-open {
   position: absolute !important;
   top: 20px !important;
   right: 20px !important;
-  z-index: 1002 !important;
+  z-index: 1001 !important;
 }
 
-/* === Enhanced Menu Overlay for Better UX === */
+/* === Menu Overlay for Better UX === */
 .menu-overlay {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
-  z-index: 1000 !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-  pointer-events: none !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
 }
 
 .menu-overlay.active {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
+  opacity: 1;
+  visibility: visible;
+  background-color: transparent;
+  pointer-events: auto;
 }
 
-/* === Enhanced Menu Close Button === */
+/* === Menu Close Button === */
 .menu-close-wrapper {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 1002;
+  z-index: 1001;
   display: block;
   visibility: visible;
   opacity: 1;
@@ -168,50 +144,30 @@ body.menu-open {
   right: 0;
   padding-right: 35px;
   padding-left: 35px;
-  border-radius: 8px;
+  border-radius: 3px;
   background-color: var(--duva-d-grey, #333);
   color: #fff;
   font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-weight: bold;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s ease;
   display: block;
   border: none;
   line-height: 1;
-  overflow: hidden;
-}
-
-/* Menu Close Button Shimmer Effect */
-.menu-close::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-close:hover::before {
-  left: 100%;
 }
 
 .menu-close:hover {
+  border-top-left-radius: var(--border-4px-cornner, 4px);
+  border-top-right-radius: var(--border-4px-cornner, 4px);
+  border-bottom-left-radius: var(--border-4px-cornner, 4px);
+  border-bottom-right-radius: var(--border-4px-cornner, 4px);
   background-color: var(--duva-red, #c0392b);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-  scale: 1.02;
 }
 
 .menu-close .bold-text {
   color: #fff;
-  font-weight: 600;
-  position: relative;
-  z-index: 2;
+  font-weight: bold;
 }
 
 /* Override any Webflow button styles */
@@ -221,44 +177,25 @@ body.menu-open {
   right: 0 !important;
   padding-right: 35px !important;
   padding-left: 35px !important;
-  border-radius: 8px !important;
+  border-radius: 3px !important;
   background-color: var(--duva-d-grey, #333) !important;
   color: #fff !important;
   font-size: 16px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.5px !important;
+  font-weight: bold !important;
   text-decoration: none !important;
   display: block !important;
   cursor: pointer !important;
   visibility: visible !important;
   opacity: 1 !important;
   border: none !important;
-  overflow: hidden !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
-
-/* Menu Close Button Shimmer Effect for Webflow */
-.menu-close.w-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-close.w-button:hover::before {
-  left: 100%;
 }
 
 .menu-close.w-button:hover {
+  border-top-left-radius: var(--border-4px-cornner, 4px) !important;
+  border-top-right-radius: var(--border-4px-cornner, 4px) !important;
+  border-bottom-left-radius: var(--border-4px-cornner, 4px) !important;
+  border-bottom-right-radius: var(--border-4px-cornner, 4px) !important;
   background-color: var(--duva-red, #c0392b) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
-  scale: 1.02 !important;
 }
 
 /* Force close button visibility when menu is active */
@@ -272,7 +209,7 @@ body.menu-open {
   left: auto !important;
 }
 
-/* === Enhanced Menu Links === */
+/* === Menu Links === */
 .link-13 {
   color: #333;
   margin-top: 52px;
@@ -289,27 +226,6 @@ body.menu-open {
   opacity: 0;
   transform: translateX(-20px);
   animation: slideInFromLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-}
-
-/* Menu Link Shimmer Effect */
-.link-13::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.link-13:hover::before {
-  left: 100%;
 }
 
 .link-13:nth-child(1) { animation-delay: 0.1s; }
@@ -348,33 +264,11 @@ body.menu-open {
   font-size: 16px;
   font-weight: 400;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Link-14 Shimmer Effect */
-.link-14::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.link-14:hover::before {
-  left: 100%;
+  transition: all 0.3s ease;
 }
 
 .link-14:hover {
-  color: var(--duva-red, #c0392b);
-  transform: translateX(3px) scale(1.02);
-  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
+  color: #c0392b;
 }
 
 /* === Menu Icon === */
@@ -417,6 +311,16 @@ body.menu-open {
   cursor: pointer; 
 
   transition: border-color 0.2s ease; 
+
+} 
+
+
+
+/* === Hover Effect === */ 
+
+.download-checkbox:hover { 
+
+  border-color: #888; 
 
 } 
 
@@ -520,9 +424,144 @@ cursor: pointer;
 
 
 
- 
+/* === Webflow Lightbox Arrows === */ 
+
+.w-lightbox-left, 
+
+.w-lightbox-right { 
+
+  background-color: rgba(0, 0, 0, 0.5) !important; 
+
+  width: 40px; 
+
+  height: 40px; 
+
+  border-radius: 50%; 
+
+} 
+
+
+
+.w-lightbox-left::before, 
+
+.w-lightbox-right::before { 
+
+  color: white !important; 
+
+  font-size: 24px; 
+
+} 
+
+
+
+
+
+
+
+/* === Lightbox Image Size === */ 
 
  
+
+.w-lightbox-frame, 
+
+.w-lightbox-img { 
+
+  width: 600px !important; 
+
+  height: 600px !important; 
+
+  object-fit: contain; 
+
+  margin: 0 auto; 
+
+} 
+
+
+
+/* === Lightbox Navigation Arrows Styling (Bottom, Bold, Red) === */ 
+
+.w-lightbox-left, 
+
+.w-lightbox-right { 
+
+  bottom: 40px !important; 
+
+  top: auto !important; 
+
+  background-color: #c0392b !important; 
+
+  width: 48px; 
+
+  height: 48px; 
+
+  font-weight: bold; 
+
+  border-radius: 4px; 
+
+  display: flex !important; 
+
+  align-items: center; 
+
+  justify-content: center; 
+
+  z-index: 9999; 
+
+  color: white !important; 
+
+}
+
+/* === Lightbox Arrow Margins === */
+.w-lightbox-left {
+  left: 100px !important; /* 100px margin from left edge */
+}
+
+.w-lightbox-right {
+  right: 100px !important; /* 100px margin from right edge */
+} 
+
+
+
+.w-lightbox-left::before, 
+
+.w-lightbox-right::before { 
+
+  color: white !important; 
+
+  font-size: 24px; 
+
+  font-weight: 700; 
+
+} 
+
+
+
+/* === Lightbox Close Button Styling (Square with Border) === */ 
+
+.w-lightbox-close { 
+
+  top: 20px; 
+
+  right: 100px; /* 100px margin from right edge */
+
+  width: 44px; 
+
+  height: 44px; 
+
+  background-color: rgba(0, 0, 0, 0.6); 
+
+  border: 2px solid white !important; 
+
+  border-radius: 0 !important; /* Square corners */ 
+
+  color: white !important; 
+
+  font-size: 20px; 
+
+  font-weight: bold; 
+
+  z-index: 9999; 
+
+} 
 
 
 
@@ -571,7 +610,19 @@ cursor: pointer;
 
 
 
- 
+/* === Specs Grid + Dropdown Styling === */ 
+
+.specs-grid { 
+
+  display: grid; 
+
+  grid-template-columns: 1fr 1fr; 
+
+  gap: 16px 32px; 
+
+  align-items: start; 
+
+} 
 
 
 
@@ -832,7 +883,13 @@ transition: border-color 0.2s ease;
 
 
 
+/* Hover effect */ 
 
+.accessory-checkbox:hover { 
+
+border-color: #888; 
+
+} 
 
 
 
@@ -2857,7 +2914,16 @@ opacity: 1 !important;
 }
 
 /* Gallery Section Fade-in on Scroll */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  transition: opacity 0.8s ease, transform 0.8s ease !important;
+}
+
+.gallery-section.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
 
 /* === Remove Divider Between Related Items and Accessories === */
 .related-section + .accessories-section {
@@ -2867,7 +2933,33 @@ opacity: 1 !important;
 }
 
 /* Ensure gallery images are always visible when section is visible */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section.fade-in .gallery-section-cms,
+.gallery-section.fade-in .gallery-image,
+.gallery-section.fade-in img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Force all gallery images to be visible regardless of fade state */
+.gallery-section .gallery-section-cms,
+.gallery-section .gallery-image,
+.gallery-section img,
+.gallery-section .w-dyn-item img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Ensure first few images are definitely visible */
+.gallery-section .w-dyn-item:nth-child(1),
+.gallery-section .w-dyn-item:nth-child(2),
+.gallery-section .w-dyn-item:nth-child(3) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
 
 /* Accessories Dropdown Fade-in Animation */
 .accessories-content {
@@ -2896,14 +2988,182 @@ opacity: 1 !important;
 }
 
 /* === Gallery Section === */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gallery-section-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* === Gallery Section - Webflow Structure Specific === */
+.gallery-section {
+  position: relative !important;
+  width: 100% !important;
+  overflow: visible !important; /* Changed from hidden to visible to show shadow */
+  visibility: visible !important;
+  display: block !important;
+}
+
+.gallery-section-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 1px !important; /* Match Webflow padding */
+  overflow: visible !important; /* Allow shadow to show */
+  visibility: visible !important;
+  display: flex !important; /* Match Webflow flex */
+  flex-flow: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border: var(--border-main) solid var(--border-main-shadow) !important;
+  border-radius: var(--border-4px-cornner) !important;
+  background-color: var(--white) !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px !important; /* Match Webflow shadow */
+}
+
+.gallery-section-cms {
+  display: flex !important;
+  overflow-x: auto !important;
+  scroll-behavior: smooth !important;
+  scroll-snap-type: x mandatory !important;
+  width: 100% !important;
+  height: 700px !important; /* Match Webflow height */
+  max-width: 2000px !important; /* Match Webflow max-width */
+  gap: 24px !important; /* Match Webflow gap */
+  padding: 2px !important; /* 2px padding all around */
+  margin: 0 0 4px 0 !important; /* Match Webflow margin */
+  visibility: visible !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  flex-flow: row !important;
+  justify-content: center !important;
+  align-items: flex-start !important; /* Changed from center to flex-start */
+}
+
+/* Force single image viewport */
+.gallery-section-cms .w-dyn-items {
+  display: flex !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  visibility: visible !important;
+  min-height: 200px !important;
+  width: max-content !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Target Collection List 7 specifically */
+.gallery-section-cms .w-dyn-items {
+  display: flex !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  visibility: visible !important;
+  min-height: 200px !important;
+}
+
+/* Target Collection Item 5 specifically */
+.gallery-section-cms .w-dyn-item {
+  flex-shrink: 0 !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  scroll-snap-align: start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  visibility: visible !important;
+  display: block !important;
+  min-height: 200px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure only one item is visible at a time */
+.gallery-section-cms .w-dyn-item:not(:first-child) {
+  margin-left: 0 !important;
+}
 
 /* Force single image display */
-/* Gallery section CMS item styles */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section-cms .w-dyn-item {
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+}
 
-/* Gallery image styles */
-/* REMOVED - Gallery section functionality disabled */
+/* Target gallery-Image specifically */
+.gallery-image {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Force full width for any image inside collection items */
+.gallery-section-cms .w-dyn-item img,
+.gallery-section-cms img,
+.gallery-image img {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: cursor 0.2s ease !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure single image display - override any Webflow grid */
+.gallery-section-cms .w-dyn-item {
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  flex: 0 0 100vw !important;
+  flex-basis: 100vw !important;
+  flex-grow: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Override any Webflow grid classes that might interfere */
+.gallery-section-cms .w-dyn-item[class*="w-col"],
+.gallery-section-cms .w-dyn-item[class*="column"] {
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  flex: 0 0 100vw !important;
+}
+
+/* Remove pointer cursor for gallery images */
+.gallery-section-cms .w-dyn-item:hover img,
+.gallery-section-cms:hover img,
+.gallery-image:hover img {
+  cursor: default !important;
+}
+
+/* Remove pointer cursor for gallery container */
+.gallery-section-cms:hover {
+  cursor: default !important;
+}
+
+/* Hide scrollbar for cleaner look */
+.gallery-section-cms::-webkit-scrollbar {
+  display: none !important;
+}
+
+.gallery-section-cms {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
 
 /* === Thumbnail Hover Effects === */
 .thumbnail-image {
@@ -3054,7 +3314,16 @@ opacity: 1 !important;
 }
 
 /* Skeleton for gallery images */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-image.skeleton {
+  width: 100% !important;
+  height: 400px !important;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: block !important;
+}
 
 /* Skeleton for accessory images */
 .accessory-image.skeleton {
@@ -3196,7 +3465,49 @@ opacity: 1 !important;
 }
 
 /* === Gallery Scroll Performance Optimizations === */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section-cms {
+  /* Hardware acceleration for smoother scrolling */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+  will-change: scroll-position !important;
+  /* Optimize for touch devices */
+  touch-action: pan-x !important;
+  /* Smooth momentum scrolling */
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  /* Enhanced scroll snap for better positioning */
+  scroll-snap-type: x mandatory !important;
+  scroll-snap-stop: always !important;
+  /* Prevent scroll chaining */
+  overscroll-behavior-x: contain !important;
+}
+
+/* Optimize individual gallery items for better performance */
+.gallery-section-cms .w-dyn-item {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
+  /* Enhanced scroll snap alignment */
+  scroll-snap-align: start !important;
+  scroll-snap-stop: always !important;
+}
+
+/* Smooth image transitions */
+.gallery-section-cms .w-dyn-item img,
+.gallery-section-cms img,
+.gallery-image img {
+  transition: none !important; /* Remove hover effects */
+  will-change: auto !important;
+}
+
+/* Remove hover effects for gallery images */
+.gallery-section-cms .w-dyn-item:hover img,
+.gallery-section-cms:hover img,
+.gallery-image:hover img {
+  transform: none !important;
+  scale: none !important;
+}
 
 /* === Arrow Hover Effects === */
 .download-arrow {
@@ -3235,8 +3546,20 @@ opacity: 1 !important;
 }
 
 /* === Gallery Subscribe Wrapper Parallax Effect === */
-/* Gallery subscribe wrapper styles */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-subscribe-wrapper {
+  opacity: 0.3 !important; /* 30% opacity as default */
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, transform !important;
+  /* Parallax effect */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+}
+
+.gallery-subscribe-wrapper:hover {
+  opacity: 1 !important; /* Full opacity on hover */
+  transform: translateZ(10px) scale(1.02) !important;
+}
 
 /* Enhanced parallax effect on scroll */
 .gallery-section-wrapper {
@@ -3244,11 +3567,85 @@ opacity: 1 !important;
   transform-style: preserve-3d !important;
 }
 
-/* Gallery subscribe wrapper styles */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-subscribe-wrapper {
+  /* Parallax depth effect */
+  transform: translateZ(0) !important;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* === Gallery Subscribe Wrapper Effects === */
+.gallery-subscribe-wrapper {
+  /* Ensure proper positioning and effects */
+  position: absolute !important;
+  right: 40px !important;
+  bottom: 40px !important;
+  z-index: 10 !important;
+  display: flex !important;
+  width: 25% !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  flex-flow: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 20px !important;
+  border-top-left-radius: var(--border-4px-cornner) !important;
+  border-top-right-radius: var(--border-4px-cornner) !important;
+  border-bottom-left-radius: var(--border-4px-cornner) !important;
+  border-bottom-right-radius: var(--border-4px-cornner) !important;
+  background-color: var(--f4f5f6-background-opc) !important;
+  
+  /* Animation properties */
+  opacity: 0.3 !important;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, transform !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+.gallery-subscribe-wrapper:hover {
+  opacity: 1 !important;
+  transform: translateZ(10px) scale(1.02) !important;
+}
+
+/* Smooth hover state transitions */
+.gallery-subscribe-wrapper * {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Responsive design for gallery subscribe wrapper */
+@media screen and (max-width: 991px) {
+  .gallery-subscribe-wrapper {
+    right: 20px !important;
+    bottom: 20px !important;
+    width: 50% !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gallery-subscribe-wrapper {
+    width: 60% !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery-subscribe-wrapper {
+    right: 10px !important;
+    bottom: 10px !important;
+    display: none !important;
+    width: 300px !important;
+  }
+}
 
 /* === Enhanced Wheel Scrolling Styles === */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section-cms {
+  /* Ensure proper wheel scrolling */
+  overflow-x: auto !important;
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-snap-stop: always !important;
+}
 
 .collection-list-6 {
   /* Ensure proper wheel scrolling for related items */
@@ -3260,7 +3657,12 @@ opacity: 1 !important;
 }
 
 /* Gallery section wrapper for broader wheel detection */
-/* REMOVED - Gallery section functionality disabled */
+.gallery-section-wrapper,
+.gallery-section {
+  /* Ensure wheel events can be captured */
+  position: relative !important;
+  overflow: visible !important;
+}
 
 /* Related section wrapper for broader wheel detection */
 .related-section {
@@ -3299,8 +3701,8 @@ nav, .nav, .navigation {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
-/* Related items */
-.related-section {
+/* Gallery and related items */
+.gallery-section, .related-section {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
@@ -3314,6 +3716,193 @@ footer, .footer {
   font-family: Gotham, Arial, sans-serif !important;
 }
 
+/* === Gallery Image Optimization === */
+/* Override Webflow gallery image styles for perfect aspect ratio */
+.gallery-image {
+  width: 100% !important;
+  height: 700px !important;
+  display: block !important;
+  padding: 3px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border-radius: 8px !important;
+  background: #f4f5f6 !important;
+  transition: none !important; /* Remove hover effects */
+  will-change: auto !important;
+  backface-visibility: visible !important;
+}
+
+/* Remove hover effects */
+.gallery-image:hover {
+  transform: none !important;
+  scale: none !important;
+}
+
+/* Gallery section wrapper optimization */
+.gallery-section-wrapper {
+  overflow: hidden !important;
+  padding: 1px !important;
+  flex-flow: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border-style: solid !important;
+  border-top-width: var(--border-main) !important;
+  border-top-color: var(--border-divider-light) !important;
+  border-right-width: var(--border-main) !important;
+  border-right-color: var(--border-divider-light) !important;
+  border-bottom-width: var(--border-main) !important;
+  border-bottom-color: var(--border-divider-light) !important;
+  border-left-width: var(--border-main) !important;
+  border-left-color: var(--border-divider-light) !important;
+  border-top-left-radius: var(--border-4px-cornner) !important;
+  border-top-right-radius: var(--border-4px-cornner) !important;
+  border-bottom-left-radius: var(--border-4px-cornner) !important;
+  border-bottom-right-radius: var(--border-4px-cornner) !important;
+  background-color: var(--btn-light-text) !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  padding-bottom: 0 !important; /* Remove bottom padding */
+}
+
+/* Gallery CMS container optimization */
+.gallery-section-cms {
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 700px !important; /* Match image height */
+  max-width: 2000px !important;
+  flex-flow: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 24px !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-snap-stop: always !important;
+  -webkit-overflow-scrolling: touch !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  padding-bottom: 0 !important; /* Remove bottom padding */
+}
+
+/* Gallery items optimization */
+.gallery-section-cms .w-dyn-item {
+  flex: 0 0 auto !important;
+  width: 100vw !important;
+  height: 100% !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 12px !important;
+  margin-bottom: 0 !important; /* Remove bottom margin */
+}
+
+/* Ensure images maintain aspect ratio */
+.gallery-section-cms img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Responsive gallery optimization */
+@media screen and (max-width: 991px) {
+  .gallery-section-wrapper {
+    position: relative !important;
+  }
+  
+  .gallery-image {
+    height: 600px !important;
+  }
+  
+  .gallery-section-cms {
+    height: 600px !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gallery-image {
+    height: 500px !important;
+  }
+  
+  .gallery-section-cms {
+    height: 500px !important;
+  }
+  
+  .gallery-section-cms .w-dyn-item {
+    padding: 0 8px !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery-image {
+    height: 400px !important;
+  }
+  
+  .gallery-section-cms {
+    height: 400px !important;
+  }
+  
+  .gallery-section-cms .w-dyn-item {
+    padding: 0 4px !important;
+  }
+}
+
+/* Gallery subscribe wrapper optimization */
+.gallery-subscribe-wrapper {
+  position: absolute !important;
+  right: 40px !important;
+  bottom: 40px !important;
+  z-index: 10 !important;
+  display: flex !important;
+  width: 25% !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  flex-flow: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 20px !important;
+  border-top-left-radius: var(--border-4px-cornner) !important;
+  border-top-right-radius: var(--border-4px-cornner) !important;
+  border-bottom-left-radius: var(--border-4px-cornner) !important;
+  border-bottom-right-radius: var(--border-4px-cornner) !important;
+  background-color: var(--f4f5f6-background-opc) !important;
+  opacity: 0.3 !important;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, transform !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+.gallery-subscribe-wrapper:hover {
+  opacity: 1 !important;
+  transform: translateZ(10px) scale(1.02) !important;
+}
+
+@media screen and (max-width: 991px) {
+  .gallery-subscribe-wrapper {
+    right: 20px !important;
+    bottom: 20px !important;
+    width: 50% !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gallery-subscribe-wrapper {
+    width: 60% !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery-subscribe-wrapper {
+    right: 10px !important;
+    bottom: 10px !important;
+    display: none !important;
+    width: 300px !important;
+  }
+}
+
+/* === Essential Flip Card Animation Only === */
 
 /* === Essential Flip Card Animation Only === */
 .flip-card-back {
@@ -3442,7 +4031,8 @@ footer, .footer {
 /* Enhanced hover effects for product cards */
 .collection-item:hover,
 .product-card:hover,
-.related-card:hover {
+.related-card:hover,
+.flip-card-wrapper:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
@@ -3451,7 +4041,8 @@ footer, .footer {
 /* Shimmer animation on hover */
 .collection-item:hover::before,
 .product-card:hover::before,
-.related-card:hover::before {
+.related-card:hover::before,
+.flip-card-wrapper:hover::before {
   left: 100%;
 }
 
@@ -3469,7 +4060,8 @@ footer, .footer {
 /* Product image scaling on hover */
 .collection-item:hover img,
 .product-card:hover img,
-.related-card:hover img {
+.related-card:hover img,
+.flip-card-wrapper:hover img {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
@@ -3485,13 +4077,15 @@ footer, .footer {
 @media screen and (max-width: 767px) {
   .collection-item:hover,
   .product-card:hover,
-  .related-card:hover {
+  .related-card:hover,
+  .flip-card-wrapper:hover {
     transform: translateY(-3px);
   }
   
   .collection-item:hover img,
   .product-card:hover img,
-  .related-card:hover img {
+  .related-card:hover img,
+  .flip-card-wrapper:hover img {
     transform: scale(1.03);
   }
 }
@@ -3499,7 +4093,8 @@ footer, .footer {
 @media screen and (max-width: 479px) {
   .collection-item:hover,
   .product-card:hover,
-  .related-card:hover {
+  .related-card:hover,
+  .flip-card-wrapper:hover {
     transform: translateY(-2px);
   }
 }
@@ -3720,1345 +4315,6 @@ footer, .footer {
 .image-31:hover {
   transform: scale(1.2);
   filter: brightness(1.1);
-}
-
-/* === Related Items Card Fixes === */
-/* Remove underlines from related item cards */
-.collection-list-6 .w-dyn-item,
-.collection-list-6 .w-dyn-item *,
-.related-section .w-dyn-item,
-.related-section .w-dyn-item * {
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-  text-decoration-line: none !important;
-  text-decoration-style: none !important;
-  text-decoration-color: transparent !important;
-}
-
-/* Ensure single-click functionality for related item cards */
-.collection-list-6 .w-dyn-item {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-}
-
-/* Prevent double-click issues */
-.collection-list-6 .w-dyn-item * {
-  pointer-events: auto !important;
-}
-
-/* Ensure links within cards work with single click */
-.collection-list-6 .w-dyn-item a,
-.related-section .w-dyn-item a {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-}
-
-/* Remove any hover underlines */
-.collection-list-6 .w-dyn-item:hover,
-.collection-list-6 .w-dyn-item:hover *,
-.related-section .w-dyn-item:hover,
-.related-section .w-dyn-item:hover * {
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-}
-
-
-
-/* === Flip Card Image Border Fix === */
-/* Reverted - keeping original card styles intact */
-
-/* === WEBFLOW CLASS REFERENCE === */
-/*
-FLIP CARDS:
-- .flip-card-wrapper (container)
-- .flip-card-front (front side)
-- .flip-card-back (back side)
-
-RELATED ITEMS:
-- .collection-list-6 (container)
-- .related-card (card container)
-- .related-code (product code text)
-- .related-name (product name text)
-- .related-image (image)
-
-MENU PANEL:
-- .menu-panel (container)
-- .menu-wrapper (toggle)
-- .link-13, .link-14 (menu links)
-
-ARROWS:
-- .image-30 (right arrow)
-- .image-31 (left arrow)
-================================
-*/
-
-/* === TARGETED FLIP CARD FIXES === */
-/* Only affect flip cards, not other cards */
-.flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Flip card shimmer effect */
-.flip-card-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Flip card hover - ONLY flip animation, no transform */
-.flip-card-wrapper:hover .flip-card-back {
-  display: flex;
-  z-index: 2;
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Add overlay slide effect to flip card back ONLY */
-.flip-card-back::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease 0.3s; /* Add delay to wait for back card to appear */
-  z-index: 1;
-}
-
-.flip-card-wrapper:hover .flip-card-back::before {
-  left: 100%;
-}
-
-/* Flip card shimmer animation */
-.flip-card-wrapper:hover::before {
-  left: 100%;
-}
-
-/* === TARGETED RELATED ITEMS FIXES === */
-/* Only affect related items, not flip cards */
-.related-card {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Related card shimmer effect */
-.related-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Related card hover effects */
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Related card shimmer animation */
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Related card text hover effects - NO COLOR CHANGE */
-.related-card:hover .related-code,
-.related-card:hover .related-name {
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Related card image hover effects */
-.related-card:hover .related-image {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === TARGETED MENU PANEL FIXES === */
-/* Ensure menu panel works correctly */
-.menu-panel {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transform: translateX(-100%) !important;
-  transition: all 0.3s ease !important;
-  z-index: 9999 !important;
-}
-
-.menu-panel.active {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-}
-
-/* Menu overlay */
-.menu-overlay {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transition: all 0.3s ease !important;
-}
-
-.menu-overlay.active {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* === TARGETED ARROW NAVIGATION FIXES === */
-/* Arrow hover effects */
-.image-30,
-.image-31 {
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.image-30:hover,
-.image-31:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-/* === RESPONSIVE FIXES === */
-@media screen and (max-width: 767px) {
-  .related-card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .related-card:hover .related-image {
-    transform: scale(1.03);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .related-card:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* === REMOVE BROAD SELECTORS === */
-/* Remove flip cards from general product card hover effects */
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Remove flip cards from shimmer effects */
-.collection-item:hover::before,
-.product-card:hover::before,
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Remove flip cards from text hover effects */
-.collection-item:hover .main-code-text,
-.product-card:hover .main-code-text,
-.related-card:hover .related-code,
-.collection-item:hover .item-description,
-.product-card:hover .item-description {
-  color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Remove flip cards from image hover effects */
-.collection-item:hover img,
-.product-card:hover img,
-.related-card:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === ESSENTIAL FLIP CARD ANIMATION ONLY === */
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  display: none;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transform: translateZ(-10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* Show back card on hover */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-  opacity: 1;
-  transform: translateZ(0);
-}
-
-/* === Flip Card Click Fix === */
-.flip-card-front, 
-.flip-card-back {
-  pointer-events: none;
-}
-
-.flip-card-wrapper {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-/* Ensure parent links also show pointer cursor */
-.flip-card-wrapper a,
-a .flip-card-wrapper {
-  cursor: pointer;
-}
-/* === End Flip Card Click Fix === */
-
-/* === Reduced Motion Safe-Guard === */
-@media (prefers-reduced-motion: reduce) {
-  .flip-card, .flip-card * { 
-    transition: none !important; 
-    animation: none !important; 
-  }
-}
-
-/* Remove underlines from all product card links */
-.flip-card-wrapper a,
-.current-product,
-.flip-card-link {
-  text-decoration: none !important;
-}
-
-/* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
-
-/* 1. Enhanced Filter Checkmark Animations */
-.filter-checkmark {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.filter-checkmark:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.filter-checkmark.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-/* 2. Filter Checkmark Shimmer Effect */
-.filter-checkmark::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.filter-checkmark:hover::before {
-  left: 100%;
-}
-
-/* 3. Filter Header Wrapper (NO SHIMMER) */
-.filter-header-wrapper {
-  transition: all 0.3s ease;
-}
-
-/* 3.5. Filter Header Wrapper Main Shimmer Effect */
-.filter-header-wrapper-main {
-  position: relative !important;
-  overflow: hidden;
-}
-
-.filter-header-wrapper-main::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.filter-header-wrapper-main:hover::before {
-  left: 100%;
-}
-
-/* 4. Enhanced Filter Buttons */
-.filter-apply-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.filter-apply-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.filter-apply-button:hover::before {
-  left: 100%;
-}
-
-.filter-apply-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
-.filter-reset-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-/* 4.5. Button 2 Specific Shimmer Effect (NOT reset-button div) */
-.button-2 {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.button-2::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.button-2:hover::before {
-  left: 100%;
-}
-
-.button-2:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 4.6. Filter Right Wrapper Shimmer Effect with Duva White */
-.filter-right-wrapper {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.filter-right-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.filter-right-wrapper:hover::before {
-  left: 100%;
-}
-
-.filter-right-wrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* 4.7. Fliter Right Wrapper Shimmer Effect (Corrected class name) */
-.fliter-right-wrapper {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.fliter-right-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.fliter-right-wrapper:hover::before {
-  left: 100%;
-}
-
-.fliter-right-wrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* === MAIN HEADER ENHANCEMENTS === */
-
-/* 1. Menu Icon Enhancement */
-.menu-icon {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.menu-icon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-icon:hover::before {
-  left: 100%;
-}
-
-.menu-icon:hover {
-  transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
-}
-
-/* 2. Logo Enhancement - Different Effect */
-.duva-logo-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-}
-
-.duva-logo-wrapper:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1) contrast(1.1);
-}
-
-.duva-logo-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.duva-logo-wrapper:hover::after {
-  width: 100%;
-}
-
-/* 3. Search Input Enhancement - Filter Checkmark Style */
-.search-input-style {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.search-input-style::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.search-input-style:hover::before {
-  left: 100%;
-}
-
-.search-input-style:focus-within {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
-}
-
-.search-icon {
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.search-icon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.4), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.search-icon:hover::before {
-  left: 100%;
-}
-
-.search-input-style:focus-within .search-icon {
-  transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
-}
-
-/* 4. Theme Toggle Enhancement */
-.lang-toggle-switch {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.lang-toggle-switch:hover {
-  transform: scale(1.05);
-}
-
-.lang-toggle-switch .lang-en {
-  transition: all 0.3s ease;
-}
-
-.lang-toggle-switch .lang-en:hover {
-  transform: rotate(15deg);
-  color: var(--duva-red, #C0392B);
-}
-
-.lang-toggle-switch .lang-en.active {
-  color: var(--duva-red, #C0392B);
-  transform: scale(1.1);
-}
-
-/* 5. Menu Tab Enhancement - Filter Apply Button Style */
-.menu-tab {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.menu-tab::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.menu-tab:hover::before {
-  left: 100%;
-}
-
-.menu-tab:hover {
-  transform: translateY(-2px);
-}
-
-.menu-tab.active {
-  color: var(--duva-red, #C0392B);
-  transform: translateY(-1px);
-}
-
-/* 5. Active Filter Badge */
-.filter-badge {
-  background: var(--duva-red, #C0392B);
-  color: white;
-  border-radius: 50%;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  min-width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
-  animation: badgePulse 2s infinite;
-}
-
-@keyframes badgePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-
-
-/* 7. Download Panel Checkmark Enhancement - Filter Checkmark Style */
-.download-checkbox {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.download-checkbox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.download-checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-.download-checkbox::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.download-checkbox:hover::before {
-  left: 100%;
-}
-
-/* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
-.accessory-checkbox {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.accessory-checkbox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-.accessory-checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
-}
-
-.accessory-checkbox::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.accessory-checkbox:hover::before {
-  left: 100%;
-}
-
-/* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
-.contat-block {
-  position: relative !important;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.contat-block::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.6), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.contat-block:hover::before {
-  left: 100%;
-}
-
-.contat-block:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(244, 245, 246, 0.2);
-}
-
-/* 7.7. Contact Us Button Enhancement - Filter Apply Button Style */
-.contact-us-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.contact-us-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.contact-us-button:hover::before {
-  left: 100%;
-}
-
-.contact-us-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
-
-/* 7. Filter Section Container Enhancement */
-.filter-sections-wrapper {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(228, 227, 227, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.filter-sections-wrapper:hover {
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-/* 8. Mobile Responsiveness Improvements */
-@media screen and (max-width: 767px) {
-  .filter-sections-wrapper {
-    padding: 20px 15px;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    margin: 10px;
-  }
-  
-  .filter-checkmark {
-    min-height: 48px; /* Better touch targets */
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  
-  .filter-apply-button,
-  .filter-reset-button {
-    min-height: 48px;
-    padding: 12px 24px;
-    font-size: 16px;
-  }
-  
-  .filter-header-wrapper {
-    padding: 15px 0;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .filter-checkmark {
-    min-height: 52px;
-    padding: 14px 18px;
-  }
-  
-  .filter-apply-button,
-  .filter-reset-button {
-    min-height: 52px;
-    padding: 14px 28px;
-  }
-}
-
-/* 9. Loading State for Filter Actions */
-.filter-loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.filter-loading::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid var(--duva-red, #C0392B);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* 10. Filter Section Focus States */
-.filter-checkmark:focus,
-.filter-apply-button:focus,
-.filter-reset-button:focus {
-  outline: 2px solid var(--duva-red, #C0392B);
-  outline-offset: 2px;
-}
-
-/* 7.8. Product Page Download Buttons Enhancement */
-.download-selected-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Download All Button Enhancement */
-.download-selected-button.download-all-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button.download-all-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button.download-all-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button.download-all-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Reset Button Enhancement */
-.download-selected-button.download-all-button.reset-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.download-selected-button.download-all-button.reset-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.download-selected-button.download-all-button.reset-button:hover::before {
-  left: 100%;
-}
-
-.download-selected-button.download-all-button.reset-button:hover {
-  transform: translateY(-2px);
-}
-
-/* 7.9. Product Info Block Load Sequence Animations */
-.product-info-block {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: productInfoLoad 0.8s ease-out 0.3s forwards;
-}
-
-@keyframes productInfoLoad {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 7.10. Accessories Toggle - Shimmer Effect (copy of filter-header-wrapper-main) */
-.accessories-toggle {
-  position: relative !important;
-  overflow: hidden;
-}
-
-.accessories-toggle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.accessories-toggle:hover::before {
-  left: 100%;
-}
-
-/* 8.0. Gallery Slider - Stack items and fade */
-.gallery-section-cms {
-  position: relative;
-  height: 100%;
-}
-
-.collection-item-5 {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.collection-item-5.is-active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Arrow hover affordance */
-.gallery-arrow-left,
-.gallery-right-arrow {
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.2s ease;
-}
-
-.gallery-arrow-left:hover,
-.gallery-right-arrow:hover {
-  transform: scale(1.08);
-}
-
-/* 8.1. Gallery Subscribe Wrapper Enhancement (Glass + Hover Standout) */
-.gallery-subscribe-wrapper {
-  background: rgba(255, 255, 255, 0.25);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(228, 227, 227, 0.35);
-  box-shadow: none;
-  opacity: 0.75;
-  overflow: hidden;
-  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.gallery-subscribe-wrapper:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-  border-color: var(--duva-red, #C0392B);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-}
-
-/* Subtle sweep highlight on hover */
-.gallery-subscribe-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  left: -100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.18), transparent);
-  transition: left 0.5s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.gallery-subscribe-wrapper:hover::before {
-  left: 100%;
-}
-
-/* Minor child affordances */
-.gallery-duva-logo { transition: transform 0.25s ease, filter 0.25s ease; }
-.gallery-subscribe-wrapper:hover .gallery-duva-logo { transform: scale(1.03); filter: brightness(1.05) contrast(1.05); }
-.subscribe-button { transition: transform 0.2s ease; }
-.gallery-subscribe-wrapper:hover .subscribe-button { transform: translateY(-1px); }
-
-/* 8.2. Gallery Arrows - Match Related Section Arrows */
-.gallery-arrow-left,
-.gallery-right-arrow {
-  cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.gallery-arrow-left:hover,
-.gallery-right-arrow:hover {
-  transform: scale(1.2);
-  filter: brightness(1.1);
-}
-
-/* 9.0. Main Page Hero Enhancements */
-.main-page-hero-section-img {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Gentle gradient on image to improve text readability (left side only) */
-.main-page-hero-section-img::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.12) 28%, rgba(255,255,255,0.06) 45%, transparent 60%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Revert hero image sizing to original to avoid layout break */
-.image-23 {
-  width: 1998px; /* original width from provided CSS */
-  max-width: none;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-/* Glass card + shimmer + subtle lift for hero text wrapper */
-.hero-text-wrapper {
-  background: rgba(255, 255, 255, 0.25);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(228, 227, 227, 0.35);
-  box-shadow: none;
-  opacity: 0.9;
-  z-index: 2; /* above gradient */
-  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  animation: heroTextEnter 0.6s ease-out 0.2s both;
-}
-
-.hero-text-wrapper:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-  border-color: var(--duva-light-grey, #F4F5F6);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
-}
-
-/* Shimmer sweep on hover only */
-.hero-text-wrapper { position: absolute; overflow: hidden; }
-.hero-text-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  left: -100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.12), transparent);
-  transition: left 0.5s ease;
-  pointer-events: none;
-  z-index: 1;
-}
-.hero-text-wrapper:hover::before { left: 100%; }
-
-@keyframes heroTextEnter {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Mobile tweaks */
-@media screen and (max-width: 767px) {
-  .main-page-hero-section-wrapper { height: 560px; }
-  .main-page-hero-section-img::after {
-    background: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.18) 35%, transparent 65%);
-  }
-}
-
-/* 9.1. Hero Text Logo */
-.duva-light-logo {
-  display: block;
-  width: auto;
-  margin-top: 10px;
-  margin-right: 20px;
-  align-self: flex-end;
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-.hero-text-wrapper:hover .duva-light-logo {
-  transform: scale(1.03);
-  filter: brightness(1.05) contrast(1.05);
-}
-
-.hero-text-wrapper { position: absolute; overflow: hidden; }
-
-/* === Force Visibility for Critical Sections (Initial State Only) === */
-.product-info-block:not(.dropdown-wrapper):not(.dropdown-field):not(.dropdown-options):not(.dropdown-option),
-.related-section:not(.related-arrow-left):not(.related-arrow-right),
-.product-visuals:not(.thumbnail-image):not(.w-lightbox-trigger),
-.download-panel:not(.download-checkbox):not(.download-arrow) {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  visibility: visible !important;
-}
-
-/* === Preserve Interactive Elements === */
-.dropdown-wrapper,
-.dropdown-field,
-.dropdown-options,
-.dropdown-option,
-.thumbnail-image,
-.w-lightbox-trigger,
-.download-checkbox,
-.download-arrow,
-.accessories-arrow,
-.related-arrow-left,
-.related-arrow-right,
-.accessories-toggle {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-}
-
-/* === Ensure Dropdown Functionality === */
-.dropdown-options {
-  display: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-.dropdown-wrapper.open .dropdown-options {
-  display: block !important;
-}
-
-/* === Ensure Accessories Section Functionality === */
-.accessories-section {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.accessories-section.open .accessories-wrapper {
-  max-height: 500px !important;
-  opacity: 1 !important;
-}
-
-/* === Ensure Related Section Functionality === */
-.related-slider-wrapper {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.collection-list-6 {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* === Ensure Gallery Functionality === */
-.gallery-section {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.gallery-section img {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* === Fix Specific Interactive States === */
-.dropdown-wrapper.open .dropdown-arrow {
-  transform: rotate(180deg) !important;
-}
-
-.accessories-arrow.rotated {
-  transform: rotate(180deg) !important;
-}
-
-/* === Ensure Lightbox Functionality === */
-.w-lightbox-trigger {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-}
-
-/* === Ensure Download Panel Functionality === */
-.download-checkbox {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-}
-
-.download-arrow {
-  cursor: pointer !important;
-  pointer-events: auto !important;
 }
 
 
