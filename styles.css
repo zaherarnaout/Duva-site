@@ -4961,14 +4961,104 @@ a .flip-card-wrapper {
 
 .hero-text-wrapper { position: absolute; overflow: hidden; }
 
-/* === Force Visibility for Critical Sections === */
-.product-info-block,
-.related-section,
-.product-visuals,
-.download-panel {
+/* === Force Visibility for Critical Sections (Initial State Only) === */
+.product-info-block:not(.dropdown-wrapper):not(.dropdown-field):not(.dropdown-options):not(.dropdown-option),
+.related-section:not(.related-arrow-left):not(.related-arrow-right),
+.product-visuals:not(.thumbnail-image):not(.w-lightbox-trigger),
+.download-panel:not(.download-checkbox):not(.download-arrow) {
   opacity: 1 !important;
   transform: translateY(0) !important;
   visibility: visible !important;
+}
+
+/* === Preserve Interactive Elements === */
+.dropdown-wrapper,
+.dropdown-field,
+.dropdown-options,
+.dropdown-option,
+.thumbnail-image,
+.w-lightbox-trigger,
+.download-checkbox,
+.download-arrow,
+.accessories-arrow,
+.related-arrow-left,
+.related-arrow-right,
+.accessories-toggle {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* === Ensure Dropdown Functionality === */
+.dropdown-options {
+  display: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.dropdown-wrapper.open .dropdown-options {
+  display: block !important;
+}
+
+/* === Ensure Accessories Section Functionality === */
+.accessories-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.accessories-section.open .accessories-wrapper {
+  max-height: 500px !important;
+  opacity: 1 !important;
+}
+
+/* === Ensure Related Section Functionality === */
+.related-slider-wrapper {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.collection-list-6 {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* === Ensure Gallery Functionality === */
+.gallery-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.gallery-section img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* === Fix Specific Interactive States === */
+.dropdown-wrapper.open .dropdown-arrow {
+  transform: rotate(180deg) !important;
+}
+
+.accessories-arrow.rotated {
+  transform: rotate(180deg) !important;
+}
+
+/* === Ensure Lightbox Functionality === */
+.w-lightbox-trigger {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* === Ensure Download Panel Functionality === */
+.download-checkbox {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.download-arrow {
+  cursor: pointer !important;
+  pointer-events: auto !important;
 }
 
 
