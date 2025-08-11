@@ -111,7 +111,7 @@ function initializeCategoryCards() {
           e.preventDefault();
           
           // Get the products page URL (you may need to adjust this)
-          const productsPageURL = '/products'; // Adjust this to your actual products page URL
+          const productsPageURL = 'products.html'; // Adjust this to your actual products page URL
           
           // Navigate to products page with category filter
           const filteredURL = `${productsPageURL}?category=${categoryKey}`;
@@ -3365,7 +3365,7 @@ function initializeFlipCardLinks() {
       // Update the existing link instead of skipping
       const productCode = extractProductCode(element);
       if (productCode) {
-        const newUrl = `/products/lucero-${productCode.toLowerCase()}`;
+        const newUrl = `/?search=${productCode.toLowerCase()}`;
         existingFlipLink.href = newUrl;
         console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
       }
@@ -3410,20 +3410,10 @@ function initializeFlipCardLinks() {
       }
       
       if (productCode) {
-        // For flip cards, try to construct a proper product URL first
-        // Check if we should use product page or search
-        const shouldUseProductPage = true; // Set to true to use product pages
-        
-        if (shouldUseProductPage) {
-          // Try to construct a product page URL using the correct Webflow format
-          // Format: /products/lucero-{productCode}
-          productUrl = `/products/lucero-${productCode.toLowerCase()}`;
-          console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
-        } else {
-          // Fallback to search URL
-          productUrl = `/?search=${productCode.toLowerCase()}`;
-          console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
-        }
+        // For flip cards, use search functionality instead of non-existent product pages
+        // Navigate to products page with search parameter to filter to this specific product
+        productUrl = `/?search=${productCode.toLowerCase()}`;
+        console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
       } else {
         console.log('Flip card - no product code found, keeping URL as #');
       }
@@ -3688,6 +3678,7 @@ function initializeGlobalSearch() {
   let isOnProductsPage = window.location.pathname.includes('/products') || 
                          window.location.pathname.includes('/product') || 
                          window.location.pathname.includes('/collection') ||
+                         window.location.pathname.includes('products.html') ||
                          document.querySelector('.cards-container') !== null;
   
   // If we're on products page with search parameter, we came from another page
@@ -3776,7 +3767,7 @@ function initializeGlobalSearch() {
 // Navigate to products page with search term
 function navigateToProductsPage(searchTerm) {
   // Try to find the products page URL from the site structure
-  let productsPageUrl = '/products';
+  let productsPageUrl = 'products.html';
   
   // Check if we can find a products link on the page
   const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
@@ -4398,11 +4389,11 @@ function initializeRelatedItemsSingleClick() {
       const productCode = extractProductCode(item);
       
       if (productCode) {
-        // Use the same URL format as flip cards
-        const productUrl = `/products/lucero-${productCode.toLowerCase()}`;
+        // Use search functionality instead of non-existent product pages
+        const productUrl = `/?search=${productCode.toLowerCase()}`;
         console.log(`Related item ${index + 1} - navigating to:`, productUrl);
         
-        // Navigate to the product page
+        // Navigate to the search results
         window.location.href = productUrl;
       } else {
         console.log(`Related item ${index + 1} - no product code found`);
