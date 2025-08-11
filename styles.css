@@ -520,144 +520,9 @@ cursor: pointer;
 
 
 
-/* === Webflow Lightbox Arrows === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  background-color: rgba(0, 0, 0, 0.5) !important; 
-
-  width: 40px; 
-
-  height: 40px; 
-
-  border-radius: 50%; 
-
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-} 
-
-
-
-
-
-
-
-/* === Lightbox Image Size === */ 
-
  
 
-.w-lightbox-frame, 
-
-.w-lightbox-img { 
-
-  width: 600px !important; 
-
-  height: 600px !important; 
-
-  object-fit: contain; 
-
-  margin: 0 auto; 
-
-} 
-
-
-
-/* === Lightbox Navigation Arrows Styling (Bottom, Bold, Red) === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  bottom: 40px !important; 
-
-  top: auto !important; 
-
-  background-color: #c0392b !important; 
-
-  width: 48px; 
-
-  height: 48px; 
-
-  font-weight: bold; 
-
-  border-radius: 4px; 
-
-  display: flex !important; 
-
-  align-items: center; 
-
-  justify-content: center; 
-
-  z-index: 9999; 
-
-  color: white !important; 
-
-}
-
-/* === Lightbox Arrow Margins === */
-.w-lightbox-left {
-  left: 100px !important; /* 100px margin from left edge */
-}
-
-.w-lightbox-right {
-  right: 100px !important; /* 100px margin from right edge */
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-  font-weight: 700; 
-
-} 
-
-
-
-/* === Lightbox Close Button Styling (Square with Border) === */ 
-
-.w-lightbox-close { 
-
-  top: 20px; 
-
-  right: 100px; /* 100px margin from right edge */
-
-  width: 44px; 
-
-  height: 44px; 
-
-  background-color: rgba(0, 0, 0, 0.6); 
-
-  border: 2px solid white !important; 
-
-  border-radius: 0 !important; /* Square corners */ 
-
-  color: white !important; 
-
-  font-size: 20px; 
-
-  font-weight: bold; 
-
-  z-index: 9999; 
-
-} 
+ 
 
 
 
@@ -706,19 +571,7 @@ cursor: pointer;
 
 
 
-/* === Specs Grid + Dropdown Styling === */ 
-
-.specs-grid { 
-
-  display: grid; 
-
-  grid-template-columns: 1fr 1fr; 
-
-  gap: 16px 32px; 
-
-  align-items: start; 
-
-} 
+ 
 
 
 
