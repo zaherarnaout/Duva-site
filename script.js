@@ -3322,22 +3322,86 @@ function handle404Redirect() {
   if (document.title.includes('404') || document.body.innerHTML.includes('404')) {
     console.log('🔍 404 page detected, attempting to redirect to search');
     
-    // Try to extract product code from URL
+    // Try to extract product code from URL with multiple patterns
     const currentUrl = window.location.pathname;
-    const productMatch = currentUrl.match(/\/products\/lucero-([^\/]+)/);
+    let productCode = null;
     
-    if (productMatch) {
-      const productCode = productMatch[1];
+    // Try different URL patterns
+    const patterns = [
+      /\/products\/lucero-([^\/]+)/,  // /products/lucero-c330
+      /\/products\/([^\/]+)/,         // /products/c330
+      /\/products\/lucero-([A-Z][0-9]+)/,  // /products/lucero-C330
+      /\/products\/([A-Z][0-9]+)/     // /products/C330
+    ];
+    
+    for (const pattern of patterns) {
+      const match = currentUrl.match(pattern);
+      if (match) {
+        productCode = match[1];
+        console.log(`🔍 Product code extracted with pattern ${pattern}: ${productCode}`);
+        break;
+      }
+    }
+    
+    if (productCode) {
       console.log(`🔍 Product code from URL: ${productCode}`);
       
-      // Redirect to search page with the product code
-      const searchUrl = `/?search=${productCode}`;
-      console.log(`🔄 Redirecting to search: ${searchUrl}`);
+      // Check if it's a letter code and try alternative URLs first
+      const isLetterCode = /^[A-Z]/.test(productCode);
       
-      // Use a small delay to ensure the page has loaded
-      setTimeout(() => {
-        window.location.href = searchUrl;
-      }, 100);
+      if (isLetterCode) {
+        console.log(`🔍 Letter code detected: ${productCode}, trying alternative URLs`);
+        
+        // Try alternative URL formats for letter codes
+        const alternativeUrls = [
+          `/products/${productCode.toLowerCase()}`,         // /products/c330
+          `/products/lucero-${productCode}`,               // /products/lucero-C330
+          `/products/${productCode}`,                      // /products/C330
+        ];
+        
+        // Try each alternative URL
+        let urlIndex = 0;
+        const tryAlternativeUrl = () => {
+          if (urlIndex < alternativeUrls.length) {
+            const altUrl = alternativeUrls[urlIndex];
+            console.log(`🔄 Trying alternative URL ${urlIndex + 1}: ${altUrl}`);
+            urlIndex++;
+            
+            // Check if the URL exists (simple check)
+            fetch(altUrl, { method: 'HEAD' })
+              .then(response => {
+                if (response.ok) {
+                  console.log(`✅ Alternative URL works: ${altUrl}`);
+                  window.location.href = altUrl;
+                } else {
+                  console.log(`❌ Alternative URL failed: ${altUrl}`);
+                  tryAlternativeUrl(); // Try next URL
+                }
+              })
+              .catch(() => {
+                console.log(`❌ Alternative URL error: ${altUrl}`);
+                tryAlternativeUrl(); // Try next URL
+              });
+          } else {
+            // All alternatives failed, redirect to search
+            console.log(`🔄 All alternatives failed, redirecting to search`);
+            const searchUrl = `/?search=${productCode.toLowerCase()}`;
+            window.location.href = searchUrl;
+          }
+        };
+        
+        // Start trying alternative URLs
+        setTimeout(tryAlternativeUrl, 100);
+      } else {
+        // For numeric codes, redirect directly to search
+        const searchUrl = `/?search=${productCode}`;
+        console.log(`🔄 Redirecting to search: ${searchUrl}`);
+        
+        // Use a small delay to ensure the page has loaded
+        setTimeout(() => {
+          window.location.href = searchUrl;
+        }, 100);
+      }
     }
   }
 }
@@ -3441,10 +3505,33 @@ function initializeFlipCardLinks() {
         const shouldUseProductPage = true; // Set to true to use product pages
         
         if (shouldUseProductPage) {
-          // Try to construct a product page URL using the correct Webflow format
-          // Format: /products/lucero-{productCode}
-          productUrl = `/products/lucero-${productCode.toLowerCase()}`;
-          console.log(`Flip card - constructed product URL for ${productCode}:`, productUrl);
+          // Enhanced URL generation with multiple fallback options
+          let productUrl = null;
+          
+          // Check if product code starts with a letter (like C330, C331)
+          const isLetterCode = /^[A-Z]/.test(productCode);
+          
+          if (isLetterCode) {
+            // For letter codes (C330, C331, etc.), try multiple URL formats
+            const possibleUrls = [
+              `/products/lucero-${productCode.toLowerCase()}`,  // /products/lucero-c330
+              `/products/${productCode.toLowerCase()}`,         // /products/c330
+              `/products/lucero-${productCode}`,               // /products/lucero-C330
+              `/products/${productCode}`,                      // /products/C330
+              `/?search=${productCode.toLowerCase()}`          // Fallback to search
+            ];
+            
+            // For now, use the first format but store alternatives for future use
+            productUrl = possibleUrls[0];
+            console.log(`🔍 Letter code detected: ${productCode}`);
+            console.log(`🔍 Possible URLs:`, possibleUrls);
+            console.log(`🔍 Using URL: ${productUrl}`);
+          } else {
+            // For numeric codes (4711, 4709, etc.), use the standard format
+            productUrl = `/products/lucero-${productCode.toLowerCase()}`;
+            console.log(`🔍 Numeric code detected: ${productCode}`);
+            console.log(`🔍 Using URL: ${productUrl}`);
+          }
           
           // Add debugging to check if the product exists
           console.log(`🔍 Checking if product page exists for: ${productCode}`);
@@ -3453,7 +3540,8 @@ function initializeFlipCardLinks() {
             element: element,
             productCode: productCode,
             codeElement: codeElement,
-            codeElementText: codeElement?.textContent?.trim()
+            codeElementText: codeElement?.textContent?.trim(),
+            isLetterCode: isLetterCode
           });
         } else {
           // Fallback to search URL
