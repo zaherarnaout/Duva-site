@@ -48,9 +48,23 @@ function applyCategoryFilterFromURL() {
               // Click the checkmark to activate the filter
               console.log(`✅ Auto-filter: Found and clicking filter button for "${optionText}"`);
               checkmark.click();
+              
+              // Remove the category parameter from URL to prevent conflicts
+              const url = new URL(window.location.href);
+              url.searchParams.delete('category');
+              window.history.replaceState({}, '', url.toString());
+              console.log('URL category parameter removed to ensure consistent filtering.');
+              
               return true;
             } else {
               console.log(`✅ Auto-filter: Filter "${optionText}" is already active`);
+              
+              // If already active, still remove the URL parameter to prevent double filtering
+              const url = new URL(window.location.href);
+              url.searchParams.delete('category');
+              window.history.replaceState({}, '', url.toString());
+              console.log('URL category parameter removed as filter was already active.');
+              
               return true;
             }
           }
@@ -64,15 +78,6 @@ function applyCategoryFilterFromURL() {
   // Try to find and click the filter button with progressive delays
   function attemptFilter() {
     if (findAndClickFilterButton()) {
-      return true;
-    }
-    
-    // If no filter button found, try global search as fallback
-    const searchInput = document.getElementById('globalSearchInput');
-    if (searchInput) {
-      searchInput.value = cleanCategory;
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-      console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
       return true;
     }
     
