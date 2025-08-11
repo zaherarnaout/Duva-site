@@ -1281,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const cctMap = { '2700K': '27', '3000K': '30', '4000K': '40', '5000K': '50' }; 
 
-    const finishMap = { 'White': 'WH', 'Black': 'BK', 'Grey': 'GR', 'Silver': 'SV' }; 
+    const finishMap = { white: 'WH', black: 'BK', grey: 'GR', gray: 'GR', silver: 'SV', 'satin-nickel': 'SN' }; 
 
  
 
@@ -1295,7 +1295,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cct = cctMap[cct] || cct.replace('K', ''); 
 
-    finish = finishMap[finish] || finish; 
+    const fin = (selection.finish || '').toLowerCase();
+    const finishCode = finishMap[fin] || selection.finish || 'BK';
+    finish = finishCode; 
 
  
 
