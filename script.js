@@ -106,12 +106,20 @@ function initializeCategoryCards() {
       if (categoryKey) {
         console.log(`✅ Mapping category "${categoryText}" to "${categoryKey}"`);
         
-        // Update the href to include category filter
-        const productsPageURL = '/products';
-        const filteredURL = `${productsPageURL}?category=${categoryKey}`;
-        card.href = filteredURL;
-        
-        console.log(`✅ Category card "${categoryText}" href set to: ${filteredURL}`);
+        // Add click event listener
+        card.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the products page URL (you may need to adjust this)
+          const productsPageURL = '/products'; // Adjust this to your actual products page URL
+          
+          // Navigate to products page with category filter
+          const filteredURL = `${productsPageURL}?category=${categoryKey}`;
+          console.log(`🚀 Navigating to: ${filteredURL}`);
+          
+          // Navigate to the filtered products page
+          window.location.href = filteredURL;
+        });
         
         // Add visual feedback that it's clickable
         card.style.cursor = 'pointer';
@@ -137,38 +145,6 @@ if (typeof Webflow !== 'undefined') {
   });
 }
 
-// Check if we're on a product page and fix CSS/JS paths if needed
-document.addEventListener("DOMContentLoaded", function() {
-  // Check if we're on a product page (URL contains /products/)
-  if (window.location.pathname.includes('/products/')) {
-    console.log('🔧 Product page detected - checking for CSS/JS path issues');
-    
-    // Check if CSS files are loading correctly
-    const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
-    cssLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('css/') && !href.startsWith('http')) {
-        // Fix relative paths to be absolute from root
-        const fixedHref = href.startsWith('/') ? href : '/' + href;
-        console.log(`🔧 Fixing CSS path: ${href} → ${fixedHref}`);
-        link.setAttribute('href', fixedHref);
-      }
-    });
-    
-    // Check if JS files are loading correctly
-    const jsScripts = document.querySelectorAll('script[src]');
-    jsScripts.forEach(script => {
-      const src = script.getAttribute('src');
-      if (src && src.startsWith('js/') && !src.startsWith('http')) {
-        // Fix relative paths to be absolute from root
-        const fixedSrc = src.startsWith('/') ? src : '/' + src;
-        console.log(`🔧 Fixing JS path: ${src} → ${fixedSrc}`);
-        script.setAttribute('src', fixedSrc);
-      }
-    });
-  }
-});
-
 // Quick test to see if flip card elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
@@ -180,7 +156,127 @@ setTimeout(() => {
   });
 }, 1000);
 
+/* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
+
+document.querySelectorAll('.accessory-image').forEach(container => { 
+
+  const img = container.querySelector('img'); 
+
  
+
+  container.style.overflow = 'hidden'; // Keeps zoomed image inside the box 
+
+ 
+
+  container.addEventListener('mouseenter', () => { 
+
+    img.classList.add('zoomed'); 
+
+  }); 
+
+ 
+
+  container.addEventListener('mousemove', e => { 
+
+    const rect = container.getBoundingClientRect(); 
+
+    const x = ((e.clientX - rect.left) / rect.width) * 100; 
+
+    const y = ((e.clientY - rect.top) / rect.height) * 100; 
+
+    img.style.transformOrigin = `${x}% ${y}%`; 
+
+  }); 
+
+ 
+
+  container.addEventListener('mouseleave', () => { 
+
+    img.classList.remove('zoomed'); 
+
+    img.style.transformOrigin = 'center center'; 
+
+  }); 
+
+}); 
+
+ 
+
+/* === 2. Thumbnail Image Selector === */ 
+
+document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
+    thumbnails.forEach(thumb => { 
+
+        thumb.addEventListener("click", function () { 
+
+            thumbnails.forEach(t => t.classList.remove("is-active")); 
+
+            this.classList.add("is-active"); 
+
+            const newImg = this.getAttribute("data-image"); 
+
+            if (mainImage) mainImage.setAttribute("href", newImg); 
+
+        }); 
+
+    }); 
+
+}); 
+
+ 
+
+/* === 3. Dropdown + Code Generator + Accessories Logic === */ 
+
+// Full working logic from your working file, manually verified and retained 
+
+document.querySelectorAll('.accessory-image').forEach(container => { 
+
+    const img = container.querySelector('img'); 
+
+ 
+
+    // Zoom in on hover 
+
+    container.addEventListener('mouseenter', () => { 
+
+      img.classList.add('zoomed'); 
+
+    }); 
+
+ 
+
+    // Track mouse position for dynamic zoom focus 
+
+    container.addEventListener('mousemove', e => { 
+
+      const rect = container.getBoundingClientRect(); 
+
+      const x = ((e.clientX - rect.left) / rect.width) * 100; 
+
+      const y = ((e.clientY - rect.top) / rect.height) * 100; 
+
+      img.style.transformOrigin = `${x}% ${y}%`; 
+
+    }); 
+
+ 
+
+    // Reset on mouse leave 
+
+    container.addEventListener('mouseleave', () => { 
+
+      img.classList.remove('zoomed'); 
+
+      img.style.transformOrigin = 'center center'; 
+
+    }); 
+
+  }); 
 
  
 
@@ -188,7 +284,37 @@ setTimeout(() => {
 
  
 
+  document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
  
+
+    thumbnails.forEach((thumb) => { 
+
+      thumb.addEventListener("click", function () { 
+
+        // === Get the source of the clicked thumbnail 
+
+        const newSrc = thumb.getAttribute("src"); 
+
+ 
+
+        // === Update the main image 
+
+        if (newSrc && mainImage) { 
+
+          mainImage.setAttribute("src", newSrc); 
+
+        } 
+
+      }); 
+
+    }); 
+
+  }); 
 
  
 
@@ -196,15 +322,27 @@ setTimeout(() => {
 
  
 
- 
+  document.addEventListener("DOMContentLoaded", function () { 
+
+    const mainTrigger = document.getElementById("main-lightbox-trigger"); 
+
+    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
  
 
- 
+    // === When main image is clicked, open the Webflow lightbox 
 
- 
+    if (mainTrigger && firstGalleryItem) { 
 
- 
+      mainTrigger.addEventListener("click", () => { 
+
+        firstGalleryItem.click(); 
+
+      }); 
+
+    } 
+
+  }); 
 
  
 
@@ -795,7 +933,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
+document.addEventListener("DOMContentLoaded", function () { 
+
  
+
+  /* === Main Image Thumbnail Click Logic === */ 
+
+  const mainImage = document.getElementById("main-lightbox-trigger"); 
+
+  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+
+ 
+
+  thumbnails.forEach((thumb) => { 
+
+    thumb.addEventListener("click", function () { 
+
+      const newSrc = this.getAttribute("src"); 
+
+      if (mainImage && newSrc) { 
+
+        mainImage.setAttribute("src", newSrc); 
+
+      } 
+
+ 
+
+      // Update active state 
+
+      thumbnails.forEach(t => t.classList.remove("is-active")); 
+
+      this.classList.add("is-active"); 
+
+    }); 
+
+  }); 
+
+ 
+
+  /* === Trigger Hidden Webflow Lightbox Gallery === */ 
+
+  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
+
+  if (mainImage && firstGalleryItem) { 
+
+    mainImage.addEventListener("click", () => { 
+
+      firstGalleryItem.click(); 
+
+    }); 
+
+  } 
 
  
 
@@ -1305,7 +1493,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const cctMap = { '2700K': '27', '3000K': '30', '4000K': '40', '5000K': '50' }; 
 
-    const finishMap = { white: 'WH', black: 'BK', grey: 'GR', gray: 'GR', silver: 'SV', 'satin-nickel': 'SN' }; 
+    const finishMap = { 'White': 'WH', 'Black': 'BK', 'Grey': 'GR', 'Silver': 'SV' }; 
 
  
 
@@ -1319,9 +1507,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cct = cctMap[cct] || cct.replace('K', ''); 
 
-    const fin = (selection.finish || '').toLowerCase();
-    const finishCode = finishMap[fin] || selection.finish || 'BK';
-    finish = finishCode; 
+    finish = finishMap[finish] || finish; 
 
  
 
@@ -3944,59 +4130,6 @@ if (typeof Webflow !== 'undefined') {
 
 // Let Webflow handle search icon styling naturally
 // No CSS overrides needed - using Webflow's default styling
-
-/* === Gallery: Thumbnail Click → Update Main Image (Canonical) === */
-(function initGalleryThumbnails() {
-  console.log('initGalleryThumbnails defined once');
-  
-  const mainImage = document.getElementById("main-lightbox-trigger");
-  const firstGalleryItem = document.querySelector(".first-gallery-image");
-  const thumbs = document.querySelectorAll(".thumbnail-image");
-  
-  if (!thumbs.length) return;
-
-  thumbs.forEach(thumb => {
-    thumb.addEventListener("click", function () {
-      const newSrc = this.getAttribute("data-image") || this.getAttribute("src");
-      if (newSrc && mainImage) {
-        // If main is an <img>, set src; if it's a trigger/anchor, set href
-        if (mainImage.tagName === 'IMG') mainImage.src = newSrc;
-        else mainImage.setAttribute("href", newSrc);
-      }
-      thumbs.forEach(t => t.classList.remove("is-active"));
-      this.classList.add("is-active");
-    });
-  });
-
-  // Keep the hidden Webflow lightbox pattern
-  if (mainImage && firstGalleryItem) {
-    mainImage.addEventListener("click", () => firstGalleryItem.click());
-  }
-})();
-
-/* === Accessories: Image Zoom (Canonical) === */
-(function initAccessoryZoom() {
-  console.log('initAccessoryZoom defined once');
-  
-  const containers = document.querySelectorAll(".accessory-image");
-  if (!containers.length) return;
-
-  containers.forEach(container => {
-    const img = container.querySelector("img");
-    if (!img) return;
-
-    container.style.overflow = "hidden";
-    container.addEventListener("mouseenter", () => img.classList.add("zoomed"));
-    container.addEventListener("mousemove", e => {
-      const r = container.getBoundingClientRect();
-      img.style.transformOrigin = `${((e.clientX - r.left)/r.width)*100}% ${((e.clientY - r.top)/r.height)*100}%`;
-    });
-    container.addEventListener("mouseleave", () => {
-      img.classList.remove("zoomed");
-      img.style.transformOrigin = "center center";
-    });
-  });
-})();
 
 /* === Enhanced Lightbox Gallery Functionality === */
 function initializeEnhancedLightbox() {
