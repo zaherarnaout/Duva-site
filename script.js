@@ -85,23 +85,95 @@ function initializeCategoryCards() {
 
     card.addEventListener('click', function (e) {
       e.preventDefault();
-
-      // If already on the products page and DUVA API is available, use it directly.
+    
       if (isOnProductsPage() && window.DUVA_FILTER?.activateCheckboxByLabel) {
         const label = DUVA_LABEL_MAP[categoryKey] || textElement.textContent.trim();
         console.log(`🧭 On products page: using DUVA API for "${label}"`);
         window.DUVA_FILTER.activateCheckboxByLabel(label);
         return;
       }
-
-      // Otherwise, navigate with ?category=... and let duva-Fliter-script.js apply it on load.
+    
+      // 🔴 Pass the category to the products page
+      sessionStorage.setItem('duvaPendingCategory', categoryKey);
+    
       const url = `${getProductsPageURL()}?category=${encodeURIComponent(categoryKey)}`;
       console.log(`🚀 Navigating to: ${url}`);
       window.location.href = url;
-    });
+    });    
   });
 
   console.log('🎯 Category cards ready.');
+}
+
+// map your homepage "category" to the visible DUVA checkbox label
+const CATEGORY_TO_LABEL = {
+  indoor: 'Indoor',
+  outdoor: 'Outdoor',
+  flexstrip: 'Flex Strip' // adjust to exactly match the label text in the products filter
+};
+
+// wait until duva-Fliter-script.js exposes its public API
+function whenDuvaReady(cb, timeout = 8000) {
+  const start = Date.now();
+  (function tick() {
+    const ready = window.DUVA_FILTER && typeof window.DUVA_FILTER.activateCheckboxByLabel === 'function';
+    if (ready) return cb();
+    if (Date.now() - start < timeout) return requestAnimationFrame(tick);
+    console.warn('DUVA API not ready; using fallback click.');
+    cb('fallback');
+  })();
+}
+
+// read category from URL/sessionStorage and apply it via DUVA
+function applyCategoryFilterFromURLorStorage() {
+  const url = new URL(window.location.href);
+  const cat = (url.searchParams.get('category') || sessionStorage.getItem('duvaPendingCategory') || '').toLowerCase();
+  if (!cat) return;
+
+  // clear the baton so it doesn't re-apply on next navigations
+  sessionStorage.removeItem('duvaPendingCategory');
+
+  // resolve the visible label DUVA uses
+  const labelGuess =
+    CATEGORY_TO_LABEL[cat] ||
+    (cat === 'flexstrip' ? 'Flex Strip' : cat.charAt(0).toUpperCase() + cat.slice(1));
+
+  // wait for DUVA, then use the public API (or fallback to a DOM click)
+  whenDuvaReady((mode) => {
+    if (mode !== 'fallback') {
+      window.DUVA_FILTER.activateCheckboxByLabel(labelGuess);
+      return;
+    }
+    // Fallback: click the label node that exactly matches the text
+    const allLabels = Array.from(document.querySelectorAll(
+      '.duva-filters label, .filters label, [data-filter-label]'
+    ));
+    const target = allLabels.find(l => l.textContent.trim().toLowerCase() === labelGuess.toLowerCase());
+    if (target) target.click();
+  });
+}
+
+// run the applier when you land on the products page
+function isProductsPage() {
+  return (
+    window.location.pathname.includes('/products') ||
+    window.location.pathname.includes('products.html') ||
+    document.querySelector('.cards-container')
+  );
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (isProductsPage()) applyCategoryFilterFromURLorStorage();
+});
+
+window.addEventListener('load', () => {
+  if (isProductsPage()) applyCategoryFilterFromURLorStorage();
+});
+
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function () {
+    if (isProductsPage()) applyCategoryFilterFromURLorStorage();
+  });
 }
 
 // Initialize category cards when DOM is ready
