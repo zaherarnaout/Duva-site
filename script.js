@@ -27,8 +27,28 @@ function applyCategoryFilterFromURL() {
   // Mark as applied immediately to prevent duplicates
   filterApplied = true;
 
+  // Debug function to log all available filter options
+  function debugFilterOptions() {
+    console.log('🔍 === DEBUGGING FILTER OPTIONS ===');
+    const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+    console.log(`Found ${filterOptions.length} filter options:`);
+    
+    filterOptions.forEach((option, index) => {
+      const textElement = option.querySelector('.sub-filter-wattage');
+      if (textElement) {
+        const optionText = textElement.textContent.trim();
+        const isActive = option.classList.contains('active');
+        console.log(`${index + 1}. "${optionText}" (active: ${isActive})`);
+      }
+    });
+    console.log('🔍 === END DEBUG ===');
+  }
+
   // Function to find and click the appropriate filter button
   function findAndClickFilterButton() {
+    // Debug all available options first
+    debugFilterOptions();
+    
     // Look for filter options that match the category
     const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
     
@@ -36,9 +56,35 @@ function applyCategoryFilterFromURL() {
       const textElement = option.querySelector('.sub-filter-wattage');
       if (textElement) {
         const optionText = textElement.textContent.trim().toLowerCase();
+        console.log(`🔍 Checking filter option: "${optionText}" against category: "${cleanCategory}"`);
         
-        // Check if this filter option matches the category
-        if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
+        // Improved matching logic - check for exact match first, then partial matches
+        let isMatch = false;
+        
+        // Exact match
+        if (optionText === cleanCategory) {
+          isMatch = true;
+          console.log(`✅ Exact match found: "${optionText}" === "${cleanCategory}"`);
+        }
+        // Partial match (either direction)
+        else if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
+          isMatch = true;
+          console.log(`✅ Partial match found: "${optionText}" contains "${cleanCategory}" or vice versa`);
+        }
+        // Check for common variations
+        else if (
+          (cleanCategory === 'indoor' && optionText.includes('indoor')) ||
+          (cleanCategory === 'outdoor' && optionText.includes('outdoor')) ||
+          (cleanCategory === 'flexstrip' && (optionText.includes('flex') || optionText.includes('strip'))) ||
+          (cleanCategory === 'customlight' && (optionText.includes('custom') || optionText.includes('light'))) ||
+          (cleanCategory === 'decorativelights' && (optionText.includes('decorative') || optionText.includes('light'))) ||
+          (cleanCategory === 'weatherproof' && (optionText.includes('weather') || optionText.includes('proof')))
+        ) {
+          isMatch = true;
+          console.log(`✅ Variation match found: "${optionText}" matches "${cleanCategory}"`);
+        }
+        
+        if (isMatch) {
           const checkmark = option.querySelector('.filter-checkmark');
           if (checkmark) {
             // Check if the filter is already active
@@ -72,6 +118,7 @@ function applyCategoryFilterFromURL() {
       }
     }
     
+    console.warn(`❌ No matching filter found for category: "${cleanCategory}"`);
     return false;
   }
 
@@ -155,18 +202,22 @@ function initializeCategoryCards() {
     return;
   }
   
+  console.log(`🔍 === DEBUGGING MAIN PAGE CATEGORY CARDS ===`);
+  console.log(`Found ${categoryCards.length} category cards:`);
+  
   categoryCards.forEach((card, index) => {
     // Get the text content to identify the category
     const textElement = card.querySelector('.text-block-48, .text-block-49, .text-block-50, .text-block-51, .text-block-52, .text-block-53');
     
     if (textElement) {
-      const categoryText = textElement.textContent.trim().toLowerCase();
-      console.log(`🔍 Found category card: ${categoryText}`);
+      const categoryText = textElement.textContent.trim();
+      const categoryTextLower = categoryText.toLowerCase();
+      console.log(`${index + 1}. Raw text: "${categoryText}" | Lowercase: "${categoryTextLower}"`);
       
       // Find matching category key (optimized lookup)
       let categoryKey = null;
       for (const [key, value] of Object.entries(categoryMappings)) {
-        if (categoryText.includes(key) || key.includes(categoryText)) {
+        if (categoryTextLower.includes(key) || key.includes(categoryTextLower)) {
           categoryKey = key;
           break;
         }
@@ -225,6 +276,7 @@ function initializeCategoryCards() {
     }
   });
   
+  console.log(`🔍 === END MAIN PAGE DEBUG ===`);
   console.log(`🎯 Category cards initialization complete. Found ${categoryCards.length} cards.`);
 }
 
