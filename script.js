@@ -4623,8 +4623,12 @@ if (typeof Webflow !== 'undefined') {
   }
 })();
 
-/* === PRODUCT TEMPLATE HOTFIX (safe to paste at end of script.js) === */
+/* === DUVA PRODUCT TEMPLATE HOTFIX GUARD === */
 (function () {
+  if (window.__duvaHotfixApplied) return;         // prevents double-bind
+  if (!document.querySelector('.product-page-section')) return; // page guard
+  window.__duvaHotfixApplied = true;
+
   // 1) Dropdowns — open/close + select (works if arrow OR whole field is clicked)
   document.addEventListener('click', (e) => {
     const wrapper = e.target.closest('.dropdown-wrapper');
