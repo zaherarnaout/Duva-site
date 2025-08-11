@@ -2507,8 +2507,8 @@ function initializeScrollAnimations() {
       }
     });
   }, {
-    threshold: 0.3, // Trigger when 30% of section is visible
-    rootMargin: '0px 0px -50px 0px' // Trigger slightly before section comes into view
+    threshold: 0.1, // Lower threshold to trigger earlier
+    rootMargin: '0px 0px -100px 0px' // Trigger earlier
   });
   
   // Observe specific product page elements (NOT the wrapper)
@@ -2557,6 +2557,39 @@ function initializeScrollAnimations() {
   }
 }
 
+// === Force Visibility for Critical Sections ===
+function forceCriticalSectionsVisible() {
+  console.log('🔧 Force showing critical sections...');
+  
+  // Force product info block to be visible
+  const productInfoBlock = document.querySelector('.product-info-block');
+  if (productInfoBlock) {
+    productInfoBlock.classList.add('fade-in');
+    console.log('✅ Product info block forced visible');
+  }
+  
+  // Force related section to be visible
+  const relatedSection = document.querySelector('.related-section');
+  if (relatedSection) {
+    relatedSection.classList.add('fade-in');
+    console.log('✅ Related section forced visible');
+  }
+  
+  // Force product visuals to be visible
+  const productVisuals = document.querySelector('.product-visuals');
+  if (productVisuals) {
+    productVisuals.classList.add('fade-in');
+    console.log('✅ Product visuals forced visible');
+  }
+  
+  // Force download panel to be visible
+  const downloadPanel = document.querySelector('.download-panel');
+  if (downloadPanel) {
+    downloadPanel.classList.add('fade-in');
+    console.log('✅ Download panel forced visible');
+  }
+}
+
 // === Smooth Scroll to Related Section ===
 function scrollToRelatedSection() {
   const relatedSection = document.querySelector('.related-section');
@@ -2573,6 +2606,9 @@ function scrollToRelatedSection() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeScrollAnimations();
   
+  // Force critical sections to be visible immediately
+  forceCriticalSectionsVisible();
+  
   // Add smooth scroll button if needed (optional)
   const scrollToRelatedBtn = document.querySelector('.scroll-to-related');
   if (scrollToRelatedBtn) {
@@ -2581,6 +2617,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize menu panel functionality
   initializeMenuPanel();
+  
+  // Fallback: Force visibility after a short delay to ensure it works
+  setTimeout(() => {
+    forceCriticalSectionsVisible();
+    console.log('🔄 Fallback visibility check completed');
+  }, 1000);
 });
     
 
