@@ -4622,3 +4622,111 @@ if (typeof Webflow !== 'undefined') {
     resumeTimer = setTimeout(start, FADE_MS + 1000);
   }
 })();
+
+/* === PRODUCT TEMPLATE HOTFIX (safe to paste at end of script.js) === */
+(function () {
+  // 1) Dropdowns — open/close + select (works if arrow OR whole field is clicked)
+  document.addEventListener('click', (e) => {
+    const wrapper = e.target.closest('.dropdown-wrapper');
+    if (!wrapper || wrapper.classList.contains('disabled')) return;
+
+    const options = wrapper.querySelector('.dropdown-options');
+
+    // Toggle when arrow OR the field is clicked
+    if (e.target.closest('.dropdown-arrow') || e.target.closest('.dropdown-field')) {
+      // close others
+      document.querySelectorAll('.dropdown-wrapper.open').forEach(d => {
+        if (d !== wrapper) {
+          d.classList.remove('open');
+          d.querySelector('.dropdown-options')?.style.setProperty('display', 'none');
+        }
+      });
+      const isOpen = !wrapper.classList.contains('open');
+      wrapper.classList.toggle('open', isOpen);
+      if (options) options.style.setProperty('display', isOpen ? 'block' : 'none');
+    }
+
+    // Select an option
+    if (e.target.classList.contains('dropdown-option')) {
+      const selected = wrapper.querySelector('.selected-value');
+      if (selected) selected.textContent = e.target.textContent.trim();
+      wrapper.classList.remove('open');
+      if (options) options.style.setProperty('display', 'none');
+      // trigger recalcs if these exist
+      try { typeof updateLumenValue === 'function' && updateLumenValue(); } catch(e){}
+      try { typeof updateOrderingCode === 'function' && updateOrderingCode(); } catch(e){}
+    }
+  });
+
+  // 2) Main image + lightbox + thumbnails
+  function initMainGallery() {
+    const main = document.getElementById('main-lightbox-trigger') || document.querySelector('.main-product img, .main-product a');
+    const firstGalleryItem = document.querySelector('.first-gallery-image');
+    const thumbs = document.querySelectorAll('.thumbnail-image');
+    if (!main || !thumbs.length) return;
+
+    // seed main image from first thumb if needed
+    const firstSrc = thumbs[0].getAttribute('data-image') || thumbs[0].getAttribute('src');
+    if (firstSrc) {
+      if (main.tagName === 'IMG') main.src = firstSrc;
+      else main.setAttribute('href', firstSrc);
+    }
+
+    thumbs.forEach(t => {
+      t.addEventListener('click', function () {
+        const src = this.getAttribute('data-image') || this.getAttribute('src');
+        if (!src) return;
+        if (main.tagName === 'IMG') main.src = src;
+        else main.setAttribute('href', src);
+        thumbs.forEach(x => x.classList.remove('is-active'));
+        this.classList.add('is-active');
+      });
+    });
+
+    // bridge to hidden Webflow lightbox
+    if (firstGalleryItem) {
+      main.addEventListener('click', (ev) => { ev.preventDefault(); firstGalleryItem.click(); });
+    }
+  }
+  // run once DOM is ready (and again after a tick for CMS)
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMainGallery);
+  else initMainGallery();
+  setTimeout(initMainGallery, 1500);
+
+  // 3) Download panel — checkbox toggle + arrow → generatePDF
+  document.addEventListener('click', (e) => {
+    const box = e.target.closest('.download-checkbox');
+    if (box) {
+      box.classList.toggle('active');
+      box.querySelector('.checkmark')?.classList.toggle('active', box.classList.contains('active'));
+    }
+  });
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.download-arrow');
+    if (btn && typeof generatePDF === 'function') {
+      e.preventDefault();
+      generatePDF();
+    }
+  });
+
+  // 4) Accessories — expand/collapse + arrow rotation
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('.accessories-toggle');
+    if (!toggle) return;
+    const section = toggle.closest('.accessories-section');
+    const arrow = toggle.querySelector('.accessories-arrow');
+    if (section) section.classList.toggle('open');
+    if (arrow) arrow.classList.toggle('rotated');
+  });
+
+  // 5) Related items — arrow scroll
+  (function initRelatedScroller(){
+    const track = document.querySelector('.related-list, .related-cards, .related-items-wrapper, .related-scroll');
+    const left  = document.querySelector('.image-31, .related-arrow-left');
+    const right = document.querySelector('.image-30, .related-arrow-right');
+    if (!track) return;
+    const step = () => Math.min(track.clientWidth, 400);
+    left  && left.addEventListener('click',  () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    right && right.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
+  })();
+})();
