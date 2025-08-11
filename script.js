@@ -128,13 +128,67 @@ function initializeCategoryCards() {
         card.addEventListener('click', function(e) {
           e.preventDefault();
           
-          // Navigate to main page and trigger category filter
-          // Use the filter system instead of trying to navigate to non-existent pages
-          const filteredURL = `/?category=${categoryKey}`;
-          console.log(`🚀 Navigating to: ${filteredURL}`);
+          // Check if we're already on the main page
+          const isOnMainPage = window.location.pathname === '/' || 
+                              window.location.pathname === '' ||
+                              window.location.pathname.includes('index') ||
+                              document.querySelector('.cards-container') !== null;
           
-          // Navigate to the main page with category filter
-          window.location.href = filteredURL;
+          if (isOnMainPage) {
+            // We're already on the main page, apply filter locally
+            console.log(`🎯 Applying category filter locally: ${categoryKey}`);
+            
+            // Update URL without navigation
+            const newURL = `/?category=${categoryKey}`;
+            window.history.pushState({}, '', newURL);
+            
+            // Trigger the filter system
+            setTimeout(() => {
+              // Try to find and click a matching filter button
+              const filterButton = document.querySelector(`[data-category="${categoryKey}"]`);
+              if (filterButton) {
+                filterButton.click();
+                console.log(`✅ Found and clicked filter button for category: ${categoryKey}`);
+                return;
+              }
+
+              // Try to find filter by text content
+              const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+              let foundFilter = false;
+              
+              filterOptions.forEach(option => {
+                const textElement = option.querySelector('.sub-filter-wattage');
+                if (textElement) {
+                  const optionText = textElement.textContent.trim().toLowerCase();
+                  if (optionText.includes(categoryKey) || categoryKey.includes(optionText)) {
+                    const checkmark = option.querySelector('.filter-checkmark');
+                    if (checkmark && !option.classList.contains('active')) {
+                      checkmark.click();
+                      foundFilter = true;
+                      console.log(`✅ Found and activated filter for category: ${categoryKey}`);
+                    }
+                  }
+                }
+              });
+
+              if (!foundFilter) {
+                console.warn(`⚠️ No filter button found for category: ${categoryKey}`);
+                
+                // Use global search as fallback
+                const searchInput = document.getElementById('globalSearchInput');
+                if (searchInput) {
+                  searchInput.value = categoryKey;
+                  searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  console.log(`🔍 Using global search as fallback for category: ${categoryKey}`);
+                }
+              }
+            }, 100);
+          } else {
+            // We're not on the main page, navigate to it with filter
+            const filteredURL = `/?category=${categoryKey}`;
+            console.log(`🚀 Navigating to main page with category filter: ${filteredURL}`);
+            window.location.href = filteredURL;
+          }
         });
         
         // Add visual feedback that it's clickable
@@ -3456,11 +3510,34 @@ function initializeFlipCardLinks() {
         return;
       }
       
-      // Allow navigation for valid URLs
-      console.log('Flip card - navigating to:', productUrl);
+      // Check if we're already on the main page
+      const isOnMainPage = window.location.pathname === '/' || 
+                          window.location.pathname === '' ||
+                          window.location.pathname.includes('index') ||
+                          document.querySelector('.cards-container') !== null;
       
-      // Navigate to the URL
-      window.location.href = productUrl;
+      if (isOnMainPage && productUrl.startsWith('/?product=')) {
+        // We're already on the main page, apply product filter locally
+        const productCode = productUrl.split('=')[1];
+        console.log(`🎯 Applying product filter locally: ${productCode}`);
+        
+        // Update URL without navigation
+        window.history.pushState({}, '', productUrl);
+        
+        // Trigger the search system
+        setTimeout(() => {
+          const searchInput = document.getElementById('globalSearchInput');
+          if (searchInput) {
+            searchInput.value = productCode;
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            console.log(`🔍 Using global search for product: ${productCode}`);
+          }
+        }, 100);
+      } else {
+        // Navigate to the URL
+        console.log('Flip card - navigating to:', productUrl);
+        window.location.href = productUrl;
+      }
       
       // Optional: Add loading state
       this.style.pointerEvents = 'none';
