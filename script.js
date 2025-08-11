@@ -156,127 +156,58 @@ setTimeout(() => {
   });
 }, 1000);
 
-/* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
+/* === Gallery: Thumbnail Click → Update Main Image (Canonical) === */
+(function initGalleryThumbnails() {
+  console.log('initGalleryThumbnails defined once');
+  
+  const mainImage = document.getElementById("main-lightbox-trigger");
+  const firstGalleryItem = document.querySelector(".first-gallery-image");
+  const thumbs = document.querySelectorAll(".thumbnail-image");
+  
+  if (!thumbs.length) return;
 
-document.querySelectorAll('.accessory-image').forEach(container => { 
+  thumbs.forEach(thumb => {
+    thumb.addEventListener("click", function () {
+      const newSrc = this.getAttribute("data-image") || this.getAttribute("src");
+      if (newSrc && mainImage) {
+        // If main is an <img>, set src; if it's a trigger/anchor, set href
+        if (mainImage.tagName === 'IMG') mainImage.src = newSrc;
+        else mainImage.setAttribute("href", newSrc);
+      }
+      thumbs.forEach(t => t.classList.remove("is-active"));
+      this.classList.add("is-active");
+    });
+  });
 
-  const img = container.querySelector('img'); 
+  // Keep the hidden Webflow lightbox pattern
+  if (mainImage && firstGalleryItem) {
+    mainImage.addEventListener("click", () => firstGalleryItem.click());
+  }
+})();
 
- 
+/* === Accessories: Image Zoom (Canonical) === */
+(function initAccessoryZoom() {
+  console.log('initAccessoryZoom defined once');
+  
+  const containers = document.querySelectorAll(".accessory-image");
+  if (!containers.length) return;
 
-  container.style.overflow = 'hidden'; // Keeps zoomed image inside the box 
+  containers.forEach(container => {
+    const img = container.querySelector("img");
+    if (!img) return;
 
- 
-
-  container.addEventListener('mouseenter', () => { 
-
-    img.classList.add('zoomed'); 
-
-  }); 
-
- 
-
-  container.addEventListener('mousemove', e => { 
-
-    const rect = container.getBoundingClientRect(); 
-
-    const x = ((e.clientX - rect.left) / rect.width) * 100; 
-
-    const y = ((e.clientY - rect.top) / rect.height) * 100; 
-
-    img.style.transformOrigin = `${x}% ${y}%`; 
-
-  }); 
-
- 
-
-  container.addEventListener('mouseleave', () => { 
-
-    img.classList.remove('zoomed'); 
-
-    img.style.transformOrigin = 'center center'; 
-
-  }); 
-
-}); 
-
- 
-
-/* === 2. Thumbnail Image Selector === */ 
-
-document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
-    thumbnails.forEach(thumb => { 
-
-        thumb.addEventListener("click", function () { 
-
-            thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-            this.classList.add("is-active"); 
-
-            const newImg = this.getAttribute("data-image"); 
-
-            if (mainImage) mainImage.setAttribute("href", newImg); 
-
-        }); 
-
-    }); 
-
-}); 
-
- 
-
-/* === 3. Dropdown + Code Generator + Accessories Logic === */ 
-
-// Full working logic from your working file, manually verified and retained 
-
-document.querySelectorAll('.accessory-image').forEach(container => { 
-
-    const img = container.querySelector('img'); 
-
- 
-
-    // Zoom in on hover 
-
-    container.addEventListener('mouseenter', () => { 
-
-      img.classList.add('zoomed'); 
-
-    }); 
-
- 
-
-    // Track mouse position for dynamic zoom focus 
-
-    container.addEventListener('mousemove', e => { 
-
-      const rect = container.getBoundingClientRect(); 
-
-      const x = ((e.clientX - rect.left) / rect.width) * 100; 
-
-      const y = ((e.clientY - rect.top) / rect.height) * 100; 
-
-      img.style.transformOrigin = `${x}% ${y}%`; 
-
-    }); 
-
- 
-
-    // Reset on mouse leave 
-
-    container.addEventListener('mouseleave', () => { 
-
-      img.classList.remove('zoomed'); 
-
-      img.style.transformOrigin = 'center center'; 
-
-    }); 
-
-  }); 
+    container.style.overflow = "hidden";
+    container.addEventListener("mouseenter", () => img.classList.add("zoomed"));
+    container.addEventListener("mousemove", e => {
+      const r = container.getBoundingClientRect();
+      img.style.transformOrigin = `${((e.clientX - r.left)/r.width)*100}% ${((e.clientY - r.top)/r.height)*100}%`;
+    });
+    container.addEventListener("mouseleave", () => {
+      img.classList.remove("zoomed");
+      img.style.transformOrigin = "center center";
+    });
+  });
+})(); 
 
  
 
@@ -284,65 +215,7 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-  document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
  
-
-    thumbnails.forEach((thumb) => { 
-
-      thumb.addEventListener("click", function () { 
-
-        // === Get the source of the clicked thumbnail 
-
-        const newSrc = thumb.getAttribute("src"); 
-
- 
-
-        // === Update the main image 
-
-        if (newSrc && mainImage) { 
-
-          mainImage.setAttribute("src", newSrc); 
-
-        } 
-
-      }); 
-
-    }); 
-
-  }); 
-
- 
-
- 
-
- 
-
-  document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainTrigger = document.getElementById("main-lightbox-trigger"); 
-
-    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
-
- 
-
-    // === When main image is clicked, open the Webflow lightbox 
-
-    if (mainTrigger && firstGalleryItem) { 
-
-      mainTrigger.addEventListener("click", () => { 
-
-        firstGalleryItem.click(); 
-
-      }); 
-
-    } 
-
-  }); 
 
  
 
@@ -933,57 +806,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
-document.addEventListener("DOMContentLoaded", function () { 
-
  
-
-  /* === Main Image Thumbnail Click Logic === */ 
-
-  const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
- 
-
-  thumbnails.forEach((thumb) => { 
-
-    thumb.addEventListener("click", function () { 
-
-      const newSrc = this.getAttribute("src"); 
-
-      if (mainImage && newSrc) { 
-
-        mainImage.setAttribute("src", newSrc); 
-
-      } 
-
- 
-
-      // Update active state 
-
-      thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-      this.classList.add("is-active"); 
-
-    }); 
-
-  }); 
-
- 
-
-  /* === Trigger Hidden Webflow Lightbox Gallery === */ 
-
-  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
-
-  if (mainImage && firstGalleryItem) { 
-
-    mainImage.addEventListener("click", () => { 
-
-      firstGalleryItem.click(); 
-
-    }); 
-
-  } 
 
  
 
