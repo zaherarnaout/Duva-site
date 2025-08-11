@@ -4159,6 +4159,32 @@ ARROWS:
   transform: translateZ(0);
 }
 
+/* === Flip Card Click Fix === */
+.flip-card-front, 
+.flip-card-back {
+  pointer-events: none;
+}
+
+.flip-card-wrapper {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Ensure parent links also show pointer cursor */
+.flip-card-wrapper a,
+a .flip-card-wrapper {
+  cursor: pointer;
+}
+/* === End Flip Card Click Fix === */
+
+/* === Reduced Motion Safe-Guard === */
+@media (prefers-reduced-motion: reduce) {
+  .flip-card, .flip-card * { 
+    transition: none !important; 
+    animation: none !important; 
+  }
+}
+
 /* Remove underlines from all product card links */
 .flip-card-wrapper a,
 .current-product,
