@@ -4961,6 +4961,16 @@ a .flip-card-wrapper {
 
 .hero-text-wrapper { position: absolute; overflow: hidden; }
 
+/* === Force Visibility for Critical Sections === */
+.product-info-block,
+.related-section,
+.product-visuals,
+.download-panel {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  visibility: visible !important;
+}
+
 
 
 
