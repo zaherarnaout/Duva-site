@@ -110,15 +110,36 @@ function initializeCategoryCards() {
         card.addEventListener('click', function(e) {
           e.preventDefault();
           
-          // Get the products page URL (you may need to adjust this)
-          const productsPageURL = 'products.html'; // Adjust this to your actual products page URL
+          // Get the products page URL using the same logic as navigateToProductsPage
+          let productsPageURL = 'products.html';
+          
+          // Check if we can find a products link on the page
+          const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
+          if (productsLinks.length > 0) {
+            // Use the first products link found
+            productsPageURL = productsLinks[0].getAttribute('href');
+            // Ensure it's a relative URL
+            if (productsPageURL.startsWith('http')) {
+              const url = new URL(productsPageURL);
+              productsPageURL = url.pathname;
+            }
+          }
           
           // Navigate to products page with category filter
           const filteredURL = `${productsPageURL}?category=${categoryKey}`;
           console.log(`🚀 Navigating to: ${filteredURL}`);
           
-          // Navigate to the filtered products page
-          window.location.href = filteredURL;
+          // Check if the URL is valid before navigating
+          if (productsPageURL === 'products.html') {
+            console.warn('⚠️ No products page found, using fallback navigation');
+            // Try to navigate to the current page with category parameter
+            const currentURL = new URL(window.location.href);
+            currentURL.searchParams.set('category', categoryKey);
+            window.location.href = currentURL.toString();
+          } else {
+            // Navigate to the filtered products page
+            window.location.href = filteredURL;
+          }
         });
         
         // Add visual feedback that it's clickable
@@ -4894,11 +4915,25 @@ if (typeof Webflow !== 'undefined') {
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
   }
 
+  // 5. FIX CATEGORY CARDS NAVIGATION
+  function fixCategoryCardsNavigation() {
+    console.log('🎯 Fixing category cards navigation...');
+    
+    // Re-initialize category cards to ensure they work
+    try {
+      initializeCategoryCards();
+      console.log('✅ Category cards navigation restored');
+    } catch (error) {
+      console.error('❌ Error fixing category cards:', error);
+    }
+  }
+
   // Run all fixes
   fixGalleryImages();
   fixAccessoriesSection();
   fixLightboxNavigation();
   fixThumbnailFunctionality();
+  fixCategoryCardsNavigation();
 
   // Re-run fixes after a delay to catch late-loading content
   setTimeout(() => {
@@ -4906,6 +4941,7 @@ if (typeof Webflow !== 'undefined') {
     fixAccessoriesSection();
     fixLightboxNavigation();
     fixThumbnailFunctionality();
+    fixCategoryCardsNavigation();
   }, 2000);
 
   console.log('✅ All critical fixes applied');
