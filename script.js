@@ -2,227 +2,177 @@ console.log("DUVA script.js loaded!");
 console.log("🎯 Flip card functionality should be working!");
 console.log("TESTING - If you see this, the script is loading!");
 
-/* === Auto Filter on Page Load via URL === */
-let filterApplied = false; // Prevent duplicate filtering
+/* ============================
+   DUVA FILTER BRIDGE (no custom filtering)
+   - Home category → pass baton via sessionStorage + ?category
+   - Products page → wait for duva-Filter-script.js, then call its public API
+   ============================ */
 
-function applyCategoryFilterFromURL() {
-  // Prevent duplicate execution
-  if (filterApplied) {
-    console.log('🔒 Auto-filter: Already applied, skipping...');
-    return;
-  }
+// Map homepage category keys → the exact label text DUVA shows next to the checkbox
+const CATEGORY_TO_DUVA_LABEL = {
+  indoor: 'Indoor',
+  outdoor: 'Outdoor',
+  flexstrip: 'Flex Strip',
+  // ignore the non-functional ones for now:
+  // weatherproof: '',
+  // customlight: '',
+  // decorative: ''
+};
 
-  const params = new URLSearchParams(window.location.search);
-  const category = params.get("category");
-
-  if (!category) {
-    console.log('🔍 Auto-filter: No category parameter found');
-    return;
-  }
-
-  // Clean category value
-  const cleanCategory = category.trim().toLowerCase();
-  console.log(`🔍 Auto-filter: Processing category parameter: ${cleanCategory}`);
-
-  // Mark as applied immediately to prevent duplicates
-  filterApplied = true;
-
-  // Optimized filter application with progressive delays
-  function attemptFilter() {
-    // Method 1: Try to find and click a matching filter button (fastest)
-    const filterButton = document.querySelector(`[data-category="${cleanCategory}"]`);
-    if (filterButton) {
-      filterButton.click();
-      console.log(`✅ Auto-filter: Found and clicked filter button for category: ${cleanCategory}`);
-      return true;
-    }
-
-    // Method 2: Try to find filter by text content
-    const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
-    for (const option of filterOptions) {
-      const textElement = option.querySelector('.sub-filter-wattage');
-      if (textElement) {
-        const optionText = textElement.textContent.trim().toLowerCase();
-        if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
-          const checkmark = option.querySelector('.filter-checkmark');
-          if (checkmark && !option.classList.contains('active')) {
-            checkmark.click();
-            console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
-            return true;
-          }
-        }
-      }
-    }
-
-    // Method 3: Try to use the global search as fallback
-    const searchInput = document.getElementById('globalSearchInput');
-    if (searchInput) {
-      searchInput.value = cleanCategory;
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-      console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
-      return true;
-    }
-
-    return false;
-  }
-
-  // Try immediately (for fast page loads)
-  if (attemptFilter()) {
-    return;
-  }
-
-  // If not found, try with progressive delays
-  const delays = [500, 1000, 1500]; // Reduced from 2000ms to 500ms initial
-  
-  for (let i = 0; i < delays.length; i++) {
-    setTimeout(() => {
-      if (attemptFilter()) {
-        return;
-      }
-      if (i === delays.length - 1) {
-        console.warn(`⚠️ Auto-filter: No filter found for category: ${cleanCategory} after ${delays[i]}ms`);
-      }
-    }, delays[i]);
-  }
+// Simple products-page detector
+function isProductsPage() {
+  return (
+    window.location.pathname.includes('/products') ||
+    window.location.pathname.includes('products.html') ||
+    document.querySelector('.cards-container')
+  );
 }
 
-// Single initialization point with smart timing
-function initializeAutoFilter() {
-  // Only run if we have a category parameter
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("category")) {
-    applyCategoryFilterFromURL();
+// Find your products URL from any existing link on the page
+function getProductsURL() {
+  if (window.__productsPageURL) return window.__productsPageURL;
+  let url = 'products.html';
+  const link = document.querySelector('a[href*="products"], a[href*="collection"]');
+  if (link) {
+    url = link.getAttribute('href') || url;
+    if (url.startsWith('http')) url = new URL(url).pathname;
   }
+  window.__productsPageURL = url;
+  return url;
 }
 
-// Initialize auto-filter when DOM is ready
-document.addEventListener("DOMContentLoaded", initializeAutoFilter);
+// 1) HOMEPAGE: when a category is clicked, set baton + navigate (NO filtering here)
+function wireHomepageCategoriesToDuva() {
+  const cards = document.querySelectorAll('.main-page-categories-wrapper a');
+  if (!cards.length) return;
 
-// Also initialize when Webflow loads (but only if not already applied)
-if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    if (!filterApplied) {
-      initializeAutoFilter();
+  cards.forEach((card) => {
+    // read a visible text node inside the card (adjust selectors if needed)
+    const labelEl = card.querySelector(
+      '.text-block-48, .text-block-49, .text-block-50, .text-block-51, .text-block-52, .text-block-53'
+    );
+    if (!labelEl) return;
+
+    const raw = labelEl.textContent.trim().toLowerCase();
+    // resolve a key -> duva label
+    let key = null;
+    for (const k of Object.keys(CATEGORY_TO_DUVA_LABEL)) {
+      if (raw.includes(k) || k.includes(raw)) {
+        key = k;
+        break;
+      }
+    }
+    if (!key) return;
+
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Pass baton so the products page knows what to check
+      sessionStorage.setItem('duvaPendingCategory', key);
+
+      // Also include it in the URL (handy if someone bookmarks the page)
+      const url = `${getProductsURL()}?category=${encodeURIComponent(key)}`;
+      window.location.href = url;
+    });
+  });
+}
+
+// 2) PRODUCTS PAGE: wait for DUVA public API, then "click" the checkbox through DUVA
+function applyPendingCategoryWithDuva() {
+  const url = new URL(window.location.href);
+  const pendingKey =
+    (url.searchParams.get('category') || sessionStorage.getItem('duvaPendingCategory') || '').toLowerCase();
+
+  if (!pendingKey) return;
+
+  // consume the baton so it doesn't re-trigger on future nav
+  sessionStorage.removeItem('duvaPendingCategory');
+
+  const targetLabel =
+    CATEGORY_TO_DUVA_LABEL[pendingKey] ||
+    pendingKey.charAt(0).toUpperCase() + pendingKey.slice(1); // fallback label guess
+
+  waitForDuvaReady(() => {
+    // Preferred: call DUVA's public API (source of truth)
+    if (window.DUVA_FILTER && typeof window.DUVA_FILTER.activateCheckboxByLabel === 'function') {
+      console.log('DUVA ready → activating checkbox via API:', targetLabel);
+      window.DUVA_FILTER.activateCheckboxByLabel(targetLabel);
+      return;
+    }
+
+    // Fallback: simulate a real label click (keeps UI in sync if API name differs)
+    const label = Array.from(
+      document.querySelectorAll('.duva-filters label, .filters label, [data-filter-label]')
+    ).find((l) => l.textContent.trim().toLowerCase() === targetLabel.toLowerCase());
+
+    if (label) {
+      console.log('DUVA API not found, falling back to label click:', targetLabel);
+      label.click();
+    } else {
+      console.warn('Could not find DUVA checkbox label:', targetLabel);
     }
   });
 }
 
-// Final retry with shorter delay (reduced from 3000ms to 1000ms)
-setTimeout(() => {
-  if (!filterApplied) {
-    initializeAutoFilter();
-  }
-}, 1000);
+// Helper: robust "DUVA is ready" wait
+function waitForDuvaReady(cb, timeout = 10000) {
+  const start = Date.now();
 
-/* === Category Cards Navigation === */
-function initializeCategoryCards() {
-  console.log('🎯 Initializing category cards navigation...');
-  
-  // Define category mappings - updated to match actual card text
-  const categoryMappings = {
-    'outdoor': 'outdoor',
-    'indoor': 'indoor', 
-    'flexstrip': 'flex-strip',
-    'customlight': 'custom-light',
-    'decorativelights': 'decorative-light',
-    'weatherproof': 'weather-proof'
+  // If DUVA dispatches a ready event, use it (safe to listen even if it never fires)
+  let done = false;
+  const onReadyEvent = () => {
+    if (done) return;
+    done = true;
+    window.removeEventListener('duva:ready', onReadyEvent);
+    cb();
   };
-  
-  // Find all category cards in the main page categories wrapper
-  const categoryCards = document.querySelectorAll('.main-page-categories-wrapper a');
-  
-  // Early exit if no cards found
-  if (categoryCards.length === 0) {
-    console.log('⚠️ No category cards found on this page');
-    return;
-  }
-  
-  categoryCards.forEach((card, index) => {
-    // Get the text content to identify the category
-    const textElement = card.querySelector('.text-block-48, .text-block-49, .text-block-50, .text-block-51, .text-block-52, .text-block-53');
-    
-    if (textElement) {
-      const categoryText = textElement.textContent.trim().toLowerCase();
-      console.log(`🔍 Found category card: ${categoryText}`);
-      
-      // Find matching category key (optimized lookup)
-      let categoryKey = null;
-      for (const [key, value] of Object.entries(categoryMappings)) {
-        if (categoryText.includes(key) || key.includes(categoryText)) {
-          categoryKey = key;
-          break;
-        }
+  window.addEventListener('duva:ready', onReadyEvent);
+
+  // Poll for DUVA public API or for filter DOM existence
+  (function tick() {
+    const apiReady = !!(window.DUVA_FILTER && typeof window.DUVA_FILTER.activateCheckboxByLabel === 'function');
+    const domReady = !!document.querySelector('.duva-filters input[type="checkbox"], .filters input[type="checkbox"]');
+
+    if (apiReady || domReady) {
+      if (!done) {
+        done = true;
+        window.removeEventListener('duva:ready', onReadyEvent);
+        cb();
       }
-      
-      if (categoryKey) {
-        console.log(`✅ Mapping category "${categoryText}" to "${categoryKey}"`);
-        
-        // Add click event listener
-        card.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          // Optimized URL detection - cache the result
-          if (!window.__productsPageURL) {
-            let productsPageURL = 'products.html';
-            
-            // Check if we can find a products link on the page
-            const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
-            if (productsLinks.length > 0) {
-              // Use the first products link found
-              productsPageURL = productsLinks[0].getAttribute('href');
-              // Ensure it's a relative URL
-              if (productsPageURL.startsWith('http')) {
-                const url = new URL(productsPageURL);
-                productsPageURL = url.pathname;
-              }
-            }
-            window.__productsPageURL = productsPageURL;
-          }
-          
-          // Navigate to products page with category filter
-          const filteredURL = `${window.__productsPageURL}?category=${categoryKey}`;
-          console.log(`🚀 Navigating to: ${filteredURL}`);
-          
-          // Check if the URL is valid before navigating
-          if (window.__productsPageURL === 'products.html') {
-            console.warn('⚠️ No products page found, using fallback navigation');
-            // Try to navigate to the current page with category parameter
-            const currentURL = new URL(window.location.href);
-            currentURL.searchParams.set('category', categoryKey);
-            window.location.href = currentURL.toString();
-          } else {
-            // Navigate to the filtered products page
-            window.location.href = filteredURL;
-          }
-        });
-        
-        // Add visual feedback that it's clickable
-        card.style.cursor = 'pointer';
-        card.setAttribute('title', `View ${categoryText} products`);
-        
-        console.log(`✅ Category card "${categoryText}" is now clickable`);
-      } else {
-        console.warn(`⚠️ No mapping found for category: ${categoryText}`);
-      }
+      return;
     }
-  });
-  
-  console.log(`🎯 Category cards initialization complete. Found ${categoryCards.length} cards.`);
+    if (Date.now() - start > timeout) {
+      if (!done) {
+        done = true;
+        window.removeEventListener('duva:ready', onReadyEvent);
+        console.warn('Timed out waiting for DUVA; running callback anyway.');
+        cb();
+      }
+      return;
+    }
+    requestAnimationFrame(tick);
+  })();
 }
 
-// Initialize category cards when DOM is ready
-document.addEventListener("DOMContentLoaded", initializeCategoryCards);
-
-// Also initialize when Webflow loads (but only once)
+/* Wire things up */
+document.addEventListener('DOMContentLoaded', () => {
+  wireHomepageCategoriesToDuva();
+  if (isProductsPage()) applyPendingCategoryWithDuva();
+});
 if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    // Prevent duplicate initialization
-    if (!window.__categoryCardsInitialized) {
-      window.__categoryCardsInitialized = true;
-      initializeCategoryCards();
-    }
+  Webflow.push(function () {
+    wireHomepageCategoriesToDuva();
+    if (isProductsPage()) applyPendingCategoryWithDuva();
   });
 }
+// Belt & suspenders: in case DUVA/filters mount after onload
+window.addEventListener('load', () => {
+  if (isProductsPage()) applyPendingCategoryWithDuva();
+});
+
+/* === Category Cards Navigation (DEPRECATED - Replaced by DUVA Filter Bridge) === */
+// The old initializeCategoryCards function has been replaced by the DUVA Filter Bridge above
+// This ensures all filtering is handled by duva-Filter-script.js as the single source of truth
 
 // Quick test to see if flip card elements exist
 setTimeout(() => {
@@ -4973,17 +4923,13 @@ if (typeof Webflow !== 'undefined') {
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
   }
 
-  // 5. FIX CATEGORY CARDS NAVIGATION
+  // 5. FIX CATEGORY CARDS NAVIGATION (Now handled by DUVA Filter Bridge)
   function fixCategoryCardsNavigation() {
-    console.log('🎯 Fixing category cards navigation...');
+    console.log('🎯 Category cards now handled by DUVA Filter Bridge...');
     
-    // Re-initialize category cards to ensure they work
-    try {
-      initializeCategoryCards();
-      console.log('✅ Category cards navigation restored');
-    } catch (error) {
-      console.error('❌ Error fixing category cards:', error);
-    }
+    // The DUVA Filter Bridge handles all category card functionality
+    // No need to re-initialize as it's handled by the bridge above
+    console.log('✅ Category cards handled by DUVA Filter Bridge');
   }
 
   // Run all fixes
