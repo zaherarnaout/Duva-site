@@ -3441,6 +3441,12 @@ function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
   console.log('Script is working!');
   
+  // Test letter code detection
+  console.log('🧪 Testing letter code detection:');
+  console.log('C330 is letter code:', /^[A-Z]/.test('C330'));
+  console.log('4711 is letter code:', /^[A-Z]/.test('4711'));
+  console.log('C331 is letter code:', /^[A-Z]/.test('C331'));
+  
   // ONLY target flip card wrappers - don't affect other sections
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
@@ -3562,6 +3568,8 @@ function initializeFlipCardLinks() {
     console.log(`Element ${index + 1} - Final URL:`, productUrl);
     console.log(`Element ${index + 1} - Link href:`, link.href);
     console.log(`Element ${index + 1} - Data attribute:`, link.getAttribute('data-product-url'));
+    console.log(`Element ${index + 1} - Product code:`, extractProductCode(element));
+    console.log(`Element ${index + 1} - Is letter code:`, /^[A-Z]/.test(extractProductCode(element) || ''));
     
     // Wrap the element in the link
     element.parentNode.insertBefore(link, element);
@@ -3570,6 +3578,8 @@ function initializeFlipCardLinks() {
     // Add click event listener
     link.addEventListener('click', function(e) {
       console.log('Flip card clicked! URL:', productUrl);
+      console.log('Flip card clicked! Element:', element);
+      console.log('Flip card clicked! Product code extracted:', extractProductCode(element));
       
       // For flip cards, allow navigation even if URL is '#'
       // This prevents the alert from showing on flip cards
@@ -3699,6 +3709,7 @@ function initializeCardsScrollAnimation() {
 // Initialize flip card links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 DOMContentLoaded - Initializing flip card links');
+  console.log('🚀 Script version: 2024-01-27-v2'); // Version marker for cache busting
   
   // Check for 404 redirects first
   handle404Redirect();
