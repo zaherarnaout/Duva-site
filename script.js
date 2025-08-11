@@ -156,127 +156,11 @@ setTimeout(() => {
   });
 }, 1000);
 
-/* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
-
-document.querySelectorAll('.accessory-image').forEach(container => { 
-
-  const img = container.querySelector('img'); 
+ 
 
  
 
-  container.style.overflow = 'hidden'; // Keeps zoomed image inside the box 
-
  
-
-  container.addEventListener('mouseenter', () => { 
-
-    img.classList.add('zoomed'); 
-
-  }); 
-
- 
-
-  container.addEventListener('mousemove', e => { 
-
-    const rect = container.getBoundingClientRect(); 
-
-    const x = ((e.clientX - rect.left) / rect.width) * 100; 
-
-    const y = ((e.clientY - rect.top) / rect.height) * 100; 
-
-    img.style.transformOrigin = `${x}% ${y}%`; 
-
-  }); 
-
- 
-
-  container.addEventListener('mouseleave', () => { 
-
-    img.classList.remove('zoomed'); 
-
-    img.style.transformOrigin = 'center center'; 
-
-  }); 
-
-}); 
-
- 
-
-/* === 2. Thumbnail Image Selector === */ 
-
-document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
-    thumbnails.forEach(thumb => { 
-
-        thumb.addEventListener("click", function () { 
-
-            thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-            this.classList.add("is-active"); 
-
-            const newImg = this.getAttribute("data-image"); 
-
-            if (mainImage) mainImage.setAttribute("href", newImg); 
-
-        }); 
-
-    }); 
-
-}); 
-
- 
-
-/* === 3. Dropdown + Code Generator + Accessories Logic === */ 
-
-// Full working logic from your working file, manually verified and retained 
-
-document.querySelectorAll('.accessory-image').forEach(container => { 
-
-    const img = container.querySelector('img'); 
-
- 
-
-    // Zoom in on hover 
-
-    container.addEventListener('mouseenter', () => { 
-
-      img.classList.add('zoomed'); 
-
-    }); 
-
- 
-
-    // Track mouse position for dynamic zoom focus 
-
-    container.addEventListener('mousemove', e => { 
-
-      const rect = container.getBoundingClientRect(); 
-
-      const x = ((e.clientX - rect.left) / rect.width) * 100; 
-
-      const y = ((e.clientY - rect.top) / rect.height) * 100; 
-
-      img.style.transformOrigin = `${x}% ${y}%`; 
-
-    }); 
-
- 
-
-    // Reset on mouse leave 
-
-    container.addEventListener('mouseleave', () => { 
-
-      img.classList.remove('zoomed'); 
-
-      img.style.transformOrigin = 'center center'; 
-
-    }); 
-
-  }); 
 
  
 
@@ -284,37 +168,11 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-  document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
+ 
 
  
 
-    thumbnails.forEach((thumb) => { 
-
-      thumb.addEventListener("click", function () { 
-
-        // === Get the source of the clicked thumbnail 
-
-        const newSrc = thumb.getAttribute("src"); 
-
  
-
-        // === Update the main image 
-
-        if (newSrc && mainImage) { 
-
-          mainImage.setAttribute("src", newSrc); 
-
-        } 
-
-      }); 
-
-    }); 
-
-  }); 
 
  
 
@@ -322,27 +180,7 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-  document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainTrigger = document.getElementById("main-lightbox-trigger"); 
-
-    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
-
  
-
-    // === When main image is clicked, open the Webflow lightbox 
-
-    if (mainTrigger && firstGalleryItem) { 
-
-      mainTrigger.addEventListener("click", () => { 
-
-        firstGalleryItem.click(); 
-
-      }); 
-
-    } 
-
-  }); 
 
  
 
@@ -933,57 +771,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
-document.addEventListener("DOMContentLoaded", function () { 
-
  
-
-  /* === Main Image Thumbnail Click Logic === */ 
-
-  const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
- 
-
-  thumbnails.forEach((thumb) => { 
-
-    thumb.addEventListener("click", function () { 
-
-      const newSrc = this.getAttribute("src"); 
-
-      if (mainImage && newSrc) { 
-
-        mainImage.setAttribute("src", newSrc); 
-
-      } 
-
- 
-
-      // Update active state 
-
-      thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-      this.classList.add("is-active"); 
-
-    }); 
-
-  }); 
-
- 
-
-  /* === Trigger Hidden Webflow Lightbox Gallery === */ 
-
-  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
-
-  if (mainImage && firstGalleryItem) { 
-
-    mainImage.addEventListener("click", () => { 
-
-      firstGalleryItem.click(); 
-
-    }); 
-
-  } 
 
  
 
@@ -3406,215 +3194,123 @@ function handle404Redirect() {
   }
 }
 
-// Helper function to extract product code from element
+// Helper function to extract product code from element (kept for debugging)
 function extractProductCode(element) {
-  console.log('🔍 extractProductCode called for element:', element);
-  
   const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-  console.log('🔍 Found code element:', codeElement);
-  
   if (codeElement) {
     const text = codeElement.textContent?.trim();
-    console.log('🔍 Code element text:', text);
-    
     if (text) {
       const codeMatch = text.match(/([A-Z]?\d+)/);
-      console.log('🔍 Code match result:', codeMatch);
-      
       if (codeMatch) {
-        const result = codeMatch[1];
-        console.log('🔍 Extracted product code:', result);
-        return result;
+        return codeMatch[1];
       } else {
-        const result = text.split(' ')[0];
-        console.log('🔍 Using first word as product code:', result);
-        return result;
+        return text.split(' ')[0];
       }
     }
   }
-  
-  console.log('🔍 No product code found');
   return null;
 }
 
 function initializeFlipCardLinks() {
   console.log('=== initializeFlipCardLinks function called ===');
-  console.log('Script is working!');
+  console.log('✅ Flip card structure is now correct - CMS handles navigation');
   
-  // Test letter code detection
-  console.log('🧪 Testing letter code detection:');
-  console.log('C330 is letter code:', /^[A-Z]/.test('C330'));
-  console.log('4711 is letter code:', /^[A-Z]/.test('4711'));
-  console.log('C331 is letter code:', /^[A-Z]/.test('C331'));
-  
-  // ONLY target flip card wrappers - don't affect other sections
+  // ONLY target flip card wrappers for animation effects only
   const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
   
   console.log('Found flip card wrappers:', flipCardWrappers.length);
   
-  // Log what we found to debug
-  flipCardWrappers.forEach((wrapper, index) => {
-    console.log(`Flip card ${index + 1}:`, wrapper.className, wrapper.tagName);
-  });
-  
-  // Only process flip card wrappers, not related items
-  const targetElements = flipCardWrappers;
-  
-  if (targetElements.length === 0) {
+  if (flipCardWrappers.length === 0) {
     console.log('No flip card wrappers found, skipping');
     return;
   }
   
-  console.log('Processing', targetElements.length, 'target elements');
+  console.log('Processing', flipCardWrappers.length, 'flip card wrappers for animation only');
   
-  targetElements.forEach((element, index) => {
-    // Check if this element already has a link
-    const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
-    if (existingFlipLink) {
-      console.log(`Element ${index + 1} already has a link, updating URL...`);
-      // Update the existing link instead of skipping
-      const productCode = extractProductCode(element);
-      if (productCode) {
-        const newUrl = `/products/lucero-${productCode.toLowerCase()}`;
-        existingFlipLink.href = newUrl;
-        console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
-      }
-      return;
-    }
+  flipCardWrappers.forEach((element, index) => {
+    // Check if this element is already wrapped in a link (CMS structure)
+    const parentLink = element.closest('a');
     
-    // Create the link element
-    const link = document.createElement('a');
-    link.className = 'flip-card-link';
-    
-    // Try to get the product URL from various sources
-    let productUrl = element.getAttribute('data-product-url') || 
-                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
-                    element.getAttribute('href') ||
-                    element.querySelector('a')?.getAttribute('href') ||
-                    '#';
-    
-    // Check if this is a flip card with an existing proper URL
-    const existingLink = element.querySelector('a');
-    if (existingLink && existingLink.href) {
-      // Use the existing URL (whether it's product or search)
-      productUrl = existingLink.href;
-      console.log(`Flip card - using existing URL:`, productUrl);
-    } else if (productUrl === '#' || !productUrl) {
-      // Only construct search URL if no proper URL exists
-      const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-      let productCode = null;
+    if (parentLink) {
+      console.log(`Element ${index + 1} - Already wrapped in CMS link:`, parentLink.href);
       
-      if (codeElement) {
-        const text = codeElement.textContent?.trim();
-        // Extract just the product code (e.g., "C331", "4709") from the text
-        if (text) {
-          // Look for patterns like C331, 4709, etc.
-          const codeMatch = text.match(/([A-Z]?\d+)/);
-          if (codeMatch) {
-            productCode = codeMatch[1];
-          } else {
-            // If no pattern found, use first word
-            productCode = text.split(' ')[0];
-          }
+      // Add hover effects for flip animation to the parent link
+      parentLink.addEventListener('mouseenter', function() {
+        console.log('Mouse enter triggered on flip card link');
+        this.style.transform = 'translateY(-2px)';
+        
+        // Ensure fade animation works
+        const flipCard = this.querySelector('.flip-card');
+        const flipCardFront = this.querySelector('.flip-card-front');
+        const flipCardBack = this.querySelector('.flip-card-back');
+        
+        console.log('Flip card elements found:', {
+          flipCard: !!flipCard,
+          flipCardFront: !!flipCardFront,
+          flipCardBack: !!flipCardBack
+        });
+        
+        if (flipCard) {
+          flipCard.style.transition = 'all 0.6s ease';
         }
-      }
-      
-      if (productCode) {
-        // For flip cards, try to construct a proper product URL first
-        // Check if we should use product page or search
-        const shouldUseProductPage = true; // Set to true to use product pages
-        
-        if (shouldUseProductPage) {
-          // Enhanced URL generation with multiple fallback options
-          // Check if product code starts with a letter (like C330, C331)
-          const isLetterCode = /^[A-Z]/.test(productCode);
-          
-          if (isLetterCode) {
-            // For letter codes (C330, C331, etc.), we know they don't exist as product pages
-            // So we'll redirect directly to search instead of trying product URLs
-            productUrl = `/?search=${productCode.toLowerCase()}`;
-            console.log(`🔍 Letter code detected: ${productCode}`);
-            console.log(`🔍 Letter codes don't have product pages, redirecting to search: ${productUrl}`);
-          } else {
-            // For numeric codes (4711, 4709, etc.), use the standard format
-            productUrl = `/products/lucero-${productCode.toLowerCase()}`;
-            console.log(`🔍 Numeric code detected: ${productCode}`);
-            console.log(`🔍 Using product page URL: ${productUrl}`);
-          }
-          
-          // Add debugging to check if the product exists
-          console.log(`🔍 Checking if product page exists for: ${productCode}`);
-          console.log(`🔍 Generated URL: ${productUrl}`);
-          console.log(`🔍 Element details:`, {
-            element: element,
-            productCode: productCode,
-            codeElement: codeElement,
-            codeElementText: codeElement?.textContent?.trim(),
-            isLetterCode: isLetterCode
-          });
-        } else {
-          // Fallback to search URL
-          productUrl = `/?search=${productCode.toLowerCase()}`;
-          console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
+        if (flipCardFront) {
+          flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          flipCardFront.style.opacity = '0';
+          flipCardFront.style.transform = 'translateZ(-10px)';
         }
-      } else {
-        console.log('Flip card - no product code found, keeping URL as #');
-      }
+        if (flipCardBack) {
+          // Remove any conflicting inline styles and let CSS handle the display
+          flipCardBack.style.removeProperty('display');
+          flipCardBack.style.removeProperty('visibility');
+          flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          flipCardBack.style.opacity = '1';
+          flipCardBack.style.transform = 'translateZ(0)';
+          flipCardBack.style.zIndex = '10';
+        }
+      });
+      
+      parentLink.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        // Reset fade animation
+        const flipCard = this.querySelector('.flip-card');
+        const flipCardFront = this.querySelector('.flip-card-front');
+        const flipCardBack = this.querySelector('.flip-card-back');
+        
+        if (flipCard) {
+          flipCard.style.transition = 'all 0.6s ease';
+        }
+        if (flipCardFront) {
+          flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          flipCardFront.style.opacity = '1';
+          flipCardFront.style.transform = 'translateZ(0)';
+        }
+        if (flipCardBack) {
+          flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          flipCardBack.style.opacity = '0';
+          flipCardBack.style.transform = 'translateZ(-10px)';
+          flipCardBack.style.zIndex = '1';
+          // Let CSS handle the display/visibility after transition
+          setTimeout(() => {
+            if (!this.matches(':hover')) {
+              flipCardBack.style.display = 'none';
+              flipCardBack.style.visibility = 'hidden';
+            }
+          }, 600);
+        }
+      });
+      
+      // Add click logging for debugging (no preventDefault)
+      parentLink.addEventListener('click', function(e) {
+        console.log('Flip card clicked! CMS URL:', this.href);
+        console.log('Flip card clicked! Element:', element);
+        console.log('✅ Navigation handled by CMS - no custom logic needed');
+      });
+      
+    } else {
+      console.log(`Element ${index + 1} - No parent link found, skipping`);
     }
-    
-    link.href = productUrl;
-    link.setAttribute('data-product-url', productUrl);
-    
-    console.log(`Element ${index + 1} - Final URL:`, productUrl);
-    console.log(`Element ${index + 1} - Link href:`, link.href);
-    console.log(`Element ${index + 1} - Data attribute:`, link.getAttribute('data-product-url'));
-    console.log(`Element ${index + 1} - Product code:`, extractProductCode(element));
-    console.log(`Element ${index + 1} - Is letter code:`, /^[A-Z]/.test(extractProductCode(element) || ''));
-    
-    // Wrap the element in the link
-    element.parentNode.insertBefore(link, element);
-    link.appendChild(element);
-    
-    // Add click event listener
-    link.addEventListener('click', function(e) {
-      console.log('Flip card clicked! URL:', productUrl);
-      console.log('Flip card clicked! Element:', element);
-      console.log('Flip card clicked! Product code extracted:', extractProductCode(element));
-      
-      // For flip cards, allow navigation even if URL is '#'
-      // This prevents the alert from showing on flip cards
-      if (productUrl === '#' || !productUrl) {
-        e.preventDefault();
-        console.log('Flip card - no URL configured, preventing navigation');
-        return;
-      }
-      
-      // Check if this is a product page URL that might not exist
-      if (productUrl.includes('/products/lucero-')) {
-        const productCode = productUrl.split('/products/lucero-')[1];
-        console.log(`🔍 Attempting to navigate to product: ${productCode}`);
-        
-        // Add fallback mechanism for 404 errors
-        // Store the product code for potential fallback to search
-        link.setAttribute('data-product-code', productCode);
-        
-        // For now, let the navigation proceed and let the server handle 404s
-        // In the future, we could implement a pre-check mechanism
-        console.log(`🚀 Navigating to: ${productUrl}`);
-      }
-      
-      // Allow navigation for valid URLs
-      console.log('Flip card - navigating to:', productUrl);
-      
-      // Navigate to the URL
-      window.location.href = productUrl;
-      
-      // Optional: Add loading state
-      this.style.pointerEvents = 'none';
-      setTimeout(() => {
-        this.style.pointerEvents = 'auto';
-      }, 1000);
-    });
+  });
+}
     
     // Add hover effects for fade animation
     link.addEventListener('mouseenter', function() {
@@ -4222,6 +3918,59 @@ if (typeof Webflow !== 'undefined') {
 
 // Let Webflow handle search icon styling naturally
 // No CSS overrides needed - using Webflow's default styling
+
+/* === Gallery: Thumbnail Click → Update Main Image (Canonical) === */
+(function initGalleryThumbnails() {
+  console.log('initGalleryThumbnails defined once');
+  
+  const mainImage = document.getElementById("main-lightbox-trigger");
+  const firstGalleryItem = document.querySelector(".first-gallery-image");
+  const thumbs = document.querySelectorAll(".thumbnail-image");
+  
+  if (!thumbs.length) return;
+
+  thumbs.forEach(thumb => {
+    thumb.addEventListener("click", function () {
+      const newSrc = this.getAttribute("data-image") || this.getAttribute("src");
+      if (newSrc && mainImage) {
+        // If main is an <img>, set src; if it's a trigger/anchor, set href
+        if (mainImage.tagName === 'IMG') mainImage.src = newSrc;
+        else mainImage.setAttribute("href", newSrc);
+      }
+      thumbs.forEach(t => t.classList.remove("is-active"));
+      this.classList.add("is-active");
+    });
+  });
+
+  // Keep the hidden Webflow lightbox pattern
+  if (mainImage && firstGalleryItem) {
+    mainImage.addEventListener("click", () => firstGalleryItem.click());
+  }
+})();
+
+/* === Accessories: Image Zoom (Canonical) === */
+(function initAccessoryZoom() {
+  console.log('initAccessoryZoom defined once');
+  
+  const containers = document.querySelectorAll(".accessory-image");
+  if (!containers.length) return;
+
+  containers.forEach(container => {
+    const img = container.querySelector("img");
+    if (!img) return;
+
+    container.style.overflow = "hidden";
+    container.addEventListener("mouseenter", () => img.classList.add("zoomed"));
+    container.addEventListener("mousemove", e => {
+      const r = container.getBoundingClientRect();
+      img.style.transformOrigin = `${((e.clientX - r.left)/r.width)*100}% ${((e.clientY - r.top)/r.height)*100}%`;
+    });
+    container.addEventListener("mouseleave", () => {
+      img.classList.remove("zoomed");
+      img.style.transformOrigin = "center center";
+    });
+  });
+})();
 
 /* === Enhanced Lightbox Gallery Functionality === */
 function initializeEnhancedLightbox() {
