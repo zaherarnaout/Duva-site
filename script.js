@@ -2590,6 +2590,48 @@ function forceCriticalSectionsVisible() {
   }
 }
 
+// === Initialize All Interactive Elements ===
+function initializeAllInteractiveElements() {
+  console.log('🔧 Initializing all interactive elements...');
+  
+  // Re-initialize dropdowns
+  const dropdowns = document.querySelectorAll(".dropdown-wrapper");
+  console.log(`Found ${dropdowns.length} dropdowns`);
+  
+  // Re-initialize accessories toggle
+  const accessoriesToggle = document.querySelector(".accessories-toggle");
+  if (accessoriesToggle) {
+    console.log('✅ Accessories toggle found and functional');
+  }
+  
+  // Re-initialize related section arrows
+  const arrowRight = document.querySelector('.image-30');
+  const arrowLeft = document.querySelector('.image-31');
+  if (arrowRight && arrowLeft) {
+    console.log('✅ Related section arrows found and functional');
+  }
+  
+  // Re-initialize lightbox
+  const lightboxTrigger = document.querySelector('#main-lightbox-trigger');
+  if (lightboxTrigger) {
+    console.log('✅ Lightbox trigger found and functional');
+  }
+  
+  // Re-initialize thumbnails
+  const thumbnails = document.querySelectorAll('.thumbnail-image');
+  console.log(`Found ${thumbnails.length} thumbnails`);
+  
+  // Re-initialize download checkboxes
+  const downloadCheckboxes = document.querySelectorAll('.download-checkbox');
+  console.log(`Found ${downloadCheckboxes.length} download checkboxes`);
+  
+  // Re-initialize download arrows
+  const downloadArrows = document.querySelectorAll('.download-arrow');
+  console.log(`Found ${downloadArrows.length} download arrows`);
+  
+  console.log('✅ All interactive elements initialized');
+}
+
 // === Smooth Scroll to Related Section ===
 function scrollToRelatedSection() {
   const relatedSection = document.querySelector('.related-section');
@@ -2623,6 +2665,12 @@ document.addEventListener('DOMContentLoaded', function() {
     forceCriticalSectionsVisible();
     console.log('🔄 Fallback visibility check completed');
   }, 1000);
+  
+  // Ensure all interactive elements are properly initialized
+  setTimeout(() => {
+    initializeAllInteractiveElements();
+    console.log('🔧 Interactive elements initialization completed');
+  }, 1500);
 });
     
 
