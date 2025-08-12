@@ -4364,17 +4364,18 @@ a .flip-card-wrapper {
 
 
 
-/* 7. Download Panel Checkmark Enhancement - Filter Checkmark Style */
+/* 7. Download Panel Checkmark Enhancement - Override global checkbox styles */
 .download-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  overflow: hidden;
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  transform: scale(1) !important;
+  overflow: hidden !important;
+  display: block !important;
 }
 
 .download-checkbox:hover {
@@ -4390,8 +4391,8 @@ a .flip-card-wrapper {
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
 
-/* Checkmark styling for download panel - Specific class to avoid conflicts */
-.download-panel-checkmark {
+/* Checkmark styling for download panel - Target the actual HTML class */
+.download-checkbox .checkmark {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
@@ -4410,7 +4411,7 @@ a .flip-card-wrapper {
   background: transparent !important;
 }
 
-.download-checkbox.active .download-panel-checkmark {
+.download-checkbox.active .checkmark {
   opacity: 1 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
 }
