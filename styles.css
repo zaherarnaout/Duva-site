@@ -3475,42 +3475,6 @@ footer, .footer {
   transform: scale(1.02) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
-
-/* Custom Lightbox Styles */
-.custom-lightbox-overlay {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.custom-lightbox-overlay img {
-  animation: zoomIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Lightbox button hover effects */
-.custom-lightbox-overlay button:hover {
-  background-color: rgba(192, 57, 43, 1) !important;
-  transform: scale(1.1);
-  transition: all 0.2s ease;
-}
 /* Custom arrow and close button styling */
 .w-lightbox-left {
   background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef5902e311c1a22c5086_arrow-red-left-white.png') !important;
