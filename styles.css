@@ -4663,18 +4663,7 @@ a .flip-card-wrapper {
   pointer-events: auto;
 }
 
-/* Arrow hover affordance */
-.gallery-arrow-left,
-.gallery-right-arrow {
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.2s ease;
-}
-
-.gallery-arrow-left:hover,
-.gallery-right-arrow:hover {
-  transform: scale(1.08);
-}
+/* Note: Gallery arrow styles are defined in section 8.2 below */
 
 /* 8.1. Gallery Subscribe Wrapper Enhancement (Glass + Hover Standout) */
 .gallery-subscribe-wrapper {
