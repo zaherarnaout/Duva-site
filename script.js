@@ -3106,161 +3106,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // === Seamless Gallery Loop Fix ===
 // Gallery seamless loop functionality disabled
 
-// === Accessories Section Auto-Scroll and Mouse Wheel Logic ===
+// === Accessories Section - Scrolling Removed (Not Needed) ===
+// Accessories section displays vertically, no horizontal scrolling required
 document.addEventListener("DOMContentLoaded", function () {
-  const accessoriesContainer = document.querySelector(".accessories-wrapper");
-  const accessoriesSection = document.querySelector(".accessories-section");
-
-  if (accessoriesContainer && accessoriesSection) {
-    console.log('✅ Accessories auto-scroll and mouse wheel logic initialized');
-    console.log('📦 Accessories container found:', accessoriesContainer);
-    
-    // Auto-scroll variables
-    let isAccessoriesAutoScrolling = true;
-    let accessoriesScrollInterval = null;
-    let accessoriesScrollSpeed = 1; // pixels per frame
-    let accessoriesScrollDirection = 1; // 1 for right, -1 for left
-    
-    // Mouse wheel scrolling variables
-    let accessoriesWheelVelocity = 0;
-    let accessoriesIsWheelScrolling = false;
-    let accessoriesWheelAnimationId = null;
-    
-    // Define smooth scroll function for accessories
-    function smoothAccessoriesScrollWithMomentum() {
-      if (Math.abs(accessoriesWheelVelocity) > 0.1) {
-        accessoriesContainer.scrollLeft += accessoriesWheelVelocity;
-        accessoriesWheelVelocity *= 0.9; // Friction
-        
-        accessoriesWheelAnimationId = requestAnimationFrame(smoothAccessoriesScrollWithMomentum);
-      } else {
-        accessoriesWheelVelocity = 0;
-        accessoriesIsWheelScrolling = false;
-        accessoriesWheelAnimationId = null;
-      }
-    }
-    
-    // Auto-scroll function for accessories
-    function startAccessoriesAutoScroll() {
-      if (accessoriesScrollInterval) return; // Already running
-      
-      accessoriesScrollInterval = setInterval(() => {
-        if (!accessoriesIsWheelScrolling && isAccessoriesAutoScrolling) {
-          const maxScroll = accessoriesContainer.scrollWidth - accessoriesContainer.clientWidth;
-          
-          if (accessoriesContainer.scrollLeft >= maxScroll) {
-            accessoriesScrollDirection = -1; // Change direction to left
-          } else if (accessoriesContainer.scrollLeft <= 0) {
-            accessoriesScrollDirection = 1; // Change direction to right
-          }
-          
-          accessoriesContainer.scrollLeft += accessoriesScrollSpeed * accessoriesScrollDirection;
-        }
-      }, 50); // 20 FPS for smooth scrolling
-      
-      console.log('▶️ Accessories auto-scroll started');
-    }
-    
-    function stopAccessoriesAutoScroll() {
-      if (accessoriesScrollInterval) {
-        clearInterval(accessoriesScrollInterval);
-        accessoriesScrollInterval = null;
-        console.log('⏸️ Accessories auto-scroll paused');
-      }
-    }
-    
-    // Mouse wheel event handler for accessories
-    function handleAccessoriesWheel(event) {
-      console.log('🔄 Accessories wheel event triggered');
-      
-      // Only handle if accessories section is open
-      if (!accessoriesSection.classList.contains('open')) {
-        return;
-      }
-      
-      // Only prevent default if we're actually scrolling the container
-      if (accessoriesContainer.scrollWidth > accessoriesContainer.clientWidth) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        // Stop auto-scroll during wheel interaction
-        stopAccessoriesAutoScroll();
-        
-        // Get scroll direction and amount
-        const delta = event.deltaY || event.deltaX;
-        const scrollSpeed = Math.abs(delta) * 0.5;
-        const direction = delta > 0 ? 1 : -1;
-        
-        // Add to velocity for momentum effect
-        accessoriesWheelVelocity += direction * scrollSpeed;
-        
-        // Smooth scroll with momentum
-        if (!accessoriesIsWheelScrolling) {
-          accessoriesIsWheelScrolling = true;
-          smoothAccessoriesScrollWithMomentum();
-        }
-        
-        console.log('🔄 Accessories wheel scrolling:', direction > 0 ? 'right' : 'left', 'speed:', scrollSpeed);
-        
-        // Restart auto-scroll after a delay
-        setTimeout(() => {
-          if (isAccessoriesAutoScrolling) {
-            startAccessoriesAutoScroll();
-          }
-        }, 2000);
-      }
-    }
-    
-    // Add wheel listeners to accessories container and section
-    accessoriesContainer.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
-    accessoriesSection.addEventListener('wheel', handleAccessoriesWheel, { passive: false });
-    
-    // Pause auto-scroll on hover
-    accessoriesContainer.addEventListener('mouseenter', () => {
-      stopAccessoriesAutoScroll();
-      console.log('🎯 Accessories auto-scroll paused on hover');
-    });
-    
-    accessoriesContainer.addEventListener('mouseleave', () => {
-      if (isAccessoriesAutoScrolling) {
-        startAccessoriesAutoScroll();
-        console.log('🎯 Accessories auto-scroll resumed');
-      }
-    });
-    
-    // Start auto-scroll when accessories section opens
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          if (accessoriesSection.classList.contains('open')) {
-            // Start auto-scroll after a short delay to ensure content is loaded
-            setTimeout(() => {
-              if (isAccessoriesAutoScrolling) {
-                startAccessoriesAutoScroll();
-              }
-            }, 500);
-          } else {
-            stopAccessoriesAutoScroll();
-          }
-        }
-      });
-    });
-    
-    observer.observe(accessoriesSection, { attributes: true });
-    
-    // Start auto-scroll if section is already open
-    if (accessoriesSection.classList.contains('open')) {
-      setTimeout(() => {
-        if (isAccessoriesAutoScrolling) {
-          startAccessoriesAutoScroll();
-        }
-      }, 500);
-    }
-    
-    console.log('✅ Accessories auto-scroll and mouse wheel functionality initialized');
-  } else {
-    console.log('⚠️ Accessories container or section not found');
-  }
+  console.log('✅ Accessories section - scrolling functionality removed (not needed)');
 });
 
 /* === Flip Card Linking Functionality === */
@@ -4070,9 +3919,9 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeEnhancedLightbox();
 });
 
-/* === Related Section Arrow Navigation === */
+/* === Related Section Auto-Scroll with Arrow Navigation === */
 function initializeRelatedSectionAutoScroll() {
-  console.log('🔄 Initializing related section arrow navigation...');
+  console.log('🔄 Initializing related section auto-scroll and arrow navigation...');
   
   const relatedSection = document.querySelector('.related-section');
   const relatedContainer = document.querySelector('.collection-list-6');
@@ -4082,6 +3931,48 @@ function initializeRelatedSectionAutoScroll() {
   if (!relatedSection || !relatedContainer) {
     console.log('⚠️ Related section or container not found');
     return;
+  }
+  
+  // Auto-scroll variables
+  let isRelatedAutoScrolling = true;
+  let relatedScrollInterval = null;
+  let relatedScrollSpeed = 1; // pixels per frame
+  let relatedScrollDirection = 1; // 1 for right, -1 for left
+  
+  // Auto-scroll function for related items
+  function startRelatedAutoScroll() {
+    if (relatedScrollInterval) return; // Already running
+    
+    // Only auto-scroll if there's content to scroll
+    if (relatedContainer.scrollWidth <= relatedContainer.clientWidth) {
+      console.log('📏 Related container has no overflow - auto-scroll not needed');
+      return;
+    }
+    
+    relatedScrollInterval = setInterval(() => {
+      if (isRelatedAutoScrolling) {
+        const currentScroll = relatedContainer.scrollLeft;
+        const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+        
+        if (currentScroll >= maxScroll) {
+          relatedScrollDirection = -1; // Change direction to left
+        } else if (currentScroll <= 0) {
+          relatedScrollDirection = 1; // Change direction to right
+        }
+        
+        relatedContainer.scrollLeft += relatedScrollSpeed * relatedScrollDirection;
+      }
+    }, 50); // 20 FPS for smooth scrolling
+    
+    console.log('▶️ Related auto-scroll started');
+  }
+  
+  function stopRelatedAutoScroll() {
+    if (relatedScrollInterval) {
+      clearInterval(relatedScrollInterval);
+      relatedScrollInterval = null;
+      console.log('⏸️ Related auto-scroll paused');
+    }
   }
   
   // Arrow navigation functions
@@ -4137,7 +4028,76 @@ function initializeRelatedSectionAutoScroll() {
     console.log('⚠️ Left arrow (image-31) not found');
   }
   
-  console.log('✅ Related section arrow navigation initialized');
+  // Pause auto-scroll on hover
+  relatedContainer.addEventListener('mouseenter', () => {
+    stopRelatedAutoScroll();
+    console.log('🎯 Related auto-scroll paused on hover');
+  });
+  
+  relatedContainer.addEventListener('mouseleave', () => {
+    if (isRelatedAutoScrolling) {
+      startRelatedAutoScroll();
+      console.log('🎯 Related auto-scroll resumed');
+    }
+  });
+  
+  // Pause auto-scroll on arrow hover
+  if (arrowRight) {
+    arrowRight.addEventListener('mouseenter', () => {
+      stopRelatedAutoScroll();
+      console.log('🎯 Related auto-scroll paused on arrow hover');
+    });
+    
+    arrowRight.addEventListener('mouseleave', () => {
+      if (isRelatedAutoScrolling) {
+        startRelatedAutoScroll();
+        console.log('🎯 Related auto-scroll resumed after arrow hover');
+      }
+    });
+  }
+  
+  if (arrowLeft) {
+    arrowLeft.addEventListener('mouseenter', () => {
+      stopRelatedAutoScroll();
+      console.log('🎯 Related auto-scroll paused on arrow hover');
+    });
+    
+    arrowLeft.addEventListener('mouseleave', () => {
+      if (isRelatedAutoScrolling) {
+        startRelatedAutoScroll();
+        console.log('🎯 Related auto-scroll resumed after arrow hover');
+      }
+    });
+  }
+  
+  // Start auto-scroll when related section is visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // Start auto-scroll after a short delay to ensure content is loaded
+        setTimeout(() => {
+          if (isRelatedAutoScrolling) {
+            startRelatedAutoScroll();
+          }
+        }, 1000);
+      } else {
+        stopRelatedAutoScroll();
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  observer.observe(relatedSection);
+  
+  // Start auto-scroll if section is already visible
+  if (relatedSection.getBoundingClientRect().top < window.innerHeight) {
+    setTimeout(() => {
+      if (isRelatedAutoScrolling) {
+        startRelatedAutoScroll();
+      }
+    }, 1000);
+  }
+  
+  console.log('✅ Related section auto-scroll and arrow navigation initialized');
 }
 
 // Initialize related section auto-scroll when DOM is ready
