@@ -13,12 +13,27 @@ function applyCategoryFilterFromURL() {
     console.log(`🔍 Auto-filter: Processing category parameter: ${cleanCategory}`);
 
     // Wait for the filter system to be ready
-    setTimeout(() => {
+    let retryCount = 0;
+    const maxRetries = 20; // 10 seconds maximum wait time
+    
+    const waitForFilterSystem = () => {
       console.log(`🔍 Looking for filter matching: ${cleanCategory}`);
       
-      // Find filter by text content in the Application Type section
+      // Check if filter system is ready (look for filter checkboxes)
       const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
       console.log(`🔍 Found ${filterOptions.length} filter options`);
+      
+      // If no filter options found, wait and retry
+      if (filterOptions.length === 0) {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          console.error('❌ Filter system not ready after maximum retries');
+          return;
+        }
+        console.log(`⏳ Filter system not ready yet, retrying in 500ms... (attempt ${retryCount}/${maxRetries})`);
+        setTimeout(waitForFilterSystem, 500);
+        return;
+      }
       
       let foundFilter = false;
       
@@ -60,7 +75,10 @@ function applyCategoryFilterFromURL() {
           console.log(`🔍 Auto-filter: Using global search as fallback for category: ${cleanCategory}`);
         }
       }
-    }, 2000); // Wait 2 seconds for filter system to initialize
+    };
+    
+    // Start waiting for filter system
+    setTimeout(waitForFilterSystem, 1000); // Initial delay
   }
 }
 
