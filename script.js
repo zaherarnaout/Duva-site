@@ -4928,11 +4928,31 @@ function initializeContactButtons() {
         
         // Open contact modal using the global function from contactform.js
         if (typeof window.openContactModal === 'function') {
+          console.log('📞 Using global openContactModal function');
           window.openContactModal();
         } else {
           console.error('❌ Global openContactModal function not found');
-          // Fallback to local function
-          openContactModal();
+          // Fallback: Check if contact overlay exists
+          const contactOverlay = document.querySelector('.contact-overlay');
+          if (contactOverlay) {
+            console.log('📞 Contact overlay found - showing manually');
+            contactOverlay.style.display = 'flex';
+            contactOverlay.style.opacity = '1';
+            contactOverlay.style.visibility = 'visible';
+            contactOverlay.classList.add('active');
+            document.body.classList.add('modal-open');
+            document.documentElement.classList.add('modal-open');
+          } else {
+            console.error('❌ Contact overlay not found');
+            console.log('💡 Contact form HTML needs to be included in the page');
+            
+            // Try to dynamically load contact form
+            loadContactForm();
+            
+            // Remove modal-open class to restore scrolling
+            document.body.classList.remove('modal-open');
+            document.documentElement.classList.remove('modal-open');
+          }
         }
       });
       
@@ -4949,6 +4969,52 @@ function initializeContactButtons() {
 
 // Note: Using global openContactModal function from contactform.js
 // Local function removed to avoid conflicts
+
+// Function to dynamically load contact form
+function loadContactForm() {
+  console.log('📞 Attempting to load contact form dynamically...');
+  
+  // Check if contact form is already loaded
+  const existingOverlay = document.querySelector('.contact-overlay');
+  if (existingOverlay) {
+    console.log('✅ Contact overlay already exists');
+    return;
+  }
+  
+  // Create a fetch request to load contact-form.html
+  fetch('contact-form.html')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      console.log('📞 Contact form HTML loaded');
+      
+      // Extract the contact-overlay div from the HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const contactOverlay = doc.querySelector('.contact-overlay');
+      
+      if (contactOverlay) {
+        // Add the contact overlay to the current page
+        document.body.appendChild(contactOverlay);
+        console.log('✅ Contact overlay added to page');
+        
+        // Now try to open it
+        if (typeof window.openContactModal === 'function') {
+          window.openContactModal();
+        }
+      } else {
+        console.error('❌ Contact overlay not found in loaded HTML');
+      }
+    })
+    .catch(error => {
+      console.error('❌ Error loading contact form:', error);
+      console.log('💡 Make sure contact-form.html exists and is accessible');
+    });
+}
 
 // Initialize contact buttons when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
