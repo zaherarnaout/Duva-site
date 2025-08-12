@@ -4981,9 +4981,16 @@ if (typeof Webflow !== 'undefined') {
       const newBox = box.cloneNode(true);
       box.parentNode.replaceChild(newBox, box);
       
-      newBox.addEventListener('click', function () {
+      newBox.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         this.classList.toggle('active');
-        console.log('✅ Download checkbox clicked');
+        console.log('✅ Download checkbox clicked, active:', this.classList.contains('active'));
+        
+        // Force a repaint to ensure styles are applied
+        this.style.display = 'none';
+        this.offsetHeight; // Trigger reflow
+        this.style.display = '';
       });
     });
     
