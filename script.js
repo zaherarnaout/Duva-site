@@ -1828,16 +1828,12 @@ document.addEventListener('DOMContentLoaded', function () {
  
 
   /* === Toggle Checkbox Active Class === */ 
-
-  document.querySelectorAll('.download-checkbox').forEach(box => { 
-
-    box.addEventListener('click', function () { 
-
-      this.classList.toggle('active'); 
-
-    }); 
-
-  }); 
+  // DISABLED - Now handled by critical fixes to prevent duplication
+  // document.querySelectorAll('.download-checkbox').forEach(box => { 
+  //   box.addEventListener('click', function () { 
+  //     this.classList.toggle('active'); 
+  //   }); 
+  // }); 
 
  
 
@@ -2073,16 +2069,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }); 
 
   // === 7. Accessories Checkbox Script === 
-
-document.querySelectorAll('.accessory-checkbox').forEach(box => { 
-
-  box.addEventListener('click', function () { 
-
-    this.classList.toggle('active'); 
-
-  }); 
-
-}); 
+  // DISABLED - Now handled by critical fixes to prevent duplication
+  // document.querySelectorAll('.accessory-checkbox').forEach(box => { 
+  //   box.addEventListener('click', function () { 
+  //     this.classList.toggle('active'); 
+  //   }); 
+  // }); 
 
 // === PDF Export Logic for DUVA ===
 let isExporting = false; // Guard to prevent double export
