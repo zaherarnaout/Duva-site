@@ -704,7 +704,8 @@ display: none !important;
 }
 
 .accessories-section.open .accessories-wrapper {
-  max-height: 10000px; /* Much larger height to ensure all content including final divider is contained */
+  max-height: none !important; /* Allow unlimited height to show all accessories */
+  height: auto !important; /* Auto height to fit all content */
   overflow: visible !important; /* Allow all content to be visible */
   scroll-behavior: smooth !important; /* Smooth scrolling */
   -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
@@ -4311,17 +4312,16 @@ a .flip-card-wrapper {
   left: 100%;
 }
 
-/* 7.5. Accessories Checkmark Enhancement - Single Source of Truth */
+/* 7.5. Accessories Checkmark Enhancement - Match Filter Checkmark Style */
 .accessory-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  overflow: hidden;
+  background-color: white;
+  width: 17px;
+  height: 17px;
+  border: 1px solid var(--border-divider-light);
+  border-radius: var(--border-4px-cornner);
 }
 
 .accessory-checkbox:hover {
@@ -4331,12 +4331,37 @@ a .flip-card-wrapper {
 }
 
 .accessory-checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  color: white !important;
+  background-color: #c0392b;
+  border-color: #c0392b;
+  width: 17px;
+  height: 17px;
   transform: scale(1.08);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
 
+/* Default state - checkmark hidden */
+.accessory-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(0);
+  opacity: 0;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+/* Active state - checkmark visible */
+.accessory-checkbox.active::after {
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+  opacity: 1;
+}
+
+/* Accessory Checkbox Shimmer Effect */
 .accessory-checkbox::before {
   content: '';
   position: absolute;
@@ -4351,26 +4376,6 @@ a .flip-card-wrapper {
 
 .accessory-checkbox:hover::before {
   left: 100%;
-}
-
-/* Accessory Checkbox Checkmark Styling */
-.accessory-checkbox .checkmark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 5px;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-  transform: translate(-50%, -60%) rotate(-45deg) scale(0);
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 2;
-}
-
-.accessory-checkbox.active .checkmark {
-  opacity: 1;
-  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
 }
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
@@ -4861,8 +4866,10 @@ a .flip-card-wrapper {
 }
 
 .accessories-section.open .accessories-wrapper {
-  max-height: 500px !important;
+  max-height: none !important;
+  height: auto !important;
   opacity: 1 !important;
+  overflow: visible !important;
 }
 
 /* === Ensure Related Section Functionality === */
