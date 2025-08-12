@@ -4600,11 +4600,41 @@ if (typeof Webflow !== 'undefined') {
     const mainTrigger = document.getElementById('main-lightbox-trigger');
     if (!mainTrigger) {
       console.log('⚠️ Main lightbox trigger not found');
+      console.log('🔍 Searching for alternative product image selectors...');
+      
+      // Try alternative selectors
+      const altTriggers = document.querySelectorAll('.product-image, .main-image-hover, .main-product-image');
+      console.log(`🔍 Found ${altTriggers.length} alternative product images:`, altTriggers);
+      
+      if (altTriggers.length > 0) {
+        const firstAltTrigger = altTriggers[0];
+        console.log('✅ Using alternative trigger:', firstAltTrigger);
+        
+        // Check for first gallery item (Webflow lightbox)
+        const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child, .w-lightbox');
+        if (!firstGalleryItem) {
+          console.log('⚠️ First gallery item not found');
+          return;
+        }
+
+        // Ensure main trigger opens lightbox
+        firstAltTrigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('🖼️ Alternative product image clicked - opening lightbox');
+          firstGalleryItem.click();
+        });
+        
+        console.log('✅ Alternative lightbox trigger configured');
+        return;
+      }
+      
       return;
     }
 
     // Check for first gallery item (Webflow lightbox)
-    const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child');
+    const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child, .w-lightbox');
     if (!firstGalleryItem) {
       console.log('⚠️ First gallery item not found');
       return;
@@ -4802,5 +4832,129 @@ if (typeof Webflow !== 'undefined') {
     fixCategoryCardsNavigation();
   }, 2000);
 
-  console.log('✅ All critical fixes applied');
-})();
+      console.log('✅ All critical fixes applied');
+  })();
+
+/* === Contact Button Functionality === */
+function initializeContactButtons() {
+  console.log('📞 Initializing contact button functionality...');
+  
+  // Find contact buttons by more specific selectors to avoid conflicts
+  const contactButtons = document.querySelectorAll('.menu-tab, .contact-btn, [data-contact="true"]');
+  
+  console.log(`📞 Found ${contactButtons.length} potential contact buttons`);
+  
+  contactButtons.forEach((button, index) => {
+    // Check if this is a contact button by text content
+    const buttonText = button.textContent || button.innerText || '';
+    const isContactButton = buttonText.toLowerCase().includes('contact') && 
+                           !button.id.includes('lightbox') && 
+                           !button.classList.contains('product-image') &&
+                           !button.classList.contains('main-image-hover') &&
+                           !button.classList.contains('main-product-image');
+    
+    if (isContactButton) {
+      console.log(`📞 Setting up contact button ${index + 1}: "${buttonText}"`);
+      
+      // Remove existing listeners to prevent duplicates
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+      
+      newButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        console.log(`📞 Contact button "${buttonText}" clicked - opening contact form`);
+        
+        // Open contact modal
+        openContactModal();
+      });
+      
+      // Add visual feedback
+      newButton.style.cursor = 'pointer';
+      newButton.setAttribute('title', 'Contact Us');
+      
+      console.log(`✅ Contact button ${index + 1} configured`);
+    }
+  });
+  
+  console.log('✅ Contact button functionality initialized');
+}
+
+// Function to open contact modal
+function openContactModal() {
+  console.log('📞 Opening contact modal...');
+  
+  // Try to find contact overlay
+  const contactOverlay = document.querySelector('.contact-overlay');
+  
+  if (contactOverlay) {
+    // Show the modal
+    contactOverlay.style.display = 'flex';
+    contactOverlay.style.opacity = '1';
+    contactOverlay.style.visibility = 'visible';
+    contactOverlay.classList.add('active');
+    
+    // Add body classes for modal state
+    document.body.classList.add('modal-open');
+    document.documentElement.classList.add('modal-open');
+    
+    console.log('✅ Contact modal opened');
+    
+    // Set up close functionality
+    const closeBtn = contactOverlay.querySelector('.subscribe-close, .contact-close, [class*="close"]');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Hide the modal
+        contactOverlay.style.display = 'none';
+        contactOverlay.style.opacity = '0';
+        contactOverlay.style.visibility = 'hidden';
+        contactOverlay.classList.remove('active');
+        
+        // Remove body classes
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+        
+        console.log('✅ Contact modal closed');
+      });
+    }
+    
+    // Close on overlay click
+    contactOverlay.addEventListener('click', function(e) {
+      if (e.target === contactOverlay) {
+        // Hide the modal
+        contactOverlay.style.display = 'none';
+        contactOverlay.style.opacity = '0';
+        contactOverlay.style.visibility = 'hidden';
+        contactOverlay.classList.remove('active');
+        
+        // Remove body classes
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+        
+        console.log('✅ Contact modal closed (overlay click)');
+      }
+    });
+    
+  } else {
+    console.error('❌ Contact overlay not found');
+    console.log('💡 Make sure contact-form.html is included in your page');
+  }
+}
+
+// Initialize contact buttons when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📞 DOM Content Loaded - Initializing contact buttons...');
+  initializeContactButtons();
+});
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    console.log('📞 Webflow.push - Initializing contact buttons...');
+    initializeContactButtons();
+  });
+}
