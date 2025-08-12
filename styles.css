@@ -744,78 +744,7 @@ display: none !important;
 /* Open State */ 
 
 /* === 7. Accessories Checkbox Styling === */ 
-
-.accessory-checkbox { 
-
-width: 20px; 
-
-height: 20px; 
-
-border: 1px solid #ccc; 
-
-border-radius: 4px; 
-
-position: relative; 
-
-cursor: pointer; 
-
-transition: border-color 0.2s ease; 
-
-} 
-
-
-
-
-
-
-
-/* Checkmark hidden by default */ 
-
-.accessory-checkbox .checkmark { 
-
-position: absolute; 
-
-top: 50%; 
-
-left: 50%; 
-
-width: 10px; 
-
-height: 5px; 
-
-border-left: 2px solid white; 
-
-border-bottom: 2px solid white; 
-
-transform: translate(-50%, -60%) rotate(-45deg) scale(0); 
-
-opacity: 0; 
-
-transition: all 0.2s ease; 
-
-} 
-
-
-
-/* Checked state */ 
-
-.accessory-checkbox.active { 
-
-background-color: #c0392b; 
-
-border-color: #c0392b; 
-
-} 
-
-
-
-.accessory-checkbox.active .checkmark { 
-
-opacity: 1; 
-
-transform: translate(-50%, -60%) rotate(-45deg) scale(1); 
-
-}
+/* Note: Enhanced styles are defined later in the file */
 
 /* === 8. Accessories Arrow Rotation === */ 
 
@@ -4472,13 +4401,17 @@ a .flip-card-wrapper {
   left: 100%;
 }
 
-/* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
+/* 7.5. Accessories Checkmark Enhancement - Single Source of Truth */
 .accessory-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: scale(1);
-  position: relative;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .accessory-checkbox:hover {
@@ -4508,6 +4441,26 @@ a .flip-card-wrapper {
 
 .accessory-checkbox:hover::before {
   left: 100%;
+}
+
+/* Accessory Checkbox Checkmark Styling */
+.accessory-checkbox .checkmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(0);
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.accessory-checkbox.active .checkmark {
+  opacity: 1;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
 }
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
