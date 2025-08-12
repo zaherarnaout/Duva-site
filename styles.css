@@ -3338,6 +3338,22 @@ footer, .footer {
   text-decoration: none !important;
 }
 
+/* Remove underlines from all product card text elements */
+.collection-item *,
+.product-card *,
+.related-card *,
+.flip-card-wrapper *,
+.flip-card-front *,
+.flip-card-back *,
+.collection-list-6 .w-dyn-item *,
+.related-section .w-dyn-item * {
+  text-decoration: none !important;
+  -webkit-text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
+}
+
 /* === No Results Message Styling === */
 .no-results-message {
   margin-right: 40px;
@@ -4043,6 +4059,22 @@ a .flip-card-wrapper {
 .current-product,
 .flip-card-link {
   text-decoration: none !important;
+}
+
+/* Remove underlines from all product card text elements */
+.collection-item *,
+.product-card *,
+.related-card *,
+.flip-card-wrapper *,
+.flip-card-front *,
+.flip-card-back *,
+.collection-list-6 .w-dyn-item *,
+.related-section .w-dyn-item * {
+  text-decoration: none !important;
+  -webkit-text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
 }
 
 /* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
