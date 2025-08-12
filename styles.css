@@ -3464,6 +3464,17 @@ footer, .footer {
 }
 
 /* === Enhanced Lightbox Gallery Styling === */
+/* Make main image clickable for lightbox */
+#main-lightbox-trigger {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+#main-lightbox-trigger:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
 /* Custom arrow and close button styling */
 .w-lightbox-left {
   background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef5902e311c1a22c5086_arrow-red-left-white.png') !important;
