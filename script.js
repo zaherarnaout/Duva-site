@@ -4611,9 +4611,12 @@ if (typeof Webflow !== 'undefined') {
         console.log('✅ Using alternative trigger:', firstAltTrigger);
         
         // Check for first gallery item (Webflow lightbox)
-        const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child, .w-lightbox');
+        const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child .w-lightbox, .w-lightbox');
         if (!firstGalleryItem) {
           console.log('⚠️ First gallery item not found');
+          console.log('🔍 Searching for lightbox elements...');
+          const lightboxElements = document.querySelectorAll('.w-lightbox, [class*="lightbox"]');
+          console.log('🔍 Found lightbox elements:', lightboxElements);
           return;
         }
 
@@ -4623,7 +4626,34 @@ if (typeof Webflow !== 'undefined') {
           e.stopPropagation();
           
           console.log('🖼️ Alternative product image clicked - opening lightbox');
-          firstGalleryItem.click();
+          
+          // Try multiple approaches to open lightbox
+          if (firstGalleryItem) {
+            console.log('🎯 Attempting to click gallery item:', firstGalleryItem);
+            firstGalleryItem.click();
+          }
+          
+          // Alternative: Try to trigger Webflow lightbox directly
+          setTimeout(() => {
+            const webflowLightbox = document.querySelector('.w-lightbox-backdrop');
+            if (webflowLightbox && webflowLightbox.style.display === 'none') {
+              console.log('🎯 Attempting to show Webflow lightbox directly');
+              webflowLightbox.style.display = 'block';
+              webflowLightbox.style.opacity = '1';
+              webflowLightbox.style.visibility = 'visible';
+            }
+            
+            // Try to trigger Webflow's lightbox functionality
+            if (typeof Webflow !== 'undefined' && Webflow.env) {
+              console.log('🎯 Attempting to trigger Webflow lightbox via API');
+              // Look for any lightbox trigger and simulate click
+              const lightboxTriggers = document.querySelectorAll('[data-wf-lightbox]');
+              if (lightboxTriggers.length > 0) {
+                console.log('🎯 Found lightbox triggers:', lightboxTriggers);
+                lightboxTriggers[0].click();
+              }
+            }
+          }, 100);
         });
         
         console.log('✅ Alternative lightbox trigger configured');
@@ -4634,9 +4664,12 @@ if (typeof Webflow !== 'undefined') {
     }
 
     // Check for first gallery item (Webflow lightbox)
-    const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child, .w-lightbox');
+    const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child .w-lightbox, .w-lightbox');
     if (!firstGalleryItem) {
       console.log('⚠️ First gallery item not found');
+      console.log('🔍 Searching for lightbox elements...');
+      const lightboxElements = document.querySelectorAll('.w-lightbox, [class*="lightbox"]');
+      console.log('🔍 Found lightbox elements:', lightboxElements);
       return;
     }
 
@@ -4646,7 +4679,34 @@ if (typeof Webflow !== 'undefined') {
       e.stopPropagation();
       
       console.log('🖼️ Main image clicked - opening lightbox');
-      firstGalleryItem.click();
+      
+      // Try multiple approaches to open lightbox
+      if (firstGalleryItem) {
+        console.log('🎯 Attempting to click gallery item:', firstGalleryItem);
+        firstGalleryItem.click();
+      }
+      
+      // Alternative: Try to trigger Webflow lightbox directly
+      setTimeout(() => {
+        const webflowLightbox = document.querySelector('.w-lightbox-backdrop');
+        if (webflowLightbox && webflowLightbox.style.display === 'none') {
+          console.log('🎯 Attempting to show Webflow lightbox directly');
+          webflowLightbox.style.display = 'block';
+          webflowLightbox.style.opacity = '1';
+          webflowLightbox.style.visibility = 'visible';
+        }
+        
+        // Try to trigger Webflow's lightbox functionality
+        if (typeof Webflow !== 'undefined' && Webflow.env) {
+          console.log('🎯 Attempting to trigger Webflow lightbox via API');
+          // Look for any lightbox trigger and simulate click
+          const lightboxTriggers = document.querySelectorAll('[data-wf-lightbox]');
+          if (lightboxTriggers.length > 0) {
+            console.log('🎯 Found lightbox triggers:', lightboxTriggers);
+            lightboxTriggers[0].click();
+          }
+        }
+      }, 100);
     });
 
     // Wait for Webflow lightbox to be ready and add navigation
