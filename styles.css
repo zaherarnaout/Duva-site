@@ -4364,8 +4364,7 @@ a .flip-card-wrapper {
 
 
 
-/* 7. Download Panel Checkmark Enhancement - Override global checkbox styles */
-.download-checkbox,
+/* 7. Download Panel Checkmark Enhancement - Single Source of Truth */
 .checkbox {
   width: 20px !important;
   height: 20px !important;
@@ -4387,7 +4386,6 @@ a .flip-card-wrapper {
   pointer-events: auto !important;
 }
 
-.download-checkbox:hover,
 .checkbox:hover {
   transform: scale(1.05) !important;
   box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25) !important;
@@ -4396,8 +4394,7 @@ a .flip-card-wrapper {
   border-width: 1px !important;
 }
 
-.download-checkbox.active,
-.checkbox[data-file].active {
+.checkbox.active {
   background: var(--duva-red, #C0392B) !important;
   border-color: var(--duva-red, #C0392B) !important;
   border-style: solid !important;
@@ -4414,8 +4411,7 @@ a .flip-card-wrapper {
   appearance: none !important;
 }
 
-/* Checkmark styling for download panel - Target the actual HTML class */
-.download-checkbox .checkmark,
+/* Checkmark styling for download panel - Single Source of Truth */
 .checkbox .download-panel-checkmark {
   position: absolute !important;
   top: 50% !important;
@@ -4440,7 +4436,6 @@ a .flip-card-wrapper {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
 }
 
-.download-checkbox.active .checkmark,
 .checkbox.active .download-panel-checkmark {
   opacity: 1 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
@@ -4454,7 +4449,7 @@ a .flip-card-wrapper {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
 }
 
-.download-checkbox::before {
+.checkbox::before {
   content: '';
   position: absolute;
   top: 0;
@@ -4467,14 +4462,13 @@ a .flip-card-wrapper {
 }
 
 /* Hide the ::before element when checkbox is active to prevent white overlay */
-.download-checkbox.active::before,
-.checkbox[data-file].active::before {
+.checkbox.active::before {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
 }
 
-.download-checkbox:hover::before {
+.checkbox:hover::before {
   left: 100%;
 }
 
@@ -4974,7 +4968,6 @@ a .flip-card-wrapper {
 .dropdown-option,
 .thumbnail-image,
 .w-lightbox-trigger,
-.download-checkbox,
 .download-arrow,
 .accessories-arrow,
 .related-arrow-left,
@@ -5047,7 +5040,7 @@ a .flip-card-wrapper {
 }
 
 /* === Ensure Download Panel Functionality === */
-.download-checkbox {
+.checkbox {
   cursor: pointer !important;
   pointer-events: auto !important;
 }
