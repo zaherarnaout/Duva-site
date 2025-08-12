@@ -4598,6 +4598,10 @@ if (typeof Webflow !== 'undefined') {
     
     // Check for main lightbox trigger
     const mainTrigger = document.getElementById('main-lightbox-trigger');
+    console.log('🔍 Main trigger found:', mainTrigger);
+    console.log('🔍 Main trigger tag name:', mainTrigger ? mainTrigger.tagName : 'null');
+    console.log('🔍 Main trigger classes:', mainTrigger ? mainTrigger.className : 'null');
+    
     if (!mainTrigger) {
       console.log('⚠️ Main lightbox trigger not found');
       return;
@@ -4605,36 +4609,44 @@ if (typeof Webflow !== 'undefined') {
 
     // Check for first gallery item (Webflow lightbox)
     const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child');
+    console.log('🔍 First gallery item found:', firstGalleryItem);
+    console.log('🔍 First gallery item tag name:', firstGalleryItem ? firstGalleryItem.tagName : 'null');
+    console.log('🔍 First gallery item classes:', firstGalleryItem ? firstGalleryItem.className : 'null');
+    
     if (!firstGalleryItem) {
       console.log('⚠️ First gallery item not found');
       return;
     }
 
-    // Convert main trigger to proper Webflow lightbox trigger
-    const lightboxWrapper = mainTrigger.closest('.lightbox-trigger');
-    if (lightboxWrapper) {
-      // Convert the div to an anchor tag for proper lightbox functionality
-      const newAnchor = document.createElement('a');
-      newAnchor.href = '#';
-      newAnchor.className = 'lightbox-trigger w-lightbox';
-      newAnchor.setAttribute('data-wf-lightbox', 'group:product-gallery');
+    // Simple approach: just add click handler to main image to trigger existing lightbox
+    mainTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🖼️ Main image clicked - triggering lightbox');
       
-      // Move the image into the new anchor
-      newAnchor.appendChild(mainTrigger);
-      
-      // Replace the old wrapper with the new anchor
-      lightboxWrapper.parentNode.replaceChild(newAnchor, lightboxWrapper);
-      
-      console.log('✅ Main image converted to proper lightbox trigger');
-    } else {
-      // Fallback: just add the class if wrapper not found
-      mainTrigger.classList.add('w-lightbox');
-      mainTrigger.setAttribute('href', '#');
-    }
+      // Try to trigger the first gallery item to open lightbox
+      if (firstGalleryItem) {
+        console.log('🎯 Clicking first gallery item to open lightbox');
+        firstGalleryItem.click();
+      } else {
+        console.log('⚠️ No first gallery item found to trigger');
+      }
+    });
     
-    // The w-lightbox class will handle the lightbox opening automatically
-    // No need for manual click handler since Webflow will handle it
+    console.log('✅ Main image click handler added');
+    
     console.log('✅ Main image lightbox functionality enabled');
+    
+    // Add a simple test click handler to verify the image is clickable
+    const testClickHandler = function(e) {
+      console.log('🎯 TEST: Main image clicked!');
+      console.log('🎯 Event target:', e.target);
+      console.log('🎯 Event type:', e.type);
+    };
+    
+    // Add test handler to the main trigger
+    mainTrigger.addEventListener('click', testClickHandler);
+    console.log('✅ Test click handler added to main image');
 
     // Wait for Webflow lightbox to be ready and add navigation
     setTimeout(() => {
