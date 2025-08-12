@@ -14,28 +14,36 @@ function applyCategoryFilterFromURL() {
 
     // Wait for the filter system to be ready
     setTimeout(() => {
-      // Method 1: Try to find and click a matching filter button
-      const filterButton = document.querySelector(`[data-category="${cleanCategory}"]`);
-      if (filterButton) {
-        filterButton.click();
-        console.log(`✅ Auto-filter: Found and clicked filter button for category: ${cleanCategory}`);
-        return;
-      }
-
-      // Method 2: Try to find filter by text content
+      console.log(`🔍 Looking for filter matching: ${cleanCategory}`);
+      
+      // Find filter by text content in the Application Type section
       const filterOptions = document.querySelectorAll('.sub-filter-wrapper');
+      console.log(`🔍 Found ${filterOptions.length} filter options`);
+      
       let foundFilter = false;
       
-      filterOptions.forEach(option => {
+      filterOptions.forEach((option, index) => {
         const textElement = option.querySelector('.sub-filter-wattage');
         if (textElement) {
           const optionText = textElement.textContent.trim().toLowerCase();
+          console.log(`🔍 Filter option ${index}: "${optionText}"`);
+          
           if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
-            const checkmark = option.querySelector('.filter-checkmark');
-            if (checkmark && !option.classList.contains('active')) {
-              checkmark.click();
-              foundFilter = true;
-              console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
+            // Check if this is in the Application Type section
+            const parentFilter = option.closest('[data-filter="Application Type"]');
+            if (parentFilter) {
+              const checkmark = option.querySelector('.filter-checkmark');
+              if (checkmark && !option.classList.contains('active')) {
+                console.log(`✅ Found matching filter: ${optionText}`);
+                // Simulate the click to trigger the filter
+                checkmark.click();
+                foundFilter = true;
+                console.log(`✅ Auto-filter: Found and activated filter for category: ${cleanCategory}`);
+              } else {
+                console.log(`⚠️ Filter already active or no checkmark found: ${optionText}`);
+              }
+            } else {
+              console.log(`⚠️ Filter not in Application Type section: ${optionText}`);
             }
           }
         }
@@ -44,7 +52,7 @@ function applyCategoryFilterFromURL() {
       if (!foundFilter) {
         console.warn(`⚠️ Auto-filter: No filter button found for category: ${cleanCategory}`);
         
-        // Method 3: Try to use the global search as fallback
+        // Fallback: Try to use the global search
         const searchInput = document.getElementById('globalSearchInput');
         if (searchInput) {
           searchInput.value = cleanCategory;
@@ -66,6 +74,9 @@ if (typeof Webflow !== 'undefined') {
   });
 }
 
+// Retry after a delay to catch late-loading content
+setTimeout(applyCategoryFilterFromURL, 3000);
+
 /* === Category Cards Navigation === */
 function initializeCategoryCards() {
   console.log('🎯 Initializing category cards navigation...');
@@ -74,10 +85,10 @@ function initializeCategoryCards() {
   const categoryMappings = {
     'outdoor': 'outdoor',
     'indoor': 'indoor', 
-    'flexstrip': 'flex-strip',
-    'customlight': 'custom-light',
-    'decorativelights': 'decorative-light',
-    'weatherproof': 'weather-proof'
+    'flexstrip': 'flex strip',
+    'customlight': 'custom lighting',
+    'decorativelights': 'decorative lights',
+    'weatherproof': 'weather proof'
   };
   
   // Find all category cards in the main page categories wrapper
