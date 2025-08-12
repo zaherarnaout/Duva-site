@@ -4814,7 +4814,7 @@ if (typeof Webflow !== 'undefined') {
   function fixDownloadPanelCheckboxes() {
     console.log('📥 Fixing download panel checkboxes...');
     
-    const downloadCheckboxes = document.querySelectorAll('.download-checkbox, .checkbox[data-file]');
+    const downloadCheckboxes = document.querySelectorAll('.download-checkbox, .checkbox[data-file], .checkbox');
     console.log(`📥 Found ${downloadCheckboxes.length} download checkboxes`);
     
     if (downloadCheckboxes.length === 0) {
