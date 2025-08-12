@@ -4814,7 +4814,7 @@ if (typeof Webflow !== 'undefined') {
   function fixDownloadPanelCheckboxes() {
     console.log('📥 Fixing download panel checkboxes...');
     
-    const downloadCheckboxes = document.querySelectorAll('.download-checkbox');
+    const downloadCheckboxes = document.querySelectorAll('.download-checkbox, .checkbox[data-file]');
     console.log(`📥 Found ${downloadCheckboxes.length} download checkboxes`);
     
     if (downloadCheckboxes.length === 0) {
@@ -4823,14 +4823,37 @@ if (typeof Webflow !== 'undefined') {
     }
 
     downloadCheckboxes.forEach((box, index) => {
+      console.log(`📥 Processing checkbox ${index + 1}:`, box);
+      console.log(`📥 Checkbox classes:`, box.className);
+      console.log(`📥 Checkbox computed styles:`, window.getComputedStyle(box));
+      
       // Remove existing listeners to prevent duplicates
       const newBox = box.cloneNode(true);
       box.parentNode.replaceChild(newBox, box);
       
-      newBox.addEventListener('click', function () {
+      // Add multiple event listeners to debug
+      newBox.addEventListener('click', function (e) {
+        console.log(`🎯 Download checkbox ${index + 1} CLICKED!`);
+        console.log(`🎯 Event target:`, e.target);
+        console.log(`🎯 Current classes:`, this.className);
         this.classList.toggle('active');
         console.log(`✅ Download checkbox ${index + 1} clicked - active: ${this.classList.contains('active')}`);
+        e.preventDefault();
+        e.stopPropagation();
       });
+      
+      newBox.addEventListener('mousedown', function (e) {
+        console.log(`🎯 Download checkbox ${index + 1} MOUSEDOWN!`);
+      });
+      
+      newBox.addEventListener('mouseup', function (e) {
+        console.log(`🎯 Download checkbox ${index + 1} MOUSEUP!`);
+      });
+      
+      // Force pointer events
+      newBox.style.pointerEvents = 'auto';
+      newBox.style.cursor = 'pointer';
+      newBox.style.zIndex = '10';
     });
     
     console.log(`✅ ${downloadCheckboxes.length} download checkboxes restored`);
