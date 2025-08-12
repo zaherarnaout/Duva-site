@@ -4607,8 +4607,8 @@ if (typeof Webflow !== 'undefined') {
       return;
     }
 
-    // Check for first gallery item (Webflow lightbox)
-    const firstGalleryItem = document.querySelector('.first-gallery-image, .w-dyn-item:first-child');
+    // Check for first gallery item (Webflow lightbox) - using the same selector as old working code
+    const firstGalleryItem = document.querySelector('.first-gallery-image');
     console.log('🔍 First gallery item found:', firstGalleryItem);
     console.log('🔍 First gallery item tag name:', firstGalleryItem ? firstGalleryItem.tagName : 'null');
     console.log('🔍 First gallery item classes:', firstGalleryItem ? firstGalleryItem.className : 'null');
@@ -4618,149 +4618,10 @@ if (typeof Webflow !== 'undefined') {
       return;
     }
 
-    // Create custom lightbox for main image
-    mainTrigger.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('🖼️ Main image clicked - creating custom lightbox');
-      
-      // Create lightbox overlay
-      const lightboxOverlay = document.createElement('div');
-      lightboxOverlay.className = 'custom-lightbox-overlay';
-      lightboxOverlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      `;
-      
-      // Create lightbox content
-      const lightboxContent = document.createElement('div');
-      lightboxContent.style.cssText = `
-        position: relative;
-        max-width: 90%;
-        max-height: 90%;
-        cursor: default;
-      `;
-      
-      // Create lightbox image
-      const lightboxImage = document.createElement('img');
-      lightboxImage.src = mainTrigger.src;
-      lightboxImage.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-      `;
-      
-      // Create close button
-      const closeButton = document.createElement('button');
-      closeButton.innerHTML = '×';
-      closeButton.style.cssText = `
-        position: absolute;
-        top: -40px;
-        right: 0;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 30px;
-        cursor: pointer;
-        padding: 5px;
-        line-height: 1;
-      `;
-      
-      // Create navigation arrows
-      const prevArrow = document.createElement('button');
-      prevArrow.innerHTML = '‹';
-      prevArrow.style.cssText = `
-        position: absolute;
-        left: -60px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(192, 57, 43, 0.8);
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 10px 15px;
-        border-radius: 4px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `;
-      
-      const nextArrow = document.createElement('button');
-      nextArrow.innerHTML = '›';
-      nextArrow.style.cssText = `
-        position: absolute;
-        right: -60px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(192, 57, 43, 0.8);
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 10px 15px;
-        border-radius: 4px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `;
-      
-      // Assemble lightbox
-      lightboxContent.appendChild(lightboxImage);
-      lightboxContent.appendChild(closeButton);
-      lightboxContent.appendChild(prevArrow);
-      lightboxContent.appendChild(nextArrow);
-      lightboxOverlay.appendChild(lightboxContent);
-      
-      // Add to page
-      document.body.appendChild(lightboxOverlay);
-      
-      // Close on overlay click
-      lightboxOverlay.addEventListener('click', function(e) {
-        if (e.target === lightboxOverlay) {
-          document.body.removeChild(lightboxOverlay);
-        }
-      });
-      
-      // Close on close button click
-      closeButton.addEventListener('click', function() {
-        document.body.removeChild(lightboxOverlay);
-      });
-      
-      // Close on escape key
-      document.addEventListener('keydown', function closeOnEscape(e) {
-        if (e.key === 'Escape') {
-          document.body.removeChild(lightboxOverlay);
-          document.removeEventListener('keydown', closeOnEscape);
-        }
-      });
-      
-      // Navigation functionality (placeholder for now)
-      prevArrow.addEventListener('click', function(e) {
-        e.stopPropagation();
-        console.log('🔄 Previous image (placeholder)');
-      });
-      
-      nextArrow.addEventListener('click', function(e) {
-        e.stopPropagation();
-        console.log('🔄 Next image (placeholder)');
-      });
-      
-      console.log('✅ Custom lightbox created and displayed');
+    // Simple approach: just add click handler to main image to trigger existing lightbox - exactly like old working code
+    mainTrigger.addEventListener('click', () => {
+      console.log('🖼️ Main image clicked - triggering lightbox');
+      firstGalleryItem.click();
     });
     
     console.log('✅ Main image click handler added');
