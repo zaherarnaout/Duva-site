@@ -96,7 +96,7 @@ function applyPendingCategoryWithDuva() {
     // Preferred: call DUVA's public API (source of truth)
     if (window.DUVA_FILTER && typeof window.DUVA_FILTER.activateCheckboxByLabel === 'function') {
       console.log('DUVA ready → activating checkbox via API:', targetLabel);
-      window.DUVA_FILTER.activateCheckboxByLabel(targetLabel);
+      window.DUVA_FILTER.activateCheckboxByLabel(targetLabel, 'Application Type'); // specify group for Indoor/Outdoor
       return;
     }
 
@@ -131,7 +131,7 @@ function waitForDuvaReady(cb, timeout = 10000) {
   // Poll for DUVA public API or for filter DOM existence
   (function tick() {
     const apiReady = !!(window.DUVA_FILTER && typeof window.DUVA_FILTER.activateCheckboxByLabel === 'function');
-    const domReady = !!document.querySelector('.duva-filters input[type="checkbox"], .filters input[type="checkbox"]');
+    const domReady = !!document.querySelector('[data-type], .duva-filters input[type="checkbox"], .filters input[type="checkbox"]');
 
     if (apiReady || domReady) {
       if (!done) {
