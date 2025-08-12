@@ -396,7 +396,7 @@ body.menu-open {
 
   cursor: pointer; 
 
-  transition: border-color 0.2s ease; 
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 
 } 
 
@@ -4548,7 +4548,6 @@ ARROWS:
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: scale(1);
   position: relative;
-  overflow: hidden;
   cursor: pointer;
 }
 
@@ -4575,6 +4574,7 @@ ARROWS:
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.6s ease;
   z-index: 1;
+  pointer-events: none;
 }
 
 .download-checkbox:hover::before {
@@ -4585,7 +4585,7 @@ ARROWS:
 .download-checkbox.active .checkmark {
   opacity: 1 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
