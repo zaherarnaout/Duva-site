@@ -4404,6 +4404,14 @@ a .flip-card-wrapper {
   border-width: 1px !important;
   transform: scale(1.08) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
+  /* Ensure no white borders or backgrounds */
+  outline: none !important;
+  /* Override any potential white backgrounds or borders */
+  background-color: var(--duva-red, #C0392B) !important;
+  background-image: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
 }
 
 /* Checkmark styling for download panel - Target the actual HTML class */
@@ -4425,6 +4433,9 @@ a .flip-card-wrapper {
   transition: all 0.2s ease !important;
   z-index: 2 !important;
   background: transparent !important;
+  /* Ensure checkmark is visible when needed */
+  display: block !important;
+  visibility: visible !important;
 }
 
 .download-checkbox.active .checkmark,
@@ -4443,6 +4454,14 @@ a .flip-card-wrapper {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.6s ease;
   z-index: 1;
+}
+
+/* Hide the ::before element when checkbox is active to prevent white overlay */
+.download-checkbox.active::before,
+.checkbox[data-file].active::before {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 .download-checkbox:hover::before {
