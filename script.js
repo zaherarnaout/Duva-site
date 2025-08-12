@@ -4926,8 +4926,14 @@ function initializeContactButtons() {
         
         console.log(`📞 Contact button "${buttonText}" clicked - opening contact form`);
         
-        // Open contact modal
-        openContactModal();
+        // Open contact modal using the global function from contactform.js
+        if (typeof window.openContactModal === 'function') {
+          window.openContactModal();
+        } else {
+          console.error('❌ Global openContactModal function not found');
+          // Fallback to local function
+          openContactModal();
+        }
       });
       
       // Add visual feedback
@@ -4941,69 +4947,8 @@ function initializeContactButtons() {
   console.log('✅ Contact button functionality initialized');
 }
 
-// Function to open contact modal
-function openContactModal() {
-  console.log('📞 Opening contact modal...');
-  
-  // Try to find contact overlay
-  const contactOverlay = document.querySelector('.contact-overlay');
-  
-  if (contactOverlay) {
-    // Show the modal
-    contactOverlay.style.display = 'flex';
-    contactOverlay.style.opacity = '1';
-    contactOverlay.style.visibility = 'visible';
-    contactOverlay.classList.add('active');
-    
-    // Add body classes for modal state
-    document.body.classList.add('modal-open');
-    document.documentElement.classList.add('modal-open');
-    
-    console.log('✅ Contact modal opened');
-    
-    // Set up close functionality
-    const closeBtn = contactOverlay.querySelector('.subscribe-close, .contact-close, [class*="close"]');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Hide the modal
-        contactOverlay.style.display = 'none';
-        contactOverlay.style.opacity = '0';
-        contactOverlay.style.visibility = 'hidden';
-        contactOverlay.classList.remove('active');
-        
-        // Remove body classes
-        document.body.classList.remove('modal-open');
-        document.documentElement.classList.remove('modal-open');
-        
-        console.log('✅ Contact modal closed');
-      });
-    }
-    
-    // Close on overlay click
-    contactOverlay.addEventListener('click', function(e) {
-      if (e.target === contactOverlay) {
-        // Hide the modal
-        contactOverlay.style.display = 'none';
-        contactOverlay.style.opacity = '0';
-        contactOverlay.style.visibility = 'hidden';
-        contactOverlay.classList.remove('active');
-        
-        // Remove body classes
-        document.body.classList.remove('modal-open');
-        document.documentElement.classList.remove('modal-open');
-        
-        console.log('✅ Contact modal closed (overlay click)');
-      }
-    });
-    
-  } else {
-    console.error('❌ Contact overlay not found');
-    console.log('💡 Make sure contact-form.html is included in your page');
-  }
-}
+// Note: Using global openContactModal function from contactform.js
+// Local function removed to avoid conflicts
 
 // Initialize contact buttons when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
