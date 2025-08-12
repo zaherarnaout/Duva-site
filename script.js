@@ -56,12 +56,27 @@ function getProductsURL() {
 // 1) HOMEPAGE: when a category is clicked, set baton + navigate (NO filtering here)
 function wireHomepageCategoriesToDuva() {
   console.log('🎯 Initializing homepage category cards...');
+  console.log('📍 Current page:', window.location.pathname);
+  console.log('📍 Is products page:', isProductsPage());
   
   const cards = document.querySelectorAll('.main-page-categories-wrapper a');
   console.log('🔍 Found category cards:', cards.length);
   
   if (!cards.length) {
     console.log('⚠️ No category cards found with selector: .main-page-categories-wrapper a');
+    
+    // Debug: Show all elements with "category" in their class or ID
+    const allElements = document.querySelectorAll('*');
+    const categoryElements = Array.from(allElements).filter(el => {
+      const className = el.className || '';
+      const id = el.id || '';
+      return className.toLowerCase().includes('category') || id.toLowerCase().includes('category');
+    });
+    console.log('🔍 Elements with "category" in class/id:', categoryElements.length);
+    categoryElements.forEach((el, index) => {
+      console.log(`  ${index + 1}. ${el.tagName} - class: "${el.className}" id: "${el.id}"`);
+    });
+    
     // Try alternative selectors
     const altCards = document.querySelectorAll('[data-category], .category-card, .main-categories a');
     console.log('🔍 Alternative selectors found:', altCards.length);
@@ -69,6 +84,16 @@ function wireHomepageCategoriesToDuva() {
       console.log('✅ Found cards with alternative selectors, using those instead');
       return wireHomepageCategoriesToDuvaAlternative(altCards);
     }
+    
+    // Debug: Show all links on the page
+    const allLinks = document.querySelectorAll('a');
+    console.log('🔍 All links on page:', allLinks.length);
+    allLinks.forEach((link, index) => {
+      if (index < 10) { // Only show first 10 to avoid spam
+        console.log(`  ${index + 1}. ${link.tagName} - href: "${link.href}" class: "${link.className}"`);
+      }
+    });
+    
     return;
   }
 
@@ -243,13 +268,19 @@ function waitForDuvaReady(cb, timeout = 10000) {
 
 /* Wire things up */
 document.addEventListener('DOMContentLoaded', () => {
-  wireHomepageCategoriesToDuva();
+  // Only wire category cards on homepage
+  if (!isProductsPage()) {
+    wireHomepageCategoriesToDuva();
+  }
   if (isProductsPage()) applyPendingCategoryWithDuva();
   initializeLogoHomeButton();
 });
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function () {
-    wireHomepageCategoriesToDuva();
+    // Only wire category cards on homepage
+    if (!isProductsPage()) {
+      wireHomepageCategoriesToDuva();
+    }
     if (isProductsPage()) applyPendingCategoryWithDuva();
     initializeLogoHomeButton();
   });
