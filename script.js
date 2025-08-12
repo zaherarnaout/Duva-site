@@ -44,12 +44,12 @@ function applyCategoryFilterFromURL() {
           console.log(`🔍 Filter option ${index}: "${optionText}"`);
           
           if (optionText.includes(cleanCategory) || cleanCategory.includes(optionText)) {
-            // Check if this is in the Application Type section
-            const parentFilter = option.closest('[data-filter="Application Type"]');
+            // Check in ALL filter sections, not just Application Type
+            const parentFilter = option.closest('[data-filter]');
             if (parentFilter) {
               const checkmark = option.querySelector('.filter-checkmark');
               if (checkmark && !option.classList.contains('active')) {
-                console.log(`✅ Found matching filter: ${optionText}`);
+                console.log(`✅ Found matching filter: ${optionText} in section: ${parentFilter.getAttribute('data-filter')}`);
                 // Simulate the click to trigger the filter
                 checkmark.click();
                 foundFilter = true;
@@ -58,7 +58,7 @@ function applyCategoryFilterFromURL() {
                 console.log(`⚠️ Filter already active or no checkmark found: ${optionText}`);
               }
             } else {
-              console.log(`⚠️ Filter not in Application Type section: ${optionText}`);
+              console.log(`⚠️ Filter not in any recognized section: ${optionText}`);
             }
           }
         }
@@ -99,12 +99,12 @@ setTimeout(applyCategoryFilterFromURL, 3000);
 function initializeCategoryCards() {
   console.log('🎯 Initializing category cards navigation...');
   
-  // Define category mappings - updated to match actual card text
+  // Define category mappings - updated to match actual filter text
   const categoryMappings = {
     'outdoor': 'outdoor',
     'indoor': 'indoor', 
     'flexstrip': 'flex strip',
-    'customlight': 'custom lighting',
+    'customlight': 'custom lights',
     'decorativelights': 'decorative lights',
     'weatherproof': 'weather proof'
   };
