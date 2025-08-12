@@ -4420,28 +4420,38 @@ a .flip-card-wrapper {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
-  width: 10px !important;
-  height: 5px !important;
-  min-width: 10px !important;
-  min-height: 5px !important;
+  width: 12px !important;
+  height: 6px !important;
+  min-width: 12px !important;
+  min-height: 6px !important;
   border: none !important;
-  border-left: 2px solid white !important;
-  border-bottom: 2px solid white !important;
+  border-left: 3px solid white !important;
+  border-bottom: 3px solid white !important;
   border-radius: 0 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(0) !important;
   opacity: 0 !important;
-  transition: all 0.2s ease !important;
-  z-index: 2 !important;
+  transition: all 0.3s ease !important;
+  z-index: 10 !important;
   background: transparent !important;
   /* Ensure checkmark is visible when needed */
   display: block !important;
   visibility: visible !important;
+  /* Make checkmark more prominent */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
 }
 
 .download-checkbox.active .checkmark,
 .checkbox[data-file].active .checkmark {
   opacity: 1 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
+  /* Ensure checkmark is highly visible when active */
+  visibility: visible !important;
+  display: block !important;
+  z-index: 10 !important;
+  /* Make the white checkmark stand out more */
+  border-left: 3px solid white !important;
+  border-bottom: 3px solid white !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
 }
 
 .download-checkbox::before {
