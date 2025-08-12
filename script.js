@@ -158,17 +158,60 @@ function waitForDuvaReady(cb, timeout = 10000) {
 document.addEventListener('DOMContentLoaded', () => {
   wireHomepageCategoriesToDuva();
   if (isProductsPage()) applyPendingCategoryWithDuva();
+  initializeLogoHomeButton();
 });
 if (typeof Webflow !== 'undefined') {
   Webflow.push(function () {
     wireHomepageCategoriesToDuva();
     if (isProductsPage()) applyPendingCategoryWithDuva();
+    initializeLogoHomeButton();
   });
 }
 // Belt & suspenders: in case DUVA/filters mount after onload
 window.addEventListener('load', () => {
   if (isProductsPage()) applyPendingCategoryWithDuva();
+  initializeLogoHomeButton();
 });
+
+/* === DUVA Logo Home Button === */
+function initializeLogoHomeButton() {
+  console.log('🏠 Initializing DUVA logo home button...');
+  
+  const logoWrapper = document.querySelector('.duva-logo-wrapper');
+  if (!logoWrapper) {
+    console.log('⚠️ DUVA logo wrapper not found');
+    return;
+  }
+
+  // Add click event listener to navigate to home page
+  logoWrapper.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Get the home page URL
+    let homeURL = '/';
+    
+    // Try to find a home link on the page
+    const homeLinks = document.querySelectorAll('a[href="/"], a[href="index.html"], a[href*="home"]');
+    if (homeLinks.length > 0) {
+      // Use the first home link found
+      homeURL = homeLinks[0].getAttribute('href');
+      // Ensure it's a relative URL
+      if (homeURL.startsWith('http')) {
+        const url = new URL(homeURL);
+        homeURL = url.pathname;
+      }
+    }
+    
+    console.log(`🏠 Navigating to home page: ${homeURL}`);
+    window.location.href = homeURL;
+  });
+
+  // Add visual feedback that it's clickable
+  logoWrapper.style.cursor = 'pointer';
+  logoWrapper.setAttribute('title', 'Go to Home Page');
+  
+  console.log('✅ DUVA logo home button initialized');
+}
 
 /* === Category Cards Navigation (DEPRECATED - Replaced by DUVA Filter Bridge) === */
 // The old initializeCategoryCards function has been replaced by the DUVA Filter Bridge above
@@ -4923,7 +4966,31 @@ if (typeof Webflow !== 'undefined') {
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
   }
 
-  // 5. FIX CATEGORY CARDS NAVIGATION (Now handled by DUVA Filter Bridge)
+  // 5. FIX DOWNLOAD PANEL CHECKBOXES
+  function fixDownloadPanelCheckboxes() {
+    console.log('📥 Fixing download panel checkboxes...');
+    
+    const downloadCheckboxes = document.querySelectorAll('.download-checkbox');
+    if (downloadCheckboxes.length === 0) {
+      console.log('⚠️ No download checkboxes found');
+      return;
+    }
+
+    downloadCheckboxes.forEach(box => {
+      // Remove existing listeners to prevent duplicates
+      const newBox = box.cloneNode(true);
+      box.parentNode.replaceChild(newBox, box);
+      
+      newBox.addEventListener('click', function () {
+        this.classList.toggle('active');
+        console.log('✅ Download checkbox clicked');
+      });
+    });
+    
+    console.log(`✅ ${downloadCheckboxes.length} download checkboxes restored`);
+  }
+
+  // 6. FIX CATEGORY CARDS NAVIGATION (Now handled by DUVA Filter Bridge)
   function fixCategoryCardsNavigation() {
     console.log('🎯 Category cards now handled by DUVA Filter Bridge...');
     
@@ -4937,6 +5004,7 @@ if (typeof Webflow !== 'undefined') {
   fixAccessoriesSection();
   fixLightboxNavigation();
   fixThumbnailFunctionality();
+  fixDownloadPanelCheckboxes();
   fixCategoryCardsNavigation();
 
   // Re-run fixes after a delay to catch late-loading content
@@ -4945,6 +5013,7 @@ if (typeof Webflow !== 'undefined') {
     fixAccessoriesSection();
     fixLightboxNavigation();
     fixThumbnailFunctionality();
+    fixDownloadPanelCheckboxes();
     fixCategoryCardsNavigation();
   }, 2000);
 
