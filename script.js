@@ -250,30 +250,7 @@ document.querySelectorAll('.accessory-image').forEach(container => {
  
 
 /* === 2. Thumbnail Image Selector === */ 
-
-document.addEventListener("DOMContentLoaded", function () { 
-
-    const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-    const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
-    thumbnails.forEach(thumb => { 
-
-        thumb.addEventListener("click", function () { 
-
-            thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-            this.classList.add("is-active"); 
-
-            const newImg = this.getAttribute("data-image"); 
-
-            if (mainImage) mainImage.setAttribute("href", newImg); 
-
-        }); 
-
-    }); 
-
-}); 
+/* REMOVED - Duplicate thumbnail handler, using critical fixes version instead */ 
 
  
 
@@ -883,36 +860,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
   /* === Main Image Thumbnail Click Logic === */ 
-
-  const mainImage = document.getElementById("main-lightbox-trigger"); 
-
-  const thumbnails = document.querySelectorAll(".thumbnail-image"); 
-
- 
-
-  thumbnails.forEach((thumb) => { 
-
-    thumb.addEventListener("click", function () { 
-
-      const newSrc = this.getAttribute("src"); 
-
-      if (mainImage && newSrc) { 
-
-        mainImage.setAttribute("src", newSrc); 
-
-      } 
-
- 
-
-      // Update active state 
-
-      thumbnails.forEach(t => t.classList.remove("is-active")); 
-
-      this.classList.add("is-active"); 
-
-    }); 
-
-  }); 
+  /* REMOVED - Duplicate thumbnail handler, using critical fixes version instead */ 
 
  
 
@@ -4749,8 +4697,12 @@ if (typeof Webflow !== 'undefined') {
       thumb.parentNode.replaceChild(newThumb, thumb);
       
       newThumb.addEventListener('click', function () {
+        // Get fresh reference to all thumbnails after DOM changes
+        const allThumbnails = document.querySelectorAll('.thumbnail-image');
+        
         // Remove active class from all thumbnails
-        thumbnails.forEach(t => t.classList.remove('is-active'));
+        allThumbnails.forEach(t => t.classList.remove('is-active'));
+        
         // Add active class to clicked thumbnail
         this.classList.add('is-active');
         
