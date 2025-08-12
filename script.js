@@ -4610,14 +4610,31 @@ if (typeof Webflow !== 'undefined') {
       return;
     }
 
-    // Ensure main trigger opens lightbox
-    mainTrigger.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    // Convert main trigger to proper Webflow lightbox trigger
+    const lightboxWrapper = mainTrigger.closest('.lightbox-trigger');
+    if (lightboxWrapper) {
+      // Convert the div to an anchor tag for proper lightbox functionality
+      const newAnchor = document.createElement('a');
+      newAnchor.href = '#';
+      newAnchor.className = 'lightbox-trigger w-lightbox';
+      newAnchor.setAttribute('data-wf-lightbox', 'group:product-gallery');
       
-      console.log('🖼️ Main image clicked - opening lightbox');
-      firstGalleryItem.click();
-    });
+      // Move the image into the new anchor
+      newAnchor.appendChild(mainTrigger);
+      
+      // Replace the old wrapper with the new anchor
+      lightboxWrapper.parentNode.replaceChild(newAnchor, lightboxWrapper);
+      
+      console.log('✅ Main image converted to proper lightbox trigger');
+    } else {
+      // Fallback: just add the class if wrapper not found
+      mainTrigger.classList.add('w-lightbox');
+      mainTrigger.setAttribute('href', '#');
+    }
+    
+    // The w-lightbox class will handle the lightbox opening automatically
+    // No need for manual click handler since Webflow will handle it
+    console.log('✅ Main image lightbox functionality enabled');
 
     // Wait for Webflow lightbox to be ready and add navigation
     setTimeout(() => {
