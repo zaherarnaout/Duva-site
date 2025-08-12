@@ -4390,24 +4390,29 @@ a .flip-card-wrapper {
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
 
-/* Checkmark styling for download checkbox */
-.download-checkbox .checkmark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 5px;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-  transform: translate(-50%, -60%) rotate(-45deg) scale(0);
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 2;
+/* Checkmark styling for download panel - Specific class to avoid conflicts */
+.download-panel-checkmark {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 10px !important;
+  height: 5px !important;
+  min-width: 10px !important;
+  min-height: 5px !important;
+  border: none !important;
+  border-left: 2px solid white !important;
+  border-bottom: 2px solid white !important;
+  border-radius: 0 !important;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(0) !important;
+  opacity: 0 !important;
+  transition: all 0.2s ease !important;
+  z-index: 2 !important;
+  background: transparent !important;
 }
 
-.download-checkbox.active .checkmark {
-  opacity: 1;
-  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+.download-checkbox.active .download-panel-checkmark {
+  opacity: 1 !important;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
 }
 
 .download-checkbox::before {
