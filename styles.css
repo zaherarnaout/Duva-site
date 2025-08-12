@@ -4365,7 +4365,8 @@ a .flip-card-wrapper {
 
 
 /* 7. Download Panel Checkmark Enhancement - Override global checkbox styles */
-.download-checkbox {
+.download-checkbox,
+.checkbox[data-file] {
   width: 20px !important;
   height: 20px !important;
   border: 1px solid #ccc !important;
@@ -4376,23 +4377,38 @@ a .flip-card-wrapper {
   transform: scale(1) !important;
   overflow: hidden !important;
   display: block !important;
+  /* Override Webflow's dashed border */
+  border-style: solid !important;
+  border-color: #ccc !important;
+  border-width: 1px !important;
+  /* Ensure visibility and interaction */
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
-.download-checkbox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+.download-checkbox:hover,
+.checkbox[data-file]:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25) !important;
   border-color: var(--duva-red, #C0392B) !important;
+  border-style: solid !important;
+  border-width: 1px !important;
 }
 
-.download-checkbox.active {
+.download-checkbox.active,
+.checkbox[data-file].active {
   background: var(--duva-red, #C0392B) !important;
   border-color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+  border-style: solid !important;
+  border-width: 1px !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
 }
 
 /* Checkmark styling for download panel - Target the actual HTML class */
-.download-checkbox .checkmark {
+.download-checkbox .checkmark,
+.checkbox[data-file] .checkmark {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
@@ -4411,7 +4427,8 @@ a .flip-card-wrapper {
   background: transparent !important;
 }
 
-.download-checkbox.active .checkmark {
+.download-checkbox.active .checkmark,
+.checkbox[data-file].active .checkmark {
   opacity: 1 !important;
   transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
 }
