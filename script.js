@@ -21,30 +21,56 @@ const CATEGORY_TO_DUVA_LABEL = {
 
 // Simple products-page detector
 function isProductsPage() {
-  return (
+  const isProducts = (
     window.location.pathname.includes('/products') ||
     window.location.pathname.includes('products.html') ||
     document.querySelector('.cards-container')
   );
+  console.log('🔍 isProductsPage check:', {
+    pathname: window.location.pathname,
+    hasCardsContainer: !!document.querySelector('.cards-container'),
+    result: isProducts
+  });
+  return isProducts;
 }
 
 // Find your products URL from any existing link on the page
 function getProductsURL() {
-  if (window.__productsPageURL) return window.__productsPageURL;
+  if (window.__productsPageURL) {
+    console.log('🔍 getProductsURL (cached):', window.__productsPageURL);
+    return window.__productsPageURL;
+  }
+  
   let url = 'products.html';
   const link = document.querySelector('a[href*="products"], a[href*="collection"]');
   if (link) {
     url = link.getAttribute('href') || url;
     if (url.startsWith('http')) url = new URL(url).pathname;
   }
+  
   window.__productsPageURL = url;
+  console.log('🔍 getProductsURL (calculated):', url);
   return url;
 }
 
 // 1) HOMEPAGE: when a category is clicked, set baton + navigate (NO filtering here)
 function wireHomepageCategoriesToDuva() {
+  console.log('🎯 Initializing homepage category cards...');
+  
   const cards = document.querySelectorAll('.main-page-categories-wrapper a');
-  if (!cards.length) return;
+  console.log('🔍 Found category cards:', cards.length);
+  
+  if (!cards.length) {
+    console.log('⚠️ No category cards found with selector: .main-page-categories-wrapper a');
+    // Try alternative selectors
+    const altCards = document.querySelectorAll('[data-category], .category-card, .main-categories a');
+    console.log('🔍 Alternative selectors found:', altCards.length);
+    if (altCards.length > 0) {
+      console.log('✅ Found cards with alternative selectors, using those instead');
+      return wireHomepageCategoriesToDuvaAlternative(altCards);
+    }
+    return;
+  }
 
   cards.forEach((card) => {
     // read a visible text node inside the card (adjust selectors if needed)
@@ -54,6 +80,8 @@ function wireHomepageCategoriesToDuva() {
     if (!labelEl) return;
 
     const raw = labelEl.textContent.trim().toLowerCase();
+    console.log('📝 Card text content:', raw);
+    
     // resolve a key -> duva label
     let key = null;
     for (const k of Object.keys(CATEGORY_TO_DUVA_LABEL)) {
@@ -62,19 +90,75 @@ function wireHomepageCategoriesToDuva() {
         break;
       }
     }
-    if (!key) return;
+    if (!key) {
+      console.log('⚠️ Could not map text to category:', raw);
+      return;
+    }
+    console.log('✅ Mapped text to category:', raw, '→', key);
 
     card.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('🎯 Category card clicked:', key);
 
       // Pass baton so the products page knows what to check
       sessionStorage.setItem('duvaPendingCategory', key);
 
       // Also include it in the URL (handy if someone bookmarks the page)
       const url = `${getProductsURL()}?category=${encodeURIComponent(key)}`;
+      console.log('🚀 Navigating to:', url);
       window.location.href = url;
     });
   });
+  
+  console.log('✅ Homepage category cards wired up successfully');
+}
+
+// Alternative function for different category card selectors
+function wireHomepageCategoriesToDuvaAlternative(cards) {
+  console.log('🎯 Initializing homepage category cards (alternative method)...');
+  
+  cards.forEach((card, index) => {
+    console.log(`🔍 Processing card ${index + 1}:`, card);
+    
+    // Try to get the category from data attribute first
+    let key = card.getAttribute('data-category');
+    
+    if (!key) {
+      // Try to get from text content
+      const textContent = card.textContent.trim().toLowerCase();
+      console.log(`📝 Card ${index + 1} text content:`, textContent);
+      
+      // Map text to category key
+      for (const k of Object.keys(CATEGORY_TO_DUVA_LABEL)) {
+        if (textContent.includes(k) || k.includes(textContent)) {
+          key = k;
+          break;
+        }
+      }
+    }
+    
+    if (!key) {
+      console.log(`⚠️ Could not determine category for card ${index + 1}`);
+      return;
+    }
+    
+    console.log(`✅ Card ${index + 1} mapped to category:`, key);
+    
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🎯 Category card clicked (alternative):', key);
+
+      // Pass baton so the products page knows what to check
+      sessionStorage.setItem('duvaPendingCategory', key);
+
+      // Also include it in the URL (handy if someone bookmarks the page)
+      const url = `${getProductsURL()}?category=${encodeURIComponent(key)}`;
+      console.log('🚀 Navigating to:', url);
+      window.location.href = url;
+    });
+  });
+  
+  console.log('✅ Homepage category cards wired up successfully (alternative method)');
 }
 
 // 2) PRODUCTS PAGE: wait for DUVA public API, then "click" the checkbox through DUVA
