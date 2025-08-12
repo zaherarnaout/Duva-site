@@ -4312,14 +4312,14 @@ a .flip-card-wrapper {
   left: 100%;
 }
 
-/* 7.5. Accessories Checkmark Enhancement - Match Filter Checkmark Style */
+/* 7.5. Accessories Checkbox Enhancement - 25px Size */
 .accessory-checkbox {
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background-color: white;
-  width: 17px;
-  height: 17px;
+  width: 25px;
+  height: 25px;
   border: 1px solid var(--border-divider-light);
   border-radius: var(--border-4px-cornner);
 }
@@ -4333,8 +4333,8 @@ a .flip-card-wrapper {
 .accessory-checkbox.active {
   background-color: #c0392b;
   border-color: #c0392b;
-  width: 17px;
-  height: 17px;
+  width: 25px;
+  height: 25px;
   transform: scale(1.08);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
@@ -4345,10 +4345,10 @@ a .flip-card-wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 7px;
-  height: 4px;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
+  width: 10px;
+  height: 6px;
+  border-left: 3px solid white;
+  border-bottom: 3px solid white;
   transform: translate(-50%, -60%) rotate(-45deg) scale(0);
   opacity: 0;
   transition: all 0.2s ease;
@@ -4376,6 +4376,18 @@ a .flip-card-wrapper {
 
 .accessory-checkbox:hover::before {
   left: 100%;
+}
+
+/* Hide the separate checkmark element to prevent duplicate checkboxes */
+.accessory-checkbox .checkmark {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
 }
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
