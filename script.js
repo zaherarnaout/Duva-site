@@ -4810,7 +4810,33 @@ if (typeof Webflow !== 'undefined') {
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
   }
 
-  // 5. FIX CATEGORY CARDS NAVIGATION
+  // 5. FIX DOWNLOAD PANEL CHECKBOXES
+  function fixDownloadPanelCheckboxes() {
+    console.log('📥 Fixing download panel checkboxes...');
+    
+    const downloadCheckboxes = document.querySelectorAll('.download-checkbox');
+    console.log(`📥 Found ${downloadCheckboxes.length} download checkboxes`);
+    
+    if (downloadCheckboxes.length === 0) {
+      console.log('⚠️ No download checkboxes found');
+      return;
+    }
+
+    downloadCheckboxes.forEach((box, index) => {
+      // Remove existing listeners to prevent duplicates
+      const newBox = box.cloneNode(true);
+      box.parentNode.replaceChild(newBox, box);
+      
+      newBox.addEventListener('click', function () {
+        this.classList.toggle('active');
+        console.log(`✅ Download checkbox ${index + 1} clicked - active: ${this.classList.contains('active')}`);
+      });
+    });
+    
+    console.log(`✅ ${downloadCheckboxes.length} download checkboxes restored`);
+  }
+
+  // 6. FIX CATEGORY CARDS NAVIGATION
   function fixCategoryCardsNavigation() {
     console.log('🎯 Fixing category cards navigation...');
     
@@ -4828,6 +4854,7 @@ if (typeof Webflow !== 'undefined') {
   fixAccessoriesSection();
   fixLightboxNavigation();
   fixThumbnailFunctionality();
+  fixDownloadPanelCheckboxes();
   fixCategoryCardsNavigation();
 
   // Re-run fixes after a delay to catch late-loading content
@@ -4836,6 +4863,7 @@ if (typeof Webflow !== 'undefined') {
     fixAccessoriesSection();
     fixLightboxNavigation();
     fixThumbnailFunctionality();
+    fixDownloadPanelCheckboxes();
     fixCategoryCardsNavigation();
   }, 2000);
 
