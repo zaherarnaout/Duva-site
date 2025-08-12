@@ -83,6 +83,26 @@ html, body {
   left: 100%;
 }
 
+/* Menu Panel Hover Shimmer Effect */
+.menu-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.08), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.menu-panel:hover::after {
+  left: 100%;
+  opacity: 1;
+}
+
 /* Prevent body scroll when menu is active */
 body.menu-open {
   overflow: hidden !important;
@@ -396,7 +416,7 @@ body.menu-open {
 
   cursor: pointer; 
 
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+  transition: border-color 0.2s ease; 
 
 } 
 
@@ -424,7 +444,7 @@ body.menu-open {
 
   opacity: 0; 
 
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+  transition: all 0.2s ease; 
 
 } 
 
@@ -500,144 +520,9 @@ cursor: pointer;
 
 
 
-/* === Webflow Lightbox Arrows === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  background-color: rgba(0, 0, 0, 0.5) !important; 
-
-  width: 40px; 
-
-  height: 40px; 
-
-  border-radius: 50%; 
-
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-} 
-
-
-
-
-
-
-
-/* === Lightbox Image Size === */ 
-
  
 
-.w-lightbox-frame, 
-
-.w-lightbox-img { 
-
-  width: 600px !important; 
-
-  height: 600px !important; 
-
-  object-fit: contain; 
-
-  margin: 0 auto; 
-
-} 
-
-
-
-/* === Lightbox Navigation Arrows Styling (Bottom, Bold, Red) === */ 
-
-.w-lightbox-left, 
-
-.w-lightbox-right { 
-
-  bottom: 40px !important; 
-
-  top: auto !important; 
-
-  background-color: #c0392b !important; 
-
-  width: 48px; 
-
-  height: 48px; 
-
-  font-weight: bold; 
-
-  border-radius: 4px; 
-
-  display: flex !important; 
-
-  align-items: center; 
-
-  justify-content: center; 
-
-  z-index: 9999; 
-
-  color: white !important; 
-
-}
-
-/* === Lightbox Arrow Margins === */
-.w-lightbox-left {
-  left: 100px !important; /* 100px margin from left edge */
-}
-
-.w-lightbox-right {
-  right: 100px !important; /* 100px margin from right edge */
-} 
-
-
-
-.w-lightbox-left::before, 
-
-.w-lightbox-right::before { 
-
-  color: white !important; 
-
-  font-size: 24px; 
-
-  font-weight: 700; 
-
-} 
-
-
-
-/* === Lightbox Close Button Styling (Square with Border) === */ 
-
-.w-lightbox-close { 
-
-  top: 20px; 
-
-  right: 100px; /* 100px margin from right edge */
-
-  width: 44px; 
-
-  height: 44px; 
-
-  background-color: rgba(0, 0, 0, 0.6); 
-
-  border: 2px solid white !important; 
-
-  border-radius: 0 !important; /* Square corners */ 
-
-  color: white !important; 
-
-  font-size: 20px; 
-
-  font-weight: bold; 
-
-  z-index: 9999; 
-
-} 
+ 
 
 
 
@@ -686,19 +571,7 @@ cursor: pointer;
 
 
 
-/* === Specs Grid + Dropdown Styling === */ 
-
-.specs-grid { 
-
-  display: grid; 
-
-  grid-template-columns: 1fr 1fr; 
-
-  gap: 16px 32px; 
-
-  align-items: start; 
-
-} 
+ 
 
 
 
@@ -941,9 +814,9 @@ display: none !important;
 
 .accessory-checkbox { 
 
-width: 18px; 
+width: 20px; 
 
-height: 18px; 
+height: 20px; 
 
 border: 1px solid #ccc; 
 
@@ -953,7 +826,7 @@ position: relative;
 
 cursor: pointer; 
 
-transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+transition: border-color 0.2s ease; 
 
 } 
 
@@ -973,9 +846,9 @@ top: 50%;
 
 left: 50%; 
 
-width: 9px; 
+width: 10px; 
 
-height: 4px; 
+height: 5px; 
 
 border-left: 2px solid white; 
 
@@ -985,7 +858,7 @@ transform: translate(-50%, -60%) rotate(-45deg) scale(0);
 
 opacity: 0; 
 
-transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+transition: all 0.2s ease; 
 
 } 
 
@@ -4139,6 +4012,32 @@ ARROWS:
   transform: translateZ(0);
 }
 
+/* === Flip Card Click Fix === */
+.flip-card-front, 
+.flip-card-back {
+  pointer-events: none;
+}
+
+.flip-card-wrapper {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Ensure parent links also show pointer cursor */
+.flip-card-wrapper a,
+a .flip-card-wrapper {
+  cursor: pointer;
+}
+/* === End Flip Card Click Fix === */
+
+/* === Reduced Motion Safe-Guard === */
+@media (prefers-reduced-motion: reduce) {
+  .flip-card, .flip-card * { 
+    transition: none !important; 
+    animation: none !important; 
+  }
+}
+
 /* Remove underlines from all product card links */
 .flip-card-wrapper a,
 .current-product,
@@ -4149,7 +4048,43 @@ ARROWS:
 /* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
 
 /* 1. Enhanced Filter Checkmark Animations */
-/* DISABLED - Filter checkboxes are styled in duva-Fliter-style.css to prevent conflicts */
+.filter-checkmark {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.filter-checkmark:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.filter-checkmark.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+/* 2. Filter Checkmark Shimmer Effect */
+.filter-checkmark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.filter-checkmark:hover::before {
+  left: 100%;
+}
 
 /* 3. Filter Header Wrapper (NO SHIMMER) */
 .filter-header-wrapper {
@@ -4341,17 +4276,11 @@ ARROWS:
 .duva-logo-wrapper {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
-  cursor: pointer;
 }
 
 .duva-logo-wrapper:hover {
   transform: translateY(-2px);
   filter: brightness(1.1) contrast(1.1);
-}
-
-.duva-logo-wrapper:active {
-  transform: translateY(0px) scale(0.98);
-  transition: transform 0.1s ease;
 }
 
 .duva-logo-wrapper::after {
@@ -4508,10 +4437,80 @@ ARROWS:
 
 
 /* 7. Download Panel Checkmark Enhancement - Filter Checkmark Style */
-/* DISABLED - Duplicate section removed to prevent CSS conflicts */
+.download-checkbox {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.download-checkbox:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.download-checkbox.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+.download-checkbox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.download-checkbox:hover::before {
+  left: 100%;
+}
 
 /* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
-/* DISABLED - Duplicate section removed to prevent CSS conflicts */
+.accessory-checkbox {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.accessory-checkbox:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+.accessory-checkbox.active {
+  background: var(--duva-red, #C0392B) !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+}
+
+.accessory-checkbox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.accessory-checkbox:hover::before {
+  left: 100%;
+}
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
 .contat-block {
@@ -4598,7 +4597,12 @@ ARROWS:
     margin: 10px;
   }
   
-  /* Filter checkboxes styled in duva-Fliter-style.css */
+  .filter-checkmark {
+    min-height: 48px; /* Better touch targets */
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
   
   .filter-apply-button,
   .filter-reset-button {
@@ -4613,7 +4617,10 @@ ARROWS:
 }
 
 @media screen and (max-width: 479px) {
-  /* Filter checkboxes styled in duva-Fliter-style.css */
+  .filter-checkmark {
+    min-height: 52px;
+    padding: 14px 18px;
+  }
   
   .filter-apply-button,
   .filter-reset-button {
@@ -4648,7 +4655,7 @@ ARROWS:
 }
 
 /* 10. Filter Section Focus States */
-/* Filter checkboxes styled in duva-Fliter-style.css */
+.filter-checkmark:focus,
 .filter-apply-button:focus,
 .filter-reset-button:focus {
   outline: 2px solid var(--duva-red, #C0392B);
@@ -4953,3 +4960,103 @@ ARROWS:
 }
 
 .hero-text-wrapper { position: absolute; overflow: hidden; }
+
+/* === Force Visibility for Critical Sections (Initial State Only) === */
+.product-info-block:not(.dropdown-wrapper):not(.dropdown-field):not(.dropdown-options):not(.dropdown-option),
+.related-section:not(.related-arrow-left):not(.related-arrow-right),
+.product-visuals:not(.thumbnail-image):not(.w-lightbox-trigger),
+.download-panel:not(.download-checkbox):not(.download-arrow) {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  visibility: visible !important;
+}
+
+/* === Preserve Interactive Elements === */
+.dropdown-wrapper,
+.dropdown-field,
+.dropdown-options,
+.dropdown-option,
+.thumbnail-image,
+.w-lightbox-trigger,
+.download-checkbox,
+.download-arrow,
+.accessories-arrow,
+.related-arrow-left,
+.related-arrow-right,
+.accessories-toggle {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* === Ensure Dropdown Functionality === */
+.dropdown-options {
+  display: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.dropdown-wrapper.open .dropdown-options {
+  display: block !important;
+}
+
+/* === Ensure Accessories Section Functionality === */
+.accessories-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.accessories-section.open .accessories-wrapper {
+  max-height: 500px !important;
+  opacity: 1 !important;
+}
+
+/* === Ensure Related Section Functionality === */
+.related-slider-wrapper {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.collection-list-6 {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* === Ensure Gallery Functionality === */
+.gallery-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.gallery-section img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* === Fix Specific Interactive States === */
+.dropdown-wrapper.open .dropdown-arrow {
+  transform: rotate(180deg) !important;
+}
+
+.accessories-arrow.rotated {
+  transform: rotate(180deg) !important;
+}
+
+/* === Ensure Lightbox Functionality === */
+.w-lightbox-trigger {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* === Ensure Download Panel Functionality === */
+.download-checkbox {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.download-arrow {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
