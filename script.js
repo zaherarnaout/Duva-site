@@ -4915,11 +4915,16 @@ if (typeof Webflow !== 'undefined') {
     const arrow = accessoriesSection.querySelector('.accessories-arrow');
 
     if (toggle && wrapper && arrow) {
-      // Remove existing listeners to prevent duplicates
-      const newToggle = toggle.cloneNode(true);
-      toggle.parentNode.replaceChild(newToggle, toggle);
+      // Skip if already initialized
+      if (toggle.hasAttribute('data-duva-initialized')) {
+        console.log('ℹ️ Accessories toggle already initialized, skipping');
+        return;
+      }
       
-      newToggle.addEventListener('click', function () {
+      // Mark as initialized
+      toggle.setAttribute('data-duva-initialized', 'true');
+      
+      toggle.addEventListener('click', function () {
         const isOpen = accessoriesSection.classList.toggle('open');
         arrow.classList.toggle('rotated');
 
@@ -4937,11 +4942,16 @@ if (typeof Webflow !== 'undefined') {
     // Re-initialize accessory checkboxes
     const checkboxes = accessoriesSection.querySelectorAll('.accessory-checkbox');
     checkboxes.forEach(box => {
-      // Remove existing listeners to prevent duplicates
-      const newBox = box.cloneNode(true);
-      box.parentNode.replaceChild(newBox, box);
+      // Skip if already initialized
+      if (box.hasAttribute('data-duva-initialized')) {
+        console.log('ℹ️ Accessory checkbox already initialized, skipping');
+        return;
+      }
       
-      newBox.addEventListener('click', function () {
+      // Mark as initialized
+      box.setAttribute('data-duva-initialized', 'true');
+      
+      box.addEventListener('click', function () {
         this.classList.toggle('active');
         console.log('✅ Accessory checkbox clicked');
       });
@@ -5087,20 +5097,20 @@ if (typeof Webflow !== 'undefined') {
     }
 
     downloadCheckboxes.forEach(box => {
-      // Remove existing listeners to prevent duplicates
-      const newBox = box.cloneNode(true);
-      box.parentNode.replaceChild(newBox, box);
+      // Skip if already initialized
+      if (box.hasAttribute('data-duva-initialized')) {
+        console.log('ℹ️ Download checkbox already initialized, skipping');
+        return;
+      }
       
-      newBox.addEventListener('click', function (e) {
+      // Mark as initialized
+      box.setAttribute('data-duva-initialized', 'true');
+      
+      box.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         this.classList.toggle('active');
         console.log('✅ Download checkbox clicked, active:', this.classList.contains('active'));
-        
-        // Force a repaint to ensure styles are applied
-        this.style.display = 'none';
-        this.offsetHeight; // Trigger reflow
-        this.style.display = '';
       });
     });
     
