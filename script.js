@@ -79,6 +79,9 @@ function wireHomepageCategoriesToDuva() {
 
 // 2) PRODUCTS PAGE: wait for DUVA public API, then "click" the checkbox through DUVA
 function applyPendingCategoryWithDuva() {
+  if (window.__duvaCategoryApplied) return;
+  window.__duvaCategoryApplied = true;
+  
   const url = new URL(window.location.href);
   const pendingKey =
     (url.searchParams.get('category') || sessionStorage.getItem('duvaPendingCategory') || '').toLowerCase();
