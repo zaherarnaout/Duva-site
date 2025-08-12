@@ -3473,10 +3473,6 @@ footer, .footer {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   width: 60px !important;
   height: 60px !important;
-  /* Position arrows at bottom */
-  top: auto !important;
-  bottom: 20px !important;
-  transform: translateY(0) !important;
 }
 
 .w-lightbox-right {
@@ -3487,10 +3483,6 @@ footer, .footer {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   width: 60px !important;
   height: 60px !important;
-  /* Position arrows at bottom */
-  top: auto !important;
-  bottom: 20px !important;
-  transform: translateY(0) !important;
 }
 
 .w-lightbox-close {
