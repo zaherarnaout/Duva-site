@@ -3473,11 +3473,10 @@ footer, .footer {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   width: 60px !important;
   height: 60px !important;
-  position: fixed !important;
-  top: 50% !important;
-  left: 20px !important;
-  transform: translateY(-50%) !important;
-  z-index: 10000 !important;
+  /* Position arrows at bottom */
+  top: auto !important;
+  bottom: 20px !important;
+  transform: translateY(0) !important;
 }
 
 .w-lightbox-right {
@@ -3488,11 +3487,10 @@ footer, .footer {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   width: 60px !important;
   height: 60px !important;
-  position: fixed !important;
-  top: 50% !important;
-  right: 20px !important;
-  transform: translateY(-50%) !important;
-  z-index: 10000 !important;
+  /* Position arrows at bottom */
+  top: auto !important;
+  bottom: 20px !important;
+  transform: translateY(0) !important;
 }
 
 .w-lightbox-close {
@@ -3572,21 +3570,9 @@ footer, .footer {
 
 /* Responsive adjustments */
 @media screen and (max-width: 767px) {
-  .w-lightbox-left {
-    left: 10px !important;
-    width: 50px !important;
-    height: 50px !important;
-  }
-  
-  .w-lightbox-right {
-    right: 10px !important;
-    width: 50px !important;
-    height: 50px !important;
-  }
-  
   .w-lightbox-left:hover,
   .w-lightbox-right:hover {
-    transform: translateY(-50%) scale(1.05) !important;
+    transform: scale(1.05) !important;
   }
   
   .w-lightbox-thumbnail:hover {
