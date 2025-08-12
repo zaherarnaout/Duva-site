@@ -424,7 +424,7 @@ body.menu-open {
 
   opacity: 0; 
 
-  transition: all 0.2s ease; 
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 
 } 
 
@@ -953,7 +953,7 @@ position: relative;
 
 cursor: pointer; 
 
-transition: border-color 0.2s ease; 
+transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 
 } 
 
@@ -985,7 +985,7 @@ transform: translate(-50%, -60%) rotate(-45deg) scale(0);
 
 opacity: 0; 
 
-transition: all 0.2s ease; 
+transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 
 } 
 
@@ -4575,6 +4575,13 @@ ARROWS:
   left: 100%;
 }
 
+/* Ensure checkmark is visible on active state */
+.download-checkbox.active .checkmark {
+  opacity: 1 !important;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
+  z-index: 2;
+}
+
 /* 7.5. Accessories Checkmark Enhancement - Filter Checkmark Style */
 .accessory-checkbox {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -4611,6 +4618,13 @@ ARROWS:
 
 .accessory-checkbox:hover::before {
   left: 100%;
+}
+
+/* Ensure checkmark is visible on active state */
+.accessory-checkbox.active .checkmark {
+  opacity: 1 !important;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1) !important;
+  z-index: 2;
 }
 
 /* 7.6. Contact Block Enhancement - Filter Right Wrapper Style */
