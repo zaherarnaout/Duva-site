@@ -4899,28 +4899,39 @@ function initializeCategoriesParallax() {
 
   let ticking = false;
   let scrollY = 0;
+  let hasScrolled = false;
 
   function updateCategoriesParallax() {
-    // Add parallax-active class to wrapper
-    categoriesWrapper.classList.add('parallax-active');
+    // Only activate parallax after user has started scrolling
+    if (hasScrolled) {
+      // Add parallax-active class to wrapper
+      categoriesWrapper.classList.add('parallax-active');
 
-    // Update individual card parallax based on position
-    categoryCards.forEach((card, index) => {
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.top + rect.height / 2;
-      const viewportCenter = window.innerHeight / 2;
-      const distance = cardCenter - viewportCenter;
-      
-      // Apply subtle parallax based on card position
-      const parallaxOffset = distance * 0.02;
-      card.style.transform = `translateY(${parallaxOffset}px)`;
-    });
+      // Update individual card parallax based on position
+      categoryCards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.top + rect.height / 2;
+        const viewportCenter = window.innerHeight / 2;
+        const distance = cardCenter - viewportCenter;
+        
+        // Apply subtle parallax based on card position
+        const parallaxOffset = distance * 0.02;
+        card.style.transform = `translateY(${parallaxOffset}px)`;
+      });
+    }
 
     ticking = false;
   }
 
   function onCategoriesScroll() {
     scrollY = window.pageYOffset;
+    
+    // Mark that user has started scrolling
+    if (!hasScrolled && scrollY > 10) {
+      hasScrolled = true;
+      console.log('🎯 Categories parallax activated on scroll');
+    }
+    
     if (!ticking) {
       requestAnimationFrame(updateCategoriesParallax);
       ticking = true;
