@@ -5018,6 +5018,11 @@ a .flip-card-wrapper {
   transition: left 0.5s ease;
   z-index: 1;
   pointer-events: none;
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  clip-path: inset(0 0 0 0);
 }
 
 .hero-text-wrapper:hover::after {
