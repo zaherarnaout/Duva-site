@@ -4639,6 +4639,14 @@ if (typeof Webflow !== 'undefined') {
     mainTrigger.addEventListener('click', testClickHandler);
     console.log('✅ Test click handler added to main image');
 
+    // Initialize hero section parallax effects
+    initializeHeroParallax();
+    console.log('✅ Hero parallax effects initialized');
+
+    // Initialize categories parallax effects
+    initializeCategoriesParallax();
+    console.log('✅ Categories parallax effects initialized');
+
     // Wait for Webflow lightbox to be ready and add navigation
     setTimeout(() => {
       const lightbox = document.querySelector('.w-lightbox-backdrop');
@@ -4824,3 +4832,122 @@ if (typeof Webflow !== 'undefined') {
 
   console.log('✅ All critical fixes applied');
 })();
+
+/* === Hero Section Parallax Effects === */
+function initializeHeroParallax() {
+  const heroWrapper = document.querySelector('.main-page-hero-section-wrapper');
+  const heroImg = document.querySelector('.main-page-hero-section-img');
+  const textWrapper = document.querySelector('.hero-text-wrapper');
+  const logo = document.querySelector('.duva-light-logo');
+  const textElements = document.querySelectorAll('.text-block-55, .text-span-4, .text-span-5, .text-span-3, .text-block-70');
+
+  if (!heroWrapper) {
+    console.log('⚠️ Hero section not found');
+    return;
+  }
+
+  let ticking = false;
+  let scrollY = 0;
+
+  function updateParallax() {
+    // Update CSS custom property for scroll position
+    document.documentElement.style.setProperty('--scroll-y', scrollY);
+
+    // Add parallax-active class to elements
+    if (heroImg) heroImg.classList.add('parallax-active');
+    if (textWrapper) textWrapper.classList.add('parallax-active');
+    if (logo) logo.classList.add('parallax-active');
+    
+    textElements.forEach(element => {
+      element.classList.add('parallax-active');
+    });
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    scrollY = window.pageYOffset;
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+
+  // Add scroll listener
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Initial call
+  updateParallax();
+
+  console.log('🎯 Hero parallax system active');
+}
+
+/* === Categories Section Parallax Effects === */
+function initializeCategoriesParallax() {
+  const categoriesWrapper = document.querySelector('.main-page-categories-wrapper');
+  const categoryCards = document.querySelectorAll('.main-page-categories-wrapper a');
+
+  if (!categoriesWrapper) {
+    console.log('⚠️ Categories wrapper not found');
+    return;
+  }
+
+  // Set card indices for staggered animations
+  categoryCards.forEach((card, index) => {
+    card.style.setProperty('--card-index', index);
+  });
+
+  let ticking = false;
+  let scrollY = 0;
+
+  function updateCategoriesParallax() {
+    // Add parallax-active class to wrapper
+    categoriesWrapper.classList.add('parallax-active');
+
+    // Update individual card parallax based on position
+    categoryCards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const distance = cardCenter - viewportCenter;
+      
+      // Apply subtle parallax based on card position
+      const parallaxOffset = distance * 0.02;
+      card.style.transform = `translateY(${parallaxOffset}px)`;
+    });
+
+    ticking = false;
+  }
+
+  function onCategoriesScroll() {
+    scrollY = window.pageYOffset;
+    if (!ticking) {
+      requestAnimationFrame(updateCategoriesParallax);
+      ticking = true;
+    }
+  }
+
+  // Add scroll listener
+  window.addEventListener('scroll', onCategoriesScroll, { passive: true });
+
+  // Initial call
+  updateCategoriesParallax();
+
+  // Add intersection observer for entrance animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  categoryCards.forEach(card => {
+    observer.observe(card);
+  });
+
+  console.log('🎯 Categories parallax system active');
+}
