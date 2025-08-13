@@ -4752,94 +4752,156 @@ a .flip-card-wrapper {
   filter: brightness(1.1);
 }
 
-/* 9.0. Main Page Hero Enhancements */
-.main-page-hero-section-img {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Gentle gradient on image to improve text readability (left side only) */
-.main-page-hero-section-img::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.12) 28%, rgba(255,255,255,0.06) 45%, transparent 60%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Revert hero image sizing to original to avoid layout break */
+/* === Main Page Hero Section === */
 .image-23 {
-  width: 1998px; /* original width from provided CSS */
-  max-width: none;
-  height: auto;
-  object-fit: contain;
   display: block;
+  overflow: auto;
+  width: 1998px;
+  max-width: none;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--duva-light-grey);
+  border-right-color: var(--duva-light-grey);
+  border-bottom-color: var(--duva-light-grey);
+  border-left-color: var(--duva-light-grey);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  object-fit: contain;
 }
 
-/* Glass card + shimmer + subtle lift for hero text wrapper */
 .hero-text-wrapper {
-  background: rgba(255, 255, 255, 0.25);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(228, 227, 227, 0.35);
-  box-shadow: none;
-  opacity: 0.9;
-  z-index: 2; /* above gradient */
-  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  animation: heroTextEnter 0.6s ease-out 0.2s both;
-}
-
-.hero-text-wrapper:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-  border-color: var(--duva-light-grey, #F4F5F6);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
-}
-
-/* Shimmer sweep on hover only */
-.hero-text-wrapper { position: absolute; overflow: hidden; }
-.hero-text-wrapper::before {
-  content: '';
   position: absolute;
-  inset: 0;
-  left: -100%;
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.12), transparent);
-  transition: left 0.5s ease;
-  pointer-events: none;
-  z-index: 1;
+  inset: 5% 55% 5% 5%;
+  display: flex;
+  overflow: hidden;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--duva-border-shadow);
+  border-right-color: var(--duva-border-shadow);
+  border-bottom-color: var(--duva-border-shadow);
+  border-left-color: var(--duva-border-shadow);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  backdrop-filter: blur(3px);
 }
-.hero-text-wrapper:hover::before { left: 100%; }
 
-@keyframes heroTextEnter {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Mobile tweaks */
-@media screen and (max-width: 767px) {
-  .main-page-hero-section-wrapper { height: 560px; }
-  .main-page-hero-section-img::after {
-    background: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.18) 35%, transparent 65%);
+@media screen and (max-width: 991px) {
+  .hero-text-wrapper {
+    width: 400px;
+    height: 400px;
+    padding-bottom: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0px;
   }
 }
 
-/* 9.1. Hero Text Logo */
+@media screen and (max-width: 767px) {
+  .hero-text-wrapper {
+    display: none;
+    padding-top: 0px;
+  }
+}
+
 .duva-light-logo {
   display: block;
-  width: auto;
+  width: 350px;
   margin-top: 10px;
   margin-right: 20px;
-  align-self: flex-end;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  margin-left: 20px;
+  align-self: flex-start;
+  text-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px;
 }
 
-.hero-text-wrapper:hover .duva-light-logo {
-  transform: scale(1.03);
-  filter: brightness(1.05) contrast(1.05);
+@media screen and (max-width: 991px) {
+  .duva-light-logo {
+    width: 200px;
+    max-width: 90%;
+  }
 }
 
-.hero-text-wrapper { position: absolute; overflow: hidden; }
+.text-block-55 {
+  align-self: center;
+  font-family: Gotham;
+  color: var(--duva-d-grey);
+  font-size: 90px;
+  line-height: 100px;
+  font-weight: 700;
+}
+
+.text-span-4 {
+  color: var(--duva-light-grey);
+  font-size: 85px;
+  line-height: 90px;
+  letter-spacing: 3px;
+}
+
+@media screen and (max-width: 991px) {
+  .text-block-55 {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 14px;
+    line-height: 15px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .text-span-4 {
+    font-size: 50px;
+    line-height: 50px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-block-55 {
+    display: none;
+    font-size: 12px;
+  }
+}
+
+.text-span-5 {
+  color: var(--duva-light-grey);
+  font-size: 85px;
+  line-height: 90px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-decoration-color: var(--duva-red);
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+  text-decoration-skip-ink: auto;
+}
+
+@media screen and (max-width: 991px) {
+  .text-span-5 {
+    font-size: 40px;
+    line-height: 60px;
+  }
+}
+
+.text-block-70 {
+  margin-left: 20px;
+  font-family: Gotham;
+  color: var(--duva-light-grey);
+  font-size: 55px;
+  line-height: 55px;
+  font-weight: 200;
+}
+
+@media screen and (max-width: 991px) {
+  .text-block-70 {
+    font-size: 20px;
+    line-height: 20px;
+  }
+}
 
 /* === Force Visibility for Critical Sections (Initial State Only) === */
 .product-info-block:not(.dropdown-wrapper):not(.dropdown-field):not(.dropdown-options):not(.dropdown-option),
