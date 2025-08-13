@@ -3244,7 +3244,7 @@ footer, .footer {
   overflow: hidden;
   will-change: transform;
   animation: categoryCardFloat 4s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.2s);
+  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
 }
 
 /* Floating animation for category cards */
@@ -3271,7 +3271,7 @@ footer, .footer {
 /* Staggered entrance animation for category cards */
 .main-page-categories-wrapper a {
   animation: categoryCardEnter 0.8s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.1s + 0.5s);
+  animation-delay: calc(var(--card-index, 0) * 0.1s + 0.5s + var(--random-delay, 0s));
 }
 
 @keyframes categoryCardEnter {
@@ -3330,7 +3330,7 @@ footer, .footer {
 .main-page-categories-wrapper .text-block-53 {
   transition: all 0.3s ease;
   animation: textGlow 8s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.4s);
+  animation-delay: calc(var(--card-index, 0) * 0.4s + var(--random-delay, 0s));
 }
 
 @keyframes textGlow {
@@ -3363,7 +3363,7 @@ footer, .footer {
 .main-page-categories-wrapper .image-29 {
   transition: transform 0.3s ease, filter 0.3s ease;
   animation: imageBreathing 6s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.3s);
+  animation-delay: calc(var(--card-index, 0) * 0.3s + var(--random-delay, 0s));
 }
 
 @keyframes imageBreathing {
