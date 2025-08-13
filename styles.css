@@ -3257,9 +3257,15 @@ footer, .footer {
   }
 }
 
-/* Parallax effect for category cards */
+/* Parallax effect for category cards - only active on scroll */
 .main-page-categories-wrapper.parallax-active a {
   transform: translateY(calc(var(--scroll-y, 0) * -0.08px));
+}
+
+/* Initial state - no parallax until scroll starts */
+.main-page-categories-wrapper a {
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
 }
 
 /* Staggered entrance animation for category cards */
@@ -4841,9 +4847,24 @@ a .flip-card-wrapper {
 
 /* === Main Page Hero Section === */
 .main-page-hero-section-wrapper {
+  width: 100%;
+  height: 700px;
+  max-width: 2000px;
+  margin: 20px auto;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: var(--border-divider-light);
+  border-right-color: var(--border-divider-light);
+  border-bottom-color: var(--border-divider-light);
+  border-left-color: var(--border-divider-light);
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  background-color: var(--duva-white);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4852,7 +4873,7 @@ a .flip-card-wrapper {
 .main-page-hero-section-img {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
