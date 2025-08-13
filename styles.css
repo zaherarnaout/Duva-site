@@ -4965,11 +4965,12 @@ a .flip-card-wrapper {
   position: absolute;
   inset: 5% 52% 5% 5%;
   display: flex;
-  overflow: visible;
+  overflow: hidden;
   flex-flow: column;
   justify-content: center;
   align-items: flex-start;
   gap: 12px;
+  padding: 20px;
   border-style: solid;
   border-width: 1px;
   border-top-color: var(--duva-border-shadow);
@@ -5018,11 +5019,6 @@ a .flip-card-wrapper {
   transition: left 0.5s ease;
   z-index: 1;
   pointer-events: none;
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
-  clip-path: inset(0 0 0 0);
 }
 
 .hero-text-wrapper:hover::after {
