@@ -4928,11 +4928,13 @@ a .flip-card-wrapper {
   transition: all 0.3s ease;
   will-change: transform;
   z-index: 10;
+  transform: scale(0.8);
+  transform-origin: left center;
 }
 
 /* Parallax effect for text wrapper */
 .hero-text-wrapper.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.2px));
+  transform: scale(0.8) translateY(calc(var(--scroll-y, 0) * -0.2px));
 }
 
 /* Hover effect for text wrapper */
@@ -4940,7 +4942,7 @@ a .flip-card-wrapper {
   backdrop-filter: blur(6px);
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  transform: scale(0.8) translateY(-2px);
 }
 
 /* Shimmer effect for hero text wrapper */
@@ -4969,11 +4971,11 @@ a .flip-card-wrapper {
 @keyframes heroTextEnter {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: scale(0.8) translateY(30px) scale(0.95);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(0.8) translateY(0) scale(1);
   }
 }
 
