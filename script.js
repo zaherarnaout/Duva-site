@@ -4892,9 +4892,13 @@ function initializeCategoriesParallax() {
     return;
   }
 
-  // Set card indices for staggered animations
+  // Set card indices and random delays for staggered animations
   categoryCards.forEach((card, index) => {
     card.style.setProperty('--card-index', index);
+    // Generate random delay between 0 and 2 seconds
+    const randomDelay = Math.random() * 2;
+    card.style.setProperty('--random-delay', randomDelay);
+    console.log(`🎲 Card ${index + 1} random delay: ${randomDelay.toFixed(2)}s`);
   });
 
   let ticking = false;
@@ -4907,16 +4911,20 @@ function initializeCategoriesParallax() {
       // Add parallax-active class to wrapper
       categoriesWrapper.classList.add('parallax-active');
 
-      // Update individual card parallax based on position
+      // Update individual card parallax based on position with random delays
       categoryCards.forEach((card, index) => {
         const rect = card.getBoundingClientRect();
         const cardCenter = rect.top + rect.height / 2;
         const viewportCenter = window.innerHeight / 2;
         const distance = cardCenter - viewportCenter;
         
-        // Apply subtle parallax based on card position
+        // Get the random delay for this card
+        const randomDelay = parseFloat(card.style.getPropertyValue('--random-delay') || '0');
+        
+        // Apply subtle parallax based on card position with random delay
         const parallaxOffset = distance * 0.02;
-        card.style.transform = `translateY(${parallaxOffset}px)`;
+        const delayedOffset = parallaxOffset * (1 + Math.sin(scrollY * 0.01 + randomDelay) * 0.1);
+        card.style.transform = `translateY(${delayedOffset}px)`;
       });
     }
 
