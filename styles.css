@@ -4835,6 +4835,7 @@ a .flip-card-wrapper {
   font-size: 90px;
   line-height: 100px;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 .text-span-4 {
@@ -4870,7 +4871,7 @@ a .flip-card-wrapper {
 
 .text-span-5 {
   color: var(--duva-light-grey);
-  font-size: 85px;
+  font-size: 80px;
   line-height: 90px;
   font-weight: 500;
   letter-spacing: 3px;
@@ -4887,13 +4888,33 @@ a .flip-card-wrapper {
   }
 }
 
+.text-span-3 {
+  color: var(--duva-light-grey);
+  font-size: 80px;
+  line-height: 90px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  text-decoration-line: overline;
+  text-decoration-style: initial;
+  text-decoration-color: var(--duva-red);
+  text-decoration-thickness: 2px;
+}
+
+@media screen and (max-width: 991px) {
+  .text-span-3 {
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
+
 .text-block-70 {
-  margin-left: 20px;
   font-family: Gotham;
   color: var(--duva-light-grey);
-  font-size: 55px;
+  font-size: 50px;
   line-height: 55px;
   font-weight: 200;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 991px) {
