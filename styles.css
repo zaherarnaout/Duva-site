@@ -3232,10 +3232,51 @@ footer, .footer {
 
 /* === Main Page Categories Hover Animation === */
 /* Hover effects for category links - preserves Webflow styling */
+.main-page-categories-wrapper {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
 .main-page-categories-wrapper a {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  animation: categoryCardFloat 4s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.2s);
+}
+
+/* Floating animation for category cards */
+@keyframes categoryCardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Parallax effect for category cards */
+.main-page-categories-wrapper.parallax-active a {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.08px));
+}
+
+/* Staggered entrance animation for category cards */
+.main-page-categories-wrapper a {
+  animation: categoryCardEnter 0.8s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.1s + 0.5s);
+}
+
+@keyframes categoryCardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .main-page-categories-wrapper a::before {
@@ -3269,8 +3310,30 @@ footer, .footer {
 .main-page-categories-wrapper a:hover .text-block-52,
 .main-page-categories-wrapper a:hover .text-block-53 {
   color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.05);
+  transform: scale(1.05) translateY(-2px);
   transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+}
+
+/* Text subtle glow animation */
+.main-page-categories-wrapper .text-block-48,
+.main-page-categories-wrapper .text-block-49,
+.main-page-categories-wrapper .text-block-50,
+.main-page-categories-wrapper .text-block-51,
+.main-page-categories-wrapper .text-block-52,
+.main-page-categories-wrapper .text-block-53 {
+  transition: all 0.3s ease;
+  animation: textGlow 8s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.4s);
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 0 rgba(192, 57, 43, 0);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(192, 57, 43, 0.1);
+  }
 }
 
 /* Image hover effects - preserves existing positioning */
@@ -3280,8 +3343,32 @@ footer, .footer {
 .main-page-categories-wrapper a:hover .image-27,
 .main-page-categories-wrapper a:hover .image-28,
 .main-page-categories-wrapper a:hover .image-29 {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(2deg);
   transition: transform 0.3s ease;
+  filter: brightness(1.05) contrast(1.05);
+}
+
+/* Subtle image breathing animation */
+.main-page-categories-wrapper .image-24,
+.main-page-categories-wrapper .image-25,
+.main-page-categories-wrapper .image-26,
+.main-page-categories-wrapper .image-27,
+.main-page-categories-wrapper .image-28,
+.main-page-categories-wrapper .image-29 {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  animation: imageBreathing 6s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.3s);
+}
+
+@keyframes imageBreathing {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(1.03) contrast(1.02);
+  }
 }
 
 /* Responsive hover adjustments */
@@ -4753,11 +4840,28 @@ a .flip-card-wrapper {
 }
 
 /* === Main Page Hero Section === */
+.main-page-hero-section-wrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-page-hero-section-img {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .image-23 {
   display: block;
-  overflow: auto;
   width: 1998px;
   max-width: none;
+  height: 100%;
+  object-fit: cover;
   border-style: solid;
   border-width: 1px;
   border-top-color: var(--duva-light-grey);
@@ -4768,7 +4872,14 @@ a .flip-card-wrapper {
   border-top-right-radius: var(--border-8px);
   border-bottom-left-radius: var(--border-8px);
   border-bottom-right-radius: var(--border-8px);
-  object-fit: contain;
+  transform: scale(1.1);
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+/* Parallax effect for background image */
+.main-page-hero-section-img.parallax-active .image-23 {
+  transform: scale(1.1) translateY(calc(var(--scroll-y, 0) * 0.3px));
 }
 
 .hero-text-wrapper {
@@ -4791,6 +4902,40 @@ a .flip-card-wrapper {
   border-bottom-left-radius: var(--border-8px);
   border-bottom-right-radius: var(--border-8px);
   backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  will-change: transform;
+  z-index: 10;
+}
+
+/* Parallax effect for text wrapper */
+.hero-text-wrapper.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.2px));
+}
+
+/* Hover effect for text wrapper */
+.hero-text-wrapper:hover {
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Text entrance animations */
+.hero-text-wrapper {
+  animation: heroTextEnter 1.2s ease-out 0.3s both;
+}
+
+@keyframes heroTextEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media screen and (max-width: 991px) {
@@ -4819,6 +4964,23 @@ a .flip-card-wrapper {
   margin-left: 20px;
   align-self: flex-start;
   text-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px;
+  animation: logoFloat 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Logo floating animation */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Parallax effect for logo */
+.duva-light-logo.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.1px));
 }
 
 @media screen and (max-width: 991px) {
@@ -4836,6 +4998,25 @@ a .flip-card-wrapper {
   line-height: 100px;
   font-weight: 700;
   text-transform: uppercase;
+  animation: textSlideIn 1s ease-out 0.6s both;
+  will-change: transform, opacity;
+}
+
+/* Text slide-in animation */
+@keyframes textSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Parallax effect for main text */
+.text-block-55.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.15px));
 }
 
 .text-span-4 {
@@ -4843,6 +5024,25 @@ a .flip-card-wrapper {
   font-size: 85px;
   line-height: 90px;
   letter-spacing: 3px;
+  animation: textFadeIn 1s ease-out 0.8s both;
+  will-change: opacity, transform;
+}
+
+/* Text fade-in animation */
+@keyframes textFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Parallax effect for text spans */
+.text-span-4.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.12px));
 }
 
 @media screen and (max-width: 991px) {
@@ -4879,6 +5079,13 @@ a .flip-card-wrapper {
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
   text-decoration-skip-ink: auto;
+  animation: textFadeIn 1s ease-out 1s both;
+  will-change: opacity, transform;
+}
+
+/* Parallax effect for text span 5 */
+.text-span-5.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.12px));
 }
 
 @media screen and (max-width: 991px) {
@@ -4898,6 +5105,13 @@ a .flip-card-wrapper {
   text-decoration-style: initial;
   text-decoration-color: var(--duva-red);
   text-decoration-thickness: 2px;
+  animation: textFadeIn 1s ease-out 1.2s both;
+  will-change: opacity, transform;
+}
+
+/* Parallax effect for text span 3 */
+.text-span-3.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.12px));
 }
 
 @media screen and (max-width: 991px) {
@@ -4915,6 +5129,25 @@ a .flip-card-wrapper {
   font-weight: 200;
   letter-spacing: 1px;
   text-transform: uppercase;
+  animation: textSlideUp 1s ease-out 1.4s both;
+  will-change: opacity, transform;
+}
+
+/* Text slide-up animation */
+@keyframes textSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Parallax effect for subtitle */
+.text-block-70.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.1px));
 }
 
 @media screen and (max-width: 991px) {
