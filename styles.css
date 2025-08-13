@@ -3257,9 +3257,10 @@ footer, .footer {
   }
 }
 
-/* Parallax effect for category cards - only active on scroll */
+/* Parallax effect for category cards - only active on scroll with increased delay */
 .main-page-categories-wrapper.parallax-active a {
   transform: translateY(calc(var(--scroll-y, 0) * -0.08px));
+  transition-delay: calc(var(--card-index, 0) * 0.2s);
 }
 
 /* Initial state - no parallax until scroll starts */
@@ -3418,6 +3419,63 @@ footer, .footer {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Product cards parallax and animation effects */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  will-change: transform;
+  animation: productCardFloat 5s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.3s + var(--random-delay, 0s));
+}
+
+/* Floating animation for product cards */
+@keyframes productCardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Parallax effect for product cards - only active on scroll */
+.collection-item.parallax-active,
+.product-card.parallax-active,
+.related-card.parallax-active,
+.flip-card-wrapper.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.06px));
+}
+
+/* Initial state - no parallax until scroll starts */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  transform: translateY(0);
+  transition: transform 0.4s ease-out;
+}
+
+/* Staggered entrance animation for product cards */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  animation: productCardEnter 1s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.15s + 0.8s + var(--random-delay, 0s));
+}
+
+@keyframes productCardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Shimmer animation on hover */
