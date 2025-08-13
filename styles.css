@@ -4943,6 +4943,24 @@ a .flip-card-wrapper {
   transform: translateY(-2px);
 }
 
+/* Shimmer effect for hero text wrapper */
+.hero-text-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-text-wrapper:hover::after {
+  left: 100%;
+}
+
 /* Text entrance animations */
 .hero-text-wrapper {
   animation: heroTextEnter 1.2s ease-out 0.3s both;
