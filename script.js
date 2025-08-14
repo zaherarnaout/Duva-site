@@ -5062,3 +5062,60 @@ function initializeProductCardsParallax() {
 
   console.log('🎯 Product cards parallax system active');
 }
+
+// === Vase Section Animations ===
+function initializeVaseSectionAnimations() {
+  const vaseSection = document.querySelector('.hero-text-wrapper.vase-section');
+  const vaseText = document.querySelector('.text-block-55.vase2');
+  
+  if (!vaseSection || !vaseText) return;
+  
+  // Add scroll-triggered parallax effect
+  const handleVaseScroll = () => {
+    const scrollY = window.scrollY;
+    const rect = vaseSection.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    
+    if (isVisible) {
+      vaseSection.style.setProperty('--scroll-y', scrollY);
+      vaseSection.classList.add('parallax-active');
+      
+      // Add scroll-active class for glow effect
+      if (scrollY > 100) {
+        vaseSection.classList.add('scroll-active');
+      } else {
+        vaseSection.classList.remove('scroll-active');
+      }
+    }
+  };
+  
+  // Add intersection observer for entrance animations
+  const vaseObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, {
+    threshold: 0.3,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  vaseObserver.observe(vaseSection);
+  
+  // Add scroll event listener
+  window.addEventListener('scroll', handleVaseScroll);
+  
+  // Initial call
+  handleVaseScroll();
+}
+
+// Initialize vase section animations when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initializeVaseSectionAnimations();
+});
+
+// Also initialize on Webflow ready
+Webflow.push(() => {
+  initializeVaseSectionAnimations();
+});
