@@ -5021,8 +5021,18 @@ a .flip-card-wrapper {
   pointer-events: none;
 }
 
+/* Disable shimmer for vase section */
+.hero-text-wrapper.vase-section::after {
+  display: none;
+}
+
 .hero-text-wrapper:hover::after {
   left: 100%;
+}
+
+/* Disable hover shimmer for vase section */
+.hero-text-wrapper.vase-section:hover::after {
+  left: -100%;
 }
 
 /* Text entrance animations */
