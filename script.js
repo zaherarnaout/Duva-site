@@ -5193,8 +5193,8 @@ function initializeThemeToggle() {
     }
     
     // Update logo visibility if logos exist
-    const darkLogo = document.querySelector('.image-2'); // Dark logo
-    const lightLogo = document.querySelector('.image-14'); // Light logo
+    const darkLogo = document.getElementById('duva-logo-dark'); // Dark logo
+    const lightLogo = document.getElementById('duva-logo-light'); // Light logo
     
     if (darkLogo && lightLogo) {
       if (theme === 'dark') {
