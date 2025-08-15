@@ -4269,6 +4269,40 @@ a .flip-card-wrapper {
   width: 100%;
 }
 
+/* === Logo Theme Functionality === */
+#duva-logo-dark, #duva-logo-light {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  vertical-align: middle;
+  object-fit: contain;
+  margin-left: 12px;
+}
+
+#duva-logo-dark:hover, #duva-logo-light:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Logo visibility based on theme */
+[data-theme="light"] #duva-logo-dark,
+[data-theme="dark"] #duva-logo-light {
+  display: block;
+}
+
+[data-theme="light"] #duva-logo-light,
+[data-theme="dark"] #duva-logo-dark {
+  display: none;
+}
+
+/* Default state (light mode) */
+:not([data-theme]) #duva-logo-dark {
+  display: block;
+}
+
+:not([data-theme]) #duva-logo-light {
+  display: none;
+}
+
 /* 3. Search Input Enhancement - Filter Checkmark Style */
 .search-input-style {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -4375,6 +4409,10 @@ a .flip-card-wrapper {
 }
 
 /* Active States - Light Mode (Sun Active) */
+.lang-toggle-switch[data-theme="light"] {
+  background-color: var(--duva-light-grey, #f4f5f6);
+}
+
 .lang-toggle-switch[data-theme="light"] .theme-icon .sun-d-icon {
   filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
   transform: scale(1.1);
@@ -4386,6 +4424,10 @@ a .flip-card-wrapper {
 }
 
 /* Active States - Dark Mode (Moon Active) */
+.lang-toggle-switch[data-theme="dark"] {
+  background-color: #212121;
+}
+
 .lang-toggle-switch[data-theme="dark"] .theme-icon .moon-d-icon {
   filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
   transform: scale(1.1);
@@ -4397,6 +4439,10 @@ a .flip-card-wrapper {
 }
 
 /* Default State (Light Mode) */
+.lang-toggle-switch:not([data-theme]) {
+  background-color: var(--duva-light-grey, #f4f5f6);
+}
+
 .lang-toggle-switch:not([data-theme]) .theme-icon .sun-d-icon {
   filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
   transform: scale(1.1);
