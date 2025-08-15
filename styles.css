@@ -4284,8 +4284,21 @@ a .flip-card-wrapper {
   filter: brightness(1.1) contrast(1.1);
 }
 
-/* Logo underline - applied to wrapper when any logo is hovered */
-.duva-logo-wrapper:hover::after {
+/* Individual logo underlines */
+#duva-logo-dark::after, #duva-logo-light::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+#duva-logo-dark:hover::after, #duva-logo-light:hover::after {
   width: 100%;
 }
 
