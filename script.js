@@ -5233,8 +5233,14 @@ function initializeNewsletterSubscription() {
   if (!emailInput) {
     emailInput = document.querySelector('.div-block-19 input[type="email"]');
   }
+  if (!emailInput) {
+    emailInput = document.querySelector('.text-field-3');
+  }
   if (!subscribeButton) {
     subscribeButton = document.querySelector('.div-block-19 button[type="submit"]');
+  }
+  if (!subscribeButton) {
+    subscribeButton = document.querySelector('.submit-button-2');
   }
   
   // Additional fallbacks
