@@ -5,13 +5,43 @@
   box-sizing: border-box;
 }
 
+/* === Theme Variables === */
+:root {
+  /* Light theme (default) */
+  --duva-bg-primary: #F4F5F6;
+  --duva-bg-secondary: #ffffff;
+  --duva-bg-tertiary: #f8f8f8;
+  --duva-text-primary: #212121;
+  --duva-text-secondary: #666666;
+  --duva-text-tertiary: #888888;
+  --duva-border-primary: #E4E3E3;
+  --duva-border-secondary: #D1D1D1;
+  --duva-shadow: rgba(0, 0, 0, 0.1);
+  --duva-overlay: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] {
+  /* Dark theme */
+  --duva-bg-primary: #212121;
+  --duva-bg-secondary: #2a2a2a;
+  --duva-bg-tertiary: #333333;
+  --duva-text-primary: #F4F5F6;
+  --duva-text-secondary: #D1D1D1;
+  --duva-text-tertiary: #999999;
+  --duva-border-primary: #C0392B;
+  --duva-border-secondary: #333333;
+  --duva-shadow: rgba(0, 0, 0, 0.3);
+  --duva-overlay: rgba(0, 0, 0, 0.4);
+}
+
 html, body {
   width: 100%;
   min-width: 0;
   margin: 0;
   padding: 0;
-  background: #fff;
+  background: var(--duva-bg-primary);
   font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease;
 }
 
 /* === Menu Panel Functionality === */
@@ -4297,6 +4327,7 @@ a .flip-card-wrapper {
 /* 4. Theme Toggle Enhancement */
 .lang-toggle-switch {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
 }
 
 .lang-toggle-switch:hover {
@@ -4305,16 +4336,75 @@ a .flip-card-wrapper {
 
 .lang-toggle-switch .lang-en {
   transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
 .lang-toggle-switch .lang-en:hover {
   transform: rotate(15deg);
-  color: var(--duva-red, #C0392B);
 }
 
-.lang-toggle-switch .lang-en.active {
-  color: var(--duva-red, #C0392B);
+/* Theme Icon Button Functionality */
+.lang-toggle-switch .theme-icon {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-toggle-switch .theme-icon:hover {
+  background-color: rgba(192, 57, 43, 0.1);
   transform: scale(1.1);
+}
+
+/* Sun Icon States */
+.lang-toggle-switch .theme-icon .sun-d-icon {
+  transition: all 0.3s ease;
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* Moon Icon States */
+.lang-toggle-switch .theme-icon .moon-d-icon {
+  transition: all 0.3s ease;
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* Active States - Light Mode (Sun Active) */
+.lang-toggle-switch[data-theme="light"] .theme-icon .sun-d-icon {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
+  transform: scale(1.1);
+}
+
+.lang-toggle-switch[data-theme="light"] .theme-icon .moon-d-icon {
+  filter: grayscale(1);
+  opacity: 0.4;
+}
+
+/* Active States - Dark Mode (Moon Active) */
+.lang-toggle-switch[data-theme="dark"] .theme-icon .moon-d-icon {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
+  transform: scale(1.1);
+}
+
+.lang-toggle-switch[data-theme="dark"] .theme-icon .sun-d-icon {
+  filter: grayscale(1);
+  opacity: 0.4;
+}
+
+/* Default State (Light Mode) */
+.lang-toggle-switch:not([data-theme]) .theme-icon .sun-d-icon {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(7482%) hue-rotate(357deg) brightness(89%) contrast(119%);
+  transform: scale(1.1);
+}
+
+.lang-toggle-switch:not([data-theme]) .theme-icon .moon-d-icon {
+  filter: grayscale(1);
+  opacity: 0.4;
 }
 
 /* 5. Menu Tab Enhancement - Filter Apply Button Style */
