@@ -4276,11 +4276,29 @@ a .flip-card-wrapper {
   vertical-align: middle;
   object-fit: contain;
   margin-left: 12px;
+  position: relative;
 }
 
 #duva-logo-dark:hover, #duva-logo-light:hover {
   transform: translateY(-2px);
   filter: brightness(1.1) contrast(1.1);
+}
+
+/* Logo underline for individual logos */
+#duva-logo-dark::after, #duva-logo-light::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--duva-red, #C0392B);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+#duva-logo-dark:hover::after, #duva-logo-light:hover::after {
+  width: 100%;
 }
 
 /* Logo visibility based on theme */
@@ -4375,6 +4393,12 @@ a .flip-card-wrapper {
 }
 
 .lang-toggle-switch .lang-en:hover {
+  transform: rotate(15deg);
+}
+
+/* Theme icon rotation animation */
+.lang-toggle-switch .theme-icon:hover .sun-d-icon,
+.lang-toggle-switch .theme-icon:hover .moon-d-icon {
   transform: rotate(15deg);
 }
 
