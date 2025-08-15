@@ -5700,57 +5700,16 @@ a .flip-card-wrapper {
   max-width: 500px;
 }
 
-/* Webflow form input styling */
-.div-block-19 input[type="email"] {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--duva-light-grey, #F4F5F6);
-  font-family: Gotham, Arial, sans-serif;
-  font-size: 16px;
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  transition: all 0.3s ease;
+/* Webflow form input styling - keeping original Webflow styles */
+.div-block-19 input[type="email"],
+.text-field-3 {
+  /* Keep original Webflow styling - no modifications */
 }
 
-.div-block-19 input[type="email"]::placeholder {
-  color: var(--duva-mid-grey, #D1D1D1);
-  opacity: 1;
-}
-
-.div-block-19 input[type="email"]:focus {
-  background-color: rgba(192, 57, 43, 0.05);
-}
-
-.div-block-19 input[type="email"]:invalid {
-  border: 1px solid var(--duva-red, #C0392B);
-}
-
-/* Webflow submit button styling */
-.div-block-19 button[type="submit"] {
-  background-color: var(--duva-red, #C0392B);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-family: Gotham, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.div-block-19 button[type="submit"]:hover {
-  background-color: #a03124;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3);
-}
-
-.div-block-19 button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+/* Webflow submit button styling - keeping original Webflow styles */
+.div-block-19 button[type="submit"],
+.submit-button-2 {
+  /* Keep original Webflow styling - no modifications */
 }
 
 /* Newsletter success/error messages */
