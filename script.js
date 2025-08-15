@@ -5070,7 +5070,11 @@ function initializeVaseSectionAnimations() {
   
   if (!vaseSection || !vaseText) return;
   
-  // Add scroll-triggered parallax effect
+  // Initially hide the text
+  vaseText.style.opacity = '0';
+  vaseText.style.transform = 'translateY(20px) translateY(5%)';
+  
+  // Add scroll-triggered text appearance
   const handleVaseScroll = () => {
     const scrollY = window.scrollY;
     const rect = vaseSection.getBoundingClientRect();
@@ -5080,11 +5084,16 @@ function initializeVaseSectionAnimations() {
       vaseSection.style.setProperty('--scroll-y', scrollY);
       vaseSection.classList.add('parallax-active');
       
-      // Add scroll-active class for glow effect
-      if (scrollY > 100) {
+      // Show text on scroll
+      if (scrollY > 50) {
         vaseSection.classList.add('scroll-active');
+        vaseText.style.opacity = '1';
+        vaseText.style.transform = 'translateY(0) translateY(5%)';
+        vaseText.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
       } else {
         vaseSection.classList.remove('scroll-active');
+        vaseText.style.opacity = '0';
+        vaseText.style.transform = 'translateY(20px) translateY(5%)';
       }
     }
   };
