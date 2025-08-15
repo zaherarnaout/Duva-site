@@ -5218,4 +5218,121 @@ document.addEventListener('DOMContentLoaded', () => {
 // Also initialize on Webflow ready
 Webflow.push(() => {
   initializeThemeToggle();
+  initializeNewsletterSubscription();
 });
+
+/* === Newsletter Subscription Functionality === */
+function initializeNewsletterSubscription() {
+  console.log('📧 Initializing newsletter subscription functionality...');
+  
+  // Get newsletter elements - try multiple selectors for flexibility
+  let emailInput = document.getElementById('newsletter-email');
+  let subscribeButton = document.getElementById('newsletter-subscribe');
+  
+  // Fallback selectors for Webflow form structure
+  if (!emailInput) {
+    emailInput = document.querySelector('.div-block-19 input[type="email"]');
+  }
+  if (!subscribeButton) {
+    subscribeButton = document.querySelector('.div-block-19 button[type="submit"]');
+  }
+  
+  // Additional fallbacks
+  if (!emailInput) {
+    emailInput = document.querySelector('input[type="email"]');
+  }
+  if (!subscribeButton) {
+    subscribeButton = document.querySelector('.subscribe-now, button[type="submit"]');
+  }
+  
+  if (!emailInput || !subscribeButton) {
+    console.log('⚠️ Newsletter elements not found - please ensure form elements are properly set up');
+    return;
+  }
+  
+  // Subscribe button click handler
+  subscribeButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    handleNewsletterSubscription();
+  });
+  
+  // Enter key handler for email input
+  emailInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleNewsletterSubscription();
+    }
+  });
+  
+  function handleNewsletterSubscription() {
+    const email = emailInput.value.trim();
+    
+    // Validate email
+    if (!isValidEmail(email)) {
+      showNewsletterMessage('Please enter a valid email address', 'error');
+      return;
+    }
+    
+    // Send email
+    sendNewsletterEmail(email);
+  }
+  
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  
+  function sendNewsletterEmail(email) {
+    // Create mailto link with subject and body
+    const subject = 'New Newsletter Subscription';
+    const body = `A new user has subscribed to the DUVA newsletter.\n\nEmail: ${email}\n\nDate: ${new Date().toLocaleString()}`;
+    
+    const mailtoLink = `mailto:zaher@decolightllc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Open default email client
+    window.open(mailtoLink);
+    
+    // Show success message
+    showNewsletterMessage('Thank you for subscribing! We\'ll be in touch soon.', 'success');
+    
+    // Clear input
+    emailInput.value = '';
+    
+    console.log('📧 Newsletter subscription sent:', email);
+  }
+  
+  function showNewsletterMessage(message, type) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.newsletter-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+    
+    // Create new message element
+    const messageElement = document.createElement('div');
+    messageElement.className = `newsletter-message ${type}`;
+    messageElement.textContent = message;
+    
+    // Insert after the subscribe button
+    const subscribeContainer = subscribeButton.closest('.div-block-19');
+    if (subscribeContainer) {
+      subscribeContainer.parentNode.insertBefore(messageElement, subscribeContainer.nextSibling);
+    }
+    
+    // Show message with animation
+    setTimeout(() => {
+      messageElement.classList.add('show');
+    }, 10);
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+      messageElement.classList.remove('show');
+      setTimeout(() => {
+        if (messageElement.parentNode) {
+          messageElement.remove();
+        }
+      }, 300);
+    }, 5000);
+  }
+}
+
