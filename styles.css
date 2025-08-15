@@ -4399,6 +4399,8 @@ a .flip-card-wrapper {
   transition: all 0.3s ease;
   filter: grayscale(0);
   opacity: 1;
+  width: 18px;
+  height: 18px;
 }
 
 /* Moon Icon States */
@@ -4406,6 +4408,8 @@ a .flip-card-wrapper {
   transition: all 0.3s ease;
   filter: grayscale(0);
   opacity: 1;
+  width: 18px;
+  height: 18px;
 }
 
 /* Active States - Light Mode (Sun Active) */
