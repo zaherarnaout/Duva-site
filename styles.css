@@ -4284,20 +4284,8 @@ a .flip-card-wrapper {
   filter: brightness(1.1) contrast(1.1);
 }
 
-/* Logo underline for individual logos */
-#duva-logo-dark::after, #duva-logo-light::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--duva-red, #C0392B);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-#duva-logo-dark:hover::after, #duva-logo-light:hover::after {
+/* Logo underline - applied to wrapper when any logo is hovered */
+.duva-logo-wrapper:hover::after {
   width: 100%;
 }
 
@@ -4405,17 +4393,10 @@ a .flip-card-wrapper {
 /* Theme Icon Button Functionality */
 .lang-toggle-switch .theme-icon {
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 50%;
-  padding: 4px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.lang-toggle-switch .theme-icon:hover {
-  background-color: rgba(192, 57, 43, 0.1);
-  transform: scale(1.1);
 }
 
 /* Sun Icon States */
