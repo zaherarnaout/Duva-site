@@ -5128,3 +5128,94 @@ document.addEventListener('DOMContentLoaded', () => {
 Webflow.push(() => {
   initializeVaseSectionAnimations();
 });
+
+/* === Theme Toggle Functionality === */
+function initializeThemeToggle() {
+  console.log('🌙 Initializing theme toggle functionality...');
+  
+  // Get theme toggle elements
+  const themeToggle = document.getElementById('dark-light-mode');
+  const lightModeBtn = document.getElementById('Light-mode');
+  const darkModeBtn = document.getElementById('dark-mode');
+  
+  if (!themeToggle || !lightModeBtn || !darkModeBtn) {
+    console.log('⚠️ Theme toggle elements not found');
+    return;
+  }
+  
+  // Get saved theme preference or default to light
+  const savedTheme = localStorage.getItem('duva-theme') || 'light';
+  let currentTheme = savedTheme;
+  
+  // Apply initial theme
+  applyTheme(currentTheme);
+  
+  // Light mode button click handler
+  lightModeBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('☀️ Light mode button clicked');
+    setTheme('light');
+  });
+  
+  // Dark mode button click handler
+  darkModeBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('🌙 Dark mode button clicked');
+    setTheme('dark');
+  });
+  
+  // Function to set theme
+  function setTheme(theme) {
+    if (theme === currentTheme) return;
+    
+    currentTheme = theme;
+    applyTheme(theme);
+    localStorage.setItem('duva-theme', theme);
+    console.log(`✅ Theme changed to: ${theme}`);
+  }
+  
+  // Function to apply theme
+  function applyTheme(theme) {
+    // Update toggle switch data attribute
+    themeToggle.setAttribute('data-theme', theme);
+    
+    // Apply theme to document
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.body.classList.add('theme-dark');
+      document.body.classList.remove('theme-light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.body.classList.add('theme-light');
+      document.body.classList.remove('theme-dark');
+    }
+    
+    // Update logo visibility if logos exist
+    const darkLogo = document.querySelector('.image-2'); // Dark logo
+    const lightLogo = document.querySelector('.image-14'); // Light logo
+    
+    if (darkLogo && lightLogo) {
+      if (theme === 'dark') {
+        darkLogo.style.display = 'none';
+        lightLogo.style.display = 'block';
+      } else {
+        darkLogo.style.display = 'block';
+        lightLogo.style.display = 'none';
+      }
+    }
+  }
+  
+  console.log('✅ Theme toggle functionality initialized');
+}
+
+// Initialize theme toggle when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initializeThemeToggle();
+});
+
+// Also initialize on Webflow ready
+Webflow.push(() => {
+  initializeThemeToggle();
+});
