@@ -5465,17 +5465,19 @@ a .flip-card-wrapper {
   padding: 0;
   word-wrap: break-word;
   word-break: break-word;
+  /* Move text down 5% */
+  transform: translateY(5%);
 }
 
 /* Vase text slide-in animation */
 @keyframes vaseTextSlideIn {
   0% {
     opacity: 0;
-    transform: translateX(-50px) scale(0.9);
+    transform: translateX(-50px) scale(0.9) translateY(5%);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0) scale(1) translateY(5%);
   }
 }
 
@@ -5540,8 +5542,8 @@ a .flip-card-wrapper {
 
 /* Vase text breathing effect */
 .text-block-55.vase2 {
-  animation: vaseTextSlideIn 1.2s ease-out 0.3s both, vaseTextBreathe 4s ease-in-out infinite 1.5s;
-  animation-play-state: paused, running;
+  animation: vaseTextSlideIn 1.2s ease-out 0.3s both;
+  animation-play-state: paused;
 }
 
 @keyframes vaseTextBreathe {
@@ -5555,17 +5557,16 @@ a .flip-card-wrapper {
 
 /* Vase section scroll-triggered animations */
 .hero-text-wrapper.vase-section.scroll-active .text-block-55.vase2 {
-  animation: vaseTextGlow 2s ease-out both;
+  animation: vaseTextAppear 1s ease-out both;
 }
 
-@keyframes vaseTextGlow {
+@keyframes vaseTextAppear {
   0% {
-    text-shadow: 0 0 0 rgba(192, 57, 43, 0);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(192, 57, 43, 0.3);
+    opacity: 0;
+    transform: translateY(20px) translateY(5%);
   }
   100% {
-    text-shadow: 0 0 0 rgba(192, 57, 43, 0);
+    opacity: 1;
+    transform: translateY(0) translateY(5%);
   }
 }
