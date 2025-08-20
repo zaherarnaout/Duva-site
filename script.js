@@ -5752,40 +5752,79 @@ function createCategoriesParticles() {
 function initializeFooterContactButton() {
   console.log('📞 Initializing footer contact button...');
   
-  // Try multiple selectors to find the contact button
-  let contactBtn = document.getElementById('contact-btn');
+  // Find ALL contact buttons first
+  const allContactBtns = document.querySelectorAll('#contact-btn');
+  console.log('🔍 All contact buttons found:', allContactBtns.length);
   
-  if (!contactBtn) {
-    contactBtn = document.querySelector('.contact');
-    console.log('🔍 Trying .contact selector:', contactBtn);
+  // Find the footer contact button specifically
+  let footerContactBtn = null;
+  
+  // Look for contact button in footer sections
+  footerContactBtn = document.querySelector('.left-footer-wrapper #contact-btn') ||
+                    document.querySelector('.right-footer-wrapper #contact-btn') ||
+                    document.querySelector('.footer-section #contact-btn') ||
+                    document.querySelector('.footer-middle-wrapper #contact-btn');
+  
+  if (!footerContactBtn) {
+    // If not found in specific footer sections, look for any contact button that's not in header
+    allContactBtns.forEach(btn => {
+      const isInHeader = btn.closest('.header') || 
+                        btn.closest('.menu-panel') || 
+                        btn.closest('.navigation') ||
+                        btn.closest('.nav');
+      
+      if (!isInHeader && !footerContactBtn) {
+        footerContactBtn = btn;
+        console.log('📍 Found footer contact button:', footerContactBtn);
+      }
+    });
   }
   
-  if (!contactBtn) {
-    contactBtn = document.querySelector('a[href="#"]');
-    console.log('🔍 Trying a[href="#"] selector:', contactBtn);
-  }
-  
-  if (!contactBtn) {
-    contactBtn = document.querySelector('.footer-section #contact-btn');
-    console.log('🔍 Trying .footer-section #contact-btn selector:', contactBtn);
-  }
-  
-  if (!contactBtn) {
-    contactBtn = document.querySelector('.left-footer-wrapper #contact-btn');
-    console.log('🔍 Trying .left-footer-wrapper #contact-btn selector:', contactBtn);
-  }
-  
-  if (!contactBtn) {
-    contactBtn = document.querySelector('.right-footer-wrapper #contact-btn');
-    console.log('🔍 Trying .right-footer-wrapper #contact-btn selector:', contactBtn);
-  }
-  
-  if (!contactBtn) {
+  if (!footerContactBtn) {
     console.log('⚠️ Footer contact button not found');
-    console.log('🔍 All elements with id="contact-btn":', document.querySelectorAll('#contact-btn'));
-    console.log('🔍 All elements with class="contact":', document.querySelectorAll('.contact'));
+    console.log('🔍 All elements with id="contact-btn":', allContactBtns);
+    allContactBtns.forEach((btn, index) => {
+      console.log(`Contact button ${index + 1}:`, {
+        element: btn,
+        parent: btn.parentElement,
+        parentClass: btn.parentElement?.className,
+        text: btn.textContent
+      });
+    });
     return;
   }
+  
+  // Clone and replace the button to remove any existing event listeners
+  const newFooterContactBtn = footerContactBtn.cloneNode(true);
+  footerContactBtn.parentNode.replaceChild(newFooterContactBtn, footerContactBtn);
+  
+  // Add event listeners to the new button
+  newFooterContactBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    console.log('📞 Footer contact button clicked');
+    openContactModalFromFooter();
+  });
+  
+  newFooterContactBtn.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    console.log('📞 Footer contact button mousedown');
+    openContactModalFromFooter();
+  });
+  
+  newFooterContactBtn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    console.log('📞 Footer contact button touchstart');
+    openContactModalFromFooter();
+  });
+  
+  // Mark this button as initialized to prevent conflicts
+  newFooterContactBtn.setAttribute('data-footer-initialized', 'true');
   
   console.log('📍 Found footer contact button:', contactBtn);
   console.log('📍 Button classes:', contactBtn.className);
