@@ -5867,24 +5867,30 @@ function initializeFooterContactButton() {
     console.log('🔍 Contact overlay found:', contactOverlay);
     
     if (contactOverlay) {
-      // Store current scroll position before opening modal
-      const currentScrollY = window.scrollY;
-      const currentScrollX = window.scrollX;
+      // Store current scroll position BEFORE any DOM changes
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
       
-      // Prevent scroll to top by maintaining scroll position
+      console.log('📍 Current scroll position:', { y: currentScrollY, x: currentScrollX });
+      
+      // Store scroll position for restoration when modal closes
+      contactOverlay.setAttribute('data-scroll-y', currentScrollY);
+      contactOverlay.setAttribute('data-scroll-x', currentScrollX);
+      
+      // Prevent scroll to top by maintaining scroll position IMMEDIATELY
+      document.body.style.position = 'fixed';
       document.body.style.top = `-${currentScrollY}px`;
       document.body.style.left = `-${currentScrollX}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
       
+      // Now open the modal
       contactOverlay.classList.add('active');
       contactOverlay.style.display = 'flex';
       contactOverlay.style.opacity = '1';
       contactOverlay.style.visibility = 'visible';
       document.body.classList.add('modal-open');
       document.documentElement.classList.add('modal-open');
-      
-      // Store scroll position for restoration when modal closes
-      contactOverlay.setAttribute('data-scroll-y', currentScrollY);
-      contactOverlay.setAttribute('data-scroll-x', currentScrollX);
       
       console.log('✅ Contact modal opened from footer button at current position');
       return;
