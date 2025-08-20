@@ -6211,31 +6211,8 @@ a .flip-card-wrapper {
   position: relative;
 }
 
-/* Blinking colon effect */
-.text-block-74::after {
-  content: ':';
-  position: absolute;
-  left: 1.5ch; /* Use ch units for character-based positioning */
-  top: 0;
-  animation: colonBlink 1s infinite;
-  color: var(--duva-red, #C0392B);
-  font-weight: 600;
-  z-index: 1;
-  pointer-events: none;
-}
 
-@keyframes colonBlink {
-  0%, 50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  51%, 100% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-}
 
-/* Responsive adjustments for blinking colon */
 /* Responsive adjustments for date-time display */
 @media screen and (max-width: 1439px) {
   .date-time {
@@ -6265,11 +6242,7 @@ a .flip-card-wrapper {
     font-weight: 400;
   }
   
-  .text-block-74::after {
-    font-size: 24px;
-    line-height: 30px;
-    left: 1.3ch;
-  }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -6287,11 +6260,7 @@ a .flip-card-wrapper {
     line-height: 22px;
   }
   
-  .text-block-74::after {
-    font-size: 18px;
-    line-height: 22px;
-    left: 1.2ch;
-  }
+
 }
 
 /* === Main Page Hero Section - Luxurious Animations === */
