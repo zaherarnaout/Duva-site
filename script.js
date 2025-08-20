@@ -5695,14 +5695,14 @@ function createCategoriesParticles() {
         position: absolute;
         width: ${size}px;
         height: ${size}px;
-        background: rgba(192, 57, 43, ${Math.random() * 0.8 + 0.5});
+        background: rgba(255, 255, 255, ${Math.random() * 0.7 + 0.4});
         border-radius: 50%;
         left: ${startX}%;
         top: ${startY}%;
         animation: categoriesParticleFloat ${duration}s ease-in-out infinite;
         animation-delay: ${delay}s;
         opacity: 0;
-        box-shadow: 0 0 ${size * 2}px rgba(192, 57, 43, 0.8);
+        box-shadow: 0 0 ${size * 2}px rgba(255, 255, 255, 0.7);
         filter: blur(0.3px);
       `;
       
