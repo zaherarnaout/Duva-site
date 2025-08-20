@@ -5215,6 +5215,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeThemeToggle();
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
+  createCategoriesParticles();
 });
 
 // Also initialize on Webflow ready
@@ -5223,6 +5224,7 @@ Webflow.push(() => {
   initializeNewsletterSubscription();
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
+  createCategoriesParticles();
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5646,6 +5648,100 @@ function createHeroParticles() {
   }
   
   console.log('✨ Hero particles created');
+}
+
+// === Categories Cards Particle Effects ===
+function createCategoriesParticles() {
+  console.log('🎨 Initializing categories cards particles...');
+  
+  const categoriesCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
+  
+  if (categoriesCards.length === 0) {
+    console.log('⚠️ Categories cards not found');
+    return;
+  }
+  
+  categoriesCards.forEach((card, index) => {
+    // Create particles container for each card
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'categories-particles';
+    particlesContainer.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    `;
+    
+    // Add particles container to card
+    card.appendChild(particlesContainer);
+    
+    // Create individual particles for each card
+    for (let i = 0; i < 8; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'categories-particle';
+      
+      // Random properties for each particle
+      const size = Math.random() * 3 + 1;
+      const startX = Math.random() * 100;
+      const startY = Math.random() * 100;
+      const duration = Math.random() * 12 + 8; // Slightly faster than hero particles
+      const delay = Math.random() * 6;
+      
+      particle.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        background: rgba(128, 128, 128, ${Math.random() * 0.6 + 0.3});
+        border-radius: 50%;
+        left: ${startX}%;
+        top: ${startY}%;
+        animation: categoriesParticleFloat ${duration}s ease-in-out infinite;
+        animation-delay: ${delay}s;
+        opacity: 0;
+        box-shadow: 0 0 ${size * 1.5}px rgba(128, 128, 128, 0.6);
+        filter: blur(0.3px);
+      `;
+      
+      particlesContainer.appendChild(particle);
+    }
+  });
+  
+  // Add categories particle animation CSS
+  if (!document.querySelector('#categories-particle-styles')) {
+    const style = document.createElement('style');
+    style.id = 'categories-particle-styles';
+    style.textContent = `
+      @keyframes categoriesParticleFloat {
+        0% {
+          transform: translateY(0px) translateX(0px) scale(0.5);
+          opacity: 0;
+        }
+        15% {
+          transform: translateY(-20px) translateX(${Math.random() * 20 - 10}px) scale(1);
+          opacity: 0.6;
+        }
+        40% {
+          transform: translateY(-40px) translateX(${Math.random() * 25 - 12}px) scale(1.1);
+          opacity: 0.8;
+        }
+        70% {
+          transform: translateY(-60px) translateX(${Math.random() * 20 - 10}px) scale(1);
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateY(-80px) translateX(${Math.random() * 15 - 7}px) scale(0.5);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  console.log('✨ Categories particles created');
 }
 
 
