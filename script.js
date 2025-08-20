@@ -5762,20 +5762,28 @@ function initializeFooterContactButton() {
   // Add click handler for contact button
   contactBtn.addEventListener('click', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     console.log('📞 Footer contact button clicked');
     
-    // Trigger the same action as the menu contact button
-    const menuContactBtn = document.querySelector('.menu-tab#contact-btn');
-    if (menuContactBtn) {
-      menuContactBtn.click();
+    // Use the existing contact form functionality from contactform.js
+    const contactOverlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
+    
+    if (contactOverlay) {
+      // Open the contact modal using the same logic as contactform.js
+      contactOverlay.classList.add('active');
+      contactOverlay.style.display = 'flex';
+      contactOverlay.style.opacity = '1';
+      contactOverlay.style.visibility = 'visible';
+      document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
+      console.log('✅ Contact modal opened from footer button');
     } else {
-      // Fallback: try to find contact form or overlay
-      const contactForm = document.querySelector('.contact-form, .contact-overlay, #contact-form');
-      if (contactForm) {
-        contactForm.style.display = 'block';
-        contactForm.classList.add('active');
+      console.error('❌ Contact overlay not found');
+      // Fallback: try to use the global function from contactform.js
+      if (typeof window.openContactModal === 'function') {
+        window.openContactModal();
       } else {
-        console.log('⚠️ Contact form not found');
+        console.error('❌ Contact modal functionality not available');
       }
     }
   });
