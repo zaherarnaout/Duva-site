@@ -5485,7 +5485,7 @@ function initializeDateTimeDisplay() {
       hour12: true 
     };
     const timeString = now.toLocaleTimeString('en-US', timeOptions);
-    // Ensure we have a space between hour and minutes for the colon
+    // Format: "2 24 PM" - ensure proper spacing for colon positioning
     const formattedTime = timeString.replace(':', ' ').replace(/(\d+)\s+(\d+)/, '$1 $2');
     
     // Update the elements
@@ -5656,6 +5656,8 @@ function createCategoriesParticles() {
   
   const categoriesCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
   
+  console.log('Found categories cards:', categoriesCards.length);
+  
   if (categoriesCards.length === 0) {
     console.log('⚠️ Categories cards not found');
     return;
@@ -5688,21 +5690,21 @@ function createCategoriesParticles() {
       const size = Math.random() * 3 + 1;
       const startX = Math.random() * 100;
       const startY = Math.random() * 100;
-      const duration = Math.random() * 12 + 8; // Slightly faster than hero particles
-      const delay = Math.random() * 6;
+      const duration = Math.random() * 8 + 5; // Much faster: 5-13 seconds
+      const delay = Math.random() * 4; // Shorter delays: 0-4 seconds
       
       particle.style.cssText = `
         position: absolute;
         width: ${size}px;
         height: ${size}px;
-        background: rgba(128, 128, 128, ${Math.random() * 0.6 + 0.3});
+        background: rgba(192, 57, 43, ${Math.random() * 0.8 + 0.5});
         border-radius: 50%;
         left: ${startX}%;
         top: ${startY}%;
         animation: categoriesParticleFloat ${duration}s ease-in-out infinite;
         animation-delay: ${delay}s;
         opacity: 0;
-        box-shadow: 0 0 ${size * 1.5}px rgba(128, 128, 128, 0.6);
+        box-shadow: 0 0 ${size * 2}px rgba(192, 57, 43, 0.8);
         filter: blur(0.3px);
       `;
       
@@ -5720,20 +5722,20 @@ function createCategoriesParticles() {
           transform: translateY(0px) translateX(0px) scale(0.5);
           opacity: 0;
         }
-        15% {
-          transform: translateY(-20px) translateX(${Math.random() * 20 - 10}px) scale(1);
+        12% {
+          transform: translateY(-25px) translateX(${Math.random() * 20 - 10}px) scale(1);
+          opacity: 0.7;
+        }
+        35% {
+          transform: translateY(-50px) translateX(${Math.random() * 25 - 12}px) scale(1.1);
+          opacity: 0.9;
+        }
+        65% {
+          transform: translateY(-70px) translateX(${Math.random() * 20 - 10}px) scale(1);
           opacity: 0.6;
         }
-        40% {
-          transform: translateY(-40px) translateX(${Math.random() * 25 - 12}px) scale(1.1);
-          opacity: 0.8;
-        }
-        70% {
-          transform: translateY(-60px) translateX(${Math.random() * 20 - 10}px) scale(1);
-          opacity: 0.5;
-        }
         100% {
-          transform: translateY(-80px) translateX(${Math.random() * 15 - 7}px) scale(0.5);
+          transform: translateY(-90px) translateX(${Math.random() * 15 - 7}px) scale(0.5);
           opacity: 0;
         }
       }
