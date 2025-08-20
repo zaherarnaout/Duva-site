@@ -5752,7 +5752,18 @@ function createCategoriesParticles() {
 function initializeFooterContactButton() {
   console.log('📞 Initializing footer contact button...');
   
-  const contactBtn = document.getElementById('contact-btn');
+  // Try multiple selectors to find the contact button
+  let contactBtn = document.getElementById('contact-btn');
+  
+  if (!contactBtn) {
+    contactBtn = document.querySelector('.contact');
+    console.log('🔍 Trying .contact selector:', contactBtn);
+  }
+  
+  if (!contactBtn) {
+    contactBtn = document.querySelector('a[href="#"]');
+    console.log('🔍 Trying a[href="#"] selector:', contactBtn);
+  }
   
   if (!contactBtn) {
     console.log('⚠️ Footer contact button not found');
@@ -5760,25 +5771,46 @@ function initializeFooterContactButton() {
   }
   
   console.log('📍 Found footer contact button:', contactBtn);
+  console.log('📍 Button classes:', contactBtn.className);
+  console.log('📍 Button href:', contactBtn.href);
   
   // Remove any existing event listeners first
   const newContactBtn = contactBtn.cloneNode(true);
   contactBtn.parentNode.replaceChild(newContactBtn, contactBtn);
   
-  // Add click handler for contact button
+  // Add multiple event listeners to ensure it works
   newContactBtn.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
     console.log('📞 Footer contact button clicked');
     
-    // Use the existing contact form functionality from contactform.js
-    const contactOverlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
+    // Try to open modal immediately
+    openContactModalFromFooter();
+  });
+  
+  newContactBtn.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('📞 Footer contact button mousedown');
+    openContactModalFromFooter();
+  });
+  
+  newContactBtn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('📞 Footer contact button touchstart');
+    openContactModalFromFooter();
+  });
+  
+  function openContactModalFromFooter() {
+    console.log('🔄 Attempting to open contact modal...');
     
+    // Method 1: Try to find and open contact overlay directly
+    const contactOverlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     console.log('🔍 Contact overlay found:', contactOverlay);
     
     if (contactOverlay) {
-      // Open the contact modal using the same logic as contactform.js
       contactOverlay.classList.add('active');
       contactOverlay.style.display = 'flex';
       contactOverlay.style.opacity = '1';
@@ -5786,39 +5818,31 @@ function initializeFooterContactButton() {
       document.body.classList.add('modal-open');
       document.documentElement.classList.add('modal-open');
       console.log('✅ Contact modal opened from footer button');
-    } else {
-      console.error('❌ Contact overlay not found');
-      // Fallback: try to use the global function from contactform.js
-      if (typeof window.openContactModal === 'function') {
-        console.log('🔄 Using global openContactModal function');
-        window.openContactModal();
-      } else {
-        console.error('❌ Contact modal functionality not available');
-        // Try to navigate to contact form page
-        console.log('🔄 Attempting to navigate to contact form page');
-        window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'openContact=true';
-      }
+      return;
     }
-  });
-  
-  // Also add mousedown event as backup
-  newContactBtn.addEventListener('mousedown', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('📞 Footer contact button mousedown');
     
-    const contactOverlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
-    
-    if (contactOverlay) {
-      contactOverlay.classList.add('active');
-      contactOverlay.style.display = 'flex';
-      contactOverlay.style.opacity = '1';
-      contactOverlay.style.visibility = 'visible';
-      document.body.classList.add('modal-open');
-      document.documentElement.classList.add('modal-open');
-      console.log('✅ Contact modal opened from footer button mousedown');
+    // Method 2: Try global function from contactform.js
+    if (typeof window.openContactModal === 'function') {
+      console.log('🔄 Using global openContactModal function');
+      window.openContactModal();
+      return;
     }
-  });
+    
+    // Method 3: Try to trigger the menu contact button
+    const menuContactBtn = document.querySelector('.menu-tab#contact-btn');
+    if (menuContactBtn) {
+      console.log('🔄 Triggering menu contact button');
+      menuContactBtn.click();
+      return;
+    }
+    
+    // Method 4: Navigate to contact form page
+    console.log('🔄 Attempting to navigate to contact form page');
+    const currentUrl = window.location.href;
+    const separator = currentUrl.includes('?') ? '&' : '?';
+    const contactUrl = currentUrl + separator + 'openContact=true';
+    window.location.href = contactUrl;
+  }
   
   console.log('✅ Footer contact button initialized');
 }
