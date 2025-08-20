@@ -5485,9 +5485,12 @@ function initializeSocialMediaIcons() {
   
   console.log(`📱 Found ${socialIcons.length} social media icons`);
   
-  // Assign staggered animation delays
+  // Assign individual animation delays for each icon
   socialIcons.forEach((icon, index) => {
+    // Each icon gets its own unique delay for individual scaling
+    const delay = index * 1.2; // 1.2 seconds between each icon
     icon.style.setProperty('--icon-index', index);
+    icon.style.setProperty('--animation-delay', `${delay}s`);
     
     // Add click effect
     icon.addEventListener('click', function(e) {
