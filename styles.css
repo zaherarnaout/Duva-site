@@ -6104,3 +6104,171 @@ a .flip-card-wrapper {
     transform: scale(1.05);
   }
 }
+
+/* === Footer Wrapper Buttons - Menu Panel Style === */
+/* Right Footer Wrapper Button */
+.right-footer-wrapper a,
+.right-footer-wrapper button,
+.right-footer-wrapper [class*="button"],
+.right-footer-wrapper [class*="link"] {
+  color: var(--duva-light-grey, #F4F5F6);
+  font-family: Gotham, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+}
+
+/* Right Footer Button Shimmer Effect */
+.right-footer-wrapper a::before,
+.right-footer-wrapper button::before,
+.right-footer-wrapper [class*="button"]::before,
+.right-footer-wrapper [class*="link"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.right-footer-wrapper a:hover::before,
+.right-footer-wrapper button:hover::before,
+.right-footer-wrapper [class*="button"]:hover::before,
+.right-footer-wrapper [class*="link"]:hover::before {
+  left: 100%;
+}
+
+.right-footer-wrapper a:hover,
+.right-footer-wrapper button:hover,
+.right-footer-wrapper [class*="button"]:hover,
+.right-footer-wrapper [class*="link"]:hover {
+  color: var(--duva-red, #C0392B);
+  transform: translateX(8px) scale(1.05);
+  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+  border-color: var(--duva-red, #C0392B);
+  background: rgba(192, 57, 43, 0.05);
+}
+
+/* Left Footer Wrapper Button */
+.left-footer-wrapper a,
+.left-footer-wrapper button,
+.left-footer-wrapper [class*="button"],
+.left-footer-wrapper [class*="link"] {
+  color: var(--duva-light-grey, #F4F5F6);
+  font-family: Gotham, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+}
+
+/* Left Footer Button Shimmer Effect */
+.left-footer-wrapper a::before,
+.left-footer-wrapper button::before,
+.left-footer-wrapper [class*="button"]::before,
+.left-footer-wrapper [class*="link"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.left-footer-wrapper a:hover::before,
+.left-footer-wrapper button:hover::before,
+.left-footer-wrapper [class*="button"]:hover::before,
+.left-footer-wrapper [class*="link"]:hover::before {
+  left: 100%;
+}
+
+.left-footer-wrapper a:hover,
+.left-footer-wrapper button:hover,
+.left-footer-wrapper [class*="button"]:hover,
+.left-footer-wrapper [class*="link"]:hover {
+  color: var(--duva-red, #C0392B);
+  transform: translateX(3px) scale(1.02);
+  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
+  border-color: var(--duva-red, #C0392B);
+  background: rgba(192, 57, 43, 0.05);
+}
+
+/* Footer Button Active States */
+.right-footer-wrapper a:active,
+.right-footer-wrapper button:active,
+.right-footer-wrapper [class*="button"]:active,
+.right-footer-wrapper [class*="link"]:active,
+.left-footer-wrapper a:active,
+.left-footer-wrapper button:active,
+.left-footer-wrapper [class*="button"]:active,
+.left-footer-wrapper [class*="link"]:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Footer Button Focus States */
+.right-footer-wrapper a:focus,
+.right-footer-wrapper button:focus,
+.right-footer-wrapper [class*="button"]:focus,
+.right-footer-wrapper [class*="link"]:focus,
+.left-footer-wrapper a:focus,
+.left-footer-wrapper button:focus,
+.left-footer-wrapper [class*="button"]:focus,
+.left-footer-wrapper [class*="link"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2);
+}
+
+/* Responsive adjustments for footer buttons */
+@media screen and (max-width: 767px) {
+  .right-footer-wrapper a,
+  .right-footer-wrapper button,
+  .right-footer-wrapper [class*="button"],
+  .right-footer-wrapper [class*="link"],
+  .left-footer-wrapper a,
+  .left-footer-wrapper button,
+  .left-footer-wrapper [class*="button"],
+  .left-footer-wrapper [class*="link"] {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .right-footer-wrapper a:hover,
+  .right-footer-wrapper button:hover,
+  .right-footer-wrapper [class*="button"]:hover,
+  .right-footer-wrapper [class*="link"]:hover {
+    transform: translateX(4px) scale(1.03);
+  }
+  
+  .left-footer-wrapper a:hover,
+  .left-footer-wrapper button:hover,
+  .left-footer-wrapper [class*="button"]:hover,
+  .left-footer-wrapper [class*="link"]:hover {
+    transform: translateX(2px) scale(1.01);
+  }
+}
