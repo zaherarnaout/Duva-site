@@ -5766,7 +5766,24 @@ function initializeFooterContactButton() {
   }
   
   if (!contactBtn) {
+    contactBtn = document.querySelector('.footer-section #contact-btn');
+    console.log('🔍 Trying .footer-section #contact-btn selector:', contactBtn);
+  }
+  
+  if (!contactBtn) {
+    contactBtn = document.querySelector('.left-footer-wrapper #contact-btn');
+    console.log('🔍 Trying .left-footer-wrapper #contact-btn selector:', contactBtn);
+  }
+  
+  if (!contactBtn) {
+    contactBtn = document.querySelector('.right-footer-wrapper #contact-btn');
+    console.log('🔍 Trying .right-footer-wrapper #contact-btn selector:', contactBtn);
+  }
+  
+  if (!contactBtn) {
     console.log('⚠️ Footer contact button not found');
+    console.log('🔍 All elements with id="contact-btn":', document.querySelectorAll('#contact-btn'));
+    console.log('🔍 All elements with class="contact":', document.querySelectorAll('.contact'));
     return;
   }
   
@@ -5845,6 +5862,23 @@ function initializeFooterContactButton() {
   }
   
   console.log('✅ Footer contact button initialized');
+  
+  // Also try to initialize after a delay in case DOM isn't ready
+  setTimeout(() => {
+    console.log('🔄 Retrying footer contact button initialization after delay...');
+    const delayedContactBtn = document.getElementById('contact-btn');
+    if (delayedContactBtn && !delayedContactBtn.hasAttribute('data-footer-initialized')) {
+      console.log('📍 Found footer contact button after delay:', delayedContactBtn);
+      delayedContactBtn.setAttribute('data-footer-initialized', 'true');
+      
+      delayedContactBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('📞 Footer contact button clicked (delayed init)');
+        openContactModalFromFooter();
+      });
+    }
+  }, 2000);
 }
 
 // === Footer Logo Home Button Functionality ===
