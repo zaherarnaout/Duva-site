@@ -5891,6 +5891,43 @@ a .flip-card-wrapper {
   left: 100%;
 }
 
+/* Enhanced shimmer effect for submit button */
+#newsletter-subscribe::after,
+.submit-button-2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.8s ease;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#newsletter-subscribe:hover::after,
+.submit-button-2:hover::after {
+  left: 100%;
+  opacity: 1;
+}
+
+/* Continuous shimmer animation */
+#newsletter-subscribe:hover,
+.submit-button-2:hover {
+  animation: buttonShimmer 2s ease-in-out infinite;
+}
+
+@keyframes buttonShimmer {
+  0%, 100% {
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+  }
+}
+
 #newsletter-subscribe:hover,
 .submit-button-2:hover {
   transform: translateY(-2px);
@@ -5954,98 +5991,11 @@ a .flip-card-wrapper {
   border-color: var(--duva-red, #C0392B);
 }
 
-/* === New Footer Background Animation Approach === */
+/* === Footer Content Animation Only === */
 .footer-section {
   position: relative;
   overflow: hidden;
   background: var(--duva-d-grey, #212121);
-  /* Remove the old gradient animation */
-  /* background: linear-gradient(135deg, ...); */
-  /* background-size: 400% 400%; */
-  /* animation: footerParallax 20s ease-in-out infinite; */
-}
-
-/* New animated background elements */
-.footer-section::before,
-.footer-section::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Primary animated background */
-.footer-section::before {
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(192, 57, 43, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(192, 57, 43, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(192, 57, 43, 0.06) 0%, transparent 50%);
-  animation: footerGlow 15s ease-in-out infinite alternate;
-}
-
-/* Secondary animated background */
-.footer-section::after {
-  background: 
-    linear-gradient(45deg, transparent 30%, rgba(192, 57, 43, 0.03) 50%, transparent 70%);
-  animation: footerSweep 12s ease-in-out infinite;
-}
-
-/* Ensure footer content stays above the animated backgrounds */
-.footer-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* New footer animations */
-@keyframes footerGlow {
-  0% {
-    opacity: 0.3;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.1) rotate(180deg);
-  }
-  100% {
-    opacity: 0.3;
-    transform: scale(1) rotate(360deg);
-  }
-}
-
-@keyframes footerSweep {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(0deg);
-    opacity: 0;
-  }
-  25% {
-    opacity: 0.5;
-  }
-  50% {
-    transform: translateX(0%) translateY(0%) rotate(180deg);
-    opacity: 0.3;
-  }
-  75% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Enhanced footer hover effects */
-.footer-section:hover::before {
-  animation-duration: 8s;
-  animation-timing-function: ease-out;
-}
-
-.footer-section:hover::after {
-  animation-duration: 6s;
-  animation-timing-function: ease-out;
 }
 
 /* Footer content animations */
@@ -6064,39 +6014,253 @@ a .flip-card-wrapper {
   }
 }
 
-/* Responsive adjustments for new footer animation */
-@media screen and (max-width: 767px) {
-  .footer-section::before {
-    animation-duration: 20s;
+/* === Social Media Icons Animation === */
+/* Common social media icon selectors */
+.footer-section a[href*="facebook"],
+.footer-section a[href*="twitter"],
+.footer-section a[href*="instagram"],
+.footer-section a[href*="linkedin"],
+.footer-section a[href*="youtube"],
+.footer-section a[href*="tiktok"],
+.footer-section .social-icon,
+.footer-section .social-media-icon,
+.footer-section .facebook,
+.footer-section .twitter,
+.footer-section .instagram,
+.footer-section .linkedin,
+.footer-section .youtube,
+.footer-section .tiktok,
+.footer-section [class*="social"],
+.footer-section [class*="facebook"],
+.footer-section [class*="twitter"],
+.footer-section [class*="instagram"],
+.footer-section [class*="linkedin"],
+.footer-section [class*="youtube"],
+.footer-section [class*="tiktok"] {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Hover effects for social media icons */
+.footer-section a[href*="facebook"]:hover,
+.footer-section a[href*="twitter"]:hover,
+.footer-section a[href*="instagram"]:hover,
+.footer-section a[href*="linkedin"]:hover,
+.footer-section a[href*="youtube"]:hover,
+.footer-section a[href*="tiktok"]:hover,
+.footer-section .social-icon:hover,
+.footer-section .social-media-icon:hover,
+.footer-section .facebook:hover,
+.footer-section .twitter:hover,
+.footer-section .instagram:hover,
+.footer-section .linkedin:hover,
+.footer-section .youtube:hover,
+.footer-section .tiktok:hover,
+.footer-section [class*="social"]:hover,
+.footer-section [class*="facebook"]:hover,
+.footer-section [class*="twitter"]:hover,
+.footer-section [class*="instagram"]:hover,
+.footer-section [class*="linkedin"]:hover,
+.footer-section [class*="youtube"]:hover,
+.footer-section [class*="tiktok"]:hover {
+  transform: translateY(-3px) scale(1.1);
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Shimmer effect for social media icons */
+.footer-section a[href*="facebook"]::before,
+.footer-section a[href*="twitter"]::before,
+.footer-section a[href*="instagram"]::before,
+.footer-section a[href*="linkedin"]::before,
+.footer-section a[href*="youtube"]::before,
+.footer-section a[href*="tiktok"]::before,
+.footer-section .social-icon::before,
+.footer-section .social-media-icon::before,
+.footer-section .facebook::before,
+.footer-section .twitter::before,
+.footer-section .instagram::before,
+.footer-section .linkedin::before,
+.footer-section .youtube::before,
+.footer-section .tiktok::before,
+.footer-section [class*="social"]::before,
+.footer-section [class*="facebook"]::before,
+.footer-section [class*="twitter"]::before,
+.footer-section [class*="instagram"]::before,
+.footer-section [class*="linkedin"]::before,
+.footer-section [class*="youtube"]::before,
+.footer-section [class*="tiktok"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.4), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.footer-section a[href*="facebook"]:hover::before,
+.footer-section a[href*="twitter"]:hover::before,
+.footer-section a[href*="instagram"]:hover::before,
+.footer-section a[href*="linkedin"]:hover::before,
+.footer-section a[href*="youtube"]:hover::before,
+.footer-section a[href*="tiktok"]:hover::before,
+.footer-section .social-icon:hover::before,
+.footer-section .social-media-icon:hover::before,
+.footer-section .facebook:hover::before,
+.footer-section .twitter:hover::before,
+.footer-section .instagram:hover::before,
+.footer-section .linkedin:hover::before,
+.footer-section .youtube:hover::before,
+.footer-section .tiktok:hover::before,
+.footer-section [class*="social"]:hover::before,
+.footer-section [class*="facebook"]:hover::before,
+.footer-section [class*="twitter"]:hover::before,
+.footer-section [class*="instagram"]:hover::before,
+.footer-section [class*="linkedin"]:hover::before,
+.footer-section [class*="youtube"]:hover::before,
+.footer-section [class*="tiktok"]:hover::before {
+  left: 100%;
+  opacity: 1;
+}
+
+/* Platform-specific color effects */
+.footer-section a[href*="facebook"]:hover,
+.footer-section .facebook:hover,
+.footer-section [class*="facebook"]:hover {
+  box-shadow: 0 4px 15px rgba(66, 103, 178, 0.4);
+}
+
+.footer-section a[href*="twitter"]:hover,
+.footer-section .twitter:hover,
+.footer-section [class*="twitter"]:hover {
+  box-shadow: 0 4px 15px rgba(29, 161, 242, 0.4);
+}
+
+.footer-section a[href*="instagram"]:hover,
+.footer-section .instagram:hover,
+.footer-section [class*="instagram"]:hover {
+  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+}
+
+.footer-section a[href*="linkedin"]:hover,
+.footer-section .linkedin:hover,
+.footer-section [class*="linkedin"]:hover {
+  box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4);
+}
+
+.footer-section a[href*="youtube"]:hover,
+.footer-section .youtube:hover,
+.footer-section [class*="youtube"]:hover {
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+.footer-section a[href*="tiktok"]:hover,
+.footer-section .tiktok:hover,
+.footer-section [class*="tiktok"]:hover {
+  box-shadow: 0 4px 15px rgba(238, 29, 82, 0.4);
+}
+
+/* Pulse animation for social media icons */
+.footer-section a[href*="facebook"],
+.footer-section a[href*="twitter"],
+.footer-section a[href*="instagram"],
+.footer-section a[href*="linkedin"],
+.footer-section a[href*="youtube"],
+.footer-section a[href*="tiktok"],
+.footer-section .social-icon,
+.footer-section .social-media-icon,
+.footer-section .facebook,
+.footer-section .twitter,
+.footer-section .instagram,
+.footer-section .linkedin,
+.footer-section .youtube,
+.footer-section .tiktok,
+.footer-section [class*="social"],
+.footer-section [class*="facebook"],
+.footer-section [class*="twitter"],
+.footer-section [class*="instagram"],
+.footer-section [class*="linkedin"],
+.footer-section [class*="youtube"],
+.footer-section [class*="tiktok"] {
+  animation: socialIconPulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--icon-index, 0) * 0.5s);
+}
+
+@keyframes socialIconPulse {
+  0%, 100% {
+    transform: scale(1);
   }
-  
-  .footer-section::after {
-    animation-duration: 16s;
+  50% {
+    transform: scale(1.05);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .footer-section::before,
-  .footer-section::after {
-    animation: none;
-  }
-  
-  #newsletter-subscribe,
-  .submit-button-2,
-  #newsletter-email,
-  .text-field-3,
-  .div-block-19 input[type="email"] {
-    transition: none;
-  }
-  
-  #newsletter-subscribe:hover,
-  .submit-button-2:hover {
-    transform: none;
-  }
-  
-  #newsletter-email:focus,
-  .text-field-3:focus,
-  .div-block-19 input[type="email"]:focus {
-    transform: none;
+/* Hover state overrides pulse animation */
+.footer-section a[href*="facebook"]:hover,
+.footer-section a[href*="twitter"]:hover,
+.footer-section a[href*="instagram"]:hover,
+.footer-section a[href*="linkedin"]:hover,
+.footer-section a[href*="youtube"]:hover,
+.footer-section a[href*="tiktok"]:hover,
+.footer-section .social-icon:hover,
+.footer-section .social-media-icon:hover,
+.footer-section .facebook:hover,
+.footer-section .twitter:hover,
+.footer-section .instagram:hover,
+.footer-section .linkedin:hover,
+.footer-section .youtube:hover,
+.footer-section .tiktok:hover,
+.footer-section [class*="social"]:hover,
+.footer-section [class*="facebook"]:hover,
+.footer-section [class*="twitter"]:hover,
+.footer-section [class*="instagram"]:hover,
+.footer-section [class*="linkedin"]:hover,
+.footer-section [class*="youtube"]:hover,
+.footer-section [class*="tiktok"]:hover {
+  animation: none;
+}
+
+/* Social media icons container */
+.footer-section .social-media-wrapper,
+.footer-section .social-icons,
+.footer-section [class*="social"] {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Responsive adjustments for social media icons */
+@media screen and (max-width: 767px) {
+  .footer-section a[href*="facebook"]:hover,
+  .footer-section a[href*="twitter"]:hover,
+  .footer-section a[href*="instagram"]:hover,
+  .footer-section a[href*="linkedin"]:hover,
+  .footer-section a[href*="youtube"]:hover,
+  .footer-section a[href*="tiktok"]:hover,
+  .footer-section .social-icon:hover,
+  .footer-section .social-media-icon:hover,
+  .footer-section .facebook:hover,
+  .footer-section .twitter:hover,
+  .footer-section .instagram:hover,
+  .footer-section .linkedin:hover,
+  .footer-section .youtube:hover,
+  .footer-section .tiktok:hover,
+  .footer-section [class*="social"]:hover,
+  .footer-section [class*="facebook"]:hover,
+  .footer-section [class*="twitter"]:hover,
+  .footer-section [class*="instagram"]:hover,
+  .footer-section [class*="linkedin"]:hover,
+  .footer-section [class*="youtube"]:hover,
+  .footer-section [class*="tiktok"]:hover {
+    transform: translateY(-2px) scale(1.05);
   }
 }
