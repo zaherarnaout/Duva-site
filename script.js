@@ -5483,7 +5483,8 @@ function initializeDateTimeDisplay() {
       hour12: true 
     };
     const timeString = now.toLocaleTimeString('en-US', timeOptions);
-    const formattedTime = timeString.replace(':', ' '); // Remove colon, CSS will add blinking one
+    // Ensure we have a space between hour and minutes for the colon
+    const formattedTime = timeString.replace(':', ' ').replace(/(\d+)\s+(\d+)/, '$1 $2');
     
     // Update the elements
     dateElement.textContent = formattedDate;
@@ -5552,6 +5553,89 @@ function initializeHeroSectionAnimations() {
   observer.observe(heroImage);
   
   console.log('✅ Hero section animations initialized');
+  
+  // Create particle effects
+  createHeroParticles();
+}
+
+// === Hero Section Particle Effects ===
+function createHeroParticles() {
+  const heroSection = document.querySelector('.main-page-hero-section-wrapper');
+  
+  if (!heroSection) {
+    console.log('⚠️ Hero section not found for particles');
+    return;
+  }
+  
+  // Create particles container
+  const particlesContainer = document.createElement('div');
+  particlesContainer.className = 'hero-particles';
+  particlesContainer.style.cssText = `
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  `;
+  
+  // Add particles container to hero section
+  heroSection.appendChild(particlesContainer);
+  
+  // Create individual particles
+  for (let i = 0; i < 15; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // Random properties for each particle
+    const size = Math.random() * 3 + 1;
+    const startX = Math.random() * 100;
+    const startY = Math.random() * 100;
+    const duration = Math.random() * 20 + 15;
+    const delay = Math.random() * 10;
+    
+    particle.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      background: rgba(192, 57, 43, ${Math.random() * 0.4 + 0.2});
+      border-radius: 50%;
+      left: ${startX}%;
+      top: ${startY}%;
+      animation: particleFloat ${duration}s linear infinite;
+      animation-delay: ${delay}s;
+      opacity: 0.6;
+    `;
+    
+    particlesContainer.appendChild(particle);
+  }
+  
+  // Add particle animation CSS
+  if (!document.querySelector('#particle-styles')) {
+    const style = document.createElement('style');
+    style.id = 'particle-styles';
+    style.textContent = `
+      @keyframes particleFloat {
+        0% {
+          transform: translateY(0px) translateX(0px);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translateY(-50px) translateX(${Math.random() * 20 - 10}px);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-100px) translateX(${Math.random() * 20 - 10}px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  console.log('✨ Hero particles created');
 }
 
 
