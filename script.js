@@ -5867,13 +5867,26 @@ function initializeFooterContactButton() {
     console.log('🔍 Contact overlay found:', contactOverlay);
     
     if (contactOverlay) {
+      // Store current scroll position before opening modal
+      const currentScrollY = window.scrollY;
+      const currentScrollX = window.scrollX;
+      
+      // Prevent scroll to top by maintaining scroll position
+      document.body.style.top = `-${currentScrollY}px`;
+      document.body.style.left = `-${currentScrollX}px`;
+      
       contactOverlay.classList.add('active');
       contactOverlay.style.display = 'flex';
       contactOverlay.style.opacity = '1';
       contactOverlay.style.visibility = 'visible';
       document.body.classList.add('modal-open');
       document.documentElement.classList.add('modal-open');
-      console.log('✅ Contact modal opened from footer button');
+      
+      // Store scroll position for restoration when modal closes
+      contactOverlay.setAttribute('data-scroll-y', currentScrollY);
+      contactOverlay.setAttribute('data-scroll-x', currentScrollX);
+      
+      console.log('✅ Contact modal opened from footer button at current position');
       return;
     }
     
