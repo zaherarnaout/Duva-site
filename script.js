@@ -5216,6 +5216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
   createCategoriesParticles();
+  initializeFooterContactButton();
 });
 
 // Also initialize on Webflow ready
@@ -5225,6 +5226,7 @@ Webflow.push(() => {
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
   createCategoriesParticles();
+  initializeFooterContactButton();
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5742,6 +5744,41 @@ function createCategoriesParticles() {
   }
   
   console.log('✨ Categories particles created');
+}
+
+// === Footer Contact Button Functionality ===
+function initializeFooterContactButton() {
+  console.log('📞 Initializing footer contact button...');
+  
+  const contactBtn = document.getElementById('contact-btn');
+  
+  if (!contactBtn) {
+    console.log('⚠️ Footer contact button not found');
+    return;
+  }
+  
+  // Add click handler for contact button
+  contactBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    console.log('📞 Footer contact button clicked');
+    
+    // Trigger the same action as the menu contact button
+    const menuContactBtn = document.querySelector('.menu-tab#contact-btn');
+    if (menuContactBtn) {
+      menuContactBtn.click();
+    } else {
+      // Fallback: try to find contact form or overlay
+      const contactForm = document.querySelector('.contact-form, .contact-overlay, #contact-form');
+      if (contactForm) {
+        contactForm.style.display = 'block';
+        contactForm.classList.add('active');
+      } else {
+        console.log('⚠️ Contact form not found');
+      }
+    }
+  });
+  
+  console.log('✅ Footer contact button initialized');
 }
 
 
