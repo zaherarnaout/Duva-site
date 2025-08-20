@@ -5478,15 +5478,13 @@ function initializeDateTimeDisplay() {
     };
     const formattedDate = now.toLocaleDateString('en-US', dateOptions);
     
-    // Format time as HH MM AM/PM (without colon since CSS adds it)
+    // Format time as HH:MM AM/PM (normal format with colon)
     const timeOptions = { 
       hour: 'numeric', 
       minute: '2-digit', 
       hour12: true 
     };
-    const timeString = now.toLocaleTimeString('en-US', timeOptions);
-    // Format: "2 24 PM" - ensure proper spacing for colon positioning
-    const formattedTime = timeString.replace(':', ' ').replace(/(\d+)\s+(\d+)/, '$1 $2');
+    const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
     
     // Update the elements
     dateElement.textContent = formattedDate;
