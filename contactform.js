@@ -106,27 +106,40 @@ document.addEventListener('DOMContentLoaded', function () {
   function setupModalEvents(contactBtn, contactOverlay, closeBtn) {
     console.log('🔧 Setting up modal events with:', { contactBtn, contactOverlay, closeBtn });
     
-    // Open modal when contact button is clicked
-    if (contactBtn) {
-      contactBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Contact button clicked');
-        if (contactOverlay) {
-          contactOverlay.classList.add('active');
-          contactOverlay.style.display = 'flex';
-          contactOverlay.style.opacity = '1';
-          contactOverlay.style.visibility = 'visible';
-          document.body.classList.add('modal-open');
-          document.documentElement.classList.add('modal-open');
-          console.log('Modal opened');
-        } else {
-          console.error('Contact overlay not found');
-        }
-      });
-    } else {
-      console.error('Contact button not found');
-    }
+         // Open modal when contact button is clicked
+     if (contactBtn) {
+       contactBtn.addEventListener('click', function(e) {
+         e.preventDefault();
+         e.stopPropagation();
+         console.log('Contact button clicked');
+         if (contactOverlay) {
+           // Store current scroll position before opening modal
+           const currentScrollY = window.scrollY;
+           const currentScrollX = window.scrollX;
+           
+           // Prevent scroll to top by maintaining scroll position
+           document.body.style.top = `-${currentScrollY}px`;
+           document.body.style.left = `-${currentScrollX}px`;
+           
+           contactOverlay.classList.add('active');
+           contactOverlay.style.display = 'flex';
+           contactOverlay.style.opacity = '1';
+           contactOverlay.style.visibility = 'visible';
+           document.body.classList.add('modal-open');
+           document.documentElement.classList.add('modal-open');
+           
+           // Store scroll position for restoration when modal closes
+           contactOverlay.setAttribute('data-scroll-y', currentScrollY);
+           contactOverlay.setAttribute('data-scroll-x', currentScrollX);
+           
+           console.log('Modal opened at current position');
+         } else {
+           console.error('Contact overlay not found');
+         }
+       });
+     } else {
+       console.error('Contact button not found');
+     }
 
     // Close modal when close button is clicked
     if (closeBtn) {
@@ -136,61 +149,129 @@ document.addEventListener('DOMContentLoaded', function () {
       const newCloseBtn = closeBtn.cloneNode(true);
       closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
       
-      // Add new event listener
-      newCloseBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        console.log('Close button clicked - closing modal');
-        
-        if (contactOverlay) {
-          contactOverlay.classList.remove('active');
-          contactOverlay.style.display = 'none';
-          contactOverlay.style.opacity = '0';
-          contactOverlay.style.visibility = 'hidden';
-          document.body.classList.remove('modal-open');
-          document.documentElement.classList.remove('modal-open');
-          console.log('Modal closed successfully');
-        } else {
-          console.error('Contact overlay not found when closing');
-        }
-      });
+             // Add new event listener
+       newCloseBtn.addEventListener('click', function(e) {
+         e.preventDefault();
+         e.stopPropagation();
+         e.stopImmediatePropagation();
+         console.log('Close button clicked - closing modal');
+         
+                   if (contactOverlay) {
+            // Restore scroll position
+            const scrollY = contactOverlay.getAttribute('data-scroll-y');
+            const scrollX = contactOverlay.getAttribute('data-scroll-x');
+            
+            console.log('📍 Restoring scroll position:', { y: scrollY, x: scrollX });
+            
+            contactOverlay.classList.remove('active');
+            contactOverlay.style.display = 'none';
+            contactOverlay.style.opacity = '0';
+            contactOverlay.style.visibility = 'hidden';
+            document.body.classList.remove('modal-open');
+            document.documentElement.classList.remove('modal-open');
+            
+            // Restore body position and scroll
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            
+            // Restore scroll position after a brief delay to ensure DOM is updated
+            setTimeout(() => {
+              if (scrollY && scrollX) {
+                window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+                console.log('✅ Scroll position restored to:', { y: scrollY, x: scrollX });
+              }
+            }, 10);
+            
+            console.log('Modal closed successfully and scroll position restored');
+          } else {
+            console.error('Contact overlay not found when closing');
+          }
+       });
       
-      // Also add mousedown event as backup
-      newCloseBtn.addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Close button mousedown - closing modal');
-        
-        if (contactOverlay) {
-          contactOverlay.classList.remove('active');
-          contactOverlay.style.display = 'none';
-          contactOverlay.style.opacity = '0';
-          contactOverlay.style.visibility = 'hidden';
-          document.body.classList.remove('modal-open');
-          document.documentElement.classList.remove('modal-open');
-          console.log('Modal closed via mousedown');
-        }
-      });
+             // Also add mousedown event as backup
+       newCloseBtn.addEventListener('mousedown', function(e) {
+         e.preventDefault();
+         e.stopPropagation();
+         console.log('Close button mousedown - closing modal');
+         
+                   if (contactOverlay) {
+            // Restore scroll position
+            const scrollY = contactOverlay.getAttribute('data-scroll-y');
+            const scrollX = contactOverlay.getAttribute('data-scroll-x');
+            
+            console.log('📍 Restoring scroll position (mousedown):', { y: scrollY, x: scrollX });
+            
+            contactOverlay.classList.remove('active');
+            contactOverlay.style.display = 'none';
+            contactOverlay.style.opacity = '0';
+            contactOverlay.style.visibility = 'hidden';
+            document.body.classList.remove('modal-open');
+            document.documentElement.classList.remove('modal-open');
+            
+            // Restore body position and scroll
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            
+            // Restore scroll position after a brief delay to ensure DOM is updated
+            setTimeout(() => {
+              if (scrollY && scrollX) {
+                window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+                console.log('✅ Scroll position restored to (mousedown):', { y: scrollY, x: scrollX });
+              }
+            }, 10);
+            
+            console.log('Modal closed via mousedown and scroll position restored');
+          }
+       });
       
     } else {
       console.error('Close button not found');
     }
 
-    // Close modal when clicking outside the modal content
-    if (contactOverlay) {
-      contactOverlay.addEventListener('click', function(e) {
-        if (e.target === contactOverlay) {
-          console.log('Clicked outside modal');
-          contactOverlay.classList.remove('active');
-          contactOverlay.style.display = 'none';
-          contactOverlay.style.opacity = '0';
-          contactOverlay.style.visibility = 'hidden';
-          document.body.classList.remove('modal-open');
-          document.documentElement.classList.remove('modal-open');
-        }
-      });
-    }
+         // Close modal when clicking outside the modal content
+     if (contactOverlay) {
+       contactOverlay.addEventListener('click', function(e) {
+                   if (e.target === contactOverlay) {
+            console.log('Clicked outside modal');
+            
+            // Restore scroll position
+            const scrollY = contactOverlay.getAttribute('data-scroll-y');
+            const scrollX = contactOverlay.getAttribute('data-scroll-x');
+            
+            console.log('📍 Restoring scroll position (click outside):', { y: scrollY, x: scrollX });
+            
+            contactOverlay.classList.remove('active');
+            contactOverlay.style.display = 'none';
+            contactOverlay.style.opacity = '0';
+            contactOverlay.style.visibility = 'hidden';
+            document.body.classList.remove('modal-open');
+            document.documentElement.classList.remove('modal-open');
+            
+            // Restore body position and scroll
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            
+            // Restore scroll position after a brief delay to ensure DOM is updated
+            setTimeout(() => {
+              if (scrollY && scrollX) {
+                window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+                console.log('✅ Scroll position restored to (click outside):', { y: scrollY, x: scrollX });
+              }
+            }, 10);
+            
+            console.log('Modal closed by clicking outside and scroll position restored');
+          }
+       });
+     }
 
     // Ensure modal is hidden on page load
     if (contactOverlay) {
@@ -208,13 +289,35 @@ document.addEventListener('DOMContentLoaded', function () {
   window.forceCloseModal = function() {
     const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     if (overlay) {
+      // Restore scroll position
+      const scrollY = overlay.getAttribute('data-scroll-y');
+      const scrollX = overlay.getAttribute('data-scroll-x');
+      
+      console.log('📍 Restoring scroll position (force close):', { y: scrollY, x: scrollX });
+      
       overlay.classList.remove('active');
       overlay.style.display = 'none';
       overlay.style.opacity = '0';
       overlay.style.visibility = 'hidden';
       document.body.classList.remove('modal-open');
       document.documentElement.classList.remove('modal-open');
-      console.log('Modal force closed');
+      
+      // Restore body position and scroll
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // Restore scroll position after a brief delay to ensure DOM is updated
+      setTimeout(() => {
+        if (scrollY && scrollX) {
+          window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+          console.log('✅ Scroll position restored to (force close):', { y: scrollY, x: scrollX });
+        }
+      }, 10);
+      
+      console.log('Modal force closed and scroll position restored');
     }
   };
 
@@ -222,9 +325,33 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && contactOverlay && contactOverlay.classList.contains('active')) {
       console.log('Escape key pressed');
+      
+      // Restore scroll position
+      const scrollY = contactOverlay.getAttribute('data-scroll-y');
+      const scrollX = contactOverlay.getAttribute('data-scroll-x');
+      
+      console.log('📍 Restoring scroll position (Escape):', { y: scrollY, x: scrollX });
+      
       contactOverlay.classList.remove('active');
       document.body.classList.remove('modal-open');
       document.documentElement.classList.remove('modal-open');
+      
+      // Restore body position and scroll
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // Restore scroll position after a brief delay to ensure DOM is updated
+      setTimeout(() => {
+        if (scrollY && scrollX) {
+          window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+          console.log('✅ Scroll position restored to (Escape):', { y: scrollY, x: scrollX });
+        }
+      }, 10);
+      
+      console.log('Modal closed with Escape key and scroll position restored');
     }
   });
 
@@ -245,10 +372,32 @@ document.addEventListener('DOMContentLoaded', function () {
   window.closeContactModal = function() {
     const overlay = document.getElementById('contact-overlay') || document.querySelector('.contact-overlay');
     if (overlay) {
+      // Restore scroll position
+      const scrollY = overlay.getAttribute('data-scroll-y');
+      const scrollX = overlay.getAttribute('data-scroll-x');
+      
+      console.log('📍 Restoring scroll position (global close):', { y: scrollY, x: scrollX });
+      
       overlay.classList.remove('active');
       document.body.classList.remove('modal-open');
       document.documentElement.classList.remove('modal-open');
-      console.log('Modal closed via global function');
+      
+      // Restore body position and scroll
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // Restore scroll position after a brief delay to ensure DOM is updated
+      setTimeout(() => {
+        if (scrollY && scrollX) {
+          window.scrollTo(parseInt(scrollX), parseInt(scrollY));
+          console.log('✅ Scroll position restored to (global close):', { y: scrollY, x: scrollX });
+        }
+      }, 10);
+      
+      console.log('Modal closed via global function and scroll position restored');
     } else {
       console.error('Contact overlay not found for global close');
     }
@@ -325,33 +474,63 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = contactUrl;
   };
 
-  // Main page header contact button handler
+  // Main page header contact button handler - only handle header contact button
   const mainPageContactBtn = document.getElementById('contact-btn');
   if (mainPageContactBtn) {
-    console.log('📍 Contact button found - setting up modal open');
+    // Check if this is a header contact button (not footer)
+    const isHeaderButton = mainPageContactBtn.closest('.header') || 
+                          mainPageContactBtn.closest('.menu-panel') || 
+                          mainPageContactBtn.closest('.navigation') ||
+                          mainPageContactBtn.closest('.nav');
     
-    // Remove any existing event listeners first
-    const newContactBtn = mainPageContactBtn.cloneNode(true);
-    mainPageContactBtn.parentNode.replaceChild(newContactBtn, mainPageContactBtn);
-    
-    newContactBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('Contact button clicked - opening modal');
+    // Only handle if it's a header button and not already initialized by footer script
+    if (isHeaderButton && !mainPageContactBtn.hasAttribute('data-footer-initialized')) {
+      console.log('📍 Header contact button found - setting up modal open');
       
-      // Open modal directly instead of navigating
-      if (contactOverlay) {
-        contactOverlay.classList.add('active');
-        contactOverlay.style.display = 'flex';
-        contactOverlay.style.opacity = '1';
-        contactOverlay.style.visibility = 'visible';
-        document.body.classList.add('modal-open');
-        document.documentElement.classList.add('modal-open');
-        console.log('Modal opened from contact button');
-      } else {
-        console.error('Contact overlay not found');
-      }
-    });
+      // Remove any existing event listeners first
+      const newContactBtn = mainPageContactBtn.cloneNode(true);
+      mainPageContactBtn.parentNode.replaceChild(newContactBtn, mainPageContactBtn);
+      
+             newContactBtn.addEventListener('click', function(e) {
+         e.preventDefault();
+         e.stopPropagation();
+         console.log('Header contact button clicked - opening modal');
+         
+         // Open modal directly instead of navigating
+         if (contactOverlay) {
+           // Store current scroll position BEFORE any DOM changes
+           const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+           const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+           
+           console.log('📍 Current scroll position (header):', { y: currentScrollY, x: currentScrollX });
+           
+           // Store scroll position for restoration when modal closes
+           contactOverlay.setAttribute('data-scroll-y', currentScrollY);
+           contactOverlay.setAttribute('data-scroll-x', currentScrollX);
+           
+           // Prevent scroll to top by maintaining scroll position IMMEDIATELY
+           document.body.style.position = 'fixed';
+           document.body.style.top = `-${currentScrollY}px`;
+           document.body.style.left = `-${currentScrollX}px`;
+           document.body.style.width = '100%';
+           document.body.style.overflow = 'hidden';
+           
+           // Now open the modal
+           contactOverlay.classList.add('active');
+           contactOverlay.style.display = 'flex';
+           contactOverlay.style.opacity = '1';
+           contactOverlay.style.visibility = 'visible';
+           document.body.classList.add('modal-open');
+           document.documentElement.classList.add('modal-open');
+           
+           console.log('Modal opened from header contact button at current position');
+         } else {
+           console.error('Contact overlay not found');
+         }
+       });
+    } else {
+      console.log('📍 Contact button found but skipping (footer button or already initialized)');
+    }
   }
 
   // Test modal functionality immediately
