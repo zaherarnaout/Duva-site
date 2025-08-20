@@ -5449,5 +5449,106 @@ function initializeNewsletterSubscription() {
   // Initialize enhanced effects
   addNewsletterButtonEffects();
   addNewsletterInputEffects();
+  
+  // Initialize social media icon animations
+  initializeSocialMediaIcons();
+}
+
+// === Social Media Icons Animation Initialization ===
+function initializeSocialMediaIcons() {
+  console.log('📱 Initializing social media icon animations...');
+  
+  // Find all social media icons in footer
+  const socialIcons = document.querySelectorAll(`
+    .footer-section a[href*="facebook"],
+    .footer-section a[href*="twitter"],
+    .footer-section a[href*="instagram"],
+    .footer-section a[href*="linkedin"],
+    .footer-section a[href*="youtube"],
+    .footer-section a[href*="tiktok"],
+    .footer-section .social-icon,
+    .footer-section .social-media-icon,
+    .footer-section .facebook,
+    .footer-section .twitter,
+    .footer-section .instagram,
+    .footer-section .linkedin,
+    .footer-section .youtube,
+    .footer-section .tiktok,
+    .footer-section [class*="social"],
+    .footer-section [class*="facebook"],
+    .footer-section [class*="twitter"],
+    .footer-section [class*="instagram"],
+    .footer-section [class*="linkedin"],
+    .footer-section [class*="youtube"],
+    .footer-section [class*="tiktok"]
+  `);
+  
+  console.log(`📱 Found ${socialIcons.length} social media icons`);
+  
+  // Assign staggered animation delays
+  socialIcons.forEach((icon, index) => {
+    icon.style.setProperty('--icon-index', index);
+    
+    // Add click effect
+    icon.addEventListener('click', function(e) {
+      // Create click ripple effect
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(192, 57, 43, 0.3);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: socialIconRipple 0.6s linear;
+        pointer-events: none;
+        z-index: 10;
+      `;
+      
+      this.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+    
+    // Add hover sound effect (optional - for enhanced UX)
+    icon.addEventListener('mouseenter', function() {
+      // Add a subtle class for additional effects
+      this.classList.add('social-icon-hovered');
+    });
+    
+    icon.addEventListener('mouseleave', function() {
+      this.classList.remove('social-icon-hovered');
+    });
+  });
+  
+  // Add ripple animation CSS if not already present
+  if (!document.querySelector('#social-icon-ripple-style')) {
+    const style = document.createElement('style');
+    style.id = 'social-icon-ripple-style';
+    style.textContent = `
+      @keyframes socialIconRipple {
+        to {
+          transform: scale(3);
+          opacity: 0;
+        }
+      }
+      
+      .social-icon-hovered {
+        filter: drop-shadow(0 0 8px rgba(192, 57, 43, 0.6));
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  console.log('✅ Social media icon animations initialized');
 }
 
