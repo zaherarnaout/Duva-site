@@ -5652,7 +5652,7 @@ function createHeroParticles() {
 function createCategoriesParticles() {
   console.log('🎨 Initializing categories cards particles...');
   
-  const categoriesCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
+  const categoriesCards = document.querySelectorAll('.main-page-categories-wrapper a, .main-page-categories-wrapper .collection-item, .main-page-categories-wrapper .product-card');
   
   console.log('Found categories cards:', categoriesCards.length);
   
