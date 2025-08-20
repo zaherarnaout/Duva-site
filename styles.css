@@ -6121,9 +6121,6 @@ a .flip-card-wrapper {
   cursor: pointer;
   display: inline-block;
   padding: 8px 0;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: transparent;
 }
 
 /* Right Footer Text Shimmer Effect */
@@ -6154,8 +6151,6 @@ a .flip-card-wrapper {
   color: var(--duva-red, #C0392B);
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
-  border-color: var(--duva-red, #C0392B);
-  background: rgba(192, 57, 43, 0.05);
 }
 
 /* Left Footer Wrapper Text Elements (excluding Text Block 68) */
@@ -6173,9 +6168,6 @@ a .flip-card-wrapper {
   cursor: pointer;
   display: inline-block;
   padding: 8px 0;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: transparent;
 }
 
 /* Left Footer Text Shimmer Effect */
@@ -6206,8 +6198,6 @@ a .flip-card-wrapper {
   color: var(--duva-red, #C0392B);
   transform: translateX(3px) scale(1.02);
   text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
-  border-color: var(--duva-red, #C0392B);
-  background: rgba(192, 57, 43, 0.05);
 }
 
 /* Footer Text Active States */
