@@ -6215,7 +6215,7 @@ a .flip-card-wrapper {
 .text-block-74::after {
   content: ':';
   position: absolute;
-  left: 1.2em; /* Position after the hour */
+  left: 1.5ch; /* Use ch units for character-based positioning */
   top: 0;
   animation: colonBlink 1s infinite;
   color: var(--duva-red, #C0392B);
@@ -6268,7 +6268,7 @@ a .flip-card-wrapper {
   .text-block-74::after {
     font-size: 24px;
     line-height: 30px;
-    left: 1.1em;
+    left: 1.3ch;
   }
 }
 
@@ -6290,7 +6290,7 @@ a .flip-card-wrapper {
   .text-block-74::after {
     font-size: 18px;
     line-height: 22px;
-    left: 1em;
+    left: 1.2ch;
   }
 }
 
