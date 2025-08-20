@@ -5585,28 +5585,30 @@ function createHeroParticles() {
   heroSection.appendChild(particlesContainer);
   
   // Create individual particles
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 25; i++) {
     const particle = document.createElement('div');
     particle.className = 'particle';
     
     // Random properties for each particle
-    const size = Math.random() * 3 + 1;
+    const size = Math.random() * 4 + 2;
     const startX = Math.random() * 100;
     const startY = Math.random() * 100;
-    const duration = Math.random() * 20 + 15;
-    const delay = Math.random() * 10;
+    const duration = Math.random() * 25 + 20;
+    const delay = Math.random() * 15;
     
     particle.style.cssText = `
       position: absolute;
       width: ${size}px;
       height: ${size}px;
-      background: rgba(192, 57, 43, ${Math.random() * 0.4 + 0.2});
+      background: rgba(255, 255, 255, ${Math.random() * 0.8 + 0.4});
       border-radius: 50%;
       left: ${startX}%;
       top: ${startY}%;
-      animation: particleFloat ${duration}s linear infinite;
+      animation: particleFloat ${duration}s ease-in-out infinite;
       animation-delay: ${delay}s;
-      opacity: 0.6;
+      opacity: 0;
+      box-shadow: 0 0 ${size * 2}px rgba(255, 255, 255, 0.8);
+      filter: blur(0.5px);
     `;
     
     particlesContainer.appendChild(particle);
@@ -5619,15 +5621,23 @@ function createHeroParticles() {
     style.textContent = `
       @keyframes particleFloat {
         0% {
-          transform: translateY(0px) translateX(0px);
-          opacity: 0.6;
+          transform: translateY(0px) translateX(0px) scale(0.5);
+          opacity: 0;
         }
-        50% {
-          transform: translateY(-50px) translateX(${Math.random() * 20 - 10}px);
+        20% {
+          transform: translateY(-20px) translateX(${Math.random() * 30 - 15}px) scale(1);
           opacity: 0.8;
         }
+        50% {
+          transform: translateY(-50px) translateX(${Math.random() * 40 - 20}px) scale(1.2);
+          opacity: 1;
+        }
+        80% {
+          transform: translateY(-80px) translateX(${Math.random() * 30 - 15}px) scale(1);
+          opacity: 0.6;
+        }
         100% {
-          transform: translateY(-100px) translateX(${Math.random() * 20 - 10}px);
+          transform: translateY(-120px) translateX(${Math.random() * 20 - 10}px) scale(0.5);
           opacity: 0;
         }
       }
