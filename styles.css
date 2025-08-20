@@ -5620,14 +5620,6 @@ a .flip-card-wrapper {
 .footer-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, 
-    var(--duva-d-grey, #212121) 0%, 
-    rgba(192, 57, 43, 0.1) 25%, 
-    var(--duva-d-grey, #212121) 50%, 
-    rgba(192, 57, 43, 0.1) 75%, 
-    var(--duva-d-grey, #212121) 100%);
-  background-size: 400% 400%;
-  animation: footerParallax 20s ease-in-out infinite;
   /* Preserve existing Webflow styles */
   display: flex;
   width: 100%;
@@ -5655,15 +5647,6 @@ a .flip-card-wrapper {
   color: var(--duva-light-grey);
 }
 
-@keyframes footerParallax {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
 /* === Newsletter Input Styling === */
 .newsletter-input {
   border: none;
@@ -5689,6 +5672,20 @@ a .flip-card-wrapper {
 
 .newsletter-input:invalid {
   border: 1px solid var(--duva-red, #C0392B);
+}
+
+/* Enhanced newsletter input with search input style effects */
+.newsletter-input {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+  border-color: var(--duva-red, #C0392B);
+  background-color: rgba(192, 57, 43, 0.05);
 }
 
 /* === Webflow Form Styling === */
@@ -5863,5 +5860,243 @@ a .flip-card-wrapper {
   100% {
     opacity: 1;
     transform: translateY(0) translateY(5%);
+  }
+}
+
+/* === Enhanced Newsletter Button - Menu Tab Style === */
+#newsletter-subscribe,
+.submit-button-2 {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#newsletter-subscribe::before,
+.submit-button-2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#newsletter-subscribe:hover::before,
+.submit-button-2:hover::before {
+  left: 100%;
+}
+
+#newsletter-subscribe:hover,
+.submit-button-2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+}
+
+#newsletter-subscribe:active,
+.submit-button-2:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+#newsletter-subscribe:disabled,
+.submit-button-2:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#newsletter-subscribe:disabled:hover,
+.submit-button-2:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* === Enhanced Newsletter Input - Search Input Style === */
+#newsletter-email,
+.text-field-3,
+.div-block-19 input[type="email"] {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+#newsletter-email::before,
+.text-field-3::before,
+.div-block-19 input[type="email"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#newsletter-email:hover::before,
+.text-field-3:hover::before,
+.div-block-19 input[type="email"]:hover::before {
+  left: 100%;
+}
+
+#newsletter-email:focus,
+.text-field-3:focus,
+.div-block-19 input[type="email"]:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+  border-color: var(--duva-red, #C0392B);
+}
+
+/* === New Footer Background Animation Approach === */
+.footer-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--duva-d-grey, #212121);
+  /* Remove the old gradient animation */
+  /* background: linear-gradient(135deg, ...); */
+  /* background-size: 400% 400%; */
+  /* animation: footerParallax 20s ease-in-out infinite; */
+}
+
+/* New animated background elements */
+.footer-section::before,
+.footer-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Primary animated background */
+.footer-section::before {
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(192, 57, 43, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(192, 57, 43, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(192, 57, 43, 0.06) 0%, transparent 50%);
+  animation: footerGlow 15s ease-in-out infinite alternate;
+}
+
+/* Secondary animated background */
+.footer-section::after {
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(192, 57, 43, 0.03) 50%, transparent 70%);
+  animation: footerSweep 12s ease-in-out infinite;
+}
+
+/* Ensure footer content stays above the animated backgrounds */
+.footer-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* New footer animations */
+@keyframes footerGlow {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(180deg);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes footerSweep {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(0%) translateY(0%) rotate(180deg);
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Enhanced footer hover effects */
+.footer-section:hover::before {
+  animation-duration: 8s;
+  animation-timing-function: ease-out;
+}
+
+.footer-section:hover::after {
+  animation-duration: 6s;
+  animation-timing-function: ease-out;
+}
+
+/* Footer content animations */
+.footer-section .div-block-19 {
+  animation: footerContentFadeIn 1s ease-out 0.5s both;
+}
+
+@keyframes footerContentFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments for new footer animation */
+@media screen and (max-width: 767px) {
+  .footer-section::before {
+    animation-duration: 20s;
+  }
+  
+  .footer-section::after {
+    animation-duration: 16s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-section::before,
+  .footer-section::after {
+    animation: none;
+  }
+  
+  #newsletter-subscribe,
+  .submit-button-2,
+  #newsletter-email,
+  .text-field-3,
+  .div-block-19 input[type="email"] {
+    transition: none;
+  }
+  
+  #newsletter-subscribe:hover,
+  .submit-button-2:hover {
+    transform: none;
+  }
+  
+  #newsletter-email:focus,
+  .text-field-3:focus,
+  .div-block-19 input[type="email"]:focus {
+    transform: none;
   }
 }
