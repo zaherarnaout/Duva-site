@@ -5217,6 +5217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeHeroSectionAnimations();
   createCategoriesParticles();
   initializeFooterContactButton();
+  initializeFooterLogoHomeButton();
 });
 
 // Also initialize on Webflow ready
@@ -5227,6 +5228,7 @@ Webflow.push(() => {
   initializeHeroSectionAnimations();
   createCategoriesParticles();
   initializeFooterContactButton();
+  initializeFooterLogoHomeButton();
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5779,6 +5781,44 @@ function initializeFooterContactButton() {
   });
   
   console.log('✅ Footer contact button initialized');
+}
+
+// === Footer Logo Home Button Functionality ===
+function initializeFooterLogoHomeButton() {
+  console.log('🏠 Initializing footer logo home button...');
+  
+  const footerLogo = document.querySelector('.footer-section .image-35, #footer-logo, .footer-logo');
+  
+  if (!footerLogo) {
+    console.log('⚠️ Footer logo not found');
+    return;
+  }
+  
+  // Add click handler for footer logo
+  footerLogo.addEventListener('click', function(e) {
+    e.preventDefault();
+    console.log('🏠 Footer logo clicked - navigating to home');
+    
+    // Navigate to home page
+    window.location.href = '/';
+  });
+  
+  // Add hover effects
+  footerLogo.style.cursor = 'pointer';
+  footerLogo.style.transition = 'all 0.3s ease';
+  
+  // Add hover event listeners
+  footerLogo.addEventListener('mouseenter', function() {
+    this.style.transform = 'scale(1.05)';
+    this.style.filter = 'brightness(1.1)';
+  });
+  
+  footerLogo.addEventListener('mouseleave', function() {
+    this.style.transform = 'scale(1)';
+    this.style.filter = 'brightness(1)';
+  });
+  
+  console.log('✅ Footer logo home button initialized');
 }
 
 
