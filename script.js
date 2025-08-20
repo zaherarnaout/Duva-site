@@ -5593,8 +5593,8 @@ function createHeroParticles() {
     const size = Math.random() * 4 + 2;
     const startX = Math.random() * 100;
     const startY = Math.random() * 100;
-    const duration = Math.random() * 25 + 20;
-    const delay = Math.random() * 15;
+    const duration = Math.random() * 15 + 10; // Faster: 10-25 seconds (was 20-45)
+    const delay = Math.random() * 8; // Shorter delays: 0-8 seconds (was 0-15)
     
     particle.style.cssText = `
       position: absolute;
@@ -5624,20 +5624,20 @@ function createHeroParticles() {
           transform: translateY(0px) translateX(0px) scale(0.5);
           opacity: 0;
         }
-        20% {
-          transform: translateY(-20px) translateX(${Math.random() * 30 - 15}px) scale(1);
+        15% {
+          transform: translateY(-25px) translateX(${Math.random() * 30 - 15}px) scale(1);
           opacity: 0.8;
         }
-        50% {
-          transform: translateY(-50px) translateX(${Math.random() * 40 - 20}px) scale(1.2);
+        40% {
+          transform: translateY(-60px) translateX(${Math.random() * 40 - 20}px) scale(1.2);
           opacity: 1;
         }
-        80% {
-          transform: translateY(-80px) translateX(${Math.random() * 30 - 15}px) scale(1);
+        70% {
+          transform: translateY(-90px) translateX(${Math.random() * 30 - 15}px) scale(1);
           opacity: 0.6;
         }
         100% {
-          transform: translateY(-120px) translateX(${Math.random() * 20 - 10}px) scale(0.5);
+          transform: translateY(-140px) translateX(${Math.random() * 20 - 10}px) scale(0.5);
           opacity: 0;
         }
       }
