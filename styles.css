@@ -6014,7 +6014,7 @@ a .flip-card-wrapper {
   }
 }
 
-/* === Social Media Icons Animation === */
+/* === Social Media Icons - Hover Scale Only === */
 /* Common social media icon selectors */
 .footer-section a[href*="facebook"],
 .footer-section a[href*="twitter"],
@@ -6038,13 +6038,11 @@ a .flip-card-wrapper {
 .footer-section [class*="youtube"],
 .footer-section [class*="tiktok"] {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
   cursor: pointer;
   display: inline-block;
 }
 
-/* Hover effects for social media icons */
+/* Hover scale effect only */
 .footer-section a[href*="facebook"]:hover,
 .footer-section a[href*="twitter"]:hover,
 .footer-section a[href*="instagram"]:hover,
@@ -6066,95 +6064,7 @@ a .flip-card-wrapper {
 .footer-section [class*="linkedin"]:hover,
 .footer-section [class*="youtube"]:hover,
 .footer-section [class*="tiktok"]:hover {
-  transform: translateY(-3px) scale(1.1);
-  filter: brightness(1.2) contrast(1.1);
-}
-
-/* Removed shimmer background effect - keeping clean hover only */
-
-/* Clean hover effects without background colors */
-.footer-section a[href*="facebook"]:hover,
-.footer-section a[href*="twitter"]:hover,
-.footer-section a[href*="instagram"]:hover,
-.footer-section a[href*="linkedin"]:hover,
-.footer-section a[href*="youtube"]:hover,
-.footer-section a[href*="tiktok"]:hover,
-.footer-section .social-icon:hover,
-.footer-section .social-media-icon:hover,
-.footer-section .facebook:hover,
-.footer-section .twitter:hover,
-.footer-section .instagram:hover,
-.footer-section .linkedin:hover,
-.footer-section .youtube:hover,
-.footer-section .tiktok:hover,
-.footer-section [class*="social"]:hover,
-.footer-section [class*="facebook"]:hover,
-.footer-section [class*="twitter"]:hover,
-.footer-section [class*="instagram"]:hover,
-.footer-section [class*="linkedin"]:hover,
-.footer-section [class*="youtube"]:hover,
-.footer-section [class*="tiktok"]:hover {
-  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
-}
-
-/* Individual pulse animation for social media icons */
-.footer-section a[href*="facebook"],
-.footer-section a[href*="twitter"],
-.footer-section a[href*="instagram"],
-.footer-section a[href*="linkedin"],
-.footer-section a[href*="youtube"],
-.footer-section a[href*="tiktok"],
-.footer-section .social-icon,
-.footer-section .social-media-icon,
-.footer-section .facebook,
-.footer-section .twitter,
-.footer-section .instagram,
-.footer-section .linkedin,
-.footer-section .youtube,
-.footer-section .tiktok,
-.footer-section [class*="social"],
-.footer-section [class*="facebook"],
-.footer-section [class*="twitter"],
-.footer-section [class*="instagram"],
-.footer-section [class*="linkedin"],
-.footer-section [class*="youtube"],
-.footer-section [class*="tiktok"] {
-  animation: socialIconPulse 4s ease-in-out infinite;
-  animation-delay: var(--animation-delay, 0s);
-}
-
-@keyframes socialIconPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-}
-
-/* Hover state overrides pulse animation */
-.footer-section a[href*="facebook"]:hover,
-.footer-section a[href*="twitter"]:hover,
-.footer-section a[href*="instagram"]:hover,
-.footer-section a[href*="linkedin"]:hover,
-.footer-section a[href*="youtube"]:hover,
-.footer-section a[href*="tiktok"]:hover,
-.footer-section .social-icon:hover,
-.footer-section .social-media-icon:hover,
-.footer-section .facebook:hover,
-.footer-section .twitter:hover,
-.footer-section .instagram:hover,
-.footer-section .linkedin:hover,
-.footer-section .youtube:hover,
-.footer-section .tiktok:hover,
-.footer-section [class*="social"]:hover,
-.footer-section [class*="facebook"]:hover,
-.footer-section [class*="twitter"]:hover,
-.footer-section [class*="instagram"]:hover,
-.footer-section [class*="linkedin"]:hover,
-.footer-section [class*="youtube"]:hover,
-.footer-section [class*="tiktok"]:hover {
-  animation: none;
+  transform: scale(1.1);
 }
 
 /* Social media icons container */
@@ -6191,6 +6101,6 @@ a .flip-card-wrapper {
   .footer-section [class*="linkedin"]:hover,
   .footer-section [class*="youtube"]:hover,
   .footer-section [class*="tiktok"]:hover {
-    transform: translateY(-2px) scale(1.05);
+    transform: scale(1.05);
   }
 }
