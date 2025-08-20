@@ -5213,12 +5213,14 @@ function initializeThemeToggle() {
 // Initialize theme toggle when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initializeThemeToggle();
+  initializeDateTimeDisplay();
 });
 
 // Also initialize on Webflow ready
 Webflow.push(() => {
   initializeThemeToggle();
   initializeNewsletterSubscription();
+  initializeDateTimeDisplay();
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5450,6 +5452,49 @@ function initializeNewsletterSubscription() {
   addNewsletterButtonEffects();
   addNewsletterInputEffects();
 }
+
+// === Date and Time Display Functionality ===
+function initializeDateTimeDisplay() {
+  const dateElement = document.querySelector('.text-block-73');
+  const timeElement = document.querySelector('.text-block-74');
+  
+  if (!dateElement || !timeElement) {
+    console.log('Date/time elements not found');
+    return;
+  }
+  
+  function updateDateTime() {
+    const now = new Date();
+    
+    // Format date as MM/DD/YYYY
+    const dateOptions = { 
+      month: 'numeric', 
+      day: 'numeric', 
+      year: 'numeric' 
+    };
+    const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+    
+    // Format time as HH:MM AM/PM
+    const timeOptions = { 
+      hour: 'numeric', 
+      minute: '2-digit', 
+      hour12: true 
+    };
+    const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+    
+    // Update the elements
+    dateElement.textContent = formattedDate;
+    timeElement.textContent = formattedTime;
+  }
+  
+  // Update immediately
+  updateDateTime();
+  
+  // Update every second
+  setInterval(updateDateTime, 1000);
+}
+
+
 
 
 
