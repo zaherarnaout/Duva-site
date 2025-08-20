@@ -6090,6 +6090,9 @@ a .flip-card-wrapper {
   cursor: pointer;
   display: inline-block;
   padding: 8px 0;
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 
@@ -6119,6 +6122,9 @@ a .flip-card-wrapper {
   cursor: pointer;
   display: inline-block;
   padding: 8px 0;
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 
@@ -6155,7 +6161,7 @@ a .flip-card-wrapper {
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):focus,
 .left-footer-wrapper div:not(.text-block-68):focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2);
+  box-shadow: none;
 }
 
 /* Responsive adjustments for footer text elements */
