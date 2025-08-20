@@ -112,30 +112,36 @@ document.addEventListener('DOMContentLoaded', function () {
          e.preventDefault();
          e.stopPropagation();
          console.log('Contact button clicked');
-         if (contactOverlay) {
-           // Store current scroll position before opening modal
-           const currentScrollY = window.scrollY;
-           const currentScrollX = window.scrollX;
-           
-           // Prevent scroll to top by maintaining scroll position
-           document.body.style.top = `-${currentScrollY}px`;
-           document.body.style.left = `-${currentScrollX}px`;
-           
-           contactOverlay.classList.add('active');
-           contactOverlay.style.display = 'flex';
-           contactOverlay.style.opacity = '1';
-           contactOverlay.style.visibility = 'visible';
-           document.body.classList.add('modal-open');
-           document.documentElement.classList.add('modal-open');
-           
-           // Store scroll position for restoration when modal closes
-           contactOverlay.setAttribute('data-scroll-y', currentScrollY);
-           contactOverlay.setAttribute('data-scroll-x', currentScrollX);
-           
-           console.log('Modal opened at current position');
-         } else {
-           console.error('Contact overlay not found');
-         }
+                   if (contactOverlay) {
+            // Store current scroll position BEFORE any DOM changes
+            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            console.log('📍 Current scroll position:', { y: currentScrollY, x: currentScrollX });
+            
+            // Store scroll position for restoration when modal closes
+            contactOverlay.setAttribute('data-scroll-y', currentScrollY);
+            contactOverlay.setAttribute('data-scroll-x', currentScrollX);
+            
+            // Prevent scroll to top by maintaining scroll position IMMEDIATELY
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${currentScrollY}px`;
+            document.body.style.left = `-${currentScrollX}px`;
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+            
+            // Now open the modal
+            contactOverlay.classList.add('active');
+            contactOverlay.style.display = 'flex';
+            contactOverlay.style.opacity = '1';
+            contactOverlay.style.visibility = 'visible';
+            document.body.classList.add('modal-open');
+            document.documentElement.classList.add('modal-open');
+            
+            console.log('Modal opened at current position');
+          } else {
+            console.error('Contact overlay not found');
+          }
        });
      } else {
        console.error('Contact button not found');
@@ -867,34 +873,61 @@ document.addEventListener('DOMContentLoaded', function () {
       const formData = collectFormData();
       console.log('Form data collected:', formData);
       
-      // Send email using EmailJS
-      sendEmail(formData)
-        .then(() => {
-          console.log('Email sent successfully');
-          showSuccessMessage();
-          contactForm.reset();
-          // Reset country dropdown
-          const countrySelect = document.getElementById('country');
-          if (countrySelect) {
-            countrySelect.innerHTML = '';
-            const placeholder = document.createElement('option');
-            placeholder.value = '';
-            placeholder.textContent = 'Select country';
-            placeholder.selected = true;
-            placeholder.disabled = true;
-            countrySelect.appendChild(placeholder);
-            
-            // Re-populate countries
-            const frag = document.createDocumentFragment();
-            for (const name of COUNTRIES) {
-              const opt = document.createElement('option');
-              opt.value = name;
-              opt.textContent = name;
-              frag.appendChild(opt);
-            }
-            countrySelect.appendChild(frag);
-          }
-        })
+             // Send email using EmailJS
+       sendEmail(formData)
+         .then(() => {
+           console.log('Email sent successfully');
+           showSuccessMessage();
+           
+           // Reset the form completely
+           contactForm.reset();
+           
+           // Reset all form fields to their initial state
+           const formFields = contactForm.querySelectorAll('input, textarea, select');
+           formFields.forEach(field => {
+             field.classList.remove('error');
+             field.style.borderColor = '';
+             
+             // Remove any error messages
+             const errorDiv = field.parentNode.querySelector('.field-error');
+             if (errorDiv) {
+               errorDiv.remove();
+             }
+           });
+           
+           // Reset country dropdown
+           const countrySelect = document.getElementById('country');
+           if (countrySelect) {
+             countrySelect.innerHTML = '';
+             const placeholder = document.createElement('option');
+             placeholder.value = '';
+             placeholder.textContent = 'Select country';
+             placeholder.selected = true;
+             placeholder.disabled = true;
+             countrySelect.appendChild(placeholder);
+             
+             // Re-populate countries
+             const frag = document.createDocumentFragment();
+             for (const name of COUNTRIES) {
+               const opt = document.createElement('option');
+               opt.value = name;
+               opt.textContent = name;
+               frag.appendChild(opt);
+             }
+             countrySelect.appendChild(frag);
+             
+             // Update select field colors
+             updateSelectColor(countrySelect);
+           }
+           
+           // Reset checkboxes
+           const checkboxes = contactForm.querySelectorAll('input[type="checkbox"]');
+           checkboxes.forEach(checkbox => {
+             checkbox.checked = false;
+           });
+           
+           console.log('Form reset completed');
+         })
         .catch((error) => {
           console.error('Email sending failed:', error);
           showErrorMessage();
@@ -905,11 +938,89 @@ document.addEventListener('DOMContentLoaded', function () {
           submitButton.disabled = false;
         });
       });
-    } else {
-      console.log('Using native Webflow form submission - no custom interception');
-      // Let Webflow handle the form submission natively
-      // This will show the .w-form-done message automatically after successful submission
-    }
+         } else {
+       console.log('Using native Webflow form submission - no custom interception');
+       // Let Webflow handle the form submission natively
+       // This will show the .w-form-done message automatically after successful submission
+       
+       // Add form reset handler for native Webflow submission
+       contactForm.addEventListener('submit', function(e) {
+         // Don't prevent default - let Webflow handle it
+         console.log('Native Webflow form submission detected');
+         
+         // Set up a listener for when the form is successfully submitted
+         const checkFormStatus = setInterval(() => {
+           const successDiv = document.querySelector('.w-form-done');
+           const failDiv = document.querySelector('.w-form-fail');
+           
+           if (successDiv && successDiv.style.display !== 'none') {
+             console.log('Native form submission successful - resetting form');
+             clearInterval(checkFormStatus);
+             
+             // Reset the form after a short delay to let Webflow show the success message
+             setTimeout(() => {
+               contactForm.reset();
+               
+               // Reset all form fields
+               const formFields = contactForm.querySelectorAll('input, textarea, select');
+               formFields.forEach(field => {
+                 field.classList.remove('error');
+                 field.style.borderColor = '';
+                 
+                 // Remove any error messages
+                 const errorDiv = field.parentNode.querySelector('.field-error');
+                 if (errorDiv) {
+                   errorDiv.remove();
+                 }
+               });
+               
+               // Reset country dropdown
+               const countrySelect = document.getElementById('country');
+               if (countrySelect) {
+                 countrySelect.innerHTML = '';
+                 const placeholder = document.createElement('option');
+                 placeholder.value = '';
+                 placeholder.textContent = 'Select country';
+                 placeholder.selected = true;
+                 placeholder.disabled = true;
+                 countrySelect.appendChild(placeholder);
+                 
+                 // Re-populate countries
+                 const frag = document.createDocumentFragment();
+                 for (const name of COUNTRIES) {
+                   const opt = document.createElement('option');
+                   opt.value = name;
+                   opt.textContent = name;
+                   frag.appendChild(opt);
+                 }
+                 countrySelect.appendChild(frag);
+                 
+                 // Update select field colors
+                 updateSelectColor(countrySelect);
+               }
+               
+               // Reset checkboxes
+               const checkboxes = contactForm.querySelectorAll('input[type="checkbox"]');
+               checkboxes.forEach(checkbox => {
+                 checkbox.checked = false;
+               });
+               
+               console.log('Native form reset completed');
+             }, 2000); // Wait 2 seconds for success message to show
+           }
+           
+           if (failDiv && failDiv.style.display !== 'none') {
+             console.log('Native form submission failed');
+             clearInterval(checkFormStatus);
+           }
+         }, 100); // Check every 100ms
+         
+         // Stop checking after 10 seconds
+         setTimeout(() => {
+           clearInterval(checkFormStatus);
+         }, 10000);
+       });
+     }
   }
 
   // Form validation function
