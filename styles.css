@@ -6302,21 +6302,7 @@ a .flip-card-wrapper {
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Hero section subtle breathing animation */
-.main-page-hero-section-wrapper {
-  animation: heroBreathing 8s ease-in-out infinite;
-}
 
-@keyframes heroBreathing {
-  0%, 100% {
-    transform: scale(1);
-    filter: brightness(1) contrast(1);
-  }
-  50% {
-    transform: scale(1.01);
-    filter: brightness(1.02) contrast(1.01);
-  }
-}
 
 /* Hero section parallax effect */
 .main-page-hero-section-wrapper.parallax-active {
@@ -6458,9 +6444,6 @@ a .flip-card-wrapper {
 
 /* Responsive adjustments */
 @media screen and (max-width: 767px) {
-  .main-page-hero-section-wrapper {
-    animation: heroBreathing 10s ease-in-out infinite;
-  }
   
   .main-page-hero-section-wrapper .image-23 {
     animation: imageFloat 12s ease-in-out infinite;
