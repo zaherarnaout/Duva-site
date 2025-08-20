@@ -5289,22 +5289,42 @@ function initializeNewsletterSubscription() {
   }
   
   function sendNewsletterEmail(email) {
-    // Create mailto link with subject and body
-    const subject = 'New Newsletter Subscription';
-    const body = `A new user has subscribed to the DUVA newsletter.\n\nEmail: ${email}\n\nDate: ${new Date().toLocaleString()}`;
+    // Show loading state
+    subscribeButton.disabled = true;
+    const originalText = subscribeButton.innerHTML;
+    subscribeButton.innerHTML = '<strong class="bold-text-6">Sending...</strong>';
     
-    const mailtoLink = `mailto:zaher@decolightllc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Open default email client
-    window.open(mailtoLink);
-    
-    // Show success message
-    showNewsletterMessage('Thank you for subscribing! We\'ll be in touch soon.', 'success');
-    
-    // Clear input
-    emailInput.value = '';
-    
-    console.log('📧 Newsletter subscription sent:', email);
+    // Send data to server
+    fetch('https://www.duvalighting.com/newsletter-subscribe.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        timestamp: new Date().toISOString()
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showNewsletterMessage(data.message || 'Thank you for subscribing! We\'ll be in touch soon.', 'success');
+        emailInput.value = '';
+        console.log('📧 Newsletter subscription sent:', email);
+      } else {
+        showNewsletterMessage(data.error || 'Something went wrong. Please try again.', 'error');
+        console.error('❌ Newsletter subscription failed:', data.error);
+      }
+    })
+    .catch(error => {
+      showNewsletterMessage('Network error. Please try again.', 'error');
+      console.error('❌ Newsletter subscription error:', error);
+    })
+    .finally(() => {
+      // Reset button state
+      subscribeButton.disabled = false;
+      subscribeButton.innerHTML = originalText;
+    });
   }
   
   function showNewsletterMessage(message, type) {
@@ -5340,5 +5360,94 @@ function initializeNewsletterSubscription() {
       }, 300);
     }, 5000);
   }
+  
+  // Enhanced newsletter button effects
+  function addNewsletterButtonEffects() {
+    const newsletterButton = document.getElementById('newsletter-subscribe') || 
+                            document.querySelector('.submit-button-2');
+    
+    if (newsletterButton) {
+      // Add ripple effect on click
+      newsletterButton.addEventListener('click', function(e) {
+        // Create ripple effect
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}px;
+          top: ${y}px;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s linear;
+          pointer-events: none;
+          z-index: 2;
+        `;
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+      
+      // Add ripple animation CSS
+      if (!document.querySelector('#newsletter-ripple-style')) {
+        const style = document.createElement('style');
+        style.id = 'newsletter-ripple-style';
+        style.textContent = `
+          @keyframes ripple {
+            to {
+              transform: scale(4);
+              opacity: 0;
+            }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+  }
+  
+  // Enhanced newsletter input effects
+  function addNewsletterInputEffects() {
+    const newsletterInput = document.getElementById('newsletter-email') || 
+                           document.querySelector('.text-field-3') ||
+                           document.querySelector('.div-block-19 input[type="email"]');
+    
+    if (newsletterInput) {
+      // Add floating label effect
+      newsletterInput.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+      });
+      
+      newsletterInput.addEventListener('blur', function() {
+        if (!this.value) {
+          this.parentElement.classList.remove('focused');
+        }
+      });
+      
+      // Add character count effect
+      newsletterInput.addEventListener('input', function() {
+        const maxLength = 50;
+        const currentLength = this.value.length;
+        
+        if (currentLength > maxLength * 0.8) {
+          this.style.borderColor = currentLength > maxLength ? '#F44336' : '#FF9800';
+        } else {
+          this.style.borderColor = '';
+        }
+      });
+    }
+  }
+  
+  // Initialize enhanced effects
+  addNewsletterButtonEffects();
+  addNewsletterInputEffects();
 }
 
