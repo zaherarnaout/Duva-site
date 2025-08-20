@@ -6075,6 +6075,7 @@ a .flip-card-wrapper {
 
 /* === Footer Wrapper Text Elements - Menu Panel Style === */
 /* Right Footer Wrapper Text Elements (excluding Text Block 69) */
+.right-footer-wrapper a:not(.text-block-69),
 .right-footer-wrapper .text-block:not(.text-block-69),
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
 .right-footer-wrapper div:not(.text-block-69) {
@@ -6093,6 +6094,7 @@ a .flip-card-wrapper {
 
 
 
+.right-footer-wrapper a:not(.text-block-69):hover,
 .right-footer-wrapper .text-block:not(.text-block-69):hover,
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
 .right-footer-wrapper div:not(.text-block-69):hover {
@@ -6102,6 +6104,7 @@ a .flip-card-wrapper {
 }
 
 /* Left Footer Wrapper Text Elements (excluding Text Block 68) */
+.left-footer-wrapper a:not(.text-block-68),
 .left-footer-wrapper .text-block:not(.text-block-68),
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68),
 .left-footer-wrapper div:not(.text-block-68) {
@@ -6120,6 +6123,7 @@ a .flip-card-wrapper {
 
 
 
+.left-footer-wrapper a:not(.text-block-68):hover,
 .left-footer-wrapper .text-block:not(.text-block-68):hover,
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
 .left-footer-wrapper div:not(.text-block-68):hover {
@@ -6129,9 +6133,11 @@ a .flip-card-wrapper {
 }
 
 /* Footer Text Active States */
+.right-footer-wrapper a:not(.text-block-69):active,
 .right-footer-wrapper .text-block:not(.text-block-69):active,
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69):active,
 .right-footer-wrapper div:not(.text-block-69):active,
+.left-footer-wrapper a:not(.text-block-68):active,
 .left-footer-wrapper .text-block:not(.text-block-68):active,
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):active,
 .left-footer-wrapper div:not(.text-block-68):active {
@@ -6140,9 +6146,11 @@ a .flip-card-wrapper {
 }
 
 /* Footer Text Focus States */
+.right-footer-wrapper a:not(.text-block-69):focus,
 .right-footer-wrapper .text-block:not(.text-block-69):focus,
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69):focus,
 .right-footer-wrapper div:not(.text-block-69):focus,
+.left-footer-wrapper a:not(.text-block-68):focus,
 .left-footer-wrapper .text-block:not(.text-block-68):focus,
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):focus,
 .left-footer-wrapper div:not(.text-block-68):focus {
@@ -6152,9 +6160,11 @@ a .flip-card-wrapper {
 
 /* Responsive adjustments for footer text elements */
 @media screen and (max-width: 767px) {
+  .right-footer-wrapper a:not(.text-block-69),
   .right-footer-wrapper .text-block:not(.text-block-69),
   .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
   .right-footer-wrapper div:not(.text-block-69),
+  .left-footer-wrapper a:not(.text-block-68),
   .left-footer-wrapper .text-block:not(.text-block-68),
   .left-footer-wrapper [class*="text-block"]:not(.text-block-68),
   .left-footer-wrapper div:not(.text-block-68) {
@@ -6162,12 +6172,14 @@ a .flip-card-wrapper {
     padding: 6px 0;
   }
   
+  .right-footer-wrapper a:not(.text-block-69):hover,
   .right-footer-wrapper .text-block:not(.text-block-69):hover,
   .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
   .right-footer-wrapper div:not(.text-block-69):hover {
     transform: translateX(4px) scale(1.03);
   }
   
+  .left-footer-wrapper a:not(.text-block-68):hover,
   .left-footer-wrapper .text-block:not(.text-block-68):hover,
   .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
   .left-footer-wrapper div:not(.text-block-68):hover {
