@@ -6105,12 +6105,11 @@ a .flip-card-wrapper {
   }
 }
 
-/* === Footer Wrapper Buttons - Menu Panel Style === */
-/* Right Footer Wrapper Button */
-.right-footer-wrapper a,
-.right-footer-wrapper button,
-.right-footer-wrapper [class*="button"],
-.right-footer-wrapper [class*="link"] {
+/* === Footer Wrapper Text Elements - Menu Panel Style === */
+/* Right Footer Wrapper Text Elements (excluding Text Block 69) */
+.right-footer-wrapper .text-block:not(.text-block-69),
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69),
+.right-footer-wrapper div:not(.text-block-69) {
   color: var(--duva-light-grey, #F4F5F6);
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
@@ -6121,17 +6120,16 @@ a .flip-card-wrapper {
   overflow: hidden;
   cursor: pointer;
   display: inline-block;
-  padding: 12px 20px;
+  padding: 8px 0;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
 }
 
-/* Right Footer Button Shimmer Effect */
-.right-footer-wrapper a::before,
-.right-footer-wrapper button::before,
-.right-footer-wrapper [class*="button"]::before,
-.right-footer-wrapper [class*="link"]::before {
+/* Right Footer Text Shimmer Effect */
+.right-footer-wrapper .text-block:not(.text-block-69)::before,
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69)::before,
+.right-footer-wrapper div:not(.text-block-69)::before {
   content: '';
   position: absolute;
   top: 0;
@@ -6144,17 +6142,15 @@ a .flip-card-wrapper {
   pointer-events: none;
 }
 
-.right-footer-wrapper a:hover::before,
-.right-footer-wrapper button:hover::before,
-.right-footer-wrapper [class*="button"]:hover::before,
-.right-footer-wrapper [class*="link"]:hover::before {
+.right-footer-wrapper .text-block:not(.text-block-69):hover::before,
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover::before,
+.right-footer-wrapper div:not(.text-block-69):hover::before {
   left: 100%;
 }
 
-.right-footer-wrapper a:hover,
-.right-footer-wrapper button:hover,
-.right-footer-wrapper [class*="button"]:hover,
-.right-footer-wrapper [class*="link"]:hover {
+.right-footer-wrapper .text-block:not(.text-block-69):hover,
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
+.right-footer-wrapper div:not(.text-block-69):hover {
   color: var(--duva-red, #C0392B);
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
@@ -6162,11 +6158,10 @@ a .flip-card-wrapper {
   background: rgba(192, 57, 43, 0.05);
 }
 
-/* Left Footer Wrapper Button */
-.left-footer-wrapper a,
-.left-footer-wrapper button,
-.left-footer-wrapper [class*="button"],
-.left-footer-wrapper [class*="link"] {
+/* Left Footer Wrapper Text Elements (excluding Text Block 68) */
+.left-footer-wrapper .text-block:not(.text-block-68),
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68),
+.left-footer-wrapper div:not(.text-block-68) {
   color: var(--duva-light-grey, #F4F5F6);
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
@@ -6177,17 +6172,16 @@ a .flip-card-wrapper {
   overflow: hidden;
   cursor: pointer;
   display: inline-block;
-  padding: 12px 20px;
+  padding: 8px 0;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
 }
 
-/* Left Footer Button Shimmer Effect */
-.left-footer-wrapper a::before,
-.left-footer-wrapper button::before,
-.left-footer-wrapper [class*="button"]::before,
-.left-footer-wrapper [class*="link"]::before {
+/* Left Footer Text Shimmer Effect */
+.left-footer-wrapper .text-block:not(.text-block-68)::before,
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68)::before,
+.left-footer-wrapper div:not(.text-block-68)::before {
   content: '';
   position: absolute;
   top: 0;
@@ -6200,17 +6194,15 @@ a .flip-card-wrapper {
   pointer-events: none;
 }
 
-.left-footer-wrapper a:hover::before,
-.left-footer-wrapper button:hover::before,
-.left-footer-wrapper [class*="button"]:hover::before,
-.left-footer-wrapper [class*="link"]:hover::before {
+.left-footer-wrapper .text-block:not(.text-block-68):hover::before,
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover::before,
+.left-footer-wrapper div:not(.text-block-68):hover::before {
   left: 100%;
 }
 
-.left-footer-wrapper a:hover,
-.left-footer-wrapper button:hover,
-.left-footer-wrapper [class*="button"]:hover,
-.left-footer-wrapper [class*="link"]:hover {
+.left-footer-wrapper .text-block:not(.text-block-68):hover,
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
+.left-footer-wrapper div:not(.text-block-68):hover {
   color: var(--duva-red, #C0392B);
   transform: translateX(3px) scale(1.02);
   text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
@@ -6218,57 +6210,49 @@ a .flip-card-wrapper {
   background: rgba(192, 57, 43, 0.05);
 }
 
-/* Footer Button Active States */
-.right-footer-wrapper a:active,
-.right-footer-wrapper button:active,
-.right-footer-wrapper [class*="button"]:active,
-.right-footer-wrapper [class*="link"]:active,
-.left-footer-wrapper a:active,
-.left-footer-wrapper button:active,
-.left-footer-wrapper [class*="button"]:active,
-.left-footer-wrapper [class*="link"]:active {
+/* Footer Text Active States */
+.right-footer-wrapper .text-block:not(.text-block-69):active,
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69):active,
+.right-footer-wrapper div:not(.text-block-69):active,
+.left-footer-wrapper .text-block:not(.text-block-68):active,
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68):active,
+.left-footer-wrapper div:not(.text-block-68):active {
   transform: scale(0.98);
   transition: transform 0.1s ease;
 }
 
-/* Footer Button Focus States */
-.right-footer-wrapper a:focus,
-.right-footer-wrapper button:focus,
-.right-footer-wrapper [class*="button"]:focus,
-.right-footer-wrapper [class*="link"]:focus,
-.left-footer-wrapper a:focus,
-.left-footer-wrapper button:focus,
-.left-footer-wrapper [class*="button"]:focus,
-.left-footer-wrapper [class*="link"]:focus {
+/* Footer Text Focus States */
+.right-footer-wrapper .text-block:not(.text-block-69):focus,
+.right-footer-wrapper [class*="text-block"]:not(.text-block-69):focus,
+.right-footer-wrapper div:not(.text-block-69):focus,
+.left-footer-wrapper .text-block:not(.text-block-68):focus,
+.left-footer-wrapper [class*="text-block"]:not(.text-block-68):focus,
+.left-footer-wrapper div:not(.text-block-68):focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2);
 }
 
-/* Responsive adjustments for footer buttons */
+/* Responsive adjustments for footer text elements */
 @media screen and (max-width: 767px) {
-  .right-footer-wrapper a,
-  .right-footer-wrapper button,
-  .right-footer-wrapper [class*="button"],
-  .right-footer-wrapper [class*="link"],
-  .left-footer-wrapper a,
-  .left-footer-wrapper button,
-  .left-footer-wrapper [class*="button"],
-  .left-footer-wrapper [class*="link"] {
+  .right-footer-wrapper .text-block:not(.text-block-69),
+  .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
+  .right-footer-wrapper div:not(.text-block-69),
+  .left-footer-wrapper .text-block:not(.text-block-68),
+  .left-footer-wrapper [class*="text-block"]:not(.text-block-68),
+  .left-footer-wrapper div:not(.text-block-68) {
     font-size: 14px;
-    padding: 10px 16px;
+    padding: 6px 0;
   }
   
-  .right-footer-wrapper a:hover,
-  .right-footer-wrapper button:hover,
-  .right-footer-wrapper [class*="button"]:hover,
-  .right-footer-wrapper [class*="link"]:hover {
+  .right-footer-wrapper .text-block:not(.text-block-69):hover,
+  .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
+  .right-footer-wrapper div:not(.text-block-69):hover {
     transform: translateX(4px) scale(1.03);
   }
   
-  .left-footer-wrapper a:hover,
-  .left-footer-wrapper button:hover,
-  .left-footer-wrapper [class*="button"]:hover,
-  .left-footer-wrapper [class*="link"]:hover {
+  .left-footer-wrapper .text-block:not(.text-block-68):hover,
+  .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
+  .left-footer-wrapper div:not(.text-block-68):hover {
     transform: translateX(2px) scale(1.01);
   }
 }
