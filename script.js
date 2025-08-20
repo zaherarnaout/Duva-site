@@ -5214,6 +5214,7 @@ function initializeThemeToggle() {
 document.addEventListener('DOMContentLoaded', () => {
   initializeThemeToggle();
   initializeDateTimeDisplay();
+  initializeHeroSectionAnimations();
 });
 
 // Also initialize on Webflow ready
@@ -5221,6 +5222,7 @@ Webflow.push(() => {
   initializeThemeToggle();
   initializeNewsletterSubscription();
   initializeDateTimeDisplay();
+  initializeHeroSectionAnimations();
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5474,13 +5476,14 @@ function initializeDateTimeDisplay() {
     };
     const formattedDate = now.toLocaleDateString('en-US', dateOptions);
     
-    // Format time as HH:MM AM/PM
+    // Format time as HH MM AM/PM (without colon since CSS adds it)
     const timeOptions = { 
       hour: 'numeric', 
       minute: '2-digit', 
       hour12: true 
     };
-    const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+    const timeString = now.toLocaleTimeString('en-US', timeOptions);
+    const formattedTime = timeString.replace(':', ' '); // Remove colon, CSS will add blinking one
     
     // Update the elements
     dateElement.textContent = formattedDate;
@@ -5492,6 +5495,63 @@ function initializeDateTimeDisplay() {
   
   // Update every second
   setInterval(updateDateTime, 1000);
+}
+
+// === Hero Section Parallax and Animation Enhancement ===
+function initializeHeroSectionAnimations() {
+  console.log('🎨 Initializing hero section animations...');
+  
+  const heroSection = document.querySelector('.main-page-hero-section-wrapper');
+  const heroImage = document.querySelector('.main-page-hero-section-wrapper .image-23');
+  
+  if (!heroSection || !heroImage) {
+    console.log('⚠️ Hero section elements not found');
+    return;
+  }
+  
+  // Add parallax functionality
+  function updateHeroParallax() {
+    const scrollY = window.scrollY;
+    
+    // Update CSS custom property for scroll position
+    document.documentElement.style.setProperty('--scroll-y', scrollY);
+    
+    // Add parallax-active class when scrolling
+    if (scrollY > 50) {
+      heroSection.classList.add('parallax-active');
+      heroImage.classList.add('parallax-active');
+    } else {
+      heroSection.classList.remove('parallax-active');
+      heroImage.classList.remove('parallax-active');
+    }
+  }
+  
+  // Initialize parallax on scroll
+  window.addEventListener('scroll', () => {
+    requestAnimationFrame(updateHeroParallax);
+  });
+  
+  // Initial call
+  updateHeroParallax();
+  
+  // Add intersection observer for performance optimization
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.willChange = 'transform, filter';
+      } else {
+        entry.target.style.willChange = 'auto';
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '50px'
+  });
+  
+  observer.observe(heroSection);
+  observer.observe(heroImage);
+  
+  console.log('✅ Hero section animations initialized');
 }
 
 
