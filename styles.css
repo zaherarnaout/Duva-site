@@ -339,8 +339,8 @@ body.menu-open {
 
 .link-13:hover {
   color: #c0392b;
-  transform: translateX(8px) scale(1.05);
-  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+  transform: translateX(3px) scale(1.02);
+  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
 }
 
 @keyframes slideInFromLeft {
@@ -6194,7 +6194,7 @@ a .flip-card-wrapper {
   font-size: 40px;
   line-height: 50px;
   color: var(--duva-light-grey, #F4F5F6);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .time {
@@ -6207,7 +6207,7 @@ a .flip-card-wrapper {
   font-size: 40px;
   line-height: 50px;
   color: var(--duva-light-grey, #F4F5F6);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* Responsive adjustments for date-time display */
@@ -6236,7 +6236,7 @@ a .flip-card-wrapper {
     font-size: 24px;
     line-height: 30px;
     color: var(--duva-light-grey, #F4F5F6);
-    font-weight: 600;
+    font-weight: 400;
   }
 }
 
