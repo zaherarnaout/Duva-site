@@ -6070,104 +6070,34 @@ a .flip-card-wrapper {
   filter: brightness(1.2) contrast(1.1);
 }
 
-/* Shimmer effect for social media icons */
-.footer-section a[href*="facebook"]::before,
-.footer-section a[href*="twitter"]::before,
-.footer-section a[href*="instagram"]::before,
-.footer-section a[href*="linkedin"]::before,
-.footer-section a[href*="youtube"]::before,
-.footer-section a[href*="tiktok"]::before,
-.footer-section .social-icon::before,
-.footer-section .social-media-icon::before,
-.footer-section .facebook::before,
-.footer-section .twitter::before,
-.footer-section .instagram::before,
-.footer-section .linkedin::before,
-.footer-section .youtube::before,
-.footer-section .tiktok::before,
-.footer-section [class*="social"]::before,
-.footer-section [class*="facebook"]::before,
-.footer-section [class*="twitter"]::before,
-.footer-section [class*="instagram"]::before,
-.footer-section [class*="linkedin"]::before,
-.footer-section [class*="youtube"]::before,
-.footer-section [class*="tiktok"]::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.4), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-}
+/* Removed shimmer background effect - keeping clean hover only */
 
-.footer-section a[href*="facebook"]:hover::before,
-.footer-section a[href*="twitter"]:hover::before,
-.footer-section a[href*="instagram"]:hover::before,
-.footer-section a[href*="linkedin"]:hover::before,
-.footer-section a[href*="youtube"]:hover::before,
-.footer-section a[href*="tiktok"]:hover::before,
-.footer-section .social-icon:hover::before,
-.footer-section .social-media-icon:hover::before,
-.footer-section .facebook:hover::before,
-.footer-section .twitter:hover::before,
-.footer-section .instagram:hover::before,
-.footer-section .linkedin:hover::before,
-.footer-section .youtube:hover::before,
-.footer-section .tiktok:hover::before,
-.footer-section [class*="social"]:hover::before,
-.footer-section [class*="facebook"]:hover::before,
-.footer-section [class*="twitter"]:hover::before,
-.footer-section [class*="instagram"]:hover::before,
-.footer-section [class*="linkedin"]:hover::before,
-.footer-section [class*="youtube"]:hover::before,
-.footer-section [class*="tiktok"]:hover::before {
-  left: 100%;
-  opacity: 1;
-}
-
-/* Platform-specific color effects */
+/* Clean hover effects without background colors */
 .footer-section a[href*="facebook"]:hover,
-.footer-section .facebook:hover,
-.footer-section [class*="facebook"]:hover {
-  box-shadow: 0 4px 15px rgba(66, 103, 178, 0.4);
-}
-
 .footer-section a[href*="twitter"]:hover,
-.footer-section .twitter:hover,
-.footer-section [class*="twitter"]:hover {
-  box-shadow: 0 4px 15px rgba(29, 161, 242, 0.4);
-}
-
 .footer-section a[href*="instagram"]:hover,
-.footer-section .instagram:hover,
-.footer-section [class*="instagram"]:hover {
-  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
-}
-
 .footer-section a[href*="linkedin"]:hover,
-.footer-section .linkedin:hover,
-.footer-section [class*="linkedin"]:hover {
-  box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4);
-}
-
 .footer-section a[href*="youtube"]:hover,
-.footer-section .youtube:hover,
-.footer-section [class*="youtube"]:hover {
-  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
-}
-
 .footer-section a[href*="tiktok"]:hover,
+.footer-section .social-icon:hover,
+.footer-section .social-media-icon:hover,
+.footer-section .facebook:hover,
+.footer-section .twitter:hover,
+.footer-section .instagram:hover,
+.footer-section .linkedin:hover,
+.footer-section .youtube:hover,
 .footer-section .tiktok:hover,
+.footer-section [class*="social"]:hover,
+.footer-section [class*="facebook"]:hover,
+.footer-section [class*="twitter"]:hover,
+.footer-section [class*="instagram"]:hover,
+.footer-section [class*="linkedin"]:hover,
+.footer-section [class*="youtube"]:hover,
 .footer-section [class*="tiktok"]:hover {
-  box-shadow: 0 4px 15px rgba(238, 29, 82, 0.4);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
 }
 
-/* Pulse animation for social media icons */
+/* Individual pulse animation for social media icons */
 .footer-section a[href*="facebook"],
 .footer-section a[href*="twitter"],
 .footer-section a[href*="instagram"],
@@ -6189,8 +6119,8 @@ a .flip-card-wrapper {
 .footer-section [class*="linkedin"],
 .footer-section [class*="youtube"],
 .footer-section [class*="tiktok"] {
-  animation: socialIconPulse 3s ease-in-out infinite;
-  animation-delay: calc(var(--icon-index, 0) * 0.5s);
+  animation: socialIconPulse 4s ease-in-out infinite;
+  animation-delay: var(--animation-delay, 0s);
 }
 
 @keyframes socialIconPulse {
@@ -6198,7 +6128,7 @@ a .flip-card-wrapper {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 }
 
