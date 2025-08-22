@@ -3302,8 +3302,6 @@ footer, .footer {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border-color: var(--duva-red, #C0392B) !important;
   background-color: var(--duva-white, #ffffff) !important;
-  animation: optimizedCardFloat 3s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
 }
 
 .main-page-categories-wrapper a:hover::before {
@@ -3321,8 +3319,6 @@ footer, .footer {
   transform: scale(1.05) translateY(-2px);
   transition: all 0.3s ease;
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
-  animation: optimizedSubtlePulse 5s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 /* Text subtle glow animation - OPTIMIZED */
@@ -3355,8 +3351,6 @@ footer, .footer {
   transform: scale(1.1) rotate(2deg);
   transition: transform 0.3s ease;
   filter: brightness(1.05) contrast(1.05);
-  animation: optimizedSubtlePulse 5s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 /* Subtle image breathing animation - OPTIMIZED */
@@ -3422,8 +3416,6 @@ footer, .footer {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
-  animation: optimizedCardFloat 3s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
 }
 
 /* Product cards parallax and animation effects - OPTIMIZED */
