@@ -6496,16 +6496,7 @@ a .flip-card-wrapper {
   opacity: 1;
 }
 
-/* Background logo parallax effect */
-.bg-duva-logo-bk {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-  filter: brightness(1) contrast(1);
-}
 
-.bg-duva-logo-bk:hover {
-  filter: brightness(1.05) contrast(1.02);
-}
 
 /* Shadow images parallax effect */
 .shadow-two {
@@ -6630,10 +6621,6 @@ a .flip-card-wrapper {
     transform: none !important;
   }
   
-  .bg-duva-logo-bk {
-    transform: none !important;
-  }
-  
   .shadow-two {
     transform: none !important;
   }
@@ -6662,7 +6649,6 @@ a .flip-card-wrapper {
 /* Reduced motion support for privacy section */
 @media (prefers-reduced-motion: reduce) {
   .privacy-policy,
-  .bg-duva-logo-bk,
   .shadow-two,
   .hero-split,
   .heading-3, .heading-4, .heading-5, .heading-6, .heading-7,
