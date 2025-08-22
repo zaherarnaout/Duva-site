@@ -5054,6 +5054,8 @@ a .flip-card-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Ensure content stays within bounds */
+  clip-path: inset(0);
 }
 
 .main-page-hero-section-img {
@@ -5122,9 +5124,9 @@ a .flip-card-wrapper {
   min-width: 0;
 }
 
-/* Parallax effect for text wrapper */
+/* Parallax effect for text wrapper - Fixed overflow */
 .hero-text-wrapper.parallax-active {
-  transform: scale(0.8) translateY(calc(var(--scroll-y, 0) * -0.2px));
+  transform: scale(0.8) translateY(calc(var(--scroll-y, 0) * -0.05px));
 }
 
 /* Hover effect for text wrapper */
@@ -6291,10 +6293,11 @@ a .flip-card-wrapper {
 
 
 
-/* Hero section parallax effect */
+/* Hero section parallax effect - Fixed overflow */
 .main-page-hero-section-wrapper.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.03px));
+  transform: translateY(calc(var(--scroll-y, 0) * -0.01px));
   transition: transform 0.4s ease-out;
+  overflow: hidden;
 }
 
 /* Image 23 - Optimized Animations */
@@ -6318,10 +6321,11 @@ a .flip-card-wrapper {
   }
 }
 
-/* Image parallax effect */
+/* Image parallax effect - Fixed overflow */
 .main-page-hero-section-wrapper .image-23.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.08px)) scale(1.05);
+  transform: translateY(calc(var(--scroll-y, 0) * -0.02px)) scale(1.02);
   transition: transform 0.6s ease-out;
+  overflow: hidden;
 }
 
 /* Image hover effects - Optimized */
