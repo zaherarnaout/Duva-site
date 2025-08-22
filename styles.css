@@ -6548,7 +6548,7 @@ a .flip-card-wrapper {
 /* Simple fade in/out effect when sections enter/exit viewport */
 
 /* Base state - sections start with reduced opacity */
-.main-header-wrapper,
+/* Header excluded - always visible */
 .footer-section,
 .main-page-hero-section-wrapper,
 .main-page-categories-wrapper,
@@ -6578,7 +6578,7 @@ a .flip-card-wrapper {
 }
 
 /* Active state - sections fully visible when in viewport */
-.main-header-wrapper.viewport-visible,
+/* Header excluded - always visible */
 .footer-section.viewport-visible,
 .main-page-hero-section-wrapper.viewport-visible,
 .main-page-categories-wrapper.viewport-visible,
@@ -6621,7 +6621,7 @@ a .flip-card-wrapper {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .main-header-wrapper,
+  /* Header excluded - always visible */
   .footer-section,
   .main-page-hero-section-wrapper,
   .main-page-categories-wrapper,
