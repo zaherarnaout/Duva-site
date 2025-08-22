@@ -2656,7 +2656,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeLogoHomeButton();
   
   // Initialize privacy section parallax and animations
-  initializePrivacySectionEffects();
+
 });
     
 
@@ -4283,12 +4283,6 @@ if (typeof Webflow !== 'undefined') {
   }
 
   const parallaxTargetsConfig = [
-    { selector: '.hero-section', speed: 0.06, max: 18 },
-    { selector: '.right-hero-wrapper', speed: 0.05, max: 16 },
-    { selector: '.related-slider-wrapper', speed: 0.04, max: 14 },
-    { selector: '.accessories-section', speed: 0.05, max: 16 },
-    { selector: '.footer-section', speed: 0.03, max: 12 },
-    { selector: '.privacy-policy', speed: 0.04, max: 15 },
     { selector: '.shadow-two', speed: 0.03, max: 12 },
     { selector: '.hero-split', speed: 0.02, max: 10 }
   ];
@@ -5135,141 +5129,8 @@ Webflow.push(() => {
   initializeVaseSectionAnimations();
 });
 
-/* === Privacy Section Parallax and Animation Effects === */
-function initializePrivacySectionEffects() {
-  console.log('🔒 Initializing privacy section parallax and animation effects...');
-  
-  // Check if we're on a privacy section page
-  const privacySections = document.querySelectorAll('.privacy-policy');
-  if (privacySections.length === 0) {
-    console.log('⚠️ No privacy sections found');
-    return;
-  }
-  
-  console.log(`✅ Found ${privacySections.length} privacy sections`);
-  
-  // Initialize fade-in animations for privacy section elements
-  const privacyElements = [
-    '.privacy-policy',
-    '.hero-split',
-    '.heading-3, .heading-4, .heading-5, .heading-6, .heading-7',
-    '.shadow-two',
-    '.main-page'
-  ];
-  
-  // Create intersection observer for fade-in animations
-  const fadeInObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in');
-        
-        // Add staggered animation for child elements
-        const childElements = entry.target.querySelectorAll('.hero-split, .heading-3, .heading-4, .heading-5, .heading-6, .heading-7, .shadow-two, .main-page');
-        childElements.forEach((child, index) => {
-          setTimeout(() => {
-            child.classList.add('fade-in');
-          }, index * 100);
-        });
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-  
-  // Observe privacy sections for fade-in animations
-  privacySections.forEach(section => {
-    fadeInObserver.observe(section);
-  });
-  
 
-  
-  // Initialize shadow images parallax effect
-  const shadowImages = document.querySelectorAll('.shadow-two');
-  shadowImages.forEach(image => {
-    image.style.willChange = 'transform';
-    image.style.transition = 'transform 0.1s ease-out, box-shadow 0.3s ease';
-  });
-  
-  // Initialize hero split sections parallax effect
-  const heroSplits = document.querySelectorAll('.hero-split');
-  heroSplits.forEach(split => {
-    split.style.willChange = 'transform';
-    split.style.transition = 'transform 0.1s ease-out';
-  });
-  
-  // Initialize text headings parallax effect
-  const headings = document.querySelectorAll('.heading-3, .heading-4, .heading-5, .heading-6, .heading-7');
-  headings.forEach(heading => {
-    heading.style.willChange = 'transform';
-    heading.style.transition = 'transform 0.1s ease-out, color 0.3s ease';
-  });
-  
-  // Initialize main page buttons parallax effect
-  const mainPageButtons = document.querySelectorAll('.main-page');
-  mainPageButtons.forEach(button => {
-    button.style.willChange = 'transform';
-    button.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-  });
-  
-  // Add scroll-triggered parallax effects
-  let ticking = false;
-  
-  function updatePrivacyParallax() {
-    const scrollY = window.scrollY;
     
-    // Update shadow images parallax
-    shadowImages.forEach(image => {
-      const rect = image.getBoundingClientRect();
-      const elementTopOnPage = scrollY + rect.top;
-      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * 0.03, 12), -12);
-      image.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-    });
-    
-    // Update hero splits parallax
-    heroSplits.forEach(split => {
-      const rect = split.getBoundingClientRect();
-      const elementTopOnPage = scrollY + rect.top;
-      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * 0.02, 10), -10);
-      split.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-    });
-    
-    // Update headings parallax
-    headings.forEach(heading => {
-      const rect = heading.getBoundingClientRect();
-      const elementTopOnPage = scrollY + rect.top;
-      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * 0.01, 5), -5);
-      heading.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-    });
-    
-    ticking = false;
-  }
-  
-  function requestPrivacyParallaxUpdate() {
-    if (!ticking) {
-      requestAnimationFrame(updatePrivacyParallax);
-      ticking = true;
-    }
-  }
-  
-  // Add scroll event listener for parallax effects
-  window.addEventListener('scroll', requestPrivacyParallaxUpdate, { passive: true });
-  
-  // Initial call
-  updatePrivacyParallax();
-  
-  console.log('✅ Privacy section parallax and animation effects initialized');
-}
-
-// Initialize privacy section effects when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  initializePrivacySectionEffects();
-});
-
-// Also initialize on Webflow ready
-Webflow.push(() => {
-  initializePrivacySectionEffects();
-});
 
 /* === Theme Toggle Functionality === */
 function initializeThemeToggle() {
