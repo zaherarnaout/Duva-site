@@ -3269,9 +3269,9 @@ footer, .footer {
 /* Staggered entrance animation for category cards - OPTIMIZED */
 .main-page-categories-wrapper a {
   /* Using optimized animation from performance optimization section */
-  animation: optimizedCardEnter 0.6s ease-out both, optimizedCardFloat 3s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s)), calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
-  animation-play-state: running, paused; /* Entrance runs immediately, float is paused */
+  animation: optimizedCardEnter 0.6s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s));
+  /* Float animation will be added on hover */
 }
 
 @keyframes categoryCardEnter {
@@ -3302,6 +3302,8 @@ footer, .footer {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border-color: var(--duva-red, #C0392B) !important;
   background-color: var(--duva-white, #ffffff) !important;
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
 }
 
 .main-page-categories-wrapper a:hover::before {
@@ -3319,6 +3321,8 @@ footer, .footer {
   transform: scale(1.05) translateY(-2px);
   transition: all 0.3s ease;
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+  animation: optimizedSubtlePulse 5s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 /* Text subtle glow animation - OPTIMIZED */
@@ -3329,10 +3333,7 @@ footer, .footer {
 .main-page-categories-wrapper .text-block-52,
 .main-page-categories-wrapper .text-block-53 {
   transition: all 0.3s ease;
-  /* Using optimized animation from performance optimization section */
-  animation: optimizedSubtlePulse 5s ease-in-out infinite;
-  animation-play-state: paused; /* Pause by default for better performance */
-  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
+  /* Animation will be added on hover */
 }
 
 @keyframes textGlow {
@@ -3354,6 +3355,8 @@ footer, .footer {
   transform: scale(1.1) rotate(2deg);
   transition: transform 0.3s ease;
   filter: brightness(1.05) contrast(1.05);
+  animation: optimizedSubtlePulse 5s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 /* Subtle image breathing animation - OPTIMIZED */
@@ -3364,10 +3367,7 @@ footer, .footer {
 .main-page-categories-wrapper .image-28,
 .main-page-categories-wrapper .image-29 {
   transition: transform 0.3s ease, filter 0.3s ease;
-  /* Using optimized animation from performance optimization section */
-  animation: optimizedSubtlePulse 5s ease-in-out infinite;
-  animation-play-state: paused; /* Pause by default for better performance */
-  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
+  /* Animation will be added on hover */
 }
 
 @keyframes imageBreathing {
@@ -3422,7 +3422,8 @@ footer, .footer {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
-  animation-play-state: running, running; /* Activate both entrance and float animations */
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
 }
 
 /* Product cards parallax and animation effects - OPTIMIZED */
@@ -3467,9 +3468,9 @@ footer, .footer {
 .related-card,
 .flip-card-wrapper {
   /* Using optimized animation from performance optimization section */
-  animation: optimizedCardEnter 0.7s ease-out both, optimizedCardFloat 3s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s)), calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
-  animation-play-state: running, paused; /* Entrance runs immediately, float is paused */
+  animation: optimizedCardEnter 0.7s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
+  /* Float animation will be added on hover */
 }
 
 @keyframes productCardEnter {
