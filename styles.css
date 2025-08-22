@@ -6461,3 +6461,319 @@ a .flip-card-wrapper {
     transform: none;
   }
 }
+
+/* === Privacy Section Parallax Effects === */
+/* Enhanced parallax effects for privacy section pages */
+
+/* Privacy policy section parallax effect */
+.privacy-policy {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.privacy-policy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(192, 57, 43, 0.02) 0%, 
+    rgba(33, 33, 33, 0.01) 25%, 
+    rgba(192, 57, 43, 0.03) 50%, 
+    rgba(33, 33, 33, 0.02) 75%, 
+    rgba(192, 57, 43, 0.01) 100%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.privacy-policy:hover::before {
+  opacity: 1;
+}
+
+/* Background logo parallax effect */
+.bg-duva-logo-bk {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  filter: brightness(1) contrast(1);
+}
+
+.bg-duva-logo-bk:hover {
+  filter: brightness(1.05) contrast(1.02);
+}
+
+/* Shadow images parallax effect */
+.shadow-two {
+  will-change: transform;
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-two:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Hero split sections parallax effect */
+.hero-split {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.hero-split:hover {
+  transform: translateY(-1px);
+}
+
+/* Enhanced text parallax effects */
+.heading-3, .heading-4, .heading-5, .heading-6, .heading-7 {
+  will-change: transform;
+  transition: transform 0.1s ease-out, color 0.3s ease;
+}
+
+.heading-3:hover, .heading-4:hover, .heading-6:hover, .heading-7:hover {
+  color: #a03025;
+}
+
+.heading-5:hover {
+  color: #1a1a1a;
+}
+
+/* Main page button parallax effect */
+.main-page {
+  will-change: transform;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.main-page:hover::before {
+  left: 100%;
+}
+
+.main-page:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Container parallax effect */
+.container-2 {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Hero wrapper parallax effect */
+.hero-wrapper {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Text content parallax effect */
+.margin-bottom-24px {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Link parallax effects */
+.link-17, .link-18 {
+  will-change: transform;
+  transition: transform 0.1s ease-out, color 0.3s ease;
+}
+
+.link-17:hover, .link-18:hover {
+  transform: translateY(-1px);
+  color: #a03025;
+}
+
+/* Bold text parallax effects */
+.bold-text-7, .bold-text-8 {
+  will-change: transform;
+  transition: transform 0.1s ease-out, color 0.3s ease;
+}
+
+.bold-text-7:hover, .bold-text-8:hover {
+  transform: translateY(-1px);
+  color: #a03025;
+}
+
+/* Text span parallax effects */
+.text-span-9 {
+  will-change: transform;
+  transition: transform 0.1s ease-out, color 0.3s ease;
+}
+
+.text-span-9:hover {
+  transform: translateY(-1px);
+  color: #a03025;
+}
+
+/* Responsive adjustments for privacy section parallax */
+@media screen and (max-width: 991px) {
+  .privacy-policy {
+    transform: none !important;
+  }
+  
+  .bg-duva-logo-bk {
+    transform: none !important;
+  }
+  
+  .shadow-two {
+    transform: none !important;
+  }
+  
+  .hero-split {
+    transform: none !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .privacy-policy::before {
+    opacity: 0;
+  }
+  
+  .shadow-two:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .main-page:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Reduced motion support for privacy section */
+@media (prefers-reduced-motion: reduce) {
+  .privacy-policy,
+  .bg-duva-logo-bk,
+  .shadow-two,
+  .hero-split,
+  .heading-3, .heading-4, .heading-5, .heading-6, .heading-7,
+  .main-page,
+  .container-2,
+  .hero-wrapper,
+  .margin-bottom-24px,
+  .link-17, .link-18,
+  .bold-text-7, .bold-text-8,
+  .text-span-9 {
+    transition: none;
+    transform: none !important;
+    will-change: auto;
+  }
+  
+  .privacy-policy::before {
+    opacity: 0;
+  }
+  
+  .main-page::before {
+    display: none;
+  }
+}
+
+/* === Privacy Section Smooth Scroll Animations === */
+/* Fade-in animations for privacy section elements */
+
+.privacy-policy {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.privacy-policy.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-split {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-split.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.heading-3, .heading-4, .heading-5, .heading-6, .heading-7 {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.heading-3.fade-in, .heading-4.fade-in, .heading-5.fade-in, .heading-6.fade-in, .heading-7.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.shadow-two {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.shadow-two.fade-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.main-page {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.main-page.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation delays for hero-split elements */
+.hero-split:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.hero-split:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.hero-split:nth-child(1) .heading-3,
+.hero-split:nth-child(1) .heading-4,
+.hero-split:nth-child(1) .heading-5,
+.hero-split:nth-child(1) .heading-6,
+.hero-split:nth-child(1) .heading-7 {
+  transition-delay: 0.2s;
+}
+
+.hero-split:nth-child(2) .heading-3,
+.hero-split:nth-child(2) .heading-4,
+.hero-split:nth-child(2) .heading-5,
+.hero-split:nth-child(2) .heading-6,
+.hero-split:nth-child(2) .heading-7 {
+  transition-delay: 0.3s;
+}
+
+.shadow-two {
+  transition-delay: 0.4s;
+}
+
+.main-page {
+  transition-delay: 0.5s;
+}
