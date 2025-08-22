@@ -5986,8 +5986,8 @@ function initializeViewportFadeEffects() {
   console.log('🎭 Initializing viewport fade effects...');
   
   // All main sections that should have fade effects
+  // Header excluded - always visible
   const sectionsToObserve = [
-    '.main-header-wrapper',
     '.footer-section',
     '.main-page-hero-section-wrapper',
     '.main-page-categories-wrapper',
