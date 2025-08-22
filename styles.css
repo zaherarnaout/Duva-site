@@ -6604,3 +6604,90 @@ a .flip-card-wrapper {
 }
 
 /* === END PERFORMANCE OPTIMIZATION === */
+
+/* === INTERSECTION OBSERVER - SECTION VISIBILITY CONTROL === */
+/* Sections are hidden by default and appear when scrolled into view */
+
+/* Base state - sections hidden when off-screen */
+.section-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Section becomes visible when entering viewport */
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Staggered entrance animation for multiple sections */
+.section-visible:nth-child(1) { transition-delay: 0.1s; }
+.section-visible:nth-child(2) { transition-delay: 0.2s; }
+.section-visible:nth-child(3) { transition-delay: 0.3s; }
+.section-visible:nth-child(4) { transition-delay: 0.4s; }
+.section-visible:nth-child(5) { transition-delay: 0.5s; }
+
+/* Special entrance effects for different section types */
+.main-page-hero-section-wrapper.section-visible {
+  animation: heroEntrance 1s ease-out both;
+}
+
+.main-page-categories-wrapper.section-visible {
+  animation: categoriesEntrance 0.8s ease-out both;
+}
+
+.cards-Container.section-visible {
+  animation: productsEntrance 0.8s ease-out both;
+}
+
+/* Entrance animations */
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes categoriesEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes productsEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .section-hidden,
+  .section-visible {
+    transition: opacity 0.3s ease-out;
+    animation: none !important;
+  }
+  
+  .section-hidden {
+    transform: none;
+  }
+}
+
+/* === END INTERSECTION OBSERVER === */
