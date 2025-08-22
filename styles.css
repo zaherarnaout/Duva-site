@@ -5615,8 +5615,9 @@ a .flip-card-wrapper {
   color: var(--duva-light-grey);
 }
 
-/* === Newsletter Input Styling === */
-.newsletter-input {
+/* === Footer Newsletter Input Styling === */
+.footer-section .newsletter-input,
+.footer-newsletter .newsletter-input {
   border: none;
   outline: none;
   background: transparent;
@@ -5626,34 +5627,28 @@ a .flip-card-wrapper {
   width: 100%;
   height: 100%;
   padding: 0 10px;
-  transition: all 0.3s ease;
-}
-
-.newsletter-input::placeholder {
-  color: var(--duva-mid-grey, #D1D1D1);
-  opacity: 1;
-}
-
-.newsletter-input:focus {
-  background-color: rgba(192, 57, 43, 0.05);
-}
-
-.newsletter-input:invalid {
-  border: 1px solid var(--duva-red, #C0392B);
-}
-
-/* Enhanced newsletter input with search input style effects */
-.newsletter-input {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
 }
 
-.newsletter-input:focus {
+.footer-section .newsletter-input::placeholder,
+.footer-newsletter .newsletter-input::placeholder {
+  color: var(--duva-mid-grey, #D1D1D1);
+  opacity: 1;
+}
+
+.footer-section .newsletter-input:focus,
+.footer-newsletter .newsletter-input:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
   border-color: var(--duva-red, #C0392B);
   background-color: rgba(192, 57, 43, 0.05);
+}
+
+.footer-section .newsletter-input:invalid,
+.footer-newsletter .newsletter-input:invalid {
+  border: 1px solid var(--duva-red, #C0392B);
 }
 
 /* === Webflow Form Styling === */
@@ -5831,17 +5826,19 @@ a .flip-card-wrapper {
   }
 }
 
-/* === Enhanced Newsletter Button - Menu Tab Style === */
-#newsletter-subscribe,
-.submit-button-2 {
+/* === Footer Newsletter Button - Specific to Footer Only === */
+.footer-section .div-block-19 .subscribe-now,
+.footer-section .div-block-19 button[type="submit"],
+.footer-newsletter .subscribe-now {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
   cursor: pointer;
 }
 
-#newsletter-subscribe::before,
-.submit-button-2::before {
+.footer-section .div-block-19 .subscribe-now::before,
+.footer-section .div-block-19 button[type="submit"]::before,
+.footer-newsletter .subscribe-now::before {
   content: '';
   position: absolute;
   top: 0;
@@ -5854,14 +5851,16 @@ a .flip-card-wrapper {
   pointer-events: none;
 }
 
-#newsletter-subscribe:hover::before,
-.submit-button-2:hover::before {
+.footer-section .div-block-19 .subscribe-now:hover::before,
+.footer-section .div-block-19 button[type="submit"]:hover::before,
+.footer-newsletter .subscribe-now:hover::before {
   left: 100%;
 }
 
-/* Enhanced shimmer effect for submit button */
-#newsletter-subscribe::after,
-.submit-button-2::after {
+/* Enhanced shimmer effect for footer newsletter button */
+.footer-section .div-block-19 .subscribe-now::after,
+.footer-section .div-block-19 button[type="submit"]::after,
+.footer-newsletter .subscribe-now::after {
   content: '';
   position: absolute;
   top: 0;
@@ -5875,16 +5874,20 @@ a .flip-card-wrapper {
   opacity: 0;
 }
 
-#newsletter-subscribe:hover::after,
-.submit-button-2:hover::after {
+.footer-section .div-block-19 .subscribe-now:hover::after,
+.footer-section .div-block-19 button[type="submit"]:hover::after,
+.footer-newsletter .subscribe-now:hover::after {
   left: 100%;
   opacity: 1;
 }
 
-/* Continuous shimmer animation */
-#newsletter-subscribe:hover,
-.submit-button-2:hover {
+/* Continuous shimmer animation for footer newsletter */
+.footer-section .div-block-19 .subscribe-now:hover,
+.footer-section .div-block-19 button[type="submit"]:hover,
+.footer-newsletter .subscribe-now:hover {
   animation: buttonShimmer 2s ease-in-out infinite;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
 }
 
 @keyframes buttonShimmer {
@@ -5896,43 +5899,40 @@ a .flip-card-wrapper {
   }
 }
 
-#newsletter-subscribe:hover,
-.submit-button-2:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-}
-
-#newsletter-subscribe:active,
-.submit-button-2:active {
+.footer-section .div-block-19 .subscribe-now:active,
+.footer-section .div-block-19 button[type="submit"]:active,
+.footer-newsletter .subscribe-now:active {
   transform: translateY(0);
   transition: transform 0.1s ease;
 }
 
-#newsletter-subscribe:disabled,
-.submit-button-2:disabled {
+.footer-section .div-block-19 .subscribe-now:disabled,
+.footer-section .div-block-19 button[type="submit"]:disabled,
+.footer-newsletter .subscribe-now:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
-#newsletter-subscribe:disabled:hover,
-.submit-button-2:disabled:hover {
+.footer-section .div-block-19 .subscribe-now:disabled:hover,
+.footer-section .div-block-19 button[type="submit"]:disabled:hover,
+.footer-newsletter .subscribe-now:disabled:hover {
   transform: none;
   box-shadow: none;
 }
 
-/* === Enhanced Newsletter Input - Search Input Style === */
-#newsletter-email,
-.text-field-3,
-.div-block-19 input[type="email"] {
+/* === Footer Newsletter Input - Specific to Footer Only === */
+.footer-section .div-block-19 input[type="email"],
+.footer-section .newsletter-input,
+.footer-newsletter input[type="email"] {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
 }
 
-#newsletter-email::before,
-.text-field-3::before,
-.div-block-19 input[type="email"]::before {
+.footer-section .div-block-19 input[type="email"]::before,
+.footer-section .newsletter-input::before,
+.footer-newsletter input[type="email"]::before {
   content: '';
   position: absolute;
   top: 0;
@@ -5945,15 +5945,15 @@ a .flip-card-wrapper {
   pointer-events: none;
 }
 
-#newsletter-email:hover::before,
-.text-field-3:hover::before,
-.div-block-19 input[type="email"]:hover::before {
+.footer-section .div-block-19 input[type="email"]:hover::before,
+.footer-section .newsletter-input:hover::before,
+.footer-newsletter input[type="email"]:hover::before {
   left: 100%;
 }
 
-#newsletter-email:focus,
-.text-field-3:focus,
-.div-block-19 input[type="email"]:focus {
+.footer-section .div-block-19 input[type="email"]:focus,
+.footer-section .newsletter-input:focus,
+.footer-newsletter input[type="email"]:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
   border-color: var(--duva-red, #C0392B);
