@@ -6694,43 +6694,8 @@ a .flip-card-wrapper {
   bottom: 0;
 }
 
-/* Contact modal z-index fixes */
-.contact-overlay,
-.contact-modal,
-.contact-form,
-.contact-form-wrapper,
-.contact-close-btn,
-.contact-submit-btn {
-  z-index: 10007 !important;
-  position: fixed;
-}
-
-/* Ensure contact modal is above menu overlay */
-.contact-overlay {
-  z-index: 10008 !important;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Contact modal backdrop */
-.contact-overlay::before {
-  z-index: 10007 !important;
-}
-
-/* Contact modal content */
-.contact-overlay > * {
-  z-index: 10008 !important;
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow: auto;
-}
+/* Contact modal z-index fixes - Moved to contact-overlay.css */
+/* All contact form styling is now handled in contact-overlay.css */
 
 /* === END MENU OVERLAY & CONTACT MODAL Z-INDEX FIX === */
 
