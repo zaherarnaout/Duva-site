@@ -6824,11 +6824,13 @@ a .flip-card-wrapper {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  margin: 20px auto !important;
 }
 
 .privacy-policy.fade-in {
   opacity: 1;
   transform: translateY(0);
+  margin: 20px auto !important;
 }
 
 .hero-split {
