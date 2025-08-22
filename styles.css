@@ -5086,10 +5086,10 @@ a .flip-card-wrapper {
   will-change: transform;
 }
 
-/* Parallax effect for background image */
-.main-page-hero-section-img.parallax-active .image-23 {
+/* Parallax effect for background image - Removed for cleaner performance */
+/* .main-page-hero-section-img.parallax-active .image-23 {
   transform: scale(1.1) translateY(calc(var(--scroll-y, 0) * 0.3px));
-}
+} */
 
 .hero-text-wrapper {
   position: absolute;
@@ -5124,10 +5124,10 @@ a .flip-card-wrapper {
   min-width: 0;
 }
 
-/* Parallax effect for text wrapper - Fixed overflow */
-.hero-text-wrapper.parallax-active {
+/* Parallax effect for text wrapper - Removed for cleaner performance */
+/* .hero-text-wrapper.parallax-active {
   transform: scale(0.8) translateY(calc(var(--scroll-y, 0) * -0.05px));
-}
+} */
 
 /* Hover effect for text wrapper */
 .hero-text-wrapper:hover {
@@ -6293,12 +6293,12 @@ a .flip-card-wrapper {
 
 
 
-/* Hero section parallax effect - Fixed overflow */
-.main-page-hero-section-wrapper.parallax-active {
+/* Hero section parallax effect - Removed for cleaner performance */
+/* .main-page-hero-section-wrapper.parallax-active {
   transform: translateY(calc(var(--scroll-y, 0) * -0.01px));
   transition: transform 0.4s ease-out;
   overflow: hidden;
-}
+} */
 
 /* Image 23 - Optimized Animations */
 .main-page-hero-section-wrapper .image-23 {
@@ -6321,12 +6321,12 @@ a .flip-card-wrapper {
   }
 }
 
-/* Image parallax effect - Fixed overflow */
-.main-page-hero-section-wrapper .image-23.parallax-active {
+/* Image parallax effect - Removed for cleaner performance */
+/* .main-page-hero-section-wrapper .image-23.parallax-active {
   transform: translateY(calc(var(--scroll-y, 0) * -0.02px)) scale(1.02);
   transition: transform 0.6s ease-out;
   overflow: hidden;
-}
+} */
 
 /* Image hover effects - Removed for cleaner performance */
 /* Keeping only particle effects */
@@ -6434,10 +6434,7 @@ a .flip-card-wrapper {
     transition: transform 0.3s ease, filter 0.3s ease;
   }
   
-  .main-page-hero-section-wrapper.parallax-active,
-  .main-page-hero-section-wrapper .image-23.parallax-active {
-    transform: none;
-  }
+  /* Parallax effects removed for cleaner performance */
 }
 
 /* === PERFORMANCE OPTIMIZATION - SAFE ANIMATION CONSOLIDATION === */
@@ -6546,3 +6543,108 @@ a .flip-card-wrapper {
 }
 
 /* === END PERFORMANCE OPTIMIZATION === */
+
+/* === VIEWPORT FADE EFFECTS - ALL MAIN SECTIONS === */
+/* Simple fade in/out effect when sections enter/exit viewport */
+
+/* Base state - sections start with reduced opacity */
+.main-header-wrapper,
+.footer-section,
+.main-page-hero-section-wrapper,
+.main-page-categories-wrapper,
+.main-filter-wrapper,
+.cards-Container,
+.privacy-policy,
+.accessories-section,
+.related-section,
+.gallery-section,
+.product-page-section,
+/* Gallery page sections */
+[data-ix="about-duva"],
+[data-ix="new-items"],
+[data-ix="news-journal"],
+[data-ix="gallery"],
+[data-ix="testimonial"],
+/* Download page section */
+[data-ix="download"],
+/* Product template sub-sections */
+[data-ix="product-visuals"],
+[data-ix="product-info"],
+[data-ix="download-panel"] {
+  opacity: 0.3;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Active state - sections fully visible when in viewport */
+.main-header-wrapper.viewport-visible,
+.footer-section.viewport-visible,
+.main-page-hero-section-wrapper.viewport-visible,
+.main-page-categories-wrapper.viewport-visible,
+.main-filter-wrapper.viewport-visible,
+.cards-Container.viewport-visible,
+.privacy-policy.viewport-visible,
+.accessories-section.viewport-visible,
+.related-section.viewport-visible,
+.gallery-section.viewport-visible,
+.product-page-section.viewport-visible,
+/* Gallery page sections */
+[data-ix="about-duva"].viewport-visible,
+[data-ix="new-items"].viewport-visible,
+[data-ix="news-journal"].viewport-visible,
+[data-ix="gallery"].viewport-visible,
+[data-ix="testimonial"].viewport-visible,
+/* Download page section */
+[data-ix="download"].viewport-visible,
+/* Product template sub-sections */
+[data-ix="product-visuals"].viewport-visible,
+[data-ix="product-info"].viewport-visible,
+[data-ix="download-panel"].viewport-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Staggered entrance for better visual flow */
+.main-page-categories-wrapper.viewport-visible,
+.cards-Container.viewport-visible {
+  transition-delay: 0.1s;
+}
+
+.privacy-policy.viewport-visible,
+.accessories-section.viewport-visible,
+.related-section.viewport-visible,
+.gallery-section.viewport-visible {
+  transition-delay: 0.2s;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .main-header-wrapper,
+  .footer-section,
+  .main-page-hero-section-wrapper,
+  .main-page-categories-wrapper,
+  .main-filter-wrapper,
+  .cards-Container,
+  .privacy-policy,
+  .accessories-section,
+  .related-section,
+  .gallery-section,
+  .product-page-section,
+  [data-ix="about-duva"],
+  [data-ix="new-items"],
+  [data-ix="news-journal"],
+  [data-ix="gallery"],
+  [data-ix="testimonial"],
+  [data-ix="download"],
+  [data-ix="product-visuals"],
+  [data-ix="product-info"],
+  [data-ix="download-panel"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* === END VIEWPORT FADE EFFECTS === */
