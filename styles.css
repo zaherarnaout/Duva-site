@@ -6471,7 +6471,6 @@ a .flip-card-wrapper {
   overflow: hidden;
   will-change: transform;
   transition: transform 0.1s ease-out;
-  margin-bottom: 20px !important;
 }
 
 .privacy-policy::before {
@@ -6760,7 +6759,10 @@ a .flip-card-wrapper {
   }
   
   /* Maintain section spacing on tablet */
-  .privacy-policy,
+  .privacy-policy {
+    margin: 20px auto 20px auto !important;
+  }
+  
   .testimonial-stack,
   .gallery-overview,
   .team-slider-2,
@@ -6802,7 +6804,10 @@ a .flip-card-wrapper {
   }
   
   /* Maintain section spacing on mobile */
-  .privacy-policy,
+  .privacy-policy {
+    margin: 20px auto 20px auto !important;
+  }
+  
   .testimonial-stack,
   .gallery-overview,
   .team-slider-2,
@@ -6848,42 +6853,40 @@ a .flip-card-wrapper {
 }
 
 /* === Global Section Spacing === */
-/* Consistent 20px gap between all sections across the site */
+/* Ensure consistent spacing between sections */
 
-/* Main section containers */
-.privacy-policy,
+/* Privacy policy sections - maintain existing margin but ensure bottom spacing */
+.privacy-policy {
+  margin: 20px auto 20px auto !important;
+}
+
+/* Other sections that might need spacing adjustments */
 .testimonial-stack,
 .gallery-overview,
 .team-slider-2,
 .new-items,
-.gallery-slider-2,
-.main-page-hero-section-wrapper,
-.main-page-categories-wrapper,
-.main-filter-wrapper,
-.product-page-section,
-.accessories-section,
-.related-section,
-.gallery-section,
-.footer-section {
+.gallery-slider-2 {
   margin-bottom: 20px !important;
 }
 
-/* Ensure no negative margins that could cause overlapping */
-.privacy-policy,
-.testimonial-stack,
-.gallery-overview,
-.team-slider-2,
-.new-items,
-.gallery-slider-2,
+/* Ensure main page sections have proper spacing */
 .main-page-hero-section-wrapper,
 .main-page-categories-wrapper,
-.main-filter-wrapper,
+.main-filter-wrapper {
+  margin-bottom: 20px !important;
+}
+
+/* Product page sections */
 .product-page-section,
 .accessories-section,
 .related-section,
-.gallery-section,
+.gallery-section {
+  margin-bottom: 20px !important;
+}
+
+/* Footer spacing */
 .footer-section {
-  margin-top: 0 !important;
+  margin-bottom: 20px !important;
 }
 
 /* === Privacy Section Smooth Scroll Animations === */
@@ -6979,7 +6982,10 @@ a .flip-card-wrapper {
 
 /* Small mobile devices - maintain section spacing */
 @media screen and (max-width: 479px) {
-  .privacy-policy,
+  .privacy-policy {
+    margin: 20px auto 20px auto !important;
+  }
+  
   .testimonial-stack,
   .gallery-overview,
   .team-slider-2,
