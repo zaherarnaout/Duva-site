@@ -6328,13 +6328,8 @@ a .flip-card-wrapper {
   overflow: hidden;
 }
 
-/* Image hover effects - Optimized */
-.main-page-hero-section-wrapper .image-23:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05) contrast(1.02) saturate(1.08);
-  box-shadow: 0 15px 40px rgba(192, 57, 43, 0.15);
-  animation: imageFloat 6s ease-in-out infinite;
-}
+/* Image hover effects - Removed for cleaner performance */
+/* Keeping only particle effects */
 
 /* Image shimmer effect */
 .main-page-hero-section-wrapper .image-23::before {
@@ -6428,10 +6423,7 @@ a .flip-card-wrapper {
 
 /* Responsive adjustments - Optimized */
 @media screen and (max-width: 767px) {
-  
-  .main-page-hero-section-wrapper .image-23:hover {
-    animation: imageFloat 8s ease-in-out infinite;
-  }
+  /* Image hover effects removed for cleaner performance */
 }
 
 /* Reduced motion support - Optimized */
