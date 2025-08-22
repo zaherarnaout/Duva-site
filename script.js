@@ -5233,38 +5233,45 @@ Webflow.push(() => {
 
 /* === Newsletter Subscription Functionality === */
 function initializeNewsletterSubscription() {
+  // Prevent duplicate initialization
+  if (window.newsletterInitialized) {
+    console.log('📧 Newsletter already initialized, skipping...');
+    return;
+  }
+  
   console.log('📧 Initializing newsletter subscription functionality...');
   
-  // Get newsletter elements - try multiple selectors for flexibility
-  let emailInput = document.getElementById('newsletter-email');
-  let subscribeButton = document.getElementById('newsletter-subscribe');
+  // Get newsletter elements - specific to footer newsletter only
+  let emailInput = document.querySelector('.footer-section .div-block-19 input[type="email"]') ||
+                   document.querySelector('.footer-newsletter input[type="email"]');
+  let subscribeButton = document.querySelector('.footer-section .div-block-19 .subscribe-now') ||
+                        document.querySelector('.footer-newsletter .subscribe-now') ||
+                        document.querySelector('.footer-section .div-block-19 button[type="submit"]');
   
-  // Fallback selectors for Webflow form structure
+  // Additional fallbacks for different form structures
   if (!emailInput) {
-    emailInput = document.querySelector('.div-block-19 input[type="email"]');
-  }
-  if (!emailInput) {
-    emailInput = document.querySelector('.text-field-3');
+    emailInput = document.querySelector('.footer-section input[type="email"]');
   }
   if (!subscribeButton) {
-    subscribeButton = document.querySelector('.div-block-19 button[type="submit"]');
-  }
-  if (!subscribeButton) {
-    subscribeButton = document.querySelector('.submit-button-2');
-  }
-  
-  // Additional fallbacks
-  if (!emailInput) {
-    emailInput = document.querySelector('input[type="email"]');
-  }
-  if (!subscribeButton) {
-    subscribeButton = document.querySelector('.subscribe-now, button[type="submit"]');
+    subscribeButton = document.querySelector('.footer-section button[type="submit"]');
   }
   
   if (!emailInput || !subscribeButton) {
     console.log('⚠️ Newsletter elements not found - please ensure form elements are properly set up');
     return;
   }
+  
+  // Mark as initialized to prevent duplicates
+  window.newsletterInitialized = true;
+  
+  // Remove existing event listeners to prevent duplicates
+  const newSubscribeButton = subscribeButton.cloneNode(true);
+  subscribeButton.parentNode.replaceChild(newSubscribeButton, subscribeButton);
+  subscribeButton = newSubscribeButton;
+  
+  const newEmailInput = emailInput.cloneNode(true);
+  emailInput.parentNode.replaceChild(newEmailInput, emailInput);
+  emailInput = newEmailInput;
   
   // Subscribe button click handler
   subscribeButton.addEventListener('click', function(e) {
@@ -5371,14 +5378,12 @@ function initializeNewsletterSubscription() {
     }, 5000);
   }
   
-  // Enhanced newsletter button effects
+  // Enhanced newsletter button effects - footer specific
   function addNewsletterButtonEffects() {
-    const newsletterButton = document.getElementById('newsletter-subscribe') || 
-                            document.querySelector('.submit-button-2');
-    
-    if (newsletterButton) {
-      // Add ripple effect on click
-      newsletterButton.addEventListener('click', function(e) {
+    // Use the same button reference to avoid conflicts
+    if (subscribeButton) {
+      // Add ripple effect on click (without preventing default to avoid conflicts)
+      subscribeButton.addEventListener('mousedown', function(e) {
         // Create ripple effect
         const ripple = document.createElement('span');
         const rect = this.getBoundingClientRect();
@@ -5408,9 +5413,9 @@ function initializeNewsletterSubscription() {
       });
       
       // Add ripple animation CSS
-      if (!document.querySelector('#newsletter-ripple-style')) {
+      if (!document.querySelector('#footer-newsletter-ripple-style')) {
         const style = document.createElement('style');
-        style.id = 'newsletter-ripple-style';
+        style.id = 'footer-newsletter-ripple-style';
         style.textContent = `
           @keyframes ripple {
             to {
@@ -5424,26 +5429,23 @@ function initializeNewsletterSubscription() {
     }
   }
   
-  // Enhanced newsletter input effects
+  // Enhanced newsletter input effects - footer specific
   function addNewsletterInputEffects() {
-    const newsletterInput = document.getElementById('newsletter-email') || 
-                           document.querySelector('.text-field-3') ||
-                           document.querySelector('.div-block-19 input[type="email"]');
-    
-    if (newsletterInput) {
+    // Use the same input reference to avoid conflicts
+    if (emailInput) {
       // Add floating label effect
-      newsletterInput.addEventListener('focus', function() {
+      emailInput.addEventListener('focus', function() {
         this.parentElement.classList.add('focused');
       });
       
-      newsletterInput.addEventListener('blur', function() {
+      emailInput.addEventListener('blur', function() {
         if (!this.value) {
           this.parentElement.classList.remove('focused');
         }
       });
       
       // Add character count effect
-      newsletterInput.addEventListener('input', function() {
+      emailInput.addEventListener('input', function() {
         const maxLength = 50;
         const currentLength = this.value.length;
         
