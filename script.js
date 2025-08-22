@@ -5979,6 +5979,80 @@ function initializeFooterLogoHomeButton() {
   console.log('✅ Footer logo home button initialized');
 }
 
+// === VIEWPORT FADE EFFECTS - INTERSECTION OBSERVER ===
+/* Simple fade in/out effect for all main sections when they enter/exit viewport */
+
+function initializeViewportFadeEffects() {
+  console.log('🎭 Initializing viewport fade effects...');
+  
+  // All main sections that should have fade effects
+  const sectionsToObserve = [
+    '.main-header-wrapper',
+    '.footer-section',
+    '.main-page-hero-section-wrapper',
+    '.main-page-categories-wrapper',
+    '.main-filter-wrapper',
+    '.cards-Container',
+    '.privacy-policy',
+    '.accessories-section',
+    '.related-section',
+    '.gallery-section',
+    '.product-page-section',
+    '[data-ix="about-duva"]',
+    '[data-ix="new-items"]',
+    '[data-ix="news-journal"]',
+    '[data-ix="gallery"]',
+    '[data-ix="testimonial"]',
+    '[data-ix="download"]',
+    '[data-ix="product-visuals"]',
+    '[data-ix="product-info"]',
+    '[data-ix="download-panel"]'
+  ];
+  
+  // Create Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Section is entering viewport - fade in
+        entry.target.classList.add('viewport-visible');
+        console.log('✨ Section entered viewport:', entry.target.className || entry.target.getAttribute('data-ix'));
+      } else {
+        // Section is leaving viewport - fade out
+        entry.target.classList.remove('viewport-visible');
+        console.log('👻 Section left viewport:', entry.target.className || entry.target.getAttribute('data-ix'));
+      }
+    });
+  }, {
+    // Observer options
+    root: null, // Use viewport as root
+    rootMargin: '50px', // Start fade 50px before section enters viewport
+    threshold: 0.1 // Trigger when 10% of section is visible
+  });
+  
+  // Observe all sections
+  sectionsToObserve.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      observer.observe(element);
+      console.log('👁️ Observing section:', selector);
+    });
+  });
+  
+  console.log('✅ Viewport fade effects initialized');
+}
+
+// Initialize viewport fade effects when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeViewportFadeEffects);
+} else {
+  initializeViewportFadeEffects();
+}
+
+// Also initialize after a delay to catch dynamically loaded content
+setTimeout(initializeViewportFadeEffects, 1000);
+
+// === END VIEWPORT FADE EFFECTS ===
+
 
 
 
