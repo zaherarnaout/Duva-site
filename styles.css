@@ -6649,8 +6649,8 @@ a .flip-card-wrapper {
   }
 }
 
-/* === MENU OVERLAY Z-INDEX FIX === */
-/* Ensure menu overlay and related elements stay on top of all sections */
+/* === MENU OVERLAY & CONTACT MODAL Z-INDEX FIX === */
+/* Ensure menu overlay and contact modal stay on top of all sections */
 
 .menu-overlay,
 .menu-panel,
@@ -6675,6 +6675,34 @@ a .flip-card-wrapper {
   position: fixed;
 }
 
-/* === END MENU OVERLAY Z-INDEX FIX === */
+/* Contact modal z-index fixes */
+.contact-overlay,
+.contact-modal,
+.contact-form,
+.contact-form-wrapper,
+.contact-close-btn,
+.contact-submit-btn {
+  z-index: 10002 !important;
+  position: fixed;
+}
+
+/* Ensure contact modal is above menu overlay */
+.contact-overlay {
+  z-index: 10003 !important;
+  position: fixed;
+}
+
+/* Contact modal backdrop */
+.contact-overlay::before {
+  z-index: 10002 !important;
+}
+
+/* Contact modal content */
+.contact-overlay > * {
+  z-index: 10003 !important;
+  position: relative;
+}
+
+/* === END MENU OVERLAY & CONTACT MODAL Z-INDEX FIX === */
 
 /* === END VIEWPORT FADE EFFECTS === */
