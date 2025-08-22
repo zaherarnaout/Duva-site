@@ -6915,6 +6915,11 @@ a .flip-card-wrapper {
   margin: 20px auto !important;
 }
 
+/* Privacy policy - standardize to match working sections */
+.privacy-policy {
+  margin: 20px auto !important;
+}
+
 /* Ensure consistent spacing for all main sections */
 .gallery-slider-2,
 .new-items {
@@ -6942,6 +6947,7 @@ a .flip-card-wrapper {
 
 /* Responsive adjustments for standardized margins */
 @media screen and (max-width: 991px) {
+  .privacy-policy,
   .testimonial-stack,
   .gallery-slider-2,
   .new-items,
@@ -6957,6 +6963,7 @@ a .flip-card-wrapper {
 }
 
 @media screen and (max-width: 767px) {
+  .privacy-policy,
   .testimonial-stack,
   .gallery-slider-2,
   .new-items,
@@ -6972,6 +6979,7 @@ a .flip-card-wrapper {
 }
 
 @media screen and (max-width: 479px) {
+  .privacy-policy,
   .testimonial-stack,
   .gallery-slider-2,
   .new-items,
