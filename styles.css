@@ -6471,6 +6471,7 @@ a .flip-card-wrapper {
   overflow: hidden;
   will-change: transform;
   transition: transform 0.1s ease-out;
+  margin: 20px auto !important;
 }
 
 .privacy-policy::before {
