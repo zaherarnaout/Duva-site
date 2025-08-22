@@ -6575,6 +6575,8 @@ a .flip-card-wrapper {
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   will-change: opacity, transform;
+  /* Ensure sections don't interfere with menu overlay */
+  z-index: 1;
 }
 
 /* Active state - sections fully visible when in viewport */
@@ -6646,5 +6648,33 @@ a .flip-card-wrapper {
     transition: none !important;
   }
 }
+
+/* === MENU OVERLAY Z-INDEX FIX === */
+/* Ensure menu overlay and related elements stay on top of all sections */
+
+.menu-overlay,
+.menu-panel,
+.menu-close-wrapper,
+.menu-tab,
+.menu-tab-content,
+.menu-tab-content.active,
+.menu-tab.active {
+  z-index: 9999 !important;
+  position: relative;
+}
+
+/* Ensure menu overlay is above all viewport fade sections */
+.menu-overlay {
+  z-index: 10000 !important;
+  position: fixed;
+}
+
+/* Ensure menu panel stays above everything */
+.menu-panel {
+  z-index: 10001 !important;
+  position: fixed;
+}
+
+/* === END MENU OVERLAY Z-INDEX FIX === */
 
 /* === END VIEWPORT FADE EFFECTS === */
