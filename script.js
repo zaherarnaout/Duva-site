@@ -2654,9 +2654,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize DUVA logo home button
   initializeLogoHomeButton();
-  
-  // Initialize privacy section parallax and animations
-
 });
     
 
@@ -4283,8 +4280,11 @@ if (typeof Webflow !== 'undefined') {
   }
 
   const parallaxTargetsConfig = [
-    { selector: '.shadow-two', speed: 0.03, max: 12 },
-    { selector: '.hero-split', speed: 0.02, max: 10 }
+    { selector: '.hero-section', speed: 0.06, max: 18 },
+    { selector: '.right-hero-wrapper', speed: 0.05, max: 16 },
+    { selector: '.related-slider-wrapper', speed: 0.04, max: 14 },
+    { selector: '.accessories-section', speed: 0.05, max: 16 },
+    { selector: '.footer-section', speed: 0.03, max: 12 }
   ];
 
   let trackedElements = [];
@@ -5128,9 +5128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 Webflow.push(() => {
   initializeVaseSectionAnimations();
 });
-
-
-    
 
 /* === Theme Toggle Functionality === */
 function initializeThemeToggle() {
@@ -5981,6 +5978,99 @@ function initializeFooterLogoHomeButton() {
   
   console.log('✅ Footer logo home button initialized');
 }
+
+/* === INTERSECTION OBSERVER - SECTION VISIBILITY CONTROL === */
+/* Sections are hidden by default and appear when scrolled into view */
+
+// Initialize intersection observer for section visibility
+function initializeSectionVisibility() {
+  console.log('🎯 Initializing section visibility control...');
+  
+  // Define sections to observe
+  const sectionsToObserve = [
+    '.main-header-wrapper',
+    '.footer-section', 
+    '.main-page-hero-section-wrapper',
+    '.main-page-categories-wrapper',
+    '.main-filter-wrapper',
+    '.cards-Container',
+    '.privacy-policy',
+    '.accessories-section',
+    '.related-section',
+    '.gallery-section',
+    '.product-page-section',
+    '[data-ix="about-duva"]',
+    '[data-ix="new-items"]',
+    '[data-ix="news-journal"]',
+    '[data-ix="gallery"]',
+    '[data-ix="testimonial"]',
+    '[data-ix="download"]',
+    '[data-ix="product-visuals"]',
+    '[data-ix="product-info"]',
+    '[data-ix="download-panel"]'
+  ];
+  
+  // Intersection observer options
+  const observerOptions = {
+    root: null, // Use viewport as root
+    rootMargin: '50px 0px', // Start animation 50px before section enters
+    threshold: 0.1 // Trigger when 10% of section is visible
+  };
+  
+  // Create intersection observer
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const section = entry.target;
+      
+      if (entry.isIntersecting) {
+        // Section is entering viewport
+        console.log(`🎯 Section entering viewport: ${section.className || section.getAttribute('data-ix')}`);
+        
+        // Remove hidden class and add visible class
+        section.classList.remove('section-hidden');
+        section.classList.add('section-visible');
+        
+        // Stop observing this section (only animate once)
+        sectionObserver.unobserve(section);
+        
+      } else {
+        // Section is leaving viewport (optional - for re-animation)
+        // Uncomment if you want sections to hide again when scrolling up
+        // section.classList.remove('section-visible');
+        // section.classList.add('section-hidden');
+      }
+    });
+  }, observerOptions);
+  
+  // Observe all sections
+  sectionsToObserve.forEach(selector => {
+    const sections = document.querySelectorAll(selector);
+    sections.forEach(section => {
+      // Add hidden class by default
+      section.classList.add('section-hidden');
+      // Start observing
+      sectionObserver.observe(section);
+      console.log(`🎯 Observing section: ${selector}`);
+    });
+  });
+  
+  console.log('✅ Section visibility control initialized!');
+}
+
+// Initialize when DOM is ready
+document.addEventListener("DOMContentLoaded", initializeSectionVisibility);
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeSectionVisibility();
+  });
+}
+
+// Retry after a delay to catch late-loading content
+setTimeout(initializeSectionVisibility, 2000);
+
+/* === END INTERSECTION OBSERVER === */
 
 
 
