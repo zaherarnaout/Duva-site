@@ -6758,26 +6758,7 @@ a .flip-card-wrapper {
     transform: none !important;
   }
   
-  /* Maintain section spacing on tablet */
-  .privacy-policy {
-    margin: 20px auto 20px auto !important;
-  }
-  
-  .testimonial-stack,
-  .gallery-overview,
-  .team-slider-2,
-  .new-items,
-  .gallery-slider-2,
-  .main-page-hero-section-wrapper,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .footer-section {
-    margin-bottom: 20px !important;
-  }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -6803,26 +6784,7 @@ a .flip-card-wrapper {
     box-shadow: none;
   }
   
-  /* Maintain section spacing on mobile */
-  .privacy-policy {
-    margin: 20px auto 20px auto !important;
-  }
-  
-  .testimonial-stack,
-  .gallery-overview,
-  .team-slider-2,
-  .new-items,
-  .gallery-slider-2,
-  .main-page-hero-section-wrapper,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .footer-section {
-    margin-bottom: 20px !important;
-  }
+
 }
 
 /* Reduced motion support for privacy section */
@@ -6852,42 +6814,7 @@ a .flip-card-wrapper {
   }
 }
 
-/* === Global Section Spacing === */
-/* Ensure consistent spacing between sections */
 
-/* Privacy policy sections - maintain existing margin but ensure bottom spacing */
-.privacy-policy {
-  margin: 20px auto 20px auto !important;
-}
-
-/* Other sections that might need spacing adjustments */
-.testimonial-stack,
-.gallery-overview,
-.team-slider-2,
-.new-items,
-.gallery-slider-2 {
-  margin-bottom: 20px !important;
-}
-
-/* Ensure main page sections have proper spacing */
-.main-page-hero-section-wrapper,
-.main-page-categories-wrapper,
-.main-filter-wrapper {
-  margin-bottom: 20px !important;
-}
-
-/* Product page sections */
-.product-page-section,
-.accessories-section,
-.related-section,
-.gallery-section {
-  margin-bottom: 20px !important;
-}
-
-/* Footer spacing */
-.footer-section {
-  margin-bottom: 20px !important;
-}
 
 /* === Privacy Section Smooth Scroll Animations === */
 /* Fade-in animations for privacy section elements */
@@ -6980,25 +6907,3 @@ a .flip-card-wrapper {
   transition-delay: 0.5s;
 }
 
-/* Small mobile devices - maintain section spacing */
-@media screen and (max-width: 479px) {
-  .privacy-policy {
-    margin: 20px auto 20px auto !important;
-  }
-  
-  .testimonial-stack,
-  .gallery-overview,
-  .team-slider-2,
-  .new-items,
-  .gallery-slider-2,
-  .main-page-hero-section-wrapper,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .footer-section {
-    margin-bottom: 20px !important;
-  }
-}
