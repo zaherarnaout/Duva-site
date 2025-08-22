@@ -6662,6 +6662,7 @@ a .flip-card-wrapper {
   position: relative;
 }
 
+/* Menu overlay should be above header when open */
 .menu-overlay,
 .menu-panel,
 .menu-close-wrapper,
@@ -6669,20 +6670,28 @@ a .flip-card-wrapper {
 .menu-tab-content,
 .menu-tab-content.active,
 .menu-tab.active {
-  z-index: 9999 !important;
-  position: relative;
+  z-index: 10005 !important;
+  position: fixed;
 }
 
 /* Ensure menu overlay is above all viewport fade sections */
 .menu-overlay {
-  z-index: 10000 !important;
+  z-index: 10005 !important;
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* Ensure menu panel stays above everything */
 .menu-panel {
-  z-index: 10001 !important;
+  z-index: 10006 !important;
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* Contact modal z-index fixes */
@@ -6692,25 +6701,35 @@ a .flip-card-wrapper {
 .contact-form-wrapper,
 .contact-close-btn,
 .contact-submit-btn {
-  z-index: 10002 !important;
+  z-index: 10007 !important;
   position: fixed;
 }
 
 /* Ensure contact modal is above menu overlay */
 .contact-overlay {
-  z-index: 10003 !important;
+  z-index: 10008 !important;
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Contact modal backdrop */
 .contact-overlay::before {
-  z-index: 10002 !important;
+  z-index: 10007 !important;
 }
 
 /* Contact modal content */
 .contact-overlay > * {
-  z-index: 10003 !important;
+  z-index: 10008 !important;
   position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
 }
 
 /* === END MENU OVERLAY & CONTACT MODAL Z-INDEX FIX === */
