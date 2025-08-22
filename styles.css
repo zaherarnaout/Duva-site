@@ -6545,27 +6545,8 @@ a .flip-card-wrapper {
 }
 
 /* === TAB VISIBILITY OPTIMIZATION === */
-/* Pause animations when tab is not visible */
-@media (prefers-reduced-motion: no-preference) {
-  .main-page-categories-wrapper a,
-  .collection-item,
-  .product-card,
-  .related-card,
-  .main-page-categories-wrapper .text-block-48,
-  .main-page-categories-wrapper .text-block-49,
-  .main-page-categories-wrapper .text-block-50,
-  .main-page-categories-wrapper .text-block-51,
-  .main-page-categories-wrapper .text-block-52,
-  .main-page-categories-wrapper .text-block-53,
-  .main-page-categories-wrapper .image-24,
-  .main-page-categories-wrapper .image-25,
-  .main-page-categories-wrapper .image-26,
-  .main-page-categories-wrapper .image-27,
-  .main-page-categories-wrapper .image-28,
-  .main-page-categories-wrapper .image-29 {
-    animation-play-state: paused;
-  }
-}
+/* Removed to prevent conflicts with entrance animations */
+/* Entrance animations need to run immediately for cards to be visible */
 
 /* === INTERSECTION OBSERVER SUPPORT === */
 /* Classes to be added via JavaScript for viewport-based animation activation */
