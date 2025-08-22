@@ -3241,10 +3241,7 @@ footer, .footer {
   position: relative;
   overflow: hidden;
   will-change: transform;
-  /* Using optimized animation from performance optimization section */
-  animation: optimizedCardFloat 3s ease-in-out infinite;
-  animation-play-state: paused; /* Pause by default for better performance */
-  animation-delay: calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
+  /* Animation is now handled in the entrance animation section below */
 }
 
 /* Floating animation for category cards - OPTIMIZED */
@@ -3272,8 +3269,9 @@ footer, .footer {
 /* Staggered entrance animation for category cards - OPTIMIZED */
 .main-page-categories-wrapper a {
   /* Using optimized animation from performance optimization section */
-  animation: optimizedCardEnter 0.6s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s));
+  animation: optimizedCardEnter 0.6s ease-out both, optimizedCardFloat 3s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s)), calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
+  animation-play-state: running, paused; /* Entrance runs immediately, float is paused */
 }
 
 @keyframes categoryCardEnter {
@@ -3424,6 +3422,7 @@ footer, .footer {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
+  animation-play-state: running, running; /* Activate both entrance and float animations */
 }
 
 /* Product cards parallax and animation effects - OPTIMIZED */
@@ -3432,10 +3431,7 @@ footer, .footer {
 .related-card,
 .flip-card-wrapper {
   will-change: transform;
-  /* Using optimized animation from performance optimization section */
-  animation: optimizedCardFloat 3s ease-in-out infinite;
-  animation-play-state: paused; /* Pause by default for better performance */
-  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
+  /* Animation is now handled in the entrance animation section above */
 }
 
 /* Floating animation for product cards - OPTIMIZED */
@@ -3471,8 +3467,9 @@ footer, .footer {
 .related-card,
 .flip-card-wrapper {
   /* Using optimized animation from performance optimization section */
-  animation: optimizedCardEnter 0.7s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
+  animation: optimizedCardEnter 0.7s ease-out both, optimizedCardFloat 3s ease-in-out infinite;
+  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s)), calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
+  animation-play-state: running, paused; /* Entrance runs immediately, float is paused */
 }
 
 @keyframes productCardEnter {
@@ -6521,7 +6518,7 @@ a .flip-card-wrapper {
 
 /* Activate floating animation on hover */
 .main-page-categories-wrapper a:hover {
-  animation-play-state: running;
+  animation-play-state: running, running; /* Activate both entrance and float animations */
 }
 
 /* Activate text and image animations on hover */
