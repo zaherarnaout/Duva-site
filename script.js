@@ -4289,7 +4289,6 @@ if (typeof Webflow !== 'undefined') {
     { selector: '.accessories-section', speed: 0.05, max: 16 },
     { selector: '.footer-section', speed: 0.03, max: 12 },
     { selector: '.privacy-policy', speed: 0.04, max: 15 },
-    { selector: '.bg-duva-logo-bk', speed: 0.08, max: 25 },
     { selector: '.shadow-two', speed: 0.03, max: 12 },
     { selector: '.hero-split', speed: 0.02, max: 10 }
   ];
@@ -5183,12 +5182,7 @@ function initializePrivacySectionEffects() {
     fadeInObserver.observe(section);
   });
   
-  // Initialize background logo parallax effect
-  const backgroundLogos = document.querySelectorAll('.bg-duva-logo-bk');
-  backgroundLogos.forEach(logo => {
-    logo.style.willChange = 'transform';
-    logo.style.transition = 'transform 0.1s ease-out';
-  });
+
   
   // Initialize shadow images parallax effect
   const shadowImages = document.querySelectorAll('.shadow-two');
@@ -5223,14 +5217,6 @@ function initializePrivacySectionEffects() {
   
   function updatePrivacyParallax() {
     const scrollY = window.scrollY;
-    
-    // Update background logos parallax
-    backgroundLogos.forEach(logo => {
-      const rect = logo.getBoundingClientRect();
-      const elementTopOnPage = scrollY + rect.top;
-      const parallaxOffset = Math.max(Math.min((scrollY - elementTopOnPage) * 0.08, 25), -25);
-      logo.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-    });
     
     // Update shadow images parallax
     shadowImages.forEach(image => {
