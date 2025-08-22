@@ -60,7 +60,7 @@ body.modal-open {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3); /* Match gallery lightbox color */
-  z-index: 10008 !important; /* Updated to match our hierarchy */
+  z-index: 9999; /* Match Webflow z-index */
   display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
@@ -102,7 +102,7 @@ html.modal-open::-webkit-scrollbar {
   position: relative;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  z-index: 10009 !important; /* Updated to match our hierarchy */
+  z-index: 10000; /* Ensure modal content is above overlay */
   max-width: 90vw; /* Responsive width */
   max-height: 90vh; /* Responsive height */
 }
@@ -546,7 +546,6 @@ input[type="submit"].submit-button,
   cursor: pointer;
   border: none;
   padding: 8px;
-  z-index: 10010 !important; /* Updated to match our hierarchy */
   /* Filter Apply Button Effects */
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   overflow: hidden;
