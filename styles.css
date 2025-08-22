@@ -6652,6 +6652,16 @@ a .flip-card-wrapper {
 /* === MENU OVERLAY & CONTACT MODAL Z-INDEX FIX === */
 /* Ensure menu overlay and contact modal stay on top of all sections */
 
+/* Header z-index fix - keep header at front */
+.main-header-wrapper,
+.header-section,
+.header-wrapper,
+.nav-menu,
+.nav-menu-wrapper {
+  z-index: 10004 !important;
+  position: relative;
+}
+
 .menu-overlay,
 .menu-panel,
 .menu-close-wrapper,
