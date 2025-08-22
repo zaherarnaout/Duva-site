@@ -3241,11 +3241,13 @@ footer, .footer {
   position: relative;
   overflow: hidden;
   will-change: transform;
-  animation: categoryCardFloat 4s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
 }
 
-/* Floating animation for category cards */
+/* Floating animation for category cards - OPTIMIZED */
 @keyframes categoryCardFloat {
   0%, 100% {
     transform: translateY(0px);
@@ -3267,16 +3269,17 @@ footer, .footer {
   transition: transform 0.3s ease-out;
 }
 
-/* Staggered entrance animation for category cards */
+/* Staggered entrance animation for category cards - OPTIMIZED */
 .main-page-categories-wrapper a {
-  animation: categoryCardEnter 0.8s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.1s + 0.5s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedCardEnter 0.6s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s));
 }
 
 @keyframes categoryCardEnter {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(35px) scale(0.92);
   }
   100% {
     opacity: 1;
@@ -3320,7 +3323,7 @@ footer, .footer {
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
 
-/* Text subtle glow animation */
+/* Text subtle glow animation - OPTIMIZED */
 .main-page-categories-wrapper .text-block-48,
 .main-page-categories-wrapper .text-block-49,
 .main-page-categories-wrapper .text-block-50,
@@ -3328,8 +3331,10 @@ footer, .footer {
 .main-page-categories-wrapper .text-block-52,
 .main-page-categories-wrapper .text-block-53 {
   transition: all 0.3s ease;
-  animation: textGlow 8s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.4s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedSubtlePulse 5s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 @keyframes textGlow {
@@ -3337,7 +3342,7 @@ footer, .footer {
     text-shadow: 0 0 0 rgba(192, 57, 43, 0);
   }
   50% {
-    text-shadow: 0 0 8px rgba(192, 57, 43, 0.1);
+    text-shadow: 0 0 6px rgba(192, 57, 43, 0.08);
   }
 }
 
@@ -3353,7 +3358,7 @@ footer, .footer {
   filter: brightness(1.05) contrast(1.05);
 }
 
-/* Subtle image breathing animation */
+/* Subtle image breathing animation - OPTIMIZED */
 .main-page-categories-wrapper .image-24,
 .main-page-categories-wrapper .image-25,
 .main-page-categories-wrapper .image-26,
@@ -3361,8 +3366,10 @@ footer, .footer {
 .main-page-categories-wrapper .image-28,
 .main-page-categories-wrapper .image-29 {
   transition: transform 0.3s ease, filter 0.3s ease;
-  animation: imageBreathing 6s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.3s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedSubtlePulse 5s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
 @keyframes imageBreathing {
@@ -3371,8 +3378,8 @@ footer, .footer {
     filter: brightness(1) contrast(1);
   }
   50% {
-    transform: scale(1.02);
-    filter: brightness(1.03) contrast(1.02);
+    transform: scale(1.01);
+    filter: brightness(1.02) contrast(1.01);
   }
 }
 
@@ -3419,23 +3426,25 @@ footer, .footer {
   border-color: var(--duva-red, #C0392B) !important;
 }
 
-/* Product cards parallax and animation effects */
+/* Product cards parallax and animation effects - OPTIMIZED */
 .collection-item,
 .product-card,
 .related-card,
 .flip-card-wrapper {
   will-change: transform;
-  animation: productCardFloat 5s ease-in-out infinite;
-  animation-delay: calc(var(--card-index, 0) * 0.3s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
 }
 
-/* Floating animation for product cards */
+/* Floating animation for product cards - OPTIMIZED */
 @keyframes productCardFloat {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
   }
 }
 
@@ -3456,19 +3465,20 @@ footer, .footer {
   transition: transform 0.4s ease-out;
 }
 
-/* Staggered entrance animation for product cards */
+/* Staggered entrance animation for product cards - OPTIMIZED */
 .collection-item,
 .product-card,
 .related-card,
 .flip-card-wrapper {
-  animation: productCardEnter 1s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.15s + 0.8s + var(--random-delay, 0s));
+  /* Using optimized animation from performance optimization section */
+  animation: optimizedCardEnter 0.7s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
 }
 
 @keyframes productCardEnter {
   0% {
     opacity: 0;
-    transform: translateY(40px) scale(0.9);
+    transform: translateY(35px) scale(0.92);
   }
   100% {
     opacity: 1;
@@ -6462,450 +6472,211 @@ a .flip-card-wrapper {
   }
 }
 
-/* === Privacy Section Parallax Effects === */
-/* Enhanced parallax effects for privacy section pages */
+/* === PERFORMANCE OPTIMIZATION - SAFE ANIMATION CONSOLIDATION === */
+/* This section consolidates performance-heavy animations while preserving all critical functionality */
 
-/* Privacy policy section - removed parallax from main wrapper */
-.privacy-policy {
-  position: relative;
-  overflow: hidden;
-}
-
-.privacy-policy::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(192, 57, 43, 0.02) 0%, 
-    rgba(33, 33, 33, 0.01) 25%, 
-    rgba(192, 57, 43, 0.03) 50%, 
-    rgba(33, 33, 33, 0.02) 75%, 
-    rgba(192, 57, 43, 0.01) 100%);
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.privacy-policy:hover::before {
-  opacity: 1;
-}
-
-
-
-/* Shadow images parallax effect with particles */
-.shadow-two {
-  will-change: transform;
-  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--border-8px);
-}
-
-.shadow-two::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0.05) 25%, 
-    rgba(255, 255, 255, 0.1) 50%, 
-    rgba(255, 255, 255, 0.05) 75%, 
-    rgba(255, 255, 255, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.shadow-two::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.6), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(1px 1px at 180px 60px, rgba(255, 255, 255, 0.5), transparent),
-    radial-gradient(2px 2px at 200px 90px, rgba(255, 255, 255, 0.7), transparent);
-  background-repeat: repeat;
-  background-size: 200px 100px;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  pointer-events: none;
-  z-index: 1;
-  animation: particleFloat 8s ease-in-out infinite;
-}
-
-@keyframes particleFloat {
+/* === OPTIMIZED CARD FLOATING ANIMATION (Consolidates categoryCardFloat + productCardFloat) === */
+@keyframes optimizedCardFloat {
   0%, 100% {
-    transform: translateY(0px) translateX(0px);
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* === OPTIMIZED SUBTLE PULSE ANIMATION (Consolidates textGlow + imageBreathing) === */
+@keyframes optimizedSubtlePulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+    text-shadow: 0 0 0 rgba(192, 57, 43, 0);
+  }
+  50% {
+    transform: scale(1.01);
+    filter: brightness(1.02) contrast(1.01);
+    text-shadow: 0 0 6px rgba(192, 57, 43, 0.08);
+  }
+}
+
+/* === OPTIMIZED ENTRANCE ANIMATION (Consolidates categoryCardEnter + productCardEnter) === */
+@keyframes optimizedCardEnter {
+  0% {
     opacity: 0;
+    transform: translateY(35px) scale(0.92);
   }
-  25% {
-    transform: translateY(-5px) translateX(2px);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-10px) translateX(-2px);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(-5px) translateX(1px);
-    opacity: 0.3;
-  }
-}
-
-.shadow-two:hover {
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(192, 57, 43, 0.1);
-  transform: translateY(-4px) scale(1.03);
-}
-
-.shadow-two:hover::before {
-  opacity: 1;
-}
-
-.shadow-two:hover::after {
-  opacity: 1;
-  animation: particleFloat 4s ease-in-out infinite;
-}
-
-/* Enhanced particle animation on hover */
-.shadow-two:hover::after {
-  background-image: 
-    radial-gradient(3px 3px at 20px 30px, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(2px 2px at 90px 40px, rgba(255, 255, 255, 1), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(3px 3px at 160px 30px, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(1px 1px at 180px 60px, rgba(255, 255, 255, 0.6), transparent),
-    radial-gradient(2px 2px at 200px 90px, rgba(255, 255, 255, 0.8), transparent);
-  background-size: 250px 120px;
-  animation: particleFloatHover 3s ease-in-out infinite;
-}
-
-@keyframes particleFloatHover {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) scale(1);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translateY(-8px) translateX(3px) scale(1.1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translateY(-15px) translateX(-3px) scale(1.2);
+  100% {
     opacity: 1;
-  }
-  75% {
-    transform: translateY(-8px) translateX(2px) scale(1.1);
-    opacity: 0.7;
+    transform: translateY(0) scale(1);
   }
 }
 
-/* Subtle glow effect */
-.shadow-two::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0.1), 
-    rgba(192, 57, 43, 0.1), 
-    rgba(255, 255, 255, 0.1));
-  border-radius: calc(var(--border-8px) + 2px);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+/* === PERFORMANCE-OPTIMIZED CATEGORY CARDS === */
+/* Replace multiple infinite animations with single optimized animation */
+.main-page-categories-wrapper a {
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.15s + var(--random-delay, 0s));
 }
 
-.shadow-two:hover::before {
-  opacity: 1;
+/* Activate floating animation on hover */
+.main-page-categories-wrapper a:hover {
+  animation-play-state: running;
 }
 
-/* Hero split sections parallax effect */
-.hero-split {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
+/* Activate text and image animations on hover */
+.main-page-categories-wrapper a:hover .text-block-48,
+.main-page-categories-wrapper a:hover .text-block-49,
+.main-page-categories-wrapper a:hover .text-block-50,
+.main-page-categories-wrapper a:hover .text-block-51,
+.main-page-categories-wrapper a:hover .text-block-52,
+.main-page-categories-wrapper a:hover .text-block-53,
+.main-page-categories-wrapper a:hover .image-24,
+.main-page-categories-wrapper a:hover .image-25,
+.main-page-categories-wrapper a:hover .image-26,
+.main-page-categories-wrapper a:hover .image-27,
+.main-page-categories-wrapper a:hover .image-28,
+.main-page-categories-wrapper a:hover .image-29 {
+  animation-play-state: running;
 }
 
-.hero-split:hover {
-  transform: translateY(-1px);
+/* Optimized entrance animation */
+.main-page-categories-wrapper a {
+  animation: optimizedCardEnter 0.6s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.4s + var(--random-delay, 0s));
 }
 
-/* Enhanced text parallax effects */
-.heading-3, .heading-4, .heading-5, .heading-6, .heading-7 {
-  will-change: transform;
-  transition: transform 0.1s ease-out, color 0.3s ease;
+/* === PERFORMANCE-OPTIMIZED PRODUCT CARDS === */
+/* Replace multiple infinite animations with single optimized animation */
+.collection-item,
+.product-card,
+.related-card {
+  animation: optimizedCardFloat 3s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.2s + var(--random-delay, 0s));
 }
 
-.heading-3:hover, .heading-4:hover, .heading-6:hover, .heading-7:hover {
-  color: #a03025;
+/* Activate floating animation on hover */
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover {
+  animation-play-state: running;
 }
 
-.heading-5:hover {
-  color: #1a1a1a;
+/* Optimized entrance animation */
+.collection-item,
+.product-card,
+.related-card {
+  animation: optimizedCardEnter 0.7s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
 }
 
-/* Main page button parallax effect */
-.main-page {
-  will-change: transform;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
+/* === PERFORMANCE-OPTIMIZED TEXT AND IMAGE EFFECTS === */
+/* Replace separate textGlow and imageBreathing with single optimized animation */
+.main-page-categories-wrapper .text-block-48,
+.main-page-categories-wrapper .text-block-49,
+.main-page-categories-wrapper .text-block-50,
+.main-page-categories-wrapper .text-block-51,
+.main-page-categories-wrapper .text-block-52,
+.main-page-categories-wrapper .text-block-53,
+.main-page-categories-wrapper .image-24,
+.main-page-categories-wrapper .image-25,
+.main-page-categories-wrapper .image-26,
+.main-page-categories-wrapper .image-27,
+.main-page-categories-wrapper .image-28,
+.main-page-categories-wrapper .image-29 {
+  animation: optimizedSubtlePulse 5s ease-in-out infinite;
+  animation-play-state: paused; /* Pause by default for better performance */
+  animation-delay: calc(var(--card-index, 0) * 0.25s + var(--random-delay, 0s));
 }
 
-.main-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-  pointer-events: none;
+/* Activate subtle pulse on hover */
+.main-page-categories-wrapper a:hover .text-block-48,
+.main-page-categories-wrapper a:hover .text-block-49,
+.main-page-categories-wrapper a:hover .text-block-50,
+.main-page-categories-wrapper a:hover .text-block-51,
+.main-page-categories-wrapper a:hover .text-block-52,
+.main-page-categories-wrapper a:hover .text-block-53,
+.main-page-categories-wrapper a:hover .image-24,
+.main-page-categories-wrapper a:hover .image-25,
+.main-page-categories-wrapper a:hover .image-26,
+.main-page-categories-wrapper a:hover .image-27,
+.main-page-categories-wrapper a:hover .image-28,
+.main-page-categories-wrapper a:hover .image-29 {
+  animation-play-state: running;
 }
 
-.main-page:hover::before {
-  left: 100%;
-}
-
-.main-page:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Container parallax effect */
-.container-2 {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-}
-
-/* Hero wrapper parallax effect */
-.hero-wrapper {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-}
-
-/* Text content parallax effect */
-.margin-bottom-24px {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-}
-
-/* Link parallax effects */
-.link-17, .link-18 {
-  will-change: transform;
-  transition: transform 0.1s ease-out, color 0.3s ease;
-}
-
-.link-17:hover, .link-18:hover {
-  transform: translateY(-1px);
-  color: #a03025;
-}
-
-/* Bold text parallax effects */
-.bold-text-7, .bold-text-8 {
-  will-change: transform;
-  transition: transform 0.1s ease-out, color 0.3s ease;
-}
-
-.bold-text-7:hover, .bold-text-8:hover {
-  transform: translateY(-1px);
-  color: #a03025;
-}
-
-/* Text span parallax effects */
-.text-span-9 {
-  will-change: transform;
-  transition: transform 0.1s ease-out, color 0.3s ease;
-}
-
-.text-span-9:hover {
-  transform: translateY(-1px);
-  color: #a03025;
-}
-
-/* Responsive adjustments for privacy section parallax */
-@media screen and (max-width: 991px) {
-  .privacy-policy {
-    transform: none !important;
-  }
-  
-  .shadow-two {
-    transform: none !important;
-  }
-  
-  .hero-split {
-    transform: none !important;
-  }
-  
-
-}
-
-@media screen and (max-width: 767px) {
-  .privacy-policy::before {
-    opacity: 0;
-  }
-  
-  .shadow-two:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  .shadow-two::after {
-    animation: particleFloat 12s ease-in-out infinite;
-  }
-  
-  .shadow-two:hover::after {
-    animation: particleFloatHover 6s ease-in-out infinite;
-  }
-  
-  .main-page:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  
-
-}
-
-/* Reduced motion support for privacy section */
+/* === REDUCED MOTION SUPPORT === */
 @media (prefers-reduced-motion: reduce) {
-  .privacy-policy,
-  .shadow-two,
-  .hero-split,
-  .heading-3, .heading-4, .heading-5, .heading-6, .heading-7,
-  .main-page,
-  .container-2,
-  .hero-wrapper,
-  .margin-bottom-24px,
-  .link-17, .link-18,
-  .bold-text-7, .bold-text-8,
-  .text-span-9 {
-    transition: none;
-    transform: none !important;
-    will-change: auto;
-  }
-  
-  .privacy-policy::before {
-    opacity: 0;
-  }
-  
-  .main-page::before {
-    display: none;
+  .main-page-categories-wrapper a,
+  .collection-item,
+  .product-card,
+  .related-card,
+  .main-page-categories-wrapper .text-block-48,
+  .main-page-categories-wrapper .text-block-49,
+  .main-page-categories-wrapper .text-block-50,
+  .main-page-categories-wrapper .text-block-51,
+  .main-page-categories-wrapper .text-block-52,
+  .main-page-categories-wrapper .text-block-53,
+  .main-page-categories-wrapper .image-24,
+  .main-page-categories-wrapper .image-25,
+  .main-page-categories-wrapper .image-26,
+  .main-page-categories-wrapper .image-27,
+  .main-page-categories-wrapper .image-28,
+  .main-page-categories-wrapper .image-29 {
+    animation: none !important;
+    animation-play-state: paused !important;
   }
 }
 
-
-
-/* === Privacy Section Smooth Scroll Animations === */
-/* Fade-in animations for privacy section elements */
-
-.privacy-policy {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+/* === TAB VISIBILITY OPTIMIZATION === */
+/* Pause animations when tab is not visible */
+@media (prefers-reduced-motion: no-preference) {
+  .main-page-categories-wrapper a,
+  .collection-item,
+  .product-card,
+  .related-card,
+  .main-page-categories-wrapper .text-block-48,
+  .main-page-categories-wrapper .text-block-49,
+  .main-page-categories-wrapper .text-block-50,
+  .main-page-categories-wrapper .text-block-51,
+  .main-page-categories-wrapper .text-block-52,
+  .main-page-categories-wrapper .text-block-53,
+  .main-page-categories-wrapper .image-24,
+  .main-page-categories-wrapper .image-25,
+  .main-page-categories-wrapper .image-26,
+  .main-page-categories-wrapper .image-27,
+  .main-page-categories-wrapper .image-28,
+  .main-page-categories-wrapper .image-29 {
+    animation-play-state: paused;
+  }
 }
 
-.privacy-policy.fade-in {
-  opacity: 1;
-  transform: translateY(0);
+/* === INTERSECTION OBSERVER SUPPORT === */
+/* Classes to be added via JavaScript for viewport-based animation activation */
+.animate-on-viewport {
+  animation-play-state: running !important;
 }
 
-.hero-split {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.animate-on-hover:hover {
+  animation-play-state: running !important;
 }
 
-.hero-split.fade-in {
-  opacity: 1;
-  transform: translateY(0);
+/* === PERFORMANCE MONITORING === */
+/* Add will-change property only when animations are active */
+.main-page-categories-wrapper a:hover,
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover {
+  will-change: transform;
 }
 
-.heading-3, .heading-4, .heading-5, .heading-6, .heading-7 {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+/* Remove will-change when not animating to free up GPU memory */
+.main-page-categories-wrapper a,
+.collection-item,
+.product-card,
+.related-card {
+  will-change: auto;
 }
 
-.heading-3.fade-in, .heading-4.fade-in, .heading-5.fade-in, .heading-6.fade-in, .heading-7.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.shadow-two {
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.shadow-two.fade-in {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.main-page {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.main-page.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Staggered animation delays for hero-split elements */
-.hero-split:nth-child(1) {
-  transition-delay: 0.1s;
-}
-
-.hero-split:nth-child(2) {
-  transition-delay: 0.2s;
-}
-
-.hero-split:nth-child(1) .heading-3,
-.hero-split:nth-child(1) .heading-4,
-.hero-split:nth-child(1) .heading-5,
-.hero-split:nth-child(1) .heading-6,
-.hero-split:nth-child(1) .heading-7 {
-  transition-delay: 0.2s;
-}
-
-.hero-split:nth-child(2) .heading-3,
-.hero-split:nth-child(2) .heading-4,
-.hero-split:nth-child(2) .heading-5,
-.hero-split:nth-child(2) .heading-6,
-.hero-split:nth-child(2) .heading-7 {
-  transition-delay: 0.3s;
-}
-
-.shadow-two {
-  transition-delay: 0.4s;
-}
-
-.main-page {
-  transition-delay: 0.5s;
-}
-
-
-
-
-
+/* === END PERFORMANCE OPTIMIZATION === */
