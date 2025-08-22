@@ -6471,6 +6471,7 @@ a .flip-card-wrapper {
   overflow: hidden;
   will-change: transform;
   transition: transform 0.1s ease-out;
+  margin-bottom: 20px !important;
 }
 
 .privacy-policy::before {
@@ -6498,16 +6499,145 @@ a .flip-card-wrapper {
 
 
 
-/* Shadow images parallax effect */
+/* Shadow images parallax effect with particles */
 .shadow-two {
   will-change: transform;
   transition: transform 0.1s ease-out, box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-8px);
+}
+
+.shadow-two::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 25%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    rgba(255, 255, 255, 0.05) 75%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.shadow-two::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 180px 60px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 200px 90px, rgba(255, 255, 255, 0.7), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  z-index: 1;
+  animation: particleFloat 8s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(-5px) translateX(2px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-2px);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-5px) translateX(1px);
+    opacity: 0.3;
+  }
 }
 
 .shadow-two:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(192, 57, 43, 0.1);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.shadow-two:hover::before {
+  opacity: 1;
+}
+
+.shadow-two:hover::after {
+  opacity: 1;
+  animation: particleFloat 4s ease-in-out infinite;
+}
+
+/* Enhanced particle animation on hover */
+.shadow-two:hover::after {
+  background-image: 
+    radial-gradient(3px 3px at 20px 30px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 90px 40px, rgba(255, 255, 255, 1), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(3px 3px at 160px 30px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 180px 60px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 200px 90px, rgba(255, 255, 255, 0.8), transparent);
+  background-size: 250px 120px;
+  animation: particleFloatHover 3s ease-in-out infinite;
+}
+
+@keyframes particleFloatHover {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-8px) translateX(3px) scale(1.1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-15px) translateX(-3px) scale(1.2);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-8px) translateX(2px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+/* Subtle glow effect */
+.shadow-two::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1), 
+    rgba(192, 57, 43, 0.1), 
+    rgba(255, 255, 255, 0.1));
+  border-radius: calc(var(--border-8px) + 2px);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.shadow-two:hover::before {
+  opacity: 1;
 }
 
 /* Hero split sections parallax effect */
@@ -6628,6 +6758,24 @@ a .flip-card-wrapper {
   .hero-split {
     transform: none !important;
   }
+  
+  /* Maintain section spacing on tablet */
+  .privacy-policy,
+  .testimonial-stack,
+  .gallery-overview,
+  .team-slider-2,
+  .new-items,
+  .gallery-slider-2,
+  .main-page-hero-section-wrapper,
+  .main-page-categories-wrapper,
+  .main-filter-wrapper,
+  .product-page-section,
+  .accessories-section,
+  .related-section,
+  .gallery-section,
+  .footer-section {
+    margin-bottom: 20px !important;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -6636,13 +6784,39 @@ a .flip-card-wrapper {
   }
   
   .shadow-two:hover {
-    transform: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .shadow-two::after {
+    animation: particleFloat 12s ease-in-out infinite;
+  }
+  
+  .shadow-two:hover::after {
+    animation: particleFloatHover 6s ease-in-out infinite;
   }
   
   .main-page:hover {
     transform: none;
     box-shadow: none;
+  }
+  
+  /* Maintain section spacing on mobile */
+  .privacy-policy,
+  .testimonial-stack,
+  .gallery-overview,
+  .team-slider-2,
+  .new-items,
+  .gallery-slider-2,
+  .main-page-hero-section-wrapper,
+  .main-page-categories-wrapper,
+  .main-filter-wrapper,
+  .product-page-section,
+  .accessories-section,
+  .related-section,
+  .gallery-section,
+  .footer-section {
+    margin-bottom: 20px !important;
   }
 }
 
@@ -6671,6 +6845,45 @@ a .flip-card-wrapper {
   .main-page::before {
     display: none;
   }
+}
+
+/* === Global Section Spacing === */
+/* Consistent 20px gap between all sections across the site */
+
+/* Main section containers */
+.privacy-policy,
+.testimonial-stack,
+.gallery-overview,
+.team-slider-2,
+.new-items,
+.gallery-slider-2,
+.main-page-hero-section-wrapper,
+.main-page-categories-wrapper,
+.main-filter-wrapper,
+.product-page-section,
+.accessories-section,
+.related-section,
+.gallery-section,
+.footer-section {
+  margin-bottom: 20px !important;
+}
+
+/* Ensure no negative margins that could cause overlapping */
+.privacy-policy,
+.testimonial-stack,
+.gallery-overview,
+.team-slider-2,
+.new-items,
+.gallery-slider-2,
+.main-page-hero-section-wrapper,
+.main-page-categories-wrapper,
+.main-filter-wrapper,
+.product-page-section,
+.accessories-section,
+.related-section,
+.gallery-section,
+.footer-section {
+  margin-top: 0 !important;
 }
 
 /* === Privacy Section Smooth Scroll Animations === */
@@ -6762,4 +6975,24 @@ a .flip-card-wrapper {
 
 .main-page {
   transition-delay: 0.5s;
+}
+
+/* Small mobile devices - maintain section spacing */
+@media screen and (max-width: 479px) {
+  .privacy-policy,
+  .testimonial-stack,
+  .gallery-overview,
+  .team-slider-2,
+  .new-items,
+  .gallery-slider-2,
+  .main-page-hero-section-wrapper,
+  .main-page-categories-wrapper,
+  .main-filter-wrapper,
+  .product-page-section,
+  .accessories-section,
+  .related-section,
+  .gallery-section,
+  .footer-section {
+    margin-bottom: 20px !important;
+  }
 }
