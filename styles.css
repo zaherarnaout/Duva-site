@@ -6465,13 +6465,10 @@ a .flip-card-wrapper {
 /* === Privacy Section Parallax Effects === */
 /* Enhanced parallax effects for privacy section pages */
 
-/* Privacy policy section parallax effect */
+/* Privacy policy section - removed parallax from main wrapper */
 .privacy-policy {
   position: relative;
   overflow: hidden;
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-  margin: 20px auto !important;
 }
 
 .privacy-policy::before {
@@ -6824,13 +6821,11 @@ a .flip-card-wrapper {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
-  margin: 20px auto !important;
 }
 
 .privacy-policy.fade-in {
   opacity: 1;
   transform: translateY(0);
-  margin: 20px auto !important;
 }
 
 .hero-split {
@@ -6910,90 +6905,7 @@ a .flip-card-wrapper {
   transition-delay: 0.5s;
 }
 
-/* === Standardize Section Margins === */
-/* Fix sections that have separate margin properties to match the working format */
 
-/* Testimonial stack - standardize to match working sections */
-.testimonial-stack {
-  margin: 20px auto !important;
-}
 
-/* Privacy policy - standardize to match working sections */
-.privacy-policy {
-  margin: 20px auto !important;
-}
 
-/* Ensure consistent spacing for all main sections */
-.gallery-slider-2,
-.new-items {
-  margin: 20px auto !important;
-}
-
-/* Product page sections */
-.product-page-section,
-.accessories-section,
-.related-section,
-.gallery-section {
-  margin: 20px auto !important;
-}
-
-/* Main page sections */
-.main-page-categories-wrapper,
-.main-filter-wrapper {
-  margin: 20px auto !important;
-}
-
-/* Footer section */
-.footer-section {
-  margin: 20px auto !important;
-}
-
-/* Responsive adjustments for standardized margins */
-@media screen and (max-width: 991px) {
-  .privacy-policy,
-  .testimonial-stack,
-  .gallery-slider-2,
-  .new-items,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .footer-section {
-    margin: 20px auto !important;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .privacy-policy,
-  .testimonial-stack,
-  .gallery-slider-2,
-  .new-items,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .footer-section {
-    margin: 20px auto !important;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .privacy-policy,
-  .testimonial-stack,
-  .gallery-slider-2,
-  .new-items,
-  .product-page-section,
-  .accessories-section,
-  .related-section,
-  .gallery-section,
-  .main-page-categories-wrapper,
-  .main-filter-wrapper,
-  .footer-section {
-    margin: 20px auto !important;
-  }
-}
 
