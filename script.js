@@ -5947,6 +5947,8 @@ function initializeFooterContactButton() {
 function initializeFooterLogoHomeButton() {
   console.log('🏠 Initializing footer logo home button...');
   console.log('🏠 Function is running!');
+  console.log('🏠 Current URL:', window.location.href);
+  console.log('🏠 Document ready state:', document.readyState);
   
   // Try multiple selectors to find the footer logo
   const selectors = [
@@ -5994,6 +5996,41 @@ function initializeFooterLogoHomeButton() {
   
   console.log('✅ Footer logo home button initialized');
 }
+
+// Global footer logo detection for components
+function setupGlobalFooterLogoDetection() {
+  console.log('🌐 Setting up global footer logo detection...');
+  
+  // Use MutationObserver to watch for footer component loading
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) { // Element node
+            // Check if this is a footer or contains footer
+            if (node.classList && (node.classList.contains('footer-section') || 
+                                  node.querySelector('.footer-section') || 
+                                  node.querySelector('.image-35'))) {
+              console.log('🔍 Footer component detected, initializing logo...');
+              setTimeout(initializeFooterLogoHomeButton, 100);
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  // Start observing
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+  
+  console.log('🌐 Global footer logo detection active');
+}
+
+// Initialize global detection
+setupGlobalFooterLogoDetection();
 
 // === VIEWPORT FADE EFFECTS - INTERSECTION OBSERVER ===
 /* Simple fade in/out effect for all main sections when they enter/exit viewport */
@@ -6066,6 +6103,22 @@ if (document.readyState === 'loading') {
 
 // Also initialize after a delay to catch dynamically loaded content
 setTimeout(initializeViewportFadeEffects, 1000);
+
+// Initialize footer logo home button with multiple attempts for component
+setTimeout(() => {
+  console.log('🔄 Delayed footer logo initialization attempt...');
+  initializeFooterLogoHomeButton();
+}, 500);
+
+setTimeout(() => {
+  console.log('🔄 Second delayed footer logo initialization attempt...');
+  initializeFooterLogoHomeButton();
+}, 1500);
+
+setTimeout(() => {
+  console.log('🔄 Third delayed footer logo initialization attempt...');
+  initializeFooterLogoHomeButton();
+}, 3000);
 
 // === END VIEWPORT FADE EFFECTS ===
 
