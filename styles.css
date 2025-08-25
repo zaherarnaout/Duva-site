@@ -6701,31 +6701,30 @@ a .flip-card-wrapper {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--duva-red, #C0392B);
+  color: #212121;
   transition: color 0.3s ease;
 }
 
-/* Read more arrow styling */
+/* Read more arrow styling - following accessories-arrow pattern */
 #new-items .read-more .image-52 {
   width: 16px;
   height: 16px;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(1000%) hue-rotate(350deg) brightness(0.7) contrast(1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
 }
 
-/* Hover effects */
+/* Hover effects - following accessories-arrow pattern */
 #new-items .read-more:hover {
   transform: translateY(-1px);
 }
 
 #new-items .read-more:hover .text-block-86 {
-  color: var(--duva-red, #C0392B);
-  text-shadow: 0 0 8px rgba(192, 57, 43, 0.3);
+  color: #212121;
 }
 
 #new-items .read-more:hover .image-52 {
-  transform: translateY(-1px) scale(1.1);
-  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(1000%) hue-rotate(350deg) brightness(0.8) contrast(1);
+  transform: translateY(-2px) scale(1.05) !important;
+  filter: brightness(1.1) !important;
 }
 
 /* Active state */
