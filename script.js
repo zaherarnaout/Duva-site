@@ -6103,7 +6103,7 @@ function initializeNewItemsReadMore() {
     
     // Function to truncate text
     function truncateText() {
-      const maxHeight = 60; // Maximum height in pixels for truncated state
+      const maxHeight = 72; // Show about 3 lines of text
       description.style.maxHeight = maxHeight + 'px';
       description.style.overflow = 'hidden';
       description.classList.add('truncated');
@@ -6129,8 +6129,8 @@ function initializeNewItemsReadMore() {
     // Initialize truncated state
     truncateText();
     
-    // Add click event listener
-    readMoreSection.addEventListener('click', function(e) {
+    // Add click event listener to arrow only
+    readMoreArrow.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       
@@ -6143,15 +6143,15 @@ function initializeNewItemsReadMore() {
       console.log('📖 Toggled read more for item', index, isExpanded ? 'expanded' : 'truncated');
     });
     
-    // Add hover effects
-    readMoreSection.style.cursor = 'pointer';
-    readMoreSection.style.transition = 'all 0.3s ease';
+    // Add hover effects to arrow only
+    readMoreArrow.style.cursor = 'pointer';
+    readMoreArrow.style.transition = 'all 0.3s ease';
     
-    readMoreSection.addEventListener('mouseenter', function() {
+    readMoreArrow.addEventListener('mouseenter', function() {
       this.style.opacity = '0.8';
     });
     
-    readMoreSection.addEventListener('mouseleave', function() {
+    readMoreArrow.addEventListener('mouseleave', function() {
       this.style.opacity = '1';
     });
     
