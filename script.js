@@ -1652,17 +1652,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const row = this.closest('.download-row'); 
 
-      const isGenerated = row === document.querySelector('.download-row'); 
+      const isFirstRow = row === document.querySelector('.download-row'); 
 
  
 
-      if (isGenerated) { 
+      if (isFirstRow) { 
 
-        return; // already handled by main export listener
+        // First row (Data Sheet) - Generate PDF
+
+        generatePDF(); 
+
+        return; 
 
       } 
 
  
+
+      // Other rows - Download files directly
 
       const fileUrl = this.getAttribute('data-file'); 
 
@@ -2054,16 +2060,8 @@ function generatePDF() {
   });
 }
 // === PDF Download Button Binding by Class ===
-document.addEventListener("DOMContentLoaded", function () {
-  const downloadBtn = document.querySelector(".download-arrow");
-  if (downloadBtn) {
-    downloadBtn.addEventListener("click", function () {
-      generatePDF(); // Make sure this function exists
-    });
-  } else {
-    console.warn("Download arrow button not found!");
-  }
-});
+// REMOVED: This was causing conflicts with the unified download handler above
+// The first row (Data Sheet) now properly calls generatePDF() in the unified system
 // === End PDF Download Button Binding ===
 
 // === Utility: Ensure Product Code is Set from DOM ===
