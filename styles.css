@@ -6661,7 +6661,7 @@ a .flip-card-wrapper {
 
 /* Truncated state */
 #new-items .new-item-descriptions.truncated {
-  max-height: 60px;
+  max-height: 72px;
   overflow: hidden;
 }
 
@@ -6690,8 +6690,6 @@ a .flip-card-wrapper {
   gap: 8px;
   margin-top: 12px;
   padding: 8px 0;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
 }
 
@@ -6702,7 +6700,6 @@ a .flip-card-wrapper {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: #212121;
-  transition: color 0.3s ease;
 }
 
 /* Read more arrow styling - following accessories-arrow pattern */
@@ -6713,27 +6710,19 @@ a .flip-card-wrapper {
   will-change: transform !important;
 }
 
-/* Hover effects - following accessories-arrow pattern */
-#new-items .read-more:hover {
-  transform: translateY(-1px);
-}
-
-#new-items .read-more:hover .text-block-86 {
-  color: #212121;
-}
-
-#new-items .read-more:hover .image-52 {
+/* Hover effects - arrow only */
+#new-items .read-more .image-52:hover {
   transform: translateY(-2px) scale(1.05) !important;
   filter: brightness(1.1) !important;
 }
 
-/* Active state */
-#new-items .read-more:active {
-  transform: translateY(0);
+/* Active state - arrow only */
+#new-items .read-more .image-52:active {
+  transform: translateY(0) !important;
 }
 
-/* Focus state for accessibility */
-#new-items .read-more:focus {
+/* Focus state for accessibility - arrow only */
+#new-items .read-more .image-52:focus {
   outline: 2px solid var(--duva-red, #C0392B);
   outline-offset: 2px;
   border-radius: 4px;
@@ -6763,16 +6752,11 @@ a .flip-card-wrapper {
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   #new-items .new-item-descriptions,
-  #new-items .read-more,
   #new-items .read-more .image-52 {
     transition: none !important;
   }
   
-  #new-items .read-more:hover {
-    transform: none !important;
-  }
-  
-  #new-items .read-more:hover .image-52 {
+  #new-items .read-more .image-52:hover {
     transform: none !important;
   }
 }
