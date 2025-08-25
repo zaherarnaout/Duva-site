@@ -6103,7 +6103,7 @@ function initializeNewItemsReadMore() {
     
     // Function to truncate text
     function truncateText() {
-      const maxHeight = 72; // Show about 3 lines of text
+      const maxHeight = 90; // Show exactly 3 lines of text (30px per line)
       description.style.maxHeight = maxHeight + 'px';
       description.style.overflow = 'hidden';
       description.classList.add('truncated');
