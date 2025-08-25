@@ -5945,12 +5945,32 @@ function initializeFooterContactButton() {
 function initializeFooterLogoHomeButton() {
   console.log('🏠 Initializing footer logo home button...');
   
-  const footerLogo = document.querySelector('.footer-middle-wrapper .middle-footer-wrapper .image-35, #footer-logo, .footer-logo');
+  // Try multiple selectors to find the footer logo
+  const selectors = [
+    '.footer-section .middle-footer-wrapper .image-35',
+    '.footer-middle-wrapper .middle-footer-wrapper .image-35',
+    '.footer-section .image-35',
+    '.middle-footer-wrapper .image-35',
+    '#footer-logo',
+    '.footer-logo'
+  ];
+  
+  let footerLogo = null;
+  for (const selector of selectors) {
+    footerLogo = document.querySelector(selector);
+    if (footerLogo) {
+      console.log('✅ Found footer logo with selector:', selector);
+      break;
+    }
+  }
   
   if (!footerLogo) {
-    console.log('⚠️ Footer logo not found');
+    console.log('⚠️ Footer logo not found with any selector');
+    console.log('🔍 Available image elements:', document.querySelectorAll('img[class*="image-35"]'));
     return;
   }
+  
+  console.log('🏠 Footer logo element:', footerLogo);
   
   // Add click handler for footer logo
   footerLogo.addEventListener('click', function(e) {
