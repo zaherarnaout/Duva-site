@@ -5945,7 +5945,7 @@ function initializeFooterContactButton() {
 function initializeFooterLogoHomeButton() {
   console.log('🏠 Initializing footer logo home button...');
   
-  const footerLogo = document.querySelector('.footer-section .image-35, #footer-logo, .footer-logo');
+  const footerLogo = document.querySelector('.middle-footer-wrapper .image-35, #footer-logo, .footer-logo');
   
   if (!footerLogo) {
     console.log('⚠️ Footer logo not found');
