@@ -6648,3 +6648,134 @@ a .flip-card-wrapper {
 }
 
 /* === END VIEWPORT FADE EFFECTS === */
+
+/* === NEW ITEMS READ MORE TOGGLE === */
+/* Styles for the read more functionality in the new items section */
+
+/* Target only the specific new-items section, not main-journal-wrapper */
+#new-items .new-item-descriptions {
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              overflow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Truncated state */
+#new-items .new-item-descriptions.truncated {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+/* Add gradient fade effect for truncated text */
+#new-items .new-item-descriptions.truncated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(transparent, var(--duva-light-grey, #F4F5F6));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Dark mode gradient */
+[data-theme="dark"] #new-items .new-item-descriptions.truncated::after {
+  background: linear-gradient(transparent, var(--Background, #212121));
+}
+
+/* Read more button styling */
+#new-items .read-more {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+/* Read more text styling */
+#new-items .read-more .text-block-86 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--duva-red, #C0392B);
+  transition: color 0.3s ease;
+}
+
+/* Read more arrow styling */
+#new-items .read-more .image-52 {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(1000%) hue-rotate(350deg) brightness(0.7) contrast(1);
+}
+
+/* Hover effects */
+#new-items .read-more:hover {
+  transform: translateY(-1px);
+}
+
+#new-items .read-more:hover .text-block-86 {
+  color: var(--duva-red, #C0392B);
+  text-shadow: 0 0 8px rgba(192, 57, 43, 0.3);
+}
+
+#new-items .read-more:hover .image-52 {
+  transform: translateY(-1px) scale(1.1);
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(1000%) hue-rotate(350deg) brightness(0.8) contrast(1);
+}
+
+/* Active state */
+#new-items .read-more:active {
+  transform: translateY(0);
+}
+
+/* Focus state for accessibility */
+#new-items .read-more:focus {
+  outline: 2px solid var(--duva-red, #C0392B);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 767px) {
+  #new-items .new-item-descriptions.truncated {
+    max-height: 48px;
+  }
+  
+  #new-items .read-more {
+    margin-top: 8px;
+    padding: 6px 0;
+  }
+  
+  #new-items .read-more .text-block-86 {
+    font-size: 13px;
+  }
+  
+  #new-items .read-more .image-52 {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  #new-items .new-item-descriptions,
+  #new-items .read-more,
+  #new-items .read-more .image-52 {
+    transition: none !important;
+  }
+  
+  #new-items .read-more:hover {
+    transform: none !important;
+  }
+  
+  #new-items .read-more:hover .image-52 {
+    transform: none !important;
+  }
+}
+
+/* === END NEW ITEMS READ MORE TOGGLE === */
