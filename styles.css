@@ -6661,7 +6661,7 @@ a .flip-card-wrapper {
 
 /* Truncated state */
 #new-items .new-item-descriptions.truncated {
-  max-height: 72px;
+  max-height: 90px;
   overflow: hidden;
 }
 
@@ -6731,7 +6731,7 @@ a .flip-card-wrapper {
 /* Responsive adjustments */
 @media screen and (max-width: 767px) {
   #new-items .new-item-descriptions.truncated {
-    max-height: 48px;
+    max-height: 72px;
   }
   
   #new-items .read-more {
