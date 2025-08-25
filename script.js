@@ -3337,7 +3337,8 @@ function initializeLogoHomeButton() {
     
     // Add visual feedback
     logoWrapper.style.cursor = 'pointer';
-    logoWrapper.setAttribute('title', 'HOME');
+    // Remove title attribute to avoid conflict with custom tooltip
+    logoWrapper.removeAttribute('title');
     
     console.log('✅ DUVA logo home button initialized');
   }
@@ -5961,9 +5962,10 @@ function initializeFooterLogoHomeButton() {
     window.location.href = '/';
   });
   
-  // Add visual feedback and tooltip
+  // Add visual feedback
   footerLogo.style.cursor = 'pointer';
-  footerLogo.setAttribute('title', 'HOME');
+  // Remove title attribute to avoid conflict with custom tooltip
+  footerLogo.removeAttribute('title');
   
   console.log('✅ Footer logo home button initialized');
 }
