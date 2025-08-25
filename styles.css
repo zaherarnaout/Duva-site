@@ -6827,13 +6827,13 @@ a .flip-card-wrapper {
 }
 
 /* Footer Logo */
-.middle-footer-wrapper .image-35 {
+.footer-middle-wrapper .middle-footer-wrapper .image-35 {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   position: relative !important;
   cursor: pointer !important;
 }
 
-.middle-footer-wrapper .image-35:hover {
+.footer-middle-wrapper .middle-footer-wrapper .image-35:hover {
   transform: translateY(-2px) !important;
   filter: brightness(1.1) contrast(1.1) !important;
 }
@@ -6842,7 +6842,7 @@ a .flip-card-wrapper {
 
 /* Underline effect for both logos */
 .duva-logo-wrapper::after,
-.middle-footer-wrapper .image-35::after {
+.footer-middle-wrapper .middle-footer-wrapper .image-35::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -6856,7 +6856,7 @@ a .flip-card-wrapper {
 }
 
 .duva-logo-wrapper:hover::after,
-.middle-footer-wrapper .image-35:hover::after {
+.footer-middle-wrapper .middle-footer-wrapper .image-35:hover::after {
   width: 100% !important;
 }
 
