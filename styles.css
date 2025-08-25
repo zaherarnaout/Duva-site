@@ -6811,20 +6811,66 @@ a .flip-card-wrapper {
 
 /* === END DEEP-LINK TARGET SECTIONS === */
 
-/* === FOOTER LOGO HOME BUTTON - MATCHING HEADER STYLE === */
-/* Footer logo hover effects to match header logo */
+/* === LOGO HOME BUTTONS - ENHANCED STYLING === */
+/* Header and footer logo hover effects with tooltips and underlines */
 
+/* Header Logo */
+.duva-logo-wrapper {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  cursor: pointer !important;
+}
+
+.duva-logo-wrapper:hover {
+  transform: translateY(-2px) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
+}
+
+/* Footer Logo */
 .footer-section .image-35 {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  cursor: pointer !important;
 }
 
 .footer-section .image-35:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1) contrast(1.1);
+  transform: translateY(-2px) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
 }
 
+/* Tooltip for both logos */
+.duva-logo-wrapper::before,
+.footer-section .image-35::before {
+  content: 'HOME';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--duva-red, #C0392B);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.duva-logo-wrapper:hover::before,
+.footer-section .image-35:hover::before {
+  opacity: 1;
+  visibility: visible;
+  top: -45px;
+}
+
+/* Underline effect for both logos */
+.duva-logo-wrapper::after,
 .footer-section .image-35::after {
   content: '';
   position: absolute;
@@ -6832,13 +6878,15 @@ a .flip-card-wrapper {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--duva-red, #C0392B);
+  background: var(--duva-red, #C0392B) !important;
   transition: all 0.3s ease;
   transform: translateX(-50%);
+  z-index: 10;
 }
 
+.duva-logo-wrapper:hover::after,
 .footer-section .image-35:hover::after {
-  width: 100%;
+  width: 100% !important;
 }
 
 /* === END FOOTER LOGO HOME BUTTON === */
