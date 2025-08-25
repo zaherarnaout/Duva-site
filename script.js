@@ -6173,6 +6173,147 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
 // === END READ MORE TOGGLE ===
 
+// === DUVA DEEP-LINK ROUTER: HEADER + FOOTER ===
+/* Navigation system for header and footer links with smooth scrolling and cross-page navigation */
+
+(function () {
+  console.log('🔗 Initializing DUVA deep-link router...');
+  
+  /* --- Config --- */
+  const SLUGS = {
+    about: "/about",
+    legal: "/legal",
+  };
+
+  const VALID_IDS = new Set([
+    "privacy", "terms", "cookies", "warranty",
+    "about", "news", "gallery", "testimonials"
+  ]);
+
+  // Adjust to your fixed header height
+  const SCROLL_OFFSET = 80; // px
+
+  // Utility: normalize path (remove trailing slash except root)
+  function normalizePath(path) {
+    if (!path) return "/";
+    if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1);
+    return path;
+  }
+
+  // Utility: build URL preserving current query params (?locale=en, etc.)
+  function buildUrl(slugKey, id) {
+    const slug = SLUGS[slugKey];
+    if (!slug) return null;
+    const { origin, search } = window.location; // keep ?locale=en, etc.
+    return `${origin}${slug}${search}#${id}`;
+  }
+
+  // Utility: smooth scroll with offset
+  function smoothScrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.log('⚠️ Target element not found:', id);
+      return false;
+    }
+    
+    const rect = el.getBoundingClientRect();
+    const top = window.scrollY + rect.top - SCROLL_OFFSET;
+    
+    window.scrollTo({ 
+      top, 
+      behavior: "smooth" 
+    });
+    
+    console.log('📜 Smooth scrolling to:', id, 'at position:', top);
+    return true;
+  }
+
+  // Wire any .deep-link with data-page + data-target
+  function initializeDeepLinks() {
+    const deepLinks = document.querySelectorAll(".deep-link[data-page][data-target]");
+    
+    if (deepLinks.length === 0) {
+      console.log('⚠️ No deep-link elements found');
+      return;
+    }
+    
+    console.log('🔗 Found', deepLinks.length, 'deep-link elements');
+    
+    deepLinks.forEach((link, index) => {
+      const page = link.getAttribute("data-page")?.trim();
+      const id = link.getAttribute("data-target")?.trim();
+      
+      if (!page || !id || !VALID_IDS.has(id) || !SLUGS[page]) {
+        console.log('⚠️ Invalid deep-link config:', { page, id, index });
+        return;
+      }
+
+      // Always set a real href for no-JS fallback
+      const href = buildUrl(page, id);
+      if (href) {
+        link.setAttribute("href", href);
+        console.log('🔗 Set href for link', index, ':', href);
+      }
+
+      link.addEventListener("click", (e) => {
+        const current = normalizePath(window.location.pathname);
+        const target = normalizePath(SLUGS[page]);
+
+        console.log('🖱️ Deep-link clicked:', { page, id, current, target });
+
+        if (current === target) {
+          // same page → smooth scroll (no full navigation)
+          const scrolled = smoothScrollToId(id);
+          if (scrolled) {
+            e.preventDefault();
+            // Keep the hash updated without jump
+            history.replaceState(null, "", `#${id}`);
+            console.log('✅ Smooth scroll completed to:', id);
+          }
+        } else {
+          // cross-page navigation - let it proceed normally (preserves ?locale)
+          console.log('🌐 Navigating to:', href);
+        }
+      });
+      
+      console.log('✅ Deep-link initialized:', { page, id, index });
+    });
+  }
+
+  // On load: if URL has a hash, offset-correct after layout
+  function handleInitialHash() {
+    const id = window.location.hash?.slice(1);
+    if (id && VALID_IDS.has(id) && document.getElementById(id)) {
+      console.log('📍 Initial hash detected:', id);
+      // Delay to ensure layout is complete
+      setTimeout(() => {
+        smoothScrollToId(id);
+        console.log('✅ Initial hash scroll completed');
+      }, 100);
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeDeepLinks();
+      handleInitialHash();
+    });
+  } else {
+    initializeDeepLinks();
+    handleInitialHash();
+  }
+
+  // Also initialize after a delay to catch dynamically loaded content
+  setTimeout(() => {
+    initializeDeepLinks();
+  }, 1000);
+
+  console.log('✅ DUVA deep-link router initialized');
+})();
+
+// === END DUVA DEEP-LINK ROUTER ===
+
 
 
 
