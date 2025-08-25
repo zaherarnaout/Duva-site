@@ -3337,7 +3337,7 @@ function initializeLogoHomeButton() {
     
     // Add visual feedback
     logoWrapper.style.cursor = 'pointer';
-    logoWrapper.setAttribute('title', 'Go to Home');
+    logoWrapper.setAttribute('title', 'HOME');
     
     console.log('✅ DUVA logo home button initialized');
   }
@@ -5961,20 +5961,9 @@ function initializeFooterLogoHomeButton() {
     window.location.href = '/';
   });
   
-  // Add hover effects
+  // Add visual feedback and tooltip
   footerLogo.style.cursor = 'pointer';
-  footerLogo.style.transition = 'all 0.3s ease';
-  
-  // Add hover event listeners
-  footerLogo.addEventListener('mouseenter', function() {
-    this.style.transform = 'scale(1.05)';
-    this.style.filter = 'brightness(1.1)';
-  });
-  
-  footerLogo.addEventListener('mouseleave', function() {
-    this.style.transform = 'scale(1)';
-    this.style.filter = 'brightness(1)';
-  });
+  footerLogo.setAttribute('title', 'HOME');
   
   console.log('✅ Footer logo home button initialized');
 }
