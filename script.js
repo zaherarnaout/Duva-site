@@ -6053,6 +6053,128 @@ setTimeout(initializeViewportFadeEffects, 1000);
 
 // === END VIEWPORT FADE EFFECTS ===
 
+// === READ MORE TOGGLE FOR NEW ITEMS ===
+/* Toggle functionality for new item descriptions */
+
+function initializeNewItemsReadMore() {
+  console.log('📖 Initializing new items read more toggle...');
+  
+  // Only target the specific new-items section, not main-journal-wrapper
+  const newItemsSection = document.querySelector('#new-items');
+  if (!newItemsSection) {
+    console.log('⚠️ New items section not found');
+    return;
+  }
+  
+  // Find all new item descriptions within this section
+  const newItemDescriptions = newItemsSection.querySelectorAll('.new-item-descriptions');
+  
+  newItemDescriptions.forEach((description, index) => {
+    // Find the corresponding read more button
+    const newItem = description.closest('.new-item');
+    if (!newItem) return;
+    
+    const readMoreSection = newItem.nextElementSibling;
+    if (!readMoreSection || !readMoreSection.classList.contains('read-more')) {
+      console.log('⚠️ Read more section not found for item', index);
+      return;
+    }
+    
+    const readMoreText = readMoreSection.querySelector('.text-block-86');
+    const readMoreArrow = readMoreSection.querySelector('.image-52');
+    
+    if (!readMoreText || !readMoreArrow) {
+      console.log('⚠️ Read more elements not found for item', index);
+      return;
+    }
+    
+    // Check if content is long enough to need truncation
+    const originalText = description.innerHTML;
+    const textLength = description.textContent.trim().length;
+    
+    // If text is short, hide read more button
+    if (textLength < 150) {
+      readMoreSection.style.display = 'none';
+      return;
+    }
+    
+    // Initially truncate the text
+    let isExpanded = false;
+    
+    // Function to truncate text
+    function truncateText() {
+      const maxHeight = 60; // Maximum height in pixels for truncated state
+      description.style.maxHeight = maxHeight + 'px';
+      description.style.overflow = 'hidden';
+      description.classList.add('truncated');
+      isExpanded = false;
+      
+      // Update button text and arrow
+      readMoreText.textContent = 'READ MORE';
+      readMoreArrow.style.transform = 'rotate(0deg)';
+    }
+    
+    // Function to expand text
+    function expandText() {
+      description.style.maxHeight = 'none';
+      description.style.overflow = 'visible';
+      description.classList.remove('truncated');
+      isExpanded = true;
+      
+      // Update button text and arrow
+      readMoreText.textContent = 'READ LESS';
+      readMoreArrow.style.transform = 'rotate(180deg)';
+    }
+    
+    // Initialize truncated state
+    truncateText();
+    
+    // Add click event listener
+    readMoreSection.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isExpanded) {
+        truncateText();
+      } else {
+        expandText();
+      }
+      
+      console.log('📖 Toggled read more for item', index, isExpanded ? 'expanded' : 'truncated');
+    });
+    
+    // Add hover effects
+    readMoreSection.style.cursor = 'pointer';
+    readMoreSection.style.transition = 'all 0.3s ease';
+    
+    readMoreSection.addEventListener('mouseenter', function() {
+      this.style.opacity = '0.8';
+      readMoreText.style.color = 'var(--duva-red, #C0392B)';
+    });
+    
+    readMoreSection.addEventListener('mouseleave', function() {
+      this.style.opacity = '1';
+      readMoreText.style.color = '';
+    });
+    
+    console.log('✅ Read more toggle initialized for item', index);
+  });
+  
+  console.log('✅ New items read more toggle initialized');
+}
+
+// Initialize read more toggle when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeNewItemsReadMore);
+} else {
+  initializeNewItemsReadMore();
+}
+
+// Also initialize after a delay to catch dynamically loaded content
+setTimeout(initializeNewItemsReadMore, 1000);
+
+// === END READ MORE TOGGLE ===
+
 
 
 
