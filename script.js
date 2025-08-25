@@ -5968,6 +5968,9 @@ function initializeFooterLogoHomeButton() {
     if (footerLogo) {
       console.log('✅ Found footer logo with selector:', selector);
       console.log('🏠 Footer logo element:', footerLogo);
+      console.log('🏠 Footer logo classes:', footerLogo.className);
+      console.log('🏠 Footer logo parent:', footerLogo.parentElement);
+      console.log('🏠 Footer logo parent classes:', footerLogo.parentElement?.className);
       break;
     } else {
       console.log('❌ Selector not found:', selector);
