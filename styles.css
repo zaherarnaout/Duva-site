@@ -6762,3 +6762,51 @@ a .flip-card-wrapper {
 }
 
 /* === END NEW ITEMS READ MORE TOGGLE === */
+
+/* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
+/* Ensures proper offset when scrolling to sections with fixed header */
+
+/* Legal page sections */
+#privacy,
+#terms,
+#cookies,
+#warranty {
+  scroll-margin-top: 80px; /* Match SCROLL_OFFSET in JavaScript */
+}
+
+/* About page sections */
+#about,
+#news,
+#gallery,
+#testimonials {
+  scroll-margin-top: 80px; /* Match SCROLL_OFFSET in JavaScript */
+}
+
+/* Responsive adjustments for different header heights */
+@media screen and (max-width: 991px) {
+  #privacy,
+  #terms,
+  #cookies,
+  #warranty,
+  #about,
+  #news,
+  #gallery,
+  #testimonials {
+    scroll-margin-top: 70px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #privacy,
+  #terms,
+  #cookies,
+  #warranty,
+  #about,
+  #news,
+  #gallery,
+  #testimonials {
+    scroll-margin-top: 60px;
+  }
+}
+
+/* === END DEEP-LINK TARGET SECTIONS === */
