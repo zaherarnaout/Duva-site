@@ -6852,9 +6852,8 @@ a .flip-card-wrapper {
 
 /* Tooltip removed - using standard HTML title attribute instead */
 
-/* Underline effect for both logos */
-.duva-logo-wrapper::after,
-.footer-section .middle-footer-wrapper .skeleton-wrapper::after {
+/* Underline effect for header logo only */
+.duva-logo-wrapper::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -6867,8 +6866,7 @@ a .flip-card-wrapper {
   z-index: 10;
 }
 
-.duva-logo-wrapper:hover::after,
-.footer-section .middle-footer-wrapper .skeleton-wrapper:hover::after {
+.duva-logo-wrapper:hover::after {
   width: 100% !important;
 }
 
