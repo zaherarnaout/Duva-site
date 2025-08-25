@@ -5228,7 +5228,9 @@ Webflow.push(() => {
   initializeHeroSectionAnimations();
   createCategoriesParticles();
   initializeFooterContactButton();
+  console.log('🚀 About to call initializeFooterLogoHomeButton...');
   initializeFooterLogoHomeButton();
+  console.log('🚀 Finished calling initializeFooterLogoHomeButton');
 });
 
 /* === Newsletter Subscription Functionality === */
@@ -5944,6 +5946,7 @@ function initializeFooterContactButton() {
 // === Footer Logo Home Button Functionality ===
 function initializeFooterLogoHomeButton() {
   console.log('🏠 Initializing footer logo home button...');
+  console.log('🏠 Function is running!');
   
   // Try multiple selectors to find the footer logo
   const selectors = [
@@ -5955,22 +5958,26 @@ function initializeFooterLogoHomeButton() {
     '.footer-logo'
   ];
   
+  console.log('🔍 Trying selectors...');
   let footerLogo = null;
   for (const selector of selectors) {
+    console.log('🔍 Trying selector:', selector);
     footerLogo = document.querySelector(selector);
     if (footerLogo) {
       console.log('✅ Found footer logo with selector:', selector);
+      console.log('🏠 Footer logo element:', footerLogo);
       break;
+    } else {
+      console.log('❌ Selector not found:', selector);
     }
   }
   
   if (!footerLogo) {
     console.log('⚠️ Footer logo not found with any selector');
     console.log('🔍 Available image elements:', document.querySelectorAll('img[class*="image-35"]'));
+    console.log('🔍 All image elements:', document.querySelectorAll('img'));
     return;
   }
-  
-  console.log('🏠 Footer logo element:', footerLogo);
   
   // Add click handler for footer logo
   footerLogo.addEventListener('click', function(e) {
