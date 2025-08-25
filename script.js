@@ -6149,12 +6149,10 @@ function initializeNewItemsReadMore() {
     
     readMoreSection.addEventListener('mouseenter', function() {
       this.style.opacity = '0.8';
-      readMoreText.style.color = 'var(--duva-red, #C0392B)';
     });
     
     readMoreSection.addEventListener('mouseleave', function() {
       this.style.opacity = '1';
-      readMoreText.style.color = '';
     });
     
     console.log('✅ Read more toggle initialized for item', index);
