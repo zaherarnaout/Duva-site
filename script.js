@@ -1504,6 +1504,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('.download-row').forEach(row => { 
 
+    // Skip rows that are generated (Data Sheet) or have generated-tag - they should always be visible
+
+    if (row.id === 'generated-datasheet' || row.querySelector('.generated-tag')) { 
+
+      return; 
+
+    } 
+
+ 
+
     const fileDiv = row.querySelector('[data-file]'); 
 
     const fileUrl = fileDiv?.getAttribute('data-file'); 
