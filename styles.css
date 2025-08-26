@@ -6924,14 +6924,16 @@ a .flip-card-wrapper {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   z-index: 2;
   pointer-events: none;
-  animation: shimmer 3s infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .image-53:hover::before {
-  animation: shimmer 1.5s infinite;
+  opacity: 1;
+  animation: shimmer 1.2s ease-out;
 }
 
 @keyframes shimmer {
@@ -6975,14 +6977,16 @@ a .flip-card-wrapper {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   z-index: 3;
   pointer-events: none;
-  animation: shimmerAlt 4s infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .cata-main-download:hover::before {
-  animation: shimmerAlt 2s infinite;
+  opacity: 1;
+  animation: shimmerAlt 1.2s ease-out;
 }
 
 @keyframes shimmerAlt {
@@ -6990,10 +6994,7 @@ a .flip-card-wrapper {
     left: -100%; 
     opacity: 0;
   }
-  25% {
-    opacity: 1;
-  }
-  75% {
+  50% {
     opacity: 1;
   }
   100% { 
