@@ -6917,6 +6917,411 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
 // === END CATALOG DOWNLOAD SYSTEM ===
 
+// === CATALOG PREVIEW SYSTEM ===
+/* PDF.js integration for catalog preview with search and navigation */
+
+(function () {
+  console.log('📖 Initializing catalog preview system...');
+  
+  // PDF.js configuration
+  const PREVIEW_CONFIG = {
+    catalogUrl: 'https://raw.githubusercontent.com/zaherarnaout/Duva-site/0fb2511fb1e9fa683f222250be56e7ce0092e10f/Pages%20from%20Duva_Catalogue_2023R4.pdf',
+    pdfjsLib: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+    pdfjsWorker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+  };
+
+  // Preview state
+  let pdfDoc = null;
+  let pageNum = 1;
+  let pageRendering = false;
+  let pageNumPending = null;
+  let scale = 1.5;
+  let canvas = null;
+  let ctx = null;
+
+  // Initialize preview functionality
+  function initializeCatalogPreview() {
+    const ctaDownloadBtn = document.querySelector('.cta-download-btn');
+    
+    if (!ctaDownloadBtn) {
+      console.log('⚠️ Download button container not found');
+      return;
+    }
+
+    // Check if already initialized
+    if (ctaDownloadBtn.hasAttribute('data-preview-initialized')) {
+      console.log('⚠️ Preview system already initialized');
+      return;
+    }
+
+    console.log('🔗 Found download button container, adding preview button');
+
+    // Create preview button
+    const previewBtn = document.createElement('a');
+    previewBtn.className = 'button-3 preview-btn';
+    previewBtn.href = '#';
+    previewBtn.textContent = 'Preview Catalog';
+    previewBtn.style.marginTop = '12px';
+    previewBtn.style.backgroundColor = 'var(--duva-d-grey)';
+    previewBtn.style.border = '1px solid var(--duva-border-primary)';
+
+    // Insert preview button after download button
+    ctaDownloadBtn.appendChild(previewBtn);
+
+    // Add click event listener
+    previewBtn.addEventListener('click', handlePreviewClick);
+    
+    // Add hover effects
+    previewBtn.addEventListener('mouseenter', () => {
+      previewBtn.style.transform = 'translateY(-2px)';
+      previewBtn.style.boxShadow = '0 8px 25px rgba(51, 51, 51, 0.3)';
+      previewBtn.style.backgroundColor = 'var(--duva-red)';
+    });
+    
+    previewBtn.addEventListener('mouseleave', () => {
+      previewBtn.style.transform = 'translateY(0)';
+      previewBtn.style.boxShadow = 'none';
+      previewBtn.style.backgroundColor = 'var(--duva-d-grey)';
+    });
+
+    // Mark as initialized
+    ctaDownloadBtn.setAttribute('data-preview-initialized', 'true');
+
+    console.log('✅ Catalog preview system initialized');
+  }
+
+  // Handle preview button click
+  async function handlePreviewClick(e) {
+    e.preventDefault();
+    console.log('📖 Opening catalog preview...');
+    
+    // Load PDF.js if not already loaded
+    if (typeof pdfjsLib === 'undefined') {
+      await loadPDFjs();
+    }
+    
+    // Show preview modal
+    showPreviewModal();
+  }
+
+  // Load PDF.js library
+  async function loadPDFjs() {
+    return new Promise((resolve, reject) => {
+      // Load PDF.js library
+      const script = document.createElement('script');
+      script.src = PREVIEW_CONFIG.pdfjsLib;
+      script.onload = () => {
+        // Set worker path
+        pdfjsLib.GlobalWorkerOptions.workerSrc = PREVIEW_CONFIG.pdfjsWorker;
+        console.log('✅ PDF.js loaded successfully');
+        resolve();
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  // Show preview modal
+  function showPreviewModal() {
+    const modal = document.createElement('div');
+    modal.className = 'catalog-preview-modal';
+    modal.innerHTML = `
+      <div class="preview-content">
+        <div class="preview-header">
+          <h3>DUVA Catalog Preview</h3>
+          <div class="preview-controls">
+            <button class="control-btn zoom-out" title="Zoom Out">−</button>
+            <span class="zoom-level">${Math.round(scale * 100)}%</span>
+            <button class="control-btn zoom-in" title="Zoom In">+</button>
+            <button class="control-btn fit-width" title="Fit to Width">⤢</button>
+            <button class="control-btn fit-height" title="Fit to Height">⤡</button>
+          </div>
+          <button class="close-preview">×</button>
+        </div>
+        
+        <div class="preview-search">
+          <input type="text" placeholder="Search in catalog..." class="search-input">
+          <button class="search-btn">🔍</button>
+        </div>
+        
+        <div class="preview-navigation">
+          <button class="nav-btn prev-page" disabled>‹ Previous</button>
+          <span class="page-info">Page <span class="current-page">1</span> of <span class="total-pages">-</span></span>
+          <button class="nav-btn next-page">Next ›</button>
+        </div>
+        
+        <div class="pdf-container">
+          <canvas id="pdf-canvas"></canvas>
+          <div class="loading-indicator">Loading catalog...</div>
+        </div>
+        
+        <div class="preview-footer">
+          <button class="download-from-preview">Download Full Catalog</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Initialize PDF viewer
+    initializePDFViewer(modal);
+    
+    // Add event listeners
+    addPreviewEventListeners(modal);
+  }
+
+  // Initialize PDF viewer
+  async function initializePDFViewer(modal) {
+    try {
+      console.log('📄 Loading PDF document...');
+      
+      // Get canvas and context
+      canvas = modal.querySelector('#pdf-canvas');
+      ctx = canvas.getContext('2d');
+      
+      // Load PDF document
+      const loadingTask = pdfjsLib.getDocument(PREVIEW_CONFIG.catalogUrl);
+      pdfDoc = await loadingTask.promise;
+      
+      console.log('✅ PDF loaded:', pdfDoc.numPages, 'pages');
+      
+      // Update page info
+      const totalPages = modal.querySelector('.total-pages');
+      totalPages.textContent = pdfDoc.numPages;
+      
+      // Render first page
+      renderPage(1, modal);
+      
+    } catch (error) {
+      console.error('❌ Error loading PDF:', error);
+      showPreviewError(modal, 'Failed to load catalog. Please try again.');
+    }
+  }
+
+  // Render PDF page
+  async function renderPage(num, modal) {
+    pageRendering = true;
+    
+    try {
+      const page = await pdfDoc.getPage(num);
+      const viewport = page.getViewport({ scale });
+      
+      // Set canvas dimensions
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      
+      // Render PDF page
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+      
+      await page.render(renderContext).promise;
+      
+      // Update page info
+      const currentPage = modal.querySelector('.current-page');
+      currentPage.textContent = num;
+      
+      // Update navigation buttons
+      const prevBtn = modal.querySelector('.prev-page');
+      const nextBtn = modal.querySelector('.next-page');
+      prevBtn.disabled = num <= 1;
+      nextBtn.disabled = num >= pdfDoc.numPages;
+      
+      pageRendering = false;
+      
+      if (pageNumPending !== null) {
+        renderPage(pageNumPending, modal);
+        pageNumPending = null;
+      }
+      
+    } catch (error) {
+      console.error('❌ Error rendering page:', error);
+      pageRendering = false;
+    }
+  }
+
+  // Add preview event listeners
+  function addPreviewEventListeners(modal) {
+    // Close button
+    const closeBtn = modal.querySelector('.close-preview');
+    closeBtn.addEventListener('click', () => closePreviewModal(modal));
+    
+    // Navigation buttons
+    const prevBtn = modal.querySelector('.prev-page');
+    const nextBtn = modal.querySelector('.next-page');
+    
+    prevBtn.addEventListener('click', () => {
+      if (pageNum > 1) {
+        pageNum--;
+        queueRenderPage(pageNum, modal);
+      }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      if (pageNum < pdfDoc.numPages) {
+        pageNum++;
+        queueRenderPage(pageNum, modal);
+      }
+    });
+    
+    // Zoom controls
+    const zoomOutBtn = modal.querySelector('.zoom-out');
+    const zoomInBtn = modal.querySelector('.zoom-in');
+    const fitWidthBtn = modal.querySelector('.fit-width');
+    const fitHeightBtn = modal.querySelector('.fit-height');
+    const zoomLevel = modal.querySelector('.zoom-level');
+    
+    zoomOutBtn.addEventListener('click', () => {
+      scale = Math.max(0.5, scale - 0.25);
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
+    });
+    
+    zoomInBtn.addEventListener('click', () => {
+      scale = Math.min(3, scale + 0.25);
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
+    });
+    
+    fitWidthBtn.addEventListener('click', () => {
+      const container = modal.querySelector('.pdf-container');
+      const containerWidth = container.clientWidth - 40; // Account for padding
+      const page = pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 1 });
+      scale = containerWidth / viewport.width;
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
+    });
+    
+    fitHeightBtn.addEventListener('click', () => {
+      const container = modal.querySelector('.pdf-container');
+      const containerHeight = container.clientHeight - 40; // Account for padding
+      const page = pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 1 });
+      scale = containerHeight / viewport.height;
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
+    });
+    
+    // Search functionality
+    const searchInput = modal.querySelector('.search-input');
+    const searchBtn = modal.querySelector('.search-btn');
+    
+    searchBtn.addEventListener('click', () => {
+      performSearch(searchInput.value, modal);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        performSearch(searchInput.value, modal);
+      }
+    });
+    
+    // Download from preview
+    const downloadBtn = modal.querySelector('.download-from-preview');
+    downloadBtn.addEventListener('click', () => {
+      closePreviewModal(modal);
+      // Trigger download
+      const link = document.createElement('a');
+      link.href = PREVIEW_CONFIG.catalogUrl;
+      link.download = 'DUVA_Catalogue_2023R4.pdf';
+      link.click();
+    });
+    
+    // Close on outside click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closePreviewModal(modal);
+      }
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (modal.style.display !== 'none') {
+        if (e.key === 'Escape') {
+          closePreviewModal(modal);
+        } else if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+          prevBtn.click();
+        } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+          nextBtn.click();
+        }
+      }
+    });
+  }
+
+  // Queue page rendering
+  function queueRenderPage(num, modal) {
+    if (pageRendering) {
+      pageNumPending = num;
+    } else {
+      renderPage(num, modal);
+    }
+  }
+
+  // Perform search (basic implementation)
+  function performSearch(query, modal) {
+    if (!query.trim()) return;
+    
+    console.log('🔍 Searching for:', query);
+    
+    // For now, show a simple message
+    // In a full implementation, you'd search through PDF text content
+    showPreviewNotification(modal, `Search for "${query}" - Advanced search coming soon!`);
+  }
+
+  // Show preview error
+  function showPreviewError(modal, message) {
+    const container = modal.querySelector('.pdf-container');
+    container.innerHTML = `
+      <div class="preview-error">
+        <h4>⚠️ Error</h4>
+        <p>${message}</p>
+        <button onclick="location.reload()">Try Again</button>
+      </div>
+    `;
+  }
+
+  // Show preview notification
+  function showPreviewNotification(modal, message) {
+    const notification = document.createElement('div');
+    notification.className = 'preview-notification';
+    notification.textContent = message;
+    
+    modal.appendChild(notification);
+    
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
+  }
+
+  // Close preview modal
+  function closePreviewModal(modal) {
+    modal.style.opacity = '0';
+    setTimeout(() => {
+      if (modal.parentNode) {
+        modal.parentNode.removeChild(modal);
+      }
+    }, 300);
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCatalogPreview);
+  } else {
+    initializeCatalogPreview();
+  }
+
+  // Also initialize after a delay to catch dynamically loaded content
+  setTimeout(initializeCatalogPreview, 1000);
+
+  console.log('✅ Catalog preview system ready');
+})();
+
+// === END CATALOG PREVIEW SYSTEM ===
+
 
 
 
