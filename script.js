@@ -6442,8 +6442,8 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
       console.log('🔗 Found header tab:', tabId, '→', config);
 
-      // Set href for no-JS fallback
-      const href = `https://duva-lighting.design.webflow.io${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
+      // Set href for no-JS fallback (using HTTP to avoid SSL issues)
+      const href = `http://duva-lighting.design.webflow.io${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
       tab.setAttribute("href", href);
 
       tab.addEventListener("click", (e) => {
