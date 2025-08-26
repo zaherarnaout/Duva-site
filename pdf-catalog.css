@@ -451,6 +451,12 @@
   align-items: flex-start;
   justify-content: center;
   min-height: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Book Pages Layout - ULTRA SIMPLIFIED */
