@@ -455,7 +455,7 @@ async function renderSinglePage(num, modal) {
   console.log('🎨 Rendering single page', num, 'at scale', scale);
   console.log('📐 Canvas dimensions:', scaledViewport.width, 'x', scaledViewport.height);
   
-  // Set canvas dimensions
+  // Set canvas dimensions without any height constraints
   canvas.height = scaledViewport.height;
   canvas.width = scaledViewport.width;
   console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
@@ -524,6 +524,7 @@ async function renderBookPages(num, modal) {
     const leftViewport = leftPage.getViewport({ scale: 1 });
     const leftScale = pageWidth / leftViewport.width;
     
+    // Set canvas dimensions without height constraints
     leftCanvas.height = leftViewport.height * leftScale;
     leftCanvas.width = leftViewport.width * leftScale;
     
@@ -544,6 +545,7 @@ async function renderBookPages(num, modal) {
     const rightViewport = rightPage.getViewport({ scale: 1 });
     const rightScale = pageWidth / rightViewport.width;
     
+    // Set canvas dimensions without height constraints
     rightCanvas.height = rightViewport.height * rightScale;
     rightCanvas.width = rightViewport.width * rightScale;
     
