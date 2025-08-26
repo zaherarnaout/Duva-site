@@ -412,9 +412,25 @@ async function renderPage(num, modal) {
 // Render single page - SIMPLIFIED
 async function renderSinglePage(num, modal) {
   const page = await pdfDoc.getPage(num);
-  const viewport = page.getViewport({ scale: scale });
   
-  // Set canvas dimensions
+  // Get container width to calculate scale for full width
+  const pdfContainer = modal.querySelector('.pdf-container');
+  const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
+  
+  // Calculate scale to fit full width
+  const originalViewport = page.getViewport({ scale: 1 });
+  const scaleForWidth = containerWidth / originalViewport.width;
+  
+  // Use the larger of: calculated scale or current zoom scale
+  const actualScale = Math.max(scale, scaleForWidth);
+  
+  // Create viewport with actual scale
+  const viewport = page.getViewport({ scale: actualScale });
+  
+  console.log('🎨 Rendering single page at scale:', actualScale, 'viewport:', viewport.width, 'x', viewport.height);
+  console.log('📏 Container width:', containerWidth, 'original PDF width:', originalViewport.width, 'scale for width:', scaleForWidth);
+  
+  // Set canvas dimensions based on actual PDF size and scale
   canvas.height = viewport.height;
   canvas.width = viewport.width;
   
@@ -425,6 +441,8 @@ async function renderSinglePage(num, modal) {
   };
   
   await page.render(renderContext).promise;
+  
+  console.log('✅ Single page rendered, canvas size:', canvas.width, 'x', canvas.height);
   
   // Update page info
   const currentPage = modal.querySelector('.current-page');
@@ -593,7 +611,7 @@ function addPreviewEventListeners(modal) {
       singleCanvas.style.display = 'block';
     }
     
-    // Re-render current page in new mode
+    // Re-render current page in new mode with proper scaling
     queueRenderPage(pageNum, modal);
   });
   
