@@ -6938,6 +6938,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
   let scale = 1.5;
   let canvas = null;
   let ctx = null;
+  let resizeTimeout = null;
 
   // Initialize preview functionality
   function initializeCatalogPreview() {
@@ -7287,17 +7288,20 @@ setTimeout(initializeNewItemsReadMore, 1000);
       }
     });
 
-    // Window resize handler
+    // Window resize handler with debounce
     const handleResize = () => {
-      if (pdfDoc && !pageRendering) {
-        // Only re-render if scale has changed significantly
-        const scrollContainer = modal.querySelector('.pdf-scroll-container');
-        const containerWidth = scrollContainer.clientWidth;
-        
-        // Get page asynchronously
-        pdfDoc.getPage(pageNum).then(page => {
-          const viewport = page.getViewport({ scale: 1 });
-          const newScale = containerWidth / viewport.width;
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      
+      resizeTimeout = setTimeout(() => {
+        if (pdfDoc && !pageRendering) {
+          // Only re-render if scale has changed significantly
+          const scrollContainer = modal.querySelector('.pdf-scroll-container');
+          const containerWidth = scrollContainer.clientWidth;
+          
+          // Calculate new scale without getting page (to avoid async issues)
+          const newScale = containerWidth / 623.627; // Original PDF width
           
           if (Math.abs(newScale - scale) > 0.1) {
             scale = newScale;
@@ -7305,8 +7309,8 @@ setTimeout(initializeNewItemsReadMore, 1000);
             zoomLevel.textContent = Math.round(scale * 100) + '%';
             queueRenderPage(pageNum, modal);
           }
-        });
-      }
+        }
+      }, 250); // Debounce for 250ms
     };
 
     window.addEventListener('resize', handleResize);
@@ -7394,6 +7398,12 @@ setTimeout(initializeNewItemsReadMore, 1000);
     document.body.style.overflow = '';
     document.body.style.position = '';
     document.body.style.width = '';
+    
+    // Clear resize timeout
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = null;
+    }
     
     // Remove resize handler
     if (modal.hasAttribute('data-resize-handler')) {
