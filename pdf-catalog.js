@@ -312,15 +312,13 @@ function showPreviewModal() {
       </div>
       
       <div class="pdf-container">
-        <div class="pdf-scroll-container">
-          <!-- Book mode: Two canvases side by side -->
-          <div class="book-pages">
-            <canvas id="left-canvas" class="page-canvas"></canvas>
-            <canvas id="right-canvas" class="page-canvas"></canvas>
-          </div>
-          <!-- Single page mode: One canvas -->
-          <canvas id="pdf-canvas" class="single-canvas" style="display: none;"></canvas>
+        <!-- Book mode: Two canvases side by side -->
+        <div class="book-pages">
+          <canvas id="left-canvas" class="page-canvas"></canvas>
+          <canvas id="right-canvas" class="page-canvas"></canvas>
         </div>
+        <!-- Single page mode: One canvas -->
+        <canvas id="pdf-canvas" class="single-canvas" style="display: none;"></canvas>
         <div class="loading-indicator">Loading catalog...</div>
       </div>
       
@@ -379,9 +377,9 @@ async function initializePDFViewer(modal) {
     // Wait for container to be ready
     setTimeout(async () => {
               // Calculate initial scale for full width
-        const scrollContainer = modal.querySelector('.pdf-scroll-container');
-        const containerWidth = window.innerWidth;
-        const containerHeight = window.innerHeight;
+        const pdfContainer = modal.querySelector('.pdf-container');
+        const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
+        const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
         console.log('📏 Container dimensions:', containerWidth, 'x', containerHeight);
       
       // Calculate scale to fit full container (adjusted for book mode)
@@ -518,9 +516,9 @@ async function renderBookPages(num, modal) {
   console.log('📖 Book pages:', leftPageNum, 'and', rightPageNum);
   
   // Get container dimensions for scaling
-  const scrollContainer = modal.querySelector('.pdf-scroll-container');
-  const containerWidth = window.innerWidth;
-  const containerHeight = window.innerHeight;
+  const pdfContainer = modal.querySelector('.pdf-container');
+  const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
+  const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
 
   // Calculate scale to fit both pages within the container
   // Use the global scale but ensure it fits within the container
@@ -678,8 +676,8 @@ function addPreviewEventListeners(modal) {
   
   fitWidthBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
-    const scrollContainer = modal.querySelector('.pdf-scroll-container');
-    const containerWidth = scrollContainer.clientWidth;
+    const pdfContainer = modal.querySelector('.pdf-container');
+    const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
     
     if (bookMode) {
       // For book mode, calculate scale to fit both pages within container width
@@ -696,8 +694,8 @@ function addPreviewEventListeners(modal) {
   
   fitHeightBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
-    const scrollContainer = modal.querySelector('.pdf-scroll-container');
-    const containerHeight = scrollContainer.clientHeight;
+    const pdfContainer = modal.querySelector('.pdf-container');
+    const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
     
     if (bookMode) {
       // For book mode, use height but maintain aspect ratio
@@ -735,8 +733,8 @@ function addPreviewEventListeners(modal) {
     }
     
     // Re-calculate scale for new mode
-    const scrollContainer = modal.querySelector('.pdf-scroll-container');
-    const containerWidth = scrollContainer.clientWidth;
+    const pdfContainer = modal.querySelector('.pdf-container');
+    const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
     
     if (bookMode) {
       // For book mode, each page takes half the width minus gap
