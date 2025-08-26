@@ -7136,6 +7136,20 @@ setTimeout(initializeNewItemsReadMore, 1000);
       prevBtn.disabled = num <= 1;
       nextBtn.disabled = num >= pdfDoc.numPages;
       
+      // Auto-fit to width on first load
+      if (num === 1 && scale === 1.5) {
+        setTimeout(() => {
+          const scrollContainer = modal.querySelector('.pdf-scroll-container');
+          const containerWidth = scrollContainer.clientWidth - 40;
+          const newScale = containerWidth / viewport.width;
+          if (newScale < scale) {
+            scale = newScale;
+            zoomLevel.textContent = Math.round(scale * 100) + '%';
+            queueRenderPage(num, modal);
+          }
+        }, 100);
+      }
+      
       pageRendering = false;
       
       if (pageNumPending !== null) {
@@ -7193,8 +7207,8 @@ setTimeout(initializeNewItemsReadMore, 1000);
     });
     
     fitWidthBtn.addEventListener('click', () => {
-      const container = modal.querySelector('.pdf-container');
-      const containerWidth = container.clientWidth - 40; // Account for padding
+      const scrollContainer = modal.querySelector('.pdf-scroll-container');
+      const containerWidth = scrollContainer.clientWidth - 40; // Account for padding
       const page = pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1 });
       scale = containerWidth / viewport.width;
@@ -7203,8 +7217,8 @@ setTimeout(initializeNewItemsReadMore, 1000);
     });
     
     fitHeightBtn.addEventListener('click', () => {
-      const container = modal.querySelector('.pdf-container');
-      const containerHeight = container.clientHeight - 40; // Account for padding
+      const scrollContainer = modal.querySelector('.pdf-scroll-container');
+      const containerHeight = scrollContainer.clientHeight - 40; // Account for padding
       const page = pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1 });
       scale = containerHeight / viewport.height;
@@ -7262,6 +7276,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
         }
       }
     });
+
+    // Window resize handler
+    const handleResize = () => {
+      if (pdfDoc && !pageRendering) {
+        // Re-render current page with current scale
+        queueRenderPage(pageNum, modal);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Store resize handler for cleanup
+    modal.setAttribute('data-resize-handler', 'true');
   }
 
   // Queue page rendering
@@ -7342,6 +7369,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
     document.body.style.overflow = '';
     document.body.style.position = '';
     document.body.style.width = '';
+    
+    // Remove resize handler
+    if (modal.hasAttribute('data-resize-handler')) {
+      window.removeEventListener('resize', handleResize);
+    }
     
     modal.style.opacity = '0';
     setTimeout(() => {
