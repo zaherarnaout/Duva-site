@@ -381,14 +381,18 @@ async function initializePDFViewer(modal) {
       // Calculate initial scale for full width
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
       const containerWidth = scrollContainer.clientWidth;
-      console.log('📏 Container width:', containerWidth);
+      const containerHeight = scrollContainer.clientHeight;
+      console.log('📏 Container dimensions:', containerWidth, 'x', containerHeight);
       
-      // Calculate scale to fit full width (adjusted for book mode)
+      // Calculate scale to fit full container (adjusted for book mode)
       if (bookMode) {
-        // For book mode, each page takes half the width minus gap
-        const pageWidth = containerWidth / 2 - 20;
-        scale = pageWidth / originalPdfWidth;
+        // For book mode, calculate scale to fit both pages within container
+        const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
+        const scaleForWidth = containerWidth / totalPageWidth;
+        const scaleForHeight = containerHeight / originalPdfHeight;
+        scale = Math.min(scaleForWidth, scaleForHeight);
       } else {
+        // For single page mode, fit to container width
         scale = containerWidth / originalPdfWidth;
       }
       console.log('🔍 Calculated initial scale:', scale, 'book mode:', bookMode);
