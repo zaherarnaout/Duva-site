@@ -6432,15 +6432,28 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
   // Initialize header menu tabs
   function initializeHeaderTabs() {
+    console.log('🔍 Searching for header tabs...');
+    console.log('🔍 Available IDs:', Object.keys(HEADER_TABS));
+    
+    // Debug: Check if any menu-tab elements exist
+    const allMenuTabs = document.querySelectorAll('.menu-tab');
+    console.log('🔍 Found', allMenuTabs.length, 'menu-tab elements:', Array.from(allMenuTabs).map(tab => ({ id: tab.id, text: tab.textContent.trim() })));
+    
     Object.entries(HEADER_TABS).forEach(([tabId, config]) => {
       const tab = document.getElementById(tabId);
       
       if (!tab) {
         console.log('⚠️ Header tab not found:', tabId);
+        // Debug: Check if element exists without ID
+        const menuTabs = document.querySelectorAll('.menu-tab');
+        const matchingTab = Array.from(menuTabs).find(tab => tab.textContent.trim() === 'New Products' || tab.textContent.trim() === 'Gallery' || tab.textContent.trim() === 'News');
+        if (matchingTab) {
+          console.log('🔍 Found matching tab without ID:', matchingTab.textContent.trim(), matchingTab);
+        }
         return;
       }
 
-      console.log('🔗 Found header tab:', tabId, '→', config);
+      console.log('🔗 Found header tab:', tabId, '→', config, tab);
 
       // Set href for no-JS fallback (using HTTP to avoid SSL issues)
       const href = `http://duva-lighting.design.webflow.io${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
@@ -6480,10 +6493,40 @@ setTimeout(initializeNewItemsReadMore, 1000);
     initializeHeaderTabs();
   }
 
-  // Also initialize after a delay to catch dynamically loaded content
+  // Also initialize after delays to catch dynamically loaded content
   setTimeout(() => {
+    console.log('🔄 Retrying header tabs initialization (1s delay)...');
     initializeHeaderTabs();
   }, 1000);
+
+  setTimeout(() => {
+    console.log('🔄 Retrying header tabs initialization (3s delay)...');
+    initializeHeaderTabs();
+  }, 3000);
+
+  // Use MutationObserver to catch dynamically loaded content
+  const observer = new MutationObserver((mutations) => {
+    let shouldRetry = false;
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1 && (node.classList?.contains('menu-tab') || node.querySelector?.('.menu-tab'))) {
+            shouldRetry = true;
+          }
+        });
+      }
+    });
+    
+    if (shouldRetry) {
+      console.log('🔄 DOM changed, retrying header tabs initialization...');
+      setTimeout(initializeHeaderTabs, 100);
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 
   console.log('✅ Header menu tabs deep-link router initialized');
 })();
