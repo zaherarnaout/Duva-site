@@ -16,29 +16,23 @@ const PDF_CATALOG_CONFIG = {
   pdfjsWorker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
 };
 
-// PDF Preview State
+// PDF Preview State - SIMPLIFIED
 let pdfDoc = null;
 let pageNum = 1;
 let pageRendering = false;
 let pageNumPending = null;
-let scale = 1.5;
+let scale = 1.0; // Start with 100% scale
 let canvas = null;
 let ctx = null;
-let resizeTimeout = null;
-let bookMode = true; // Enable book mode by default
+let bookMode = true;
 let leftCanvas = null;
 let rightCanvas = null;
 let leftCtx = null;
 let rightCtx = null;
-let originalPdfWidth = 623.627;
-let originalPdfHeight = 870.236;
 
 // Initialize PDF catalog functionality
 function initializePDFCatalog() {
-  // Initialize catalog download
   initializeCatalogDownload();
-  
-  // Initialize catalog preview
   initializeCatalogPreview();
 }
 
@@ -279,8 +273,6 @@ async function loadPDFjs() {
 function showPreviewModal() {
   // Prevent body scrolling
   document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
   
   const modal = document.createElement('div');
   modal.className = 'catalog-preview-modal';
@@ -292,8 +284,6 @@ function showPreviewModal() {
           <button class="control-btn zoom-out" title="Zoom Out">−</button>
           <span class="zoom-level">${Math.round(scale * 100)}%</span>
           <button class="control-btn zoom-in" title="Zoom In">+</button>
-          <button class="control-btn fit-width" title="Fit to Width">⤢</button>
-          <button class="control-btn fit-height" title="Fit to Height">⤡</button>
           <button class="control-btn book-mode" title="Toggle Book Mode">📖</button>
           <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
         </div>
@@ -337,27 +327,24 @@ function showPreviewModal() {
   addPreviewEventListeners(modal);
 }
 
-// Initialize PDF viewer
+// Initialize PDF viewer - SIMPLIFIED
 async function initializePDFViewer(modal) {
   try {
     console.log('📄 Loading PDF document...');
     
-    // Get canvases and contexts for book mode
+    // Get canvases and contexts
     leftCanvas = modal.querySelector('#left-canvas');
     rightCanvas = modal.querySelector('#right-canvas');
     leftCtx = leftCanvas.getContext('2d');
     rightCtx = rightCanvas.getContext('2d');
     
-    // Get single canvas for single page mode
     canvas = modal.querySelector('#pdf-canvas');
     ctx = canvas.getContext('2d');
     
-    // Load PDF document with options to allow larger rendering
+    // Load PDF document
     const loadingTask = pdfjsLib.getDocument({
       url: PDF_CATALOG_CONFIG.catalogUrl,
-      maxImageSize: -1, // No limit on image size
-      cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
-      cMapPacked: true
+      maxImageSize: -1
     });
     pdfDoc = await loadingTask.promise;
     
@@ -367,43 +354,8 @@ async function initializePDFViewer(modal) {
     const totalPages = modal.querySelector('.total-pages');
     totalPages.textContent = pdfDoc.numPages;
     
-    // Get actual PDF dimensions from first page
-    const firstPage = await pdfDoc.getPage(1);
-    const viewport = firstPage.getViewport({ scale: 1 });
-    originalPdfWidth = viewport.width;
-    originalPdfHeight = viewport.height;
-    console.log('📄 Actual PDF dimensions:', originalPdfWidth, 'x', originalPdfHeight);
-    
-    // Wait for container to be ready
-    setTimeout(async () => {
-              // Calculate initial scale for full width
-        const pdfContainer = modal.querySelector('.pdf-container');
-        const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
-        const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
-        console.log('📏 Container dimensions:', containerWidth, 'x', containerHeight);
-      
-      // Calculate scale to fit full container (adjusted for book mode)
-      if (bookMode) {
-        // For book mode, calculate scale to fit both pages within container
-        const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
-        const scaleForWidth = containerWidth / totalPageWidth;
-        const scaleForHeight = containerHeight / originalPdfHeight;
-        scale = Math.min(scaleForWidth, scaleForHeight);
-      } else {
-        // For single page mode, fit to container width
-        scale = containerWidth / originalPdfWidth;
-      }
-      console.log('🔍 Calculated initial scale:', scale, 'book mode:', bookMode);
-      
-      // Update zoom level display
-      const zoomLevel = modal.querySelector('.zoom-level');
-      zoomLevel.textContent = Math.round(scale * 100) + '%';
-      
-      // Render first page with new scale
-      renderPage(1, modal);
-      
-      console.log('🎯 Initial render completed, scale is now:', scale);
-    }, 100);
+    // Render first page
+    renderPage(1, modal);
     
   } catch (error) {
     console.error('❌ Error loading PDF:', error);
@@ -411,14 +363,13 @@ async function initializePDFViewer(modal) {
   }
 }
 
-// Render PDF page
+// Render PDF page - SIMPLIFIED
 async function renderPage(num, modal) {
   if (pageRendering) {
-    console.log('⚠️ Already rendering, skipping...');
     return;
   }
   
-  console.log('🎨 Starting render for page', num, 'at scale', scale, 'book mode:', bookMode);
+  console.log('🎨 Rendering page', num, 'at scale', scale, 'book mode:', bookMode);
   pageRendering = true;
   
   try {
@@ -429,13 +380,11 @@ async function renderPage(num, modal) {
     }
     
     pageRendering = false;
-    console.log('✅ Render completed, pageRendering set to false');
     
     // Process pending page if any
     if (pageNumPending !== null) {
       const pendingNum = pageNumPending;
       pageNumPending = null;
-      console.log('🔄 Processing pending page:', pendingNum);
       setTimeout(() => {
         renderPage(pendingNum, modal);
       }, 100);
@@ -447,27 +396,19 @@ async function renderPage(num, modal) {
   }
 }
 
-// Render single page
+// Render single page - SIMPLIFIED
 async function renderSinglePage(num, modal) {
   const page = await pdfDoc.getPage(num);
+  const viewport = page.getViewport({ scale: scale });
   
-  // Create viewport with current scale
-  const scaledViewport = page.getViewport({ scale: scale });
+  // Set canvas dimensions
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
   
-  console.log('🎨 Rendering single page', num, 'at scale', scale);
-  console.log('📐 Canvas dimensions:', scaledViewport.width, 'x', scaledViewport.height);
-  
-  // Set canvas dimensions without any height constraints
-  canvas.height = scaledViewport.height;
-  canvas.width = scaledViewport.width;
-  console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
-  
-  // Render PDF page with enhanced options
+  // Render PDF page
   const renderContext = {
     canvasContext: ctx,
-    viewport: scaledViewport,
-    enableWebGL: false,
-    renderInteractiveForms: false
+    viewport: viewport
   };
   
   await page.render(renderContext).promise;
@@ -483,27 +424,22 @@ async function renderSinglePage(num, modal) {
   nextBtn.disabled = num >= pdfDoc.numPages;
 }
 
-// Render book pages (two pages side by side)
+// Render book pages - SIMPLIFIED
 async function renderBookPages(num, modal) {
-  console.log('📖 Rendering book pages starting from', num);
-  
   // Calculate which pages to show
   let leftPageNum = num;
   let rightPageNum = num + 1;
   
-  // If we're on an even page, show previous and current
   if (num % 2 === 0) {
     leftPageNum = num - 1;
     rightPageNum = num;
   }
   
-  // Ensure we don't go below page 1
   if (leftPageNum < 1) {
     leftPageNum = 1;
     rightPageNum = 2;
   }
   
-  // Ensure we don't go above total pages
   if (rightPageNum > pdfDoc.numPages) {
     rightPageNum = pdfDoc.numPages;
     if (rightPageNum % 2 === 0) {
@@ -515,84 +451,42 @@ async function renderBookPages(num, modal) {
   
   console.log('📖 Book pages:', leftPageNum, 'and', rightPageNum);
   
-  // Get container dimensions for scaling
-  const pdfContainer = modal.querySelector('.pdf-container');
-  const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
-  const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
-
-  // Calculate scale to fit both pages within the container
-  // Use the global scale but ensure it fits within the container
-  const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
-  const maxScaleForWidth = containerWidth / totalPageWidth;
-  const maxScaleForHeight = containerHeight / originalPdfHeight;
-  const maxScale = Math.min(maxScaleForWidth, maxScaleForHeight);
-
-  // Use the larger of: global scale or max scale that fits
-  const actualScale = Math.max(scale, maxScale);
-  
-  console.log('📏 Book mode scale calculation:', {
-    containerWidth,
-    containerHeight,
-    totalPageWidth,
-    originalPdfWidth,
-    originalPdfHeight,
-    maxScaleForWidth,
-    maxScaleForHeight,
-    maxScale,
-    globalScale: scale,
-    actualScale
-  });
-  
   // Render left page
   if (leftPageNum <= pdfDoc.numPages) {
     const leftPage = await pdfDoc.getPage(leftPageNum);
-    const leftViewport = leftPage.getViewport({ scale: 1 });
+    const leftViewport = leftPage.getViewport({ scale: scale });
     
-    // Use the actual scale for dimensions
-    const leftScale = actualScale;
-    
-    // Set canvas dimensions without height constraints
-    leftCanvas.height = leftViewport.height * leftScale;
-    leftCanvas.width = leftViewport.width * leftScale;
+    leftCanvas.height = leftViewport.height;
+    leftCanvas.width = leftViewport.width;
     
     const leftRenderContext = {
       canvasContext: leftCtx,
-      viewport: leftPage.getViewport({ scale: leftScale }),
-      enableWebGL: false,
-      renderInteractiveForms: false
+      viewport: leftViewport
     };
     
     await leftPage.render(leftRenderContext).promise;
-    console.log('📐 Left page dimensions:', leftCanvas.width, 'x', leftCanvas.height, 'at scale:', leftScale);
   }
   
   // Render right page
   if (rightPageNum <= pdfDoc.numPages && rightPageNum !== leftPageNum) {
     const rightPage = await pdfDoc.getPage(rightPageNum);
-    const rightViewport = rightPage.getViewport({ scale: 1 });
+    const rightViewport = rightPage.getViewport({ scale: scale });
     
-    // Use the actual scale for dimensions
-    const rightScale = actualScale;
-    
-    // Set canvas dimensions without height constraints
-    rightCanvas.height = rightViewport.height * rightScale;
-    rightCanvas.width = rightViewport.width * rightScale;
+    rightCanvas.height = rightViewport.height;
+    rightCanvas.width = rightViewport.width;
     
     const rightRenderContext = {
       canvasContext: rightCtx,
-      viewport: rightPage.getViewport({ scale: rightScale }),
-      enableWebGL: false,
-      renderInteractiveForms: false
+      viewport: rightViewport
     };
     
     await rightPage.render(rightRenderContext).promise;
-    console.log('📐 Right page dimensions:', rightCanvas.width, 'x', rightCanvas.height, 'at scale:', rightScale);
   } else {
     // Clear right canvas if no second page
     rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
   }
   
-  // Update page info to show current page
+  // Update page info
   const currentPage = modal.querySelector('.current-page');
   currentPage.textContent = num;
   
@@ -605,18 +499,15 @@ async function renderBookPages(num, modal) {
 
 // Queue page rendering
 function queueRenderPage(num, modal) {
-  console.log('🔄 Queue render page:', num, 'current rendering:', pageRendering);
   if (pageRendering) {
     pageNumPending = num;
-    console.log('⏳ Page rendering in progress, queued:', num);
   } else {
-    pageNum = num; // Update current page number
-    console.log('🎯 Starting render for page:', num);
+    pageNum = num;
     renderPage(num, modal);
   }
 }
 
-// Add preview event listeners
+// Add preview event listeners - SIMPLIFIED
 function addPreviewEventListeners(modal) {
   // Close button
   const closeBtn = modal.querySelector('.close-preview');
@@ -629,7 +520,6 @@ function addPreviewEventListeners(modal) {
   prevBtn.addEventListener('click', () => {
     if (pageNum > 1 && !pageRendering) {
       if (bookMode) {
-        // In book mode, move by 2 pages (except for first page)
         const newPage = Math.max(1, pageNum - 2);
         queueRenderPage(newPage, modal);
       } else {
@@ -641,7 +531,6 @@ function addPreviewEventListeners(modal) {
   nextBtn.addEventListener('click', () => {
     if (pageNum < pdfDoc.numPages && !pageRendering) {
       if (bookMode) {
-        // In book mode, move by 2 pages
         const newPage = Math.min(pdfDoc.numPages, pageNum + 2);
         queueRenderPage(newPage, modal);
       } else {
@@ -650,63 +539,22 @@ function addPreviewEventListeners(modal) {
     }
   });
   
-  // Zoom controls
+  // Zoom controls - SIMPLIFIED
   const zoomOutBtn = modal.querySelector('.zoom-out');
   const zoomInBtn = modal.querySelector('.zoom-in');
-  const fitWidthBtn = modal.querySelector('.fit-width');
-  const fitHeightBtn = modal.querySelector('.fit-height');
   const zoomLevel = modal.querySelector('.zoom-level');
   
   zoomOutBtn.addEventListener('click', () => {
-    if (pageRendering) return; // Prevent multiple clicks
-    const minScale = 0.5; // Allow smaller scale for zoom out
-    scale = Math.max(minScale, scale - 0.25);
+    if (pageRendering) return;
+    scale = Math.max(0.25, scale - 0.25);
     zoomLevel.textContent = Math.round(scale * 100) + '%';
-    console.log('🔍 Zoom out clicked, new scale:', scale);
     queueRenderPage(pageNum, modal);
   });
   
   zoomInBtn.addEventListener('click', () => {
-    if (pageRendering) return; // Prevent multiple clicks
-    scale = Math.min(5, scale + 0.25); // Allow larger scale for zoom in
+    if (pageRendering) return;
+    scale = Math.min(3, scale + 0.25);
     zoomLevel.textContent = Math.round(scale * 100) + '%';
-    console.log('🔍 Zoom in clicked, new scale:', scale);
-    queueRenderPage(pageNum, modal);
-  });
-  
-  fitWidthBtn.addEventListener('click', () => {
-    if (pageRendering) return; // Prevent multiple clicks
-    const pdfContainer = modal.querySelector('.pdf-container');
-    const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
-    
-    if (bookMode) {
-      // For book mode, calculate scale to fit both pages within container width
-      const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
-      scale = containerWidth / totalPageWidth;
-    } else {
-      scale = containerWidth / originalPdfWidth;
-    }
-    
-    zoomLevel.textContent = Math.round(scale * 100) + '%';
-    console.log('🔍 Fit width clicked, new scale:', scale, 'container width:', containerWidth);
-    queueRenderPage(pageNum, modal);
-  });
-  
-  fitHeightBtn.addEventListener('click', () => {
-    if (pageRendering) return; // Prevent multiple clicks
-    const pdfContainer = modal.querySelector('.pdf-container');
-    const containerHeight = pdfContainer.clientHeight - 40; // Account for padding
-    
-    if (bookMode) {
-      // For book mode, use height but maintain aspect ratio
-      const pageHeight = containerHeight - 40; // Account for padding
-      scale = pageHeight / originalPdfHeight;
-    } else {
-      scale = containerHeight / originalPdfHeight;
-    }
-    
-    zoomLevel.textContent = Math.round(scale * 100) + '%';
-    console.log('🔍 Fit height clicked, new scale:', scale, 'container height:', containerHeight);
     queueRenderPage(pageNum, modal);
   });
   
@@ -731,21 +579,6 @@ function addPreviewEventListeners(modal) {
       bookPages.style.display = 'none';
       singleCanvas.style.display = 'block';
     }
-    
-    // Re-calculate scale for new mode
-    const pdfContainer = modal.querySelector('.pdf-container');
-    const containerWidth = pdfContainer.clientWidth - 40; // Account for padding
-    
-    if (bookMode) {
-      // For book mode, each page takes half the width minus gap
-      const pageWidth = containerWidth / 2 - 20;
-      scale = pageWidth / originalPdfWidth;
-    } else {
-      scale = containerWidth / originalPdfWidth;
-    }
-    
-    zoomLevel.textContent = Math.round(scale * 100) + '%';
-    console.log('📖 Recalculated scale for new mode:', scale);
     
     // Re-render current page in new mode
     queueRenderPage(pageNum, modal);
@@ -801,19 +634,12 @@ function addPreviewEventListeners(modal) {
       }
     }
   });
-
-  // Store resize handler for cleanup
-  modal.setAttribute('data-resize-handler', 'true');
 }
 
 // Perform search (basic implementation)
 function performSearch(query, modal) {
   if (!query.trim()) return;
-  
   console.log('🔍 Searching for:', query);
-  
-  // For now, show a simple message
-  // In a full implementation, you'd search through PDF text content
   showPreviewNotification(modal, `Search for "${query}" - Advanced search coming soon!`);
 }
 
@@ -873,19 +699,6 @@ function toggleFullscreen(modal) {
 function closePreviewModal(modal) {
   // Restore body scrolling
   document.body.style.overflow = '';
-  document.body.style.position = '';
-  document.body.style.width = '';
-  
-  // Clear resize timeout
-  if (resizeTimeout) {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = null;
-  }
-  
-  // Remove resize handler
-  if (modal.hasAttribute('data-resize-handler')) {
-    window.removeEventListener('resize', handleResize);
-  }
   
   modal.style.opacity = '0';
   setTimeout(() => {
