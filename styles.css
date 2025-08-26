@@ -6782,6 +6782,12 @@ a .flip-card-wrapper {
   scroll-margin-top: 80px; /* Match SCROLL_OFFSET in JavaScript */
 }
 
+/* Gallery page sections */
+#new-items,
+#news-journal {
+  scroll-margin-top: 80px; /* Match SCROLL_OFFSET in JavaScript */
+}
+
 /* Responsive adjustments for different header heights */
 @media screen and (max-width: 991px) {
   #privacy,
@@ -6791,7 +6797,9 @@ a .flip-card-wrapper {
   #about,
   #news,
   #gallery,
-  #testimonials {
+  #testimonials,
+  #new-items,
+  #news-journal {
     scroll-margin-top: 70px;
   }
 }
@@ -6804,7 +6812,9 @@ a .flip-card-wrapper {
   #about,
   #news,
   #gallery,
-  #testimonials {
+  #testimonials,
+  #new-items,
+  #news-journal {
     scroll-margin-top: 60px;
   }
 }
