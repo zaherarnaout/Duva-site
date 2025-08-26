@@ -6544,6 +6544,348 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
 // === END HEADER MENU TABS DEEP-LINK ROUTER ===
 
+// === CATALOG DOWNLOAD SYSTEM ===
+/* Enhanced download functionality for catalog page with progress tracking and email capture */
+
+(function () {
+  console.log('📥 Initializing catalog download system...');
+  
+  // Configuration
+  const DOWNLOAD_CONFIG = {
+    catalogUrl: '/catalog/DUVA-Catalog-2024.pdf', // Update with actual file path
+    catalogSize: '15.2 MB', // Update with actual file size
+    catalogFormat: 'PDF',
+    lastUpdated: '2024-01-15', // Update with actual date
+    requireEmail: false, // Set to true to require email before download
+    emailEndpoint: '/api/capture-email' // Update with actual endpoint
+  };
+
+  // Download states
+  let isDownloading = false;
+  let downloadProgress = 0;
+
+  // Initialize download functionality
+  function initializeCatalogDownload() {
+    const downloadBtn = document.querySelector('.button-3');
+    const cataMain = document.querySelector('.cata-main');
+    
+    if (!downloadBtn || !cataMain) {
+      console.log('⚠️ Catalog download elements not found');
+      return;
+    }
+
+    console.log('🔗 Found catalog download button');
+
+    // Create download progress container
+    const progressContainer = document.createElement('div');
+    progressContainer.className = 'download-progress-container';
+    progressContainer.innerHTML = `
+      <div class="download-progress-bar">
+        <div class="download-progress-fill"></div>
+      </div>
+      <div class="download-status">Ready to download</div>
+      <div class="download-info">
+        <span class="file-size">${DOWNLOAD_CONFIG.catalogSize}</span>
+        <span class="file-format">${DOWNLOAD_CONFIG.catalogFormat}</span>
+        <span class="last-updated">Updated: ${DOWNLOAD_CONFIG.lastUpdated}</span>
+      </div>
+    `;
+    
+    // Insert progress container after download button
+    const ctaDownloadBtn = document.querySelector('.cta-download-btn');
+    if (ctaDownloadBtn) {
+      ctaDownloadBtn.appendChild(progressContainer);
+    }
+
+    // Add click event listener
+    downloadBtn.addEventListener('click', handleDownloadClick);
+    
+    // Add hover effects
+    downloadBtn.addEventListener('mouseenter', () => {
+      if (!isDownloading) {
+        downloadBtn.style.transform = 'translateY(-2px)';
+        downloadBtn.style.boxShadow = '0 8px 25px rgba(192, 57, 43, 0.3)';
+      }
+    });
+    
+    downloadBtn.addEventListener('mouseleave', () => {
+      if (!isDownloading) {
+        downloadBtn.style.transform = 'translateY(0)';
+        downloadBtn.style.boxShadow = 'none';
+      }
+    });
+
+    console.log('✅ Catalog download system initialized');
+  }
+
+  // Handle download button click
+  async function handleDownloadClick(e) {
+    e.preventDefault();
+    
+    if (isDownloading) {
+      console.log('⚠️ Download already in progress');
+      return;
+    }
+
+    console.log('📥 Starting catalog download...');
+
+    if (DOWNLOAD_CONFIG.requireEmail) {
+      // Show email capture modal
+      showEmailCaptureModal();
+    } else {
+      // Direct download
+      startDownload();
+    }
+  }
+
+  // Start the download process
+  async function startDownload(email = null) {
+    const downloadBtn = document.querySelector('.button-3');
+    const progressFill = document.querySelector('.download-progress-fill');
+    const downloadStatus = document.querySelector('.download-status');
+    
+    if (!downloadBtn || !progressFill || !downloadStatus) {
+      console.error('❌ Download elements not found');
+      return;
+    }
+
+    // Update UI to downloading state
+    isDownloading = true;
+    downloadProgress = 0;
+    
+    downloadBtn.textContent = 'Downloading...';
+    downloadBtn.style.backgroundColor = '#666';
+    downloadBtn.style.cursor = 'not-allowed';
+    downloadBtn.style.transform = 'none';
+    downloadBtn.style.boxShadow = 'none';
+    
+    progressFill.style.width = '0%';
+    downloadStatus.textContent = 'Preparing download...';
+
+    try {
+      // Capture email if provided
+      if (email && DOWNLOAD_CONFIG.emailEndpoint) {
+        await captureEmail(email);
+      }
+
+      // Simulate download progress (replace with actual download logic)
+      await simulateDownloadProgress(progressFill, downloadStatus);
+      
+      // Trigger actual download
+      await triggerFileDownload();
+      
+      // Show success message
+      showDownloadSuccess();
+      
+    } catch (error) {
+      console.error('❌ Download failed:', error);
+      showDownloadError(error.message);
+    } finally {
+      // Reset UI
+      resetDownloadUI();
+    }
+  }
+
+  // Simulate download progress (replace with actual progress tracking)
+  async function simulateDownloadProgress(progressFill, downloadStatus) {
+    const steps = [
+      { progress: 10, message: 'Connecting to server...' },
+      { progress: 30, message: 'Downloading catalog...' },
+      { progress: 60, message: 'Processing file...' },
+      { progress: 90, message: 'Finalizing download...' },
+      { progress: 100, message: 'Download complete!' }
+    ];
+
+    for (const step of steps) {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      downloadProgress = step.progress;
+      progressFill.style.width = `${step.progress}%`;
+      downloadStatus.textContent = step.message;
+      
+      console.log(`📊 Download progress: ${step.progress}% - ${step.message}`);
+    }
+  }
+
+  // Trigger actual file download
+  async function triggerFileDownload() {
+    console.log('📥 Triggering file download...');
+    
+    // Create temporary link for download
+    const link = document.createElement('a');
+    link.href = DOWNLOAD_CONFIG.catalogUrl;
+    link.download = 'DUVA-Catalog-2024.pdf';
+    link.style.display = 'none';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Wait a bit for download to start
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  // Capture email (if required)
+  async function captureEmail(email) {
+    console.log('📧 Capturing email:', email);
+    
+    try {
+      const response = await fetch(DOWNLOAD_CONFIG.emailEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, download: 'catalog' })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to capture email');
+      }
+      
+      console.log('✅ Email captured successfully');
+    } catch (error) {
+      console.warn('⚠️ Email capture failed:', error);
+      // Continue with download even if email capture fails
+    }
+  }
+
+  // Show download success message
+  function showDownloadSuccess() {
+    const downloadStatus = document.querySelector('.download-status');
+    if (downloadStatus) {
+      downloadStatus.textContent = '✅ Download completed successfully!';
+      downloadStatus.style.color = '#28a745';
+    }
+    
+    // Show success notification
+    showNotification('Download completed!', 'success');
+  }
+
+  // Show download error message
+  function showDownloadError(message) {
+    const downloadStatus = document.querySelector('.download-status');
+    if (downloadStatus) {
+      downloadStatus.textContent = '❌ Download failed. Please try again.';
+      downloadStatus.style.color = '#dc3545';
+    }
+    
+    // Show error notification
+    showNotification('Download failed. Please try again.', 'error');
+  }
+
+  // Reset download UI
+  function resetDownloadUI() {
+    const downloadBtn = document.querySelector('.button-3');
+    const progressFill = document.querySelector('.download-progress-fill');
+    const downloadStatus = document.querySelector('.download-status');
+    
+    if (downloadBtn) {
+      downloadBtn.textContent = 'Download CATALOGUE';
+      downloadBtn.style.backgroundColor = '';
+      downloadBtn.style.cursor = '';
+    }
+    
+    if (progressFill) {
+      progressFill.style.width = '0%';
+    }
+    
+    if (downloadStatus) {
+      downloadStatus.textContent = 'Ready to download';
+      downloadStatus.style.color = '';
+    }
+    
+    isDownloading = false;
+    downloadProgress = 0;
+    
+    // Reset after 3 seconds
+    setTimeout(() => {
+      if (progressFill) progressFill.style.width = '0%';
+      if (downloadStatus) {
+        downloadStatus.textContent = 'Ready to download';
+        downloadStatus.style.color = '';
+      }
+    }, 3000);
+  }
+
+  // Show email capture modal
+  function showEmailCaptureModal() {
+    const modal = document.createElement('div');
+    modal.className = 'email-capture-modal';
+    modal.innerHTML = `
+      <div class="email-capture-content">
+        <h3>Get Your Free Catalog</h3>
+        <p>Enter your email to download the DUVA catalog and stay updated with our latest products.</p>
+        <form class="email-capture-form">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit">Download Catalog</button>
+          <button type="button" class="skip-email">Skip Email</button>
+        </form>
+        <button class="close-modal">×</button>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add event listeners
+    const form = modal.querySelector('.email-capture-form');
+    const skipBtn = modal.querySelector('.skip-email');
+    const closeBtn = modal.querySelector('.close-modal');
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]').value;
+      closeModal();
+      startDownload(email);
+    });
+    
+    skipBtn.addEventListener('click', () => {
+      closeModal();
+      startDownload();
+    });
+    
+    closeBtn.addEventListener('click', closeModal);
+    
+    // Close modal on outside click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    
+    function closeModal() {
+      document.body.removeChild(modal);
+    }
+  }
+
+  // Show notification
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `download-notification ${type}`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 5000);
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCatalogDownload);
+  } else {
+    initializeCatalogDownload();
+  }
+
+  // Also initialize after a delay to catch dynamically loaded content
+  setTimeout(initializeCatalogDownload, 1000);
+
+  console.log('✅ Catalog download system ready');
+})();
+
+// === END CATALOG DOWNLOAD SYSTEM ===
+
 
 
 
