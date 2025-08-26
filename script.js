@@ -7023,6 +7023,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
   // Show preview modal
   function showPreviewModal() {
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    
     const modal = document.createElement('div');
     modal.className = 'catalog-preview-modal';
     modal.innerHTML = `
@@ -7035,6 +7040,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
             <button class="control-btn zoom-in" title="Zoom In">+</button>
             <button class="control-btn fit-width" title="Fit to Width">⤢</button>
             <button class="control-btn fit-height" title="Fit to Height">⤡</button>
+            <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
           </div>
           <button class="close-preview">×</button>
         </div>
@@ -7051,7 +7057,9 @@ setTimeout(initializeNewItemsReadMore, 1000);
         </div>
         
         <div class="pdf-container">
-          <canvas id="pdf-canvas"></canvas>
+          <div class="pdf-scroll-container">
+            <canvas id="pdf-canvas"></canvas>
+          </div>
           <div class="loading-indicator">Loading catalog...</div>
         </div>
         
@@ -7204,6 +7212,12 @@ setTimeout(initializeNewItemsReadMore, 1000);
       queueRenderPage(pageNum, modal);
     });
     
+    // Fullscreen button
+    const fullscreenBtn = modal.querySelector('.fullscreen');
+    fullscreenBtn.addEventListener('click', () => {
+      toggleFullscreen(modal);
+    });
+    
     // Search functionality
     const searchInput = modal.querySelector('.search-input');
     const searchBtn = modal.querySelector('.search-btn');
@@ -7297,8 +7311,38 @@ setTimeout(initializeNewItemsReadMore, 1000);
     }, 3000);
   }
 
+  // Toggle fullscreen mode
+  function toggleFullscreen(modal) {
+    const content = modal.querySelector('.preview-content');
+    
+    if (!document.fullscreenElement) {
+      // Enter fullscreen
+      if (content.requestFullscreen) {
+        content.requestFullscreen();
+      } else if (content.webkitRequestFullscreen) {
+        content.webkitRequestFullscreen();
+      } else if (content.msRequestFullscreen) {
+        content.msRequestFullscreen();
+      }
+    } else {
+      // Exit fullscreen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+  }
+
   // Close preview modal
   function closePreviewModal(modal) {
+    // Restore body scrolling
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    
     modal.style.opacity = '0';
     setTimeout(() => {
       if (modal.parentNode) {
