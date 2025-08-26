@@ -7125,6 +7125,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       return;
     }
     
+    console.log('🎨 Starting render for page', num, 'at scale', scale);
     pageRendering = true;
     
     try {
@@ -7139,6 +7140,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       // Set canvas dimensions
       canvas.height = scaledViewport.height;
       canvas.width = scaledViewport.width;
+      console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
       
       // Render PDF page
       const renderContext = {
@@ -7159,11 +7161,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
       nextBtn.disabled = num >= pdfDoc.numPages;
       
       pageRendering = false;
+      console.log('✅ Render completed, pageRendering set to false');
       
       // Process pending page if any
       if (pageNumPending !== null) {
         const pendingNum = pageNumPending;
         pageNumPending = null;
+        console.log('🔄 Processing pending page:', pendingNum);
         setTimeout(() => {
           renderPage(pendingNum, modal);
         }, 100);
@@ -7209,6 +7213,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const minScale = 1.28; // Minimum scale to maintain full width
       scale = Math.max(minScale, scale - 0.25);
       zoomLevel.textContent = Math.round(scale * 100) + '%';
+      console.log('🔍 Zoom out clicked, new scale:', scale);
       queueRenderPage(pageNum, modal);
     });
     
@@ -7216,6 +7221,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       if (pageRendering) return; // Prevent multiple clicks
       scale = Math.min(3, scale + 0.25);
       zoomLevel.textContent = Math.round(scale * 100) + '%';
+      console.log('🔍 Zoom in clicked, new scale:', scale);
       queueRenderPage(pageNum, modal);
     });
     
@@ -7225,6 +7231,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const containerWidth = scrollContainer.clientWidth; // Use full width
       scale = containerWidth / 623.627; // Original PDF width
       zoomLevel.textContent = Math.round(scale * 100) + '%';
+      console.log('🔍 Fit width clicked, new scale:', scale, 'container width:', containerWidth);
       queueRenderPage(pageNum, modal);
     });
     
@@ -7234,6 +7241,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const containerHeight = scrollContainer.clientHeight; // Use full height
       scale = containerHeight / 870.236; // Original PDF height
       zoomLevel.textContent = Math.round(scale * 100) + '%';
+      console.log('🔍 Fit height clicked, new scale:', scale, 'container height:', containerHeight);
       queueRenderPage(pageNum, modal);
     });
     
@@ -7300,10 +7308,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
   // Queue page rendering
   function queueRenderPage(num, modal) {
+    console.log('🔄 Queue render page:', num, 'current rendering:', pageRendering);
     if (pageRendering) {
       pageNumPending = num;
+      console.log('⏳ Page rendering in progress, queued:', num);
     } else {
       pageNum = num; // Update current page number
+      console.log('🎯 Starting render for page:', num);
       renderPage(num, modal);
     }
   }
