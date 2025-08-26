@@ -259,7 +259,7 @@
   left: 100%;
 }
 
-/* Catalog Preview Modal */
+/* Catalog Preview Modal - SIMPLIFIED */
 .catalog-preview-modal {
   position: fixed;
   top: 0;
@@ -275,13 +275,11 @@
   animation: fadeIn 0.3s ease forwards;
 }
 
-/* Preview Content */
+/* Preview Content - SIMPLIFIED */
 .preview-content {
   width: 100vw;
   height: 100vh;
   background: var(--duva-bg-primary);
-  border-radius: 0;
-  box-shadow: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -443,10 +441,9 @@
   color: var(--duva-text-secondary);
 }
 
-/* PDF Container - Simplified */
+/* PDF Container - ULTRA SIMPLIFIED */
 .pdf-container {
   flex: 1;
-  position: relative;
   background: var(--duva-bg-tertiary);
   overflow: auto;
   padding: 20px;
@@ -456,14 +453,11 @@
   min-height: 0;
 }
 
-/* Book Pages Layout - Direct rendering */
+/* Book Pages Layout - ULTRA SIMPLIFIED */
 .book-pages {
   display: flex;
   gap: 20px;
-  justify-content: center;
   align-items: flex-start;
-  padding: 0;
-  margin: 0;
 }
 
 .page-canvas {
@@ -471,7 +465,6 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
-  margin: 0;
 }
 
 .single-canvas {
@@ -479,34 +472,13 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
-  margin: 0;
 }
-
-/* Remove pdf-scroll-container entirely */
-/* .pdf-scroll-container {
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0;
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-} */
 
 #pdf-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
-  margin: 0;
 }
 
 .loading-indicator {
@@ -720,8 +692,6 @@
   .preview-content {
     padding: 0;
     height: 100vh;
-    max-height: none;
-    max-width: none;
   }
   
   .preview-header {
@@ -757,11 +727,6 @@
   
   .book-pages {
     gap: 10px;
-    padding: 10px;
-  }
-  
-  .page-canvas {
-    max-width: none;
   }
   
   .preview-footer {
@@ -779,17 +744,10 @@
   .preview-content {
     width: 100vw;
     height: 100vh;
-    max-width: none;
-    max-height: none;
   }
   
   .book-pages {
     gap: 15px;
-    padding: 15px;
-  }
-  
-  .page-canvas {
-    max-width: none;
   }
 }
 
