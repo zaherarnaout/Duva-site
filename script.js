@@ -7114,6 +7114,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
   // Render PDF page
   async function renderPage(num, modal) {
+    if (pageRendering) {
+      console.log('⚠️ Already rendering, skipping...');
+      return;
+    }
+    
     pageRendering = true;
     
     try {
@@ -7147,13 +7152,15 @@ setTimeout(initializeNewItemsReadMore, 1000);
       prevBtn.disabled = num <= 1;
       nextBtn.disabled = num >= pdfDoc.numPages;
       
-      // Auto-fit to width on first load (removed as it's now handled in initializePDFViewer)
-      
       pageRendering = false;
       
+      // Process pending page if any
       if (pageNumPending !== null) {
-        renderPage(pageNumPending, modal);
+        const pendingNum = pageNumPending;
         pageNumPending = null;
+        setTimeout(() => {
+          renderPage(pendingNum, modal);
+        }, 100);
       }
       
     } catch (error) {
@@ -7173,16 +7180,14 @@ setTimeout(initializeNewItemsReadMore, 1000);
     const nextBtn = modal.querySelector('.next-page');
     
     prevBtn.addEventListener('click', () => {
-      if (pageNum > 1) {
-        pageNum--;
-        queueRenderPage(pageNum, modal);
+      if (pageNum > 1 && !pageRendering) {
+        queueRenderPage(pageNum - 1, modal);
       }
     });
     
     nextBtn.addEventListener('click', () => {
-      if (pageNum < pdfDoc.numPages) {
-        pageNum++;
-        queueRenderPage(pageNum, modal);
+      if (pageNum < pdfDoc.numPages && !pageRendering) {
+        queueRenderPage(pageNum + 1, modal);
       }
     });
     
@@ -7279,8 +7284,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
     // Window resize handler
     const handleResize = () => {
       if (pdfDoc && !pageRendering) {
-        // Re-render current page with current scale
-        queueRenderPage(pageNum, modal);
+        // Only re-render if scale has changed significantly
+        const scrollContainer = modal.querySelector('.pdf-scroll-container');
+        const containerWidth = scrollContainer.clientWidth;
+        const page = pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 1 });
+        const newScale = containerWidth / viewport.width;
+        
+        if (Math.abs(newScale - scale) > 0.1) {
+          scale = newScale;
+          const zoomLevel = modal.querySelector('.zoom-level');
+          zoomLevel.textContent = Math.round(scale * 100) + '%';
+          queueRenderPage(pageNum, modal);
+        }
       }
     };
 
@@ -7295,6 +7311,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
     if (pageRendering) {
       pageNumPending = num;
     } else {
+      pageNum = num; // Update current page number
       renderPage(num, modal);
     }
   }
