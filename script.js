@@ -7074,8 +7074,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
       canvas = modal.querySelector('#pdf-canvas');
       ctx = canvas.getContext('2d');
       
-      // Load PDF document
-      const loadingTask = pdfjsLib.getDocument(PREVIEW_CONFIG.catalogUrl);
+      // Load PDF document with options to allow larger rendering
+      const loadingTask = pdfjsLib.getDocument({
+        url: PREVIEW_CONFIG.catalogUrl,
+        maxImageSize: -1, // No limit on image size
+        cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+        cMapPacked: true
+      });
       pdfDoc = await loadingTask.promise;
       
       console.log('✅ PDF loaded:', pdfDoc.numPages, 'pages');
@@ -7097,7 +7102,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
         
         // Calculate scale to fit full width
         scale = containerWidth / viewport.width;
-        console.log('🔍 Calculated scale:', scale);
+        console.log('🔍 Calculated initial scale:', scale);
         
         // Update zoom level display
         const zoomLevel = modal.querySelector('.zoom-level');
@@ -7106,10 +7111,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
         // Render first page with new scale
         renderPage(1, modal);
         
-        // Prevent any further scale changes for a moment
-        setTimeout(() => {
-          console.log('🔒 Scale locked at:', scale);
-        }, 500);
+        console.log('🎯 Initial render completed, scale is now:', scale);
       }, 100);
       
     } catch (error) {
@@ -7142,10 +7144,12 @@ setTimeout(initializeNewItemsReadMore, 1000);
       canvas.width = scaledViewport.width;
       console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
       
-      // Render PDF page
+      // Render PDF page with enhanced options
       const renderContext = {
         canvasContext: ctx,
-        viewport: scaledViewport
+        viewport: scaledViewport,
+        enableWebGL: false, // Disable WebGL to avoid size limitations
+        renderInteractiveForms: false // Disable forms for better performance
       };
       
       await page.render(renderContext).promise;
