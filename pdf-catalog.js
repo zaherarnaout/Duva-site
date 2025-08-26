@@ -518,11 +518,27 @@ async function renderBookPages(num, modal) {
   const containerWidth = scrollContainer.clientWidth;
   const pageWidth = containerWidth / 2 - 20; // Leave space between pages
   
+  // For book mode, we need to respect the global scale but ensure it fits within the container
+  // Calculate the maximum scale that would fit the page width
+  const maxScaleForWidth = pageWidth / originalPdfWidth;
+  const actualScale = Math.min(scale, maxScaleForWidth);
+  
+  console.log('📏 Book mode scale calculation:', {
+    containerWidth,
+    pageWidth,
+    originalPdfWidth,
+    maxScaleForWidth,
+    globalScale: scale,
+    actualScale
+  });
+  
   // Render left page
   if (leftPageNum <= pdfDoc.numPages) {
     const leftPage = await pdfDoc.getPage(leftPageNum);
     const leftViewport = leftPage.getViewport({ scale: 1 });
-    const leftScale = pageWidth / leftViewport.width;
+    
+    // Use the actual scale for dimensions
+    const leftScale = actualScale;
     
     // Set canvas dimensions without height constraints
     leftCanvas.height = leftViewport.height * leftScale;
@@ -536,14 +552,16 @@ async function renderBookPages(num, modal) {
     };
     
     await leftPage.render(leftRenderContext).promise;
-    console.log('📐 Left page dimensions:', leftCanvas.width, 'x', leftCanvas.height);
+    console.log('📐 Left page dimensions:', leftCanvas.width, 'x', leftCanvas.height, 'at scale:', leftScale);
   }
   
   // Render right page
   if (rightPageNum <= pdfDoc.numPages && rightPageNum !== leftPageNum) {
     const rightPage = await pdfDoc.getPage(rightPageNum);
     const rightViewport = rightPage.getViewport({ scale: 1 });
-    const rightScale = pageWidth / rightViewport.width;
+    
+    // Use the actual scale for dimensions
+    const rightScale = actualScale;
     
     // Set canvas dimensions without height constraints
     rightCanvas.height = rightViewport.height * rightScale;
@@ -557,7 +575,7 @@ async function renderBookPages(num, modal) {
     };
     
     await rightPage.render(rightRenderContext).promise;
-    console.log('📐 Right page dimensions:', rightCanvas.width, 'x', rightCanvas.height);
+    console.log('📐 Right page dimensions:', rightCanvas.width, 'x', rightCanvas.height, 'at scale:', rightScale);
   } else {
     // Clear right canvas if no second page
     rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
