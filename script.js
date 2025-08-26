@@ -6574,11 +6574,18 @@ setTimeout(initializeNewItemsReadMore, 1000);
       return;
     }
 
+    // Check if already initialized
+    if (downloadBtn.hasAttribute('data-download-initialized')) {
+      console.log('⚠️ Download system already initialized');
+      return;
+    }
+
     console.log('🔗 Found catalog download button');
 
-    // Create download progress container
+    // Create download progress container (hidden by default)
     const progressContainer = document.createElement('div');
     progressContainer.className = 'download-progress-container';
+    progressContainer.style.display = 'none'; // Hidden by default
     progressContainer.innerHTML = `
       <div class="download-progress-bar">
         <div class="download-progress-fill"></div>
@@ -6597,6 +6604,9 @@ setTimeout(initializeNewItemsReadMore, 1000);
       ctaDownloadBtn.appendChild(progressContainer);
     }
 
+    // Mark as initialized
+    downloadBtn.setAttribute('data-download-initialized', 'true');
+
     // Add click event listener
     downloadBtn.addEventListener('click', handleDownloadClick);
     
@@ -6614,6 +6624,15 @@ setTimeout(initializeNewItemsReadMore, 1000);
         downloadBtn.style.boxShadow = 'none';
       }
     });
+
+    // Add click handler to catalog image
+    const catalogImage = document.querySelector('.image-53');
+    if (catalogImage) {
+      catalogImage.addEventListener('click', () => {
+        console.log('🖼️ Catalog image clicked');
+        handleDownloadClick(new Event('click'));
+      });
+    }
 
     console.log('✅ Catalog download system initialized');
   }
@@ -6641,13 +6660,18 @@ setTimeout(initializeNewItemsReadMore, 1000);
   // Start the download process
   async function startDownload(email = null) {
     const downloadBtn = document.querySelector('.button-3');
+    const progressContainer = document.querySelector('.download-progress-container');
     const progressFill = document.querySelector('.download-progress-fill');
     const downloadStatus = document.querySelector('.download-status');
     
-    if (!downloadBtn || !progressFill || !downloadStatus) {
+    if (!downloadBtn || !progressContainer || !progressFill || !downloadStatus) {
       console.error('❌ Download elements not found');
       return;
     }
+
+    // Show progress container
+    progressContainer.style.display = 'block';
+    progressContainer.classList.add('show');
 
     // Update UI to downloading state
     isDownloading = true;
@@ -6776,6 +6800,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
   // Reset download UI
   function resetDownloadUI() {
     const downloadBtn = document.querySelector('.button-3');
+    const progressContainer = document.querySelector('.download-progress-container');
     const progressFill = document.querySelector('.download-progress-fill');
     const downloadStatus = document.querySelector('.download-status');
     
@@ -6797,8 +6822,14 @@ setTimeout(initializeNewItemsReadMore, 1000);
     isDownloading = false;
     downloadProgress = 0;
     
-    // Reset after 3 seconds
+    // Hide progress container after 3 seconds
     setTimeout(() => {
+      if (progressContainer) {
+        progressContainer.classList.remove('show');
+        setTimeout(() => {
+          progressContainer.style.display = 'none';
+        }, 300);
+      }
       if (progressFill) progressFill.style.width = '0%';
       if (downloadStatus) {
         downloadStatus.textContent = 'Ready to download';
