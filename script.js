@@ -6941,51 +6941,37 @@ setTimeout(initializeNewItemsReadMore, 1000);
 
   // Initialize preview functionality
   function initializeCatalogPreview() {
-    const ctaDownloadBtn = document.querySelector('.cta-download-btn');
+    const previewBtn = document.querySelector('.cata-preview-btn');
     
-    if (!ctaDownloadBtn) {
-      console.log('⚠️ Download button container not found');
+    if (!previewBtn) {
+      console.log('⚠️ Preview button not found');
       return;
     }
 
     // Check if already initialized
-    if (ctaDownloadBtn.hasAttribute('data-preview-initialized')) {
+    if (previewBtn.hasAttribute('data-preview-initialized')) {
       console.log('⚠️ Preview system already initialized');
       return;
     }
 
-    console.log('🔗 Found download button container, adding preview button');
-
-    // Create preview button
-    const previewBtn = document.createElement('a');
-    previewBtn.className = 'button-3 preview-btn';
-    previewBtn.href = '#';
-    previewBtn.textContent = 'Preview Catalog';
-    previewBtn.style.marginTop = '12px';
-    previewBtn.style.backgroundColor = 'var(--duva-d-grey)';
-    previewBtn.style.border = '1px solid var(--duva-border-primary)';
-
-    // Insert preview button after download button
-    ctaDownloadBtn.appendChild(previewBtn);
+    console.log('🔗 Found preview button:', previewBtn);
 
     // Add click event listener
     previewBtn.addEventListener('click', handlePreviewClick);
     
-    // Add hover effects
+    // Add enhanced hover effects
     previewBtn.addEventListener('mouseenter', () => {
       previewBtn.style.transform = 'translateY(-2px)';
       previewBtn.style.boxShadow = '0 8px 25px rgba(51, 51, 51, 0.3)';
-      previewBtn.style.backgroundColor = 'var(--duva-red)';
     });
     
     previewBtn.addEventListener('mouseleave', () => {
       previewBtn.style.transform = 'translateY(0)';
       previewBtn.style.boxShadow = 'none';
-      previewBtn.style.backgroundColor = 'var(--duva-d-grey)';
     });
 
     // Mark as initialized
-    ctaDownloadBtn.setAttribute('data-preview-initialized', 'true');
+    previewBtn.setAttribute('data-preview-initialized', 'true');
 
     console.log('✅ Catalog preview system initialized');
   }
@@ -7140,7 +7126,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       if (num === 1 && scale === 1.5) {
         setTimeout(() => {
           const scrollContainer = modal.querySelector('.pdf-scroll-container');
-          const containerWidth = scrollContainer.clientWidth - 40;
+          const containerWidth = scrollContainer.clientWidth;
           const newScale = containerWidth / viewport.width;
           if (newScale < scale) {
             scale = newScale;
@@ -7208,7 +7194,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
     
     fitWidthBtn.addEventListener('click', () => {
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
-      const containerWidth = scrollContainer.clientWidth - 40; // Account for padding
+      const containerWidth = scrollContainer.clientWidth; // Use full width
       const page = pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1 });
       scale = containerWidth / viewport.width;
@@ -7218,7 +7204,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
     
     fitHeightBtn.addEventListener('click', () => {
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
-      const containerHeight = scrollContainer.clientHeight - 40; // Account for padding
+      const containerHeight = scrollContainer.clientHeight; // Use full height
       const page = pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1 });
       scale = containerHeight / viewport.height;
