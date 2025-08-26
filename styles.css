@@ -7436,9 +7436,9 @@ a .flip-card-wrapper {
   background: var(--duva-bg-secondary);
   border-radius: 12px;
   width: 100%;
-  max-width: 1200px;
-  height: 90vh;
-  max-height: 800px;
+  max-width: 95vw;
+  height: 95vh;
+  max-height: 95vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -7448,8 +7448,9 @@ a .flip-card-wrapper {
 
 .preview-content:fullscreen {
   border-radius: 0;
-  max-width: none;
-  max-height: none;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100vw;
   height: 100vh;
 }
 
@@ -7641,7 +7642,8 @@ a .flip-card-wrapper {
   position: relative;
   background: var(--duva-bg-tertiary);
   overflow: hidden;
-  padding: 20px;
+  padding: 10px;
+  min-height: 0;
 }
 
 .pdf-scroll-container {
@@ -7651,7 +7653,7 @@ a .flip-card-wrapper {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 #pdf-canvas {
@@ -7660,6 +7662,8 @@ a .flip-card-wrapper {
   background: white;
   display: block;
   margin: 0 auto;
+  max-width: none;
+  max-height: none;
 }
 
 .loading-indicator {
@@ -7772,12 +7776,13 @@ a .flip-card-wrapper {
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .catalog-preview-modal {
-    padding: 10px;
+    padding: 5px;
   }
   
   .preview-content {
-    height: 95vh;
-    max-height: none;
+    height: 98vh;
+    max-height: 98vh;
+    max-width: 98vw;
   }
   
   .preview-header {
@@ -7817,11 +7822,11 @@ a .flip-card-wrapper {
   }
   
   .pdf-container {
-    padding: 10px;
+    padding: 5px;
   }
   
   .pdf-scroll-container {
-    padding: 10px 0;
+    padding: 5px 0;
   }
   
   .preview-footer {
