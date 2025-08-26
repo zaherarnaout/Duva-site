@@ -478,6 +478,9 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 #pdf-canvas {
@@ -485,6 +488,9 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .loading-indicator {
