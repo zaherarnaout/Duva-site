@@ -7083,19 +7083,28 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const totalPages = modal.querySelector('.total-pages');
       totalPages.textContent = pdfDoc.numPages;
       
-      // Force full width on first load
-      const scrollContainer = modal.querySelector('.pdf-scroll-container');
-      const containerWidth = scrollContainer.clientWidth;
-      const page = await pdfDoc.getPage(1);
-      const viewport = page.getViewport({ scale: 1 });
-      scale = containerWidth / viewport.width;
-      
-      // Update zoom level display
-      const zoomLevel = modal.querySelector('.zoom-level');
-      zoomLevel.textContent = Math.round(scale * 100) + '%';
-      
-      // Render first page
-      renderPage(1, modal);
+      // Wait for container to be ready
+      setTimeout(async () => {
+        // Force full width on first load
+        const scrollContainer = modal.querySelector('.pdf-scroll-container');
+        const containerWidth = scrollContainer.clientWidth;
+        console.log('📏 Container width:', containerWidth);
+        
+        const page = await pdfDoc.getPage(1);
+        const viewport = page.getViewport({ scale: 1 });
+        console.log('📄 Original PDF dimensions:', viewport.width, 'x', viewport.height);
+        
+        // Calculate scale to fit full width
+        scale = containerWidth / viewport.width;
+        console.log('🔍 Calculated scale:', scale);
+        
+        // Update zoom level display
+        const zoomLevel = modal.querySelector('.zoom-level');
+        zoomLevel.textContent = Math.round(scale * 100) + '%';
+        
+        // Render first page with new scale
+        renderPage(1, modal);
+      }, 100);
       
     } catch (error) {
       console.error('❌ Error loading PDF:', error);
@@ -7110,21 +7119,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
     try {
       const page = await pdfDoc.getPage(num);
       
-      // Get container dimensions for proper scaling
-      const scrollContainer = modal.querySelector('.pdf-scroll-container');
-      const containerWidth = scrollContainer.clientWidth;
-      const containerHeight = scrollContainer.clientHeight;
+      // Create viewport with current scale
+      const scaledViewport = page.getViewport({ scale: scale });
       
-      // Calculate optimal scale to fit width
-      const viewport = page.getViewport({ scale: 1 });
-      const scaleX = containerWidth / viewport.width;
-      const scaleY = containerHeight / viewport.height;
-      
-      // Use the smaller scale to ensure PDF fits in container
-      const optimalScale = Math.min(scaleX, scaleY, scale);
-      
-      // Create viewport with optimal scale
-      const scaledViewport = page.getViewport({ scale: optimalScale });
+      console.log('🎨 Rendering page', num, 'at scale', scale);
+      console.log('📐 Canvas dimensions:', scaledViewport.width, 'x', scaledViewport.height);
       
       // Set canvas dimensions
       canvas.height = scaledViewport.height;
@@ -7148,23 +7147,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
       prevBtn.disabled = num <= 1;
       nextBtn.disabled = num >= pdfDoc.numPages;
       
-      // Auto-fit to width on first load
-      if (num === 1 && scale === 1.5) {
-        setTimeout(() => {
-          const scrollContainer = modal.querySelector('.pdf-scroll-container');
-          const containerWidth = scrollContainer.clientWidth;
-          const containerHeight = scrollContainer.clientHeight;
-          const viewport = page.getViewport({ scale: 1 });
-          const scaleX = containerWidth / viewport.width;
-          const scaleY = containerHeight / viewport.height;
-          const newScale = Math.min(scaleX, scaleY);
-          if (newScale < scale) {
-            scale = newScale;
-            zoomLevel.textContent = Math.round(scale * 100) + '%';
-            queueRenderPage(num, modal);
-          }
-        }, 100);
-      }
+      // Auto-fit to width on first load (removed as it's now handled in initializePDFViewer)
       
       pageRendering = false;
       
