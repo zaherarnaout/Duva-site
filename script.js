@@ -6263,11 +6263,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
   const SLUGS = {
     about: "/about",
     legal: "/legal",
+    gallery: "/gallery",
   };
 
   const VALID_IDS = new Set([
     "privacy", "terms", "cookies", "warranty",
-    "about", "news", "gallery", "testimonials"
+    "about", "news", "gallery", "testimonials",
+    "new-items", "news-journal"
   ]);
 
   // Adjust to your fixed header height
@@ -6392,7 +6394,101 @@ setTimeout(initializeNewItemsReadMore, 1000);
   console.log('✅ DUVA deep-link router initialized');
 })();
 
-// === END DUVA DEEP-LINK ROUTER ===
+// === HEADER MENU TABS DEEP-LINK ROUTER ===
+/* Navigation system for header menu tabs with smooth scrolling */
+
+(function () {
+  console.log('🔗 Initializing header menu tabs deep-link router...');
+  
+  // Header menu tab configurations
+  const HEADER_TABS = {
+    'header-newproducts-tab': { page: 'gallery', target: 'new-items' },
+    'header-gallery-tab': { page: 'gallery', target: 'gallery' },
+    'header-news-tab': { page: 'gallery', target: 'news-journal' }
+  };
+
+  // Adjust to your fixed header height
+  const SCROLL_OFFSET = 80; // px
+
+  // Utility: smooth scroll with offset
+  function smoothScrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.log('⚠️ Target element not found:', id);
+      return false;
+    }
+    
+    const rect = el.getBoundingClientRect();
+    const top = window.scrollY + rect.top - SCROLL_OFFSET;
+    
+    window.scrollTo({ 
+      top, 
+      behavior: "smooth" 
+    });
+    
+    console.log('📜 Smooth scrolling to:', id, 'at position:', top);
+    return true;
+  }
+
+  // Initialize header menu tabs
+  function initializeHeaderTabs() {
+    Object.entries(HEADER_TABS).forEach(([tabId, config]) => {
+      const tab = document.getElementById(tabId);
+      
+      if (!tab) {
+        console.log('⚠️ Header tab not found:', tabId);
+        return;
+      }
+
+      console.log('🔗 Found header tab:', tabId, '→', config);
+
+      // Set href for no-JS fallback
+      const href = `https://duva-lighting.design.webflow.io${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
+      tab.setAttribute("href", href);
+
+      tab.addEventListener("click", (e) => {
+        const currentPath = window.location.pathname;
+        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+
+        console.log('🖱️ Header tab clicked:', { tabId, config, currentPath, isOnGalleryPage });
+
+        if (isOnGalleryPage) {
+          // Same page → smooth scroll
+          const scrolled = smoothScrollToId(config.target);
+          if (scrolled) {
+            e.preventDefault();
+            // Keep the hash updated without jump
+            history.replaceState(null, "", `#${config.target}`);
+            console.log('✅ Header tab smooth scroll completed to:', config.target);
+          }
+        } else {
+          // Cross-page navigation - let it proceed normally
+          console.log('🌐 Header tab navigating to:', href);
+        }
+      });
+      
+      console.log('✅ Header tab initialized:', tabId);
+    });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeHeaderTabs();
+    });
+  } else {
+    initializeHeaderTabs();
+  }
+
+  // Also initialize after a delay to catch dynamically loaded content
+  setTimeout(() => {
+    initializeHeaderTabs();
+  }, 1000);
+
+  console.log('✅ Header menu tabs deep-link router initialized');
+})();
+
+// === END HEADER MENU TABS DEEP-LINK ROUTER ===
 
 
 
