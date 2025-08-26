@@ -453,8 +453,8 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* Book Pages Layout */
@@ -474,9 +474,6 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
-  /* Remove max-width constraint to allow full stretching */
-  /* max-width: 50%; */
-  /* Remove max-height constraint to allow vertical growth */
   object-fit: contain;
   flex: 1;
 }
@@ -487,14 +484,12 @@
   background: white;
   display: block;
   margin: 0 auto;
-  max-width: 100%;
-  /* Remove max-height constraint to allow vertical growth */
   object-fit: contain;
 }
 
 .pdf-scroll-container {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: auto;
   display: flex;
   align-items: flex-start;
@@ -503,6 +498,11 @@
   flex: 1;
   min-height: 0;
   min-width: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #pdf-canvas {
@@ -511,8 +511,6 @@
   background: white;
   display: block;
   margin: 0 auto;
-  max-width: 100%;
-  /* Remove max-height constraint to allow vertical growth */
   object-fit: contain;
 }
 
