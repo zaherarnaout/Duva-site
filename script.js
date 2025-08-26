@@ -7205,6 +7205,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
     const zoomLevel = modal.querySelector('.zoom-level');
     
     zoomOutBtn.addEventListener('click', () => {
+      if (pageRendering) return; // Prevent multiple clicks
       const minScale = 1.28; // Minimum scale to maintain full width
       scale = Math.max(minScale, scale - 0.25);
       zoomLevel.textContent = Math.round(scale * 100) + '%';
@@ -7212,27 +7213,26 @@ setTimeout(initializeNewItemsReadMore, 1000);
     });
     
     zoomInBtn.addEventListener('click', () => {
+      if (pageRendering) return; // Prevent multiple clicks
       scale = Math.min(3, scale + 0.25);
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
     });
     
     fitWidthBtn.addEventListener('click', () => {
+      if (pageRendering) return; // Prevent multiple clicks
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
       const containerWidth = scrollContainer.clientWidth; // Use full width
-      const page = pdfDoc.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 1 });
-      scale = containerWidth / viewport.width;
+      scale = containerWidth / 623.627; // Original PDF width
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
     });
     
     fitHeightBtn.addEventListener('click', () => {
+      if (pageRendering) return; // Prevent multiple clicks
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
       const containerHeight = scrollContainer.clientHeight; // Use full height
-      const page = pdfDoc.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 1 });
-      scale = containerHeight / viewport.height;
+      scale = containerHeight / 870.236; // Original PDF height
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
     });
@@ -7288,32 +7288,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
       }
     });
 
-    // Window resize handler with debounce
-    const handleResize = () => {
-      if (resizeTimeout) {
-        clearTimeout(resizeTimeout);
-      }
-      
-      resizeTimeout = setTimeout(() => {
-        if (pdfDoc && !pageRendering) {
-          // Only re-render if scale has changed significantly
-          const scrollContainer = modal.querySelector('.pdf-scroll-container');
-          const containerWidth = scrollContainer.clientWidth;
-          
-          // Calculate new scale without getting page (to avoid async issues)
-          const newScale = containerWidth / 623.627; // Original PDF width
-          
-          if (Math.abs(newScale - scale) > 0.1) {
-            scale = newScale;
-            const zoomLevel = modal.querySelector('.zoom-level');
-            zoomLevel.textContent = Math.round(scale * 100) + '%';
-            queueRenderPage(pageNum, modal);
-          }
-        }
-      }, 250); // Debounce for 250ms
-    };
-
-    window.addEventListener('resize', handleResize);
+    // Disable resize handler for now to prevent multiple renders
+    // const handleResize = () => {
+    //   // Temporarily disabled to prevent multiple renders
+    // };
+    // window.addEventListener('resize', handleResize);
 
     // Store resize handler for cleanup
     modal.setAttribute('data-resize-handler', 'true');
