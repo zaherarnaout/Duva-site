@@ -354,6 +354,19 @@ async function initializePDFViewer(modal) {
     const totalPages = modal.querySelector('.total-pages');
     totalPages.textContent = pdfDoc.numPages;
     
+    // Debug container dimensions
+    const pdfContainer = modal.querySelector('.pdf-container');
+    console.log('📏 PDF Container dimensions:', {
+      clientWidth: pdfContainer.clientWidth,
+      clientHeight: pdfContainer.clientHeight,
+      offsetWidth: pdfContainer.offsetWidth,
+      offsetHeight: pdfContainer.offsetHeight,
+      scrollWidth: pdfContainer.scrollWidth,
+      scrollHeight: pdfContainer.scrollHeight,
+      windowInnerWidth: window.innerWidth,
+      windowInnerHeight: window.innerHeight
+    });
+    
     // Render first page
     renderPage(1, modal);
     
