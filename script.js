@@ -6475,8 +6475,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
             console.log('✅ Header tab smooth scroll completed to:', config.target);
           }
         } else {
-          // Cross-page navigation - let it proceed normally
-          console.log('🌐 Header tab navigating to:', href);
+          // Cross-page navigation - use relative URLs to avoid domain issues
+          e.preventDefault();
+          const relativeUrl = `/gallery#${config.target}`;
+          console.log('🌐 Header tab navigating to relative URL:', relativeUrl);
+          
+          // Try to navigate using window.location
+          try {
+            window.location.href = relativeUrl;
+          } catch (error) {
+            console.error('❌ Navigation failed:', error);
+            // Fallback: let the href handle it
+            window.location.href = href;
+          }
         }
       });
       
