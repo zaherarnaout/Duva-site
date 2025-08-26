@@ -6885,6 +6885,72 @@ a .flip-card-wrapper {
 /* === CATALOG DOWNLOAD SYSTEM === */
 /* Enhanced styling for catalog download functionality */
 
+/* Catalog Image Hover Effects */
+.cata-main-download {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  transition: all 0.3s ease;
+}
+
+.cata-main-download:hover {
+  transform: translateY(-5px);
+}
+
+.image-53 {
+  border-top-left-radius: var(--border-8px);
+  border-top-right-radius: var(--border-8px);
+  border-bottom-left-radius: var(--border-8px);
+  border-bottom-right-radius: var(--border-8px);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 5px 0px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.image-53:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 15px 35px 0px;
+  filter: brightness(1.05) contrast(1.1);
+}
+
+/* Catalog Image Shimmer Effect */
+.image-53::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.8s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.image-53:hover::before {
+  left: 100%;
+}
+
+/* Catalog Image Glow Effect */
+.image-53::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(192, 57, 43, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.image-53:hover::after {
+  opacity: 1;
+}
+
 /* Download Progress Container */
 .download-progress-container {
   width: 100%;
@@ -6895,6 +6961,13 @@ a .flip-card-wrapper {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.download-progress-container.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .download-progress-container:hover {
