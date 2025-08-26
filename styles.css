@@ -7694,8 +7694,7 @@ a .flip-card-wrapper {
   margin: 0 auto;
   max-width: 100%;
   max-height: 100%;
-  width: auto;
-  height: auto;
+  /* Remove width: auto; height: auto; to allow proper scaling */
 }
 
 .loading-indicator {
