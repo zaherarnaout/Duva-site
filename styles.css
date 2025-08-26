@@ -6891,6 +6891,8 @@ a .flip-card-wrapper {
   margin-right: auto;
   margin-left: auto;
   transition: all 0.3s ease;
+  overflow: hidden;
+  border-radius: var(--border-8px);
 }
 
 .cata-main-download:hover {
@@ -6908,6 +6910,8 @@ a .flip-card-wrapper {
   overflow: hidden;
   cursor: pointer;
   display: block;
+  width: 100%;
+  height: auto;
 }
 
 .image-53:hover {
@@ -6929,6 +6933,7 @@ a .flip-card-wrapper {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
+  border-radius: inherit;
 }
 
 .image-53:hover::before {
@@ -6982,6 +6987,7 @@ a .flip-card-wrapper {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
+  border-radius: inherit;
 }
 
 .cata-main-download:hover::before {
