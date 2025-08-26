@@ -6552,10 +6552,10 @@ setTimeout(initializeNewItemsReadMore, 1000);
   
   // Configuration
   const DOWNLOAD_CONFIG = {
-    catalogUrl: '/catalog/DUVA-Catalog-2024.pdf', // Update with actual file path
-    catalogSize: '15.2 MB', // Update with actual file size
+    catalogUrl: 'https://raw.githubusercontent.com/zaherarnaout/Duva-site/0fb2511fb1e9fa683f222250be56e7ce0092e10f/Pages%20from%20Duva_Catalogue_2023R4.pdf',
+    catalogSize: '12.8 MB', // Approximate size for PDF
     catalogFormat: 'PDF',
-    lastUpdated: '2024-01-15', // Update with actual date
+    lastUpdated: '2023-R4', // Based on filename
     requireEmail: false, // Set to true to require email before download
     emailEndpoint: '/api/capture-email' // Update with actual endpoint
   };
@@ -6738,7 +6738,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
     // Create temporary link for download
     const link = document.createElement('a');
     link.href = DOWNLOAD_CONFIG.catalogUrl;
-    link.download = 'DUVA-Catalog-2024.pdf';
+    link.download = 'DUVA_Catalogue_2023R4.pdf';
     link.style.display = 'none';
     
     document.body.appendChild(link);
