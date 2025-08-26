@@ -468,9 +468,11 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background: white;
   display: block;
-  max-width: 50%;
+  /* Remove max-width constraint to allow full stretching */
+  /* max-width: 50%; */
   /* Remove max-height constraint to allow vertical growth */
   object-fit: contain;
+  flex: 1;
 }
 
 .single-canvas {
