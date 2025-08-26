@@ -513,21 +513,30 @@ async function renderBookPages(num, modal) {
   
   console.log('📖 Book pages:', leftPageNum, 'and', rightPageNum);
   
-  // Get container width for scaling
+  // Get container dimensions for scaling
   const scrollContainer = modal.querySelector('.pdf-scroll-container');
   const containerWidth = scrollContainer.clientWidth;
-  const pageWidth = containerWidth / 2 - 20; // Leave space between pages
+  const containerHeight = scrollContainer.clientHeight;
   
-  // For book mode, we need to respect the global scale but ensure it fits within the container
-  // Calculate the maximum scale that would fit the page width
-  const maxScaleForWidth = pageWidth / originalPdfWidth;
-  const actualScale = Math.min(scale, maxScaleForWidth);
+  // Calculate scale to fit both pages within the container
+  // Use the global scale but ensure it fits within the container
+  const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
+  const maxScaleForWidth = containerWidth / totalPageWidth;
+  const maxScaleForHeight = containerHeight / originalPdfHeight;
+  const maxScale = Math.min(maxScaleForWidth, maxScaleForHeight);
+  
+  // Use the larger of: global scale or max scale that fits
+  const actualScale = Math.max(scale, maxScale);
   
   console.log('📏 Book mode scale calculation:', {
     containerWidth,
-    pageWidth,
+    containerHeight,
+    totalPageWidth,
     originalPdfWidth,
+    originalPdfHeight,
     maxScaleForWidth,
+    maxScaleForHeight,
+    maxScale,
     globalScale: scale,
     actualScale
   });
@@ -669,9 +678,9 @@ function addPreviewEventListeners(modal) {
     const containerWidth = scrollContainer.clientWidth;
     
     if (bookMode) {
-      // For book mode, each page takes half the width minus gap
-      const pageWidth = containerWidth / 2 - 20;
-      scale = pageWidth / originalPdfWidth;
+      // For book mode, calculate scale to fit both pages within container width
+      const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
+      scale = containerWidth / totalPageWidth;
     } else {
       scale = containerWidth / originalPdfWidth;
     }
