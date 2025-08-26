@@ -6881,3 +6881,368 @@ a .flip-card-wrapper {
 }
 
 /* === END FOOTER LOGO HOME BUTTON === */
+
+/* === CATALOG DOWNLOAD SYSTEM === */
+/* Enhanced styling for catalog download functionality */
+
+/* Download Progress Container */
+.download-progress-container {
+  width: 100%;
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--duva-bg-secondary);
+  border: 1px solid var(--duva-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.download-progress-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Progress Bar */
+.download-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--duva-border-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.download-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--duva-red), #e74c3c);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.download-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Download Status */
+.download-status {
+  font-family: var(--btn-font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--duva-text-primary);
+  text-align: center;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+/* Download Info */
+.download-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--duva-text-secondary);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.download-info span {
+  padding: 4px 8px;
+  background: var(--duva-bg-tertiary);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Enhanced Download Button */
+.button-3 {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.button-3:hover::before {
+  left: 100%;
+}
+
+.button-3:active {
+  transform: translateY(1px) !important;
+}
+
+/* Email Capture Modal */
+.email-capture-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.email-capture-content {
+  background: var(--duva-bg-secondary);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.email-capture-content h3 {
+  font-family: Gotham;
+  color: var(--duva-red);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.email-capture-content p {
+  font-family: Gothamnarrow;
+  color: var(--duva-text-secondary);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Email Capture Form */
+.email-capture-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.email-capture-form input[type="email"] {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid var(--duva-border-primary);
+  border-radius: 8px;
+  font-family: Gothamnarrow;
+  font-size: 16px;
+  background: var(--duva-bg-secondary);
+  color: var(--duva-text-primary);
+  transition: all 0.3s ease;
+}
+
+.email-capture-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--duva-red);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+}
+
+.email-capture-form button[type="submit"] {
+  background: var(--duva-red);
+  color: var(--duva-light-grey);
+  border: none;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-family: var(--btn-font);
+  font-size: var(--btn-size);
+  font-weight: var(--btn-weight);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.email-capture-form button[type="submit"]:hover {
+  background: var(--duva-d-grey);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+}
+
+.skip-email {
+  background: transparent;
+  color: var(--duva-text-secondary);
+  border: 1px solid var(--duva-border-primary);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-family: var(--btn-font);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.skip-email:hover {
+  background: var(--duva-bg-tertiary);
+  color: var(--duva-text-primary);
+}
+
+/* Close Modal Button */
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--duva-text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+  background: var(--duva-bg-tertiary);
+  color: var(--duva-text-primary);
+}
+
+/* Download Notifications */
+.download-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-family: var(--btn-font);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 10001;
+  animation: notificationSlideIn 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes notificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.download-notification.success {
+  background: #28a745;
+  color: white;
+}
+
+.download-notification.error {
+  background: #dc3545;
+  color: white;
+}
+
+.download-notification.info {
+  background: var(--duva-red);
+  color: white;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .download-progress-container {
+    padding: 16px;
+    margin-top: 16px;
+  }
+  
+  .download-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .email-capture-content {
+    padding: 24px;
+    margin: 20px;
+  }
+  
+  .email-capture-content h3 {
+    font-size: 24px;
+  }
+  
+  .email-capture-content p {
+    font-size: 14px;
+  }
+  
+  .download-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+  }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .download-progress-container {
+  background: var(--duva-bg-secondary);
+  border-color: var(--duva-border-primary);
+}
+
+[data-theme="dark"] .download-progress-bar {
+  background: var(--duva-border-secondary);
+}
+
+[data-theme="dark"] .download-info span {
+  background: var(--duva-bg-tertiary);
+  color: var(--duva-text-secondary);
+}
+
+[data-theme="dark"] .email-capture-content {
+  background: var(--duva-bg-secondary);
+}
+
+[data-theme="dark"] .email-capture-form input[type="email"] {
+  background: var(--duva-bg-secondary);
+  border-color: var(--duva-border-primary);
+  color: var(--duva-text-primary);
+}
+
+/* === END CATALOG DOWNLOAD SYSTEM === */
