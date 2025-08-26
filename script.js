@@ -7104,6 +7104,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
         
         // Render first page with new scale
         renderPage(1, modal);
+        
+        // Prevent any further scale changes for a moment
+        setTimeout(() => {
+          console.log('🔒 Scale locked at:', scale);
+        }, 500);
       }, 100);
       
     } catch (error) {
@@ -7199,7 +7204,8 @@ setTimeout(initializeNewItemsReadMore, 1000);
     const zoomLevel = modal.querySelector('.zoom-level');
     
     zoomOutBtn.addEventListener('click', () => {
-      scale = Math.max(0.5, scale - 0.25);
+      const minScale = 1.28; // Minimum scale to maintain full width
+      scale = Math.max(minScale, scale - 0.25);
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
     });
@@ -7287,16 +7293,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
         // Only re-render if scale has changed significantly
         const scrollContainer = modal.querySelector('.pdf-scroll-container');
         const containerWidth = scrollContainer.clientWidth;
-        const page = pdfDoc.getPage(pageNum);
-        const viewport = page.getViewport({ scale: 1 });
-        const newScale = containerWidth / viewport.width;
         
-        if (Math.abs(newScale - scale) > 0.1) {
-          scale = newScale;
-          const zoomLevel = modal.querySelector('.zoom-level');
-          zoomLevel.textContent = Math.round(scale * 100) + '%';
-          queueRenderPage(pageNum, modal);
-        }
+        // Get page asynchronously
+        pdfDoc.getPage(pageNum).then(page => {
+          const viewport = page.getViewport({ scale: 1 });
+          const newScale = containerWidth / viewport.width;
+          
+          if (Math.abs(newScale - scale) > 0.1) {
+            scale = newScale;
+            const zoomLevel = modal.querySelector('.zoom-level');
+            zoomLevel.textContent = Math.round(scale * 100) + '%';
+            queueRenderPage(pageNum, modal);
+          }
+        });
       }
     };
 
