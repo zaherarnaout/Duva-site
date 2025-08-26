@@ -7083,6 +7083,17 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const totalPages = modal.querySelector('.total-pages');
       totalPages.textContent = pdfDoc.numPages;
       
+      // Force full width on first load
+      const scrollContainer = modal.querySelector('.pdf-scroll-container');
+      const containerWidth = scrollContainer.clientWidth;
+      const page = await pdfDoc.getPage(1);
+      const viewport = page.getViewport({ scale: 1 });
+      scale = containerWidth / viewport.width;
+      
+      // Update zoom level display
+      const zoomLevel = modal.querySelector('.zoom-level');
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      
       // Render first page
       renderPage(1, modal);
       
@@ -7098,16 +7109,31 @@ setTimeout(initializeNewItemsReadMore, 1000);
     
     try {
       const page = await pdfDoc.getPage(num);
-      const viewport = page.getViewport({ scale });
+      
+      // Get container dimensions for proper scaling
+      const scrollContainer = modal.querySelector('.pdf-scroll-container');
+      const containerWidth = scrollContainer.clientWidth;
+      const containerHeight = scrollContainer.clientHeight;
+      
+      // Calculate optimal scale to fit width
+      const viewport = page.getViewport({ scale: 1 });
+      const scaleX = containerWidth / viewport.width;
+      const scaleY = containerHeight / viewport.height;
+      
+      // Use the smaller scale to ensure PDF fits in container
+      const optimalScale = Math.min(scaleX, scaleY, scale);
+      
+      // Create viewport with optimal scale
+      const scaledViewport = page.getViewport({ scale: optimalScale });
       
       // Set canvas dimensions
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+      canvas.height = scaledViewport.height;
+      canvas.width = scaledViewport.width;
       
       // Render PDF page
       const renderContext = {
         canvasContext: ctx,
-        viewport: viewport
+        viewport: scaledViewport
       };
       
       await page.render(renderContext).promise;
@@ -7127,7 +7153,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
         setTimeout(() => {
           const scrollContainer = modal.querySelector('.pdf-scroll-container');
           const containerWidth = scrollContainer.clientWidth;
-          const newScale = containerWidth / viewport.width;
+          const containerHeight = scrollContainer.clientHeight;
+          const viewport = page.getViewport({ scale: 1 });
+          const scaleX = containerWidth / viewport.width;
+          const scaleY = containerHeight / viewport.height;
+          const newScale = Math.min(scaleX, scaleY);
           if (newScale < scale) {
             scale = newScale;
             zoomLevel.textContent = Math.round(scale * 100) + '%';
