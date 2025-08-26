@@ -6939,6 +6939,11 @@ setTimeout(initializeNewItemsReadMore, 1000);
   let canvas = null;
   let ctx = null;
   let resizeTimeout = null;
+  let bookMode = true; // Enable book mode by default
+  let leftCanvas = null;
+  let rightCanvas = null;
+  let leftCtx = null;
+  let rightCtx = null;
 
   // Initialize preview functionality
   function initializeCatalogPreview() {
@@ -7027,6 +7032,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
             <button class="control-btn zoom-in" title="Zoom In">+</button>
             <button class="control-btn fit-width" title="Fit to Width">⤢</button>
             <button class="control-btn fit-height" title="Fit to Height">⤡</button>
+            <button class="control-btn book-mode" title="Toggle Book Mode">📖</button>
             <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
           </div>
           <button class="close-preview">×</button>
@@ -7045,7 +7051,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
         
         <div class="pdf-container">
           <div class="pdf-scroll-container">
-            <canvas id="pdf-canvas"></canvas>
+            <!-- Book mode: Two canvases side by side -->
+            <div class="book-pages">
+              <canvas id="left-canvas" class="page-canvas"></canvas>
+              <canvas id="right-canvas" class="page-canvas"></canvas>
+            </div>
+            <!-- Single page mode: One canvas -->
+            <canvas id="pdf-canvas" class="single-canvas" style="display: none;"></canvas>
           </div>
           <div class="loading-indicator">Loading catalog...</div>
         </div>
@@ -7070,7 +7082,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
     try {
       console.log('📄 Loading PDF document...');
       
-      // Get canvas and context
+      // Get canvases and contexts for book mode
+      leftCanvas = modal.querySelector('#left-canvas');
+      rightCanvas = modal.querySelector('#right-canvas');
+      leftCtx = leftCanvas.getContext('2d');
+      rightCtx = rightCanvas.getContext('2d');
+      
+      // Get single canvas for single page mode
       canvas = modal.querySelector('#pdf-canvas');
       ctx = canvas.getContext('2d');
       
@@ -7100,9 +7118,15 @@ setTimeout(initializeNewItemsReadMore, 1000);
         const viewport = page.getViewport({ scale: 1 });
         console.log('📄 Original PDF dimensions:', viewport.width, 'x', viewport.height);
         
-        // Calculate scale to fit full width
-        scale = containerWidth / viewport.width;
-        console.log('🔍 Calculated initial scale:', scale);
+        // Calculate scale to fit full width (adjusted for book mode)
+        if (bookMode) {
+          // For book mode, each page takes half the width minus gap
+          const pageWidth = containerWidth / 2 - 20;
+          scale = pageWidth / viewport.width;
+        } else {
+          scale = containerWidth / viewport.width;
+        }
+        console.log('🔍 Calculated initial scale:', scale, 'book mode:', bookMode);
         
         // Update zoom level display
         const zoomLevel = modal.querySelector('.zoom-level');
@@ -7127,42 +7151,15 @@ setTimeout(initializeNewItemsReadMore, 1000);
       return;
     }
     
-    console.log('🎨 Starting render for page', num, 'at scale', scale);
+    console.log('🎨 Starting render for page', num, 'at scale', scale, 'book mode:', bookMode);
     pageRendering = true;
     
     try {
-      const page = await pdfDoc.getPage(num);
-      
-      // Create viewport with current scale
-      const scaledViewport = page.getViewport({ scale: scale });
-      
-      console.log('🎨 Rendering page', num, 'at scale', scale);
-      console.log('📐 Canvas dimensions:', scaledViewport.width, 'x', scaledViewport.height);
-      
-      // Set canvas dimensions
-      canvas.height = scaledViewport.height;
-      canvas.width = scaledViewport.width;
-      console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
-      
-      // Render PDF page with enhanced options
-      const renderContext = {
-        canvasContext: ctx,
-        viewport: scaledViewport,
-        enableWebGL: false, // Disable WebGL to avoid size limitations
-        renderInteractiveForms: false // Disable forms for better performance
-      };
-      
-      await page.render(renderContext).promise;
-      
-      // Update page info
-      const currentPage = modal.querySelector('.current-page');
-      currentPage.textContent = num;
-      
-      // Update navigation buttons
-      const prevBtn = modal.querySelector('.prev-page');
-      const nextBtn = modal.querySelector('.next-page');
-      prevBtn.disabled = num <= 1;
-      nextBtn.disabled = num >= pdfDoc.numPages;
+      if (bookMode) {
+        await renderBookPages(num, modal);
+      } else {
+        await renderSinglePage(num, modal);
+      }
       
       pageRendering = false;
       console.log('✅ Render completed, pageRendering set to false');
@@ -7183,6 +7180,133 @@ setTimeout(initializeNewItemsReadMore, 1000);
     }
   }
 
+  // Render single page
+  async function renderSinglePage(num, modal) {
+    const page = await pdfDoc.getPage(num);
+    
+    // Create viewport with current scale
+    const scaledViewport = page.getViewport({ scale: scale });
+    
+    console.log('🎨 Rendering single page', num, 'at scale', scale);
+    console.log('📐 Canvas dimensions:', scaledViewport.width, 'x', scaledViewport.height);
+    
+    // Set canvas dimensions
+    canvas.height = scaledViewport.height;
+    canvas.width = scaledViewport.width;
+    console.log('📐 Set canvas dimensions to:', canvas.width, 'x', canvas.height);
+    
+    // Render PDF page with enhanced options
+    const renderContext = {
+      canvasContext: ctx,
+      viewport: scaledViewport,
+      enableWebGL: false,
+      renderInteractiveForms: false
+    };
+    
+    await page.render(renderContext).promise;
+    
+    // Update page info
+    const currentPage = modal.querySelector('.current-page');
+    currentPage.textContent = num;
+    
+    // Update navigation buttons
+    const prevBtn = modal.querySelector('.prev-page');
+    const nextBtn = modal.querySelector('.next-page');
+    prevBtn.disabled = num <= 1;
+    nextBtn.disabled = num >= pdfDoc.numPages;
+  }
+
+  // Render book pages (two pages side by side)
+  async function renderBookPages(num, modal) {
+    console.log('📖 Rendering book pages starting from', num);
+    
+    // Calculate which pages to show
+    let leftPageNum = num;
+    let rightPageNum = num + 1;
+    
+    // If we're on an even page, show previous and current
+    if (num % 2 === 0) {
+      leftPageNum = num - 1;
+      rightPageNum = num;
+    }
+    
+    // Ensure we don't go below page 1
+    if (leftPageNum < 1) {
+      leftPageNum = 1;
+      rightPageNum = 2;
+    }
+    
+    // Ensure we don't go above total pages
+    if (rightPageNum > pdfDoc.numPages) {
+      rightPageNum = pdfDoc.numPages;
+      if (rightPageNum % 2 === 0) {
+        leftPageNum = rightPageNum - 1;
+      } else {
+        leftPageNum = rightPageNum;
+      }
+    }
+    
+    console.log('📖 Book pages:', leftPageNum, 'and', rightPageNum);
+    
+    // Get container width for scaling
+    const scrollContainer = modal.querySelector('.pdf-scroll-container');
+    const containerWidth = scrollContainer.clientWidth;
+    const pageWidth = containerWidth / 2 - 20; // Leave space between pages
+    
+    // Render left page
+    if (leftPageNum <= pdfDoc.numPages) {
+      const leftPage = await pdfDoc.getPage(leftPageNum);
+      const leftViewport = leftPage.getViewport({ scale: 1 });
+      const leftScale = pageWidth / leftViewport.width;
+      
+      leftCanvas.height = leftViewport.height * leftScale;
+      leftCanvas.width = leftViewport.width * leftScale;
+      
+      const leftRenderContext = {
+        canvasContext: leftCtx,
+        viewport: leftPage.getViewport({ scale: leftScale }),
+        enableWebGL: false,
+        renderInteractiveForms: false
+      };
+      
+      await leftPage.render(leftRenderContext).promise;
+      console.log('📐 Left page dimensions:', leftCanvas.width, 'x', leftCanvas.height);
+    }
+    
+    // Render right page
+    if (rightPageNum <= pdfDoc.numPages && rightPageNum !== leftPageNum) {
+      const rightPage = await pdfDoc.getPage(rightPageNum);
+      const rightViewport = rightPage.getViewport({ scale: 1 });
+      const rightScale = pageWidth / rightViewport.width;
+      
+      rightCanvas.height = rightViewport.height * rightScale;
+      rightCanvas.width = rightViewport.width * rightScale;
+      
+      const rightRenderContext = {
+        canvasContext: rightCtx,
+        viewport: rightPage.getViewport({ scale: rightScale }),
+        enableWebGL: false,
+        renderInteractiveForms: false
+      };
+      
+      await rightPage.render(rightRenderContext).promise;
+      console.log('📐 Right page dimensions:', rightCanvas.width, 'x', rightCanvas.height);
+    } else {
+      // Clear right canvas if no second page
+      rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
+    }
+    
+    // Update page info to show current page
+    const currentPage = modal.querySelector('.current-page');
+    currentPage.textContent = num;
+    
+    // Update navigation buttons
+    const prevBtn = modal.querySelector('.prev-page');
+    const nextBtn = modal.querySelector('.next-page');
+    prevBtn.disabled = num <= 1;
+    nextBtn.disabled = num >= pdfDoc.numPages;
+  }
+
   // Add preview event listeners
   function addPreviewEventListeners(modal) {
     // Close button
@@ -7195,13 +7319,25 @@ setTimeout(initializeNewItemsReadMore, 1000);
     
     prevBtn.addEventListener('click', () => {
       if (pageNum > 1 && !pageRendering) {
-        queueRenderPage(pageNum - 1, modal);
+        if (bookMode) {
+          // In book mode, move by 2 pages (except for first page)
+          const newPage = Math.max(1, pageNum - 2);
+          queueRenderPage(newPage, modal);
+        } else {
+          queueRenderPage(pageNum - 1, modal);
+        }
       }
     });
     
     nextBtn.addEventListener('click', () => {
       if (pageNum < pdfDoc.numPages && !pageRendering) {
-        queueRenderPage(pageNum + 1, modal);
+        if (bookMode) {
+          // In book mode, move by 2 pages
+          const newPage = Math.min(pdfDoc.numPages, pageNum + 2);
+          queueRenderPage(newPage, modal);
+        } else {
+          queueRenderPage(pageNum + 1, modal);
+        }
       }
     });
     
@@ -7246,6 +7382,32 @@ setTimeout(initializeNewItemsReadMore, 1000);
       scale = containerHeight / 870.236; // Original PDF height
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       console.log('🔍 Fit height clicked, new scale:', scale, 'container height:', containerHeight);
+      queueRenderPage(pageNum, modal);
+    });
+    
+    // Book mode toggle button
+    const bookModeBtn = modal.querySelector('.book-mode');
+    bookModeBtn.addEventListener('click', () => {
+      bookMode = !bookMode;
+      console.log('📖 Book mode toggled:', bookMode);
+      
+      // Update button appearance
+      bookModeBtn.textContent = bookMode ? '📖' : '📄';
+      bookModeBtn.title = bookMode ? 'Single Page Mode' : 'Book Mode';
+      
+      // Toggle canvas visibility
+      const bookPages = modal.querySelector('.book-pages');
+      const singleCanvas = modal.querySelector('#pdf-canvas');
+      
+      if (bookMode) {
+        bookPages.style.display = 'flex';
+        singleCanvas.style.display = 'none';
+      } else {
+        bookPages.style.display = 'none';
+        singleCanvas.style.display = 'block';
+      }
+      
+      // Re-render current page in new mode
       queueRenderPage(pageNum, modal);
     });
     
