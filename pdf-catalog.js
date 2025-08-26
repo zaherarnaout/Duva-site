@@ -378,11 +378,11 @@ async function initializePDFViewer(modal) {
     
     // Wait for container to be ready
     setTimeout(async () => {
-      // Calculate initial scale for full width
-      const scrollContainer = modal.querySelector('.pdf-scroll-container');
-      const containerWidth = scrollContainer.clientWidth;
-      const containerHeight = scrollContainer.clientHeight;
-      console.log('📏 Container dimensions:', containerWidth, 'x', containerHeight);
+              // Calculate initial scale for full width
+        const scrollContainer = modal.querySelector('.pdf-scroll-container');
+        const containerWidth = window.innerWidth;
+        const containerHeight = window.innerHeight;
+        console.log('📏 Container dimensions:', containerWidth, 'x', containerHeight);
       
       // Calculate scale to fit full container (adjusted for book mode)
       if (bookMode) {
@@ -519,16 +519,16 @@ async function renderBookPages(num, modal) {
   
   // Get container dimensions for scaling
   const scrollContainer = modal.querySelector('.pdf-scroll-container');
-  const containerWidth = scrollContainer.clientWidth;
-  const containerHeight = scrollContainer.clientHeight;
-  
+  const containerWidth = window.innerWidth;
+  const containerHeight = window.innerHeight;
+
   // Calculate scale to fit both pages within the container
   // Use the global scale but ensure it fits within the container
   const totalPageWidth = originalPdfWidth * 2 + 20; // Two pages plus gap
   const maxScaleForWidth = containerWidth / totalPageWidth;
   const maxScaleForHeight = containerHeight / originalPdfHeight;
   const maxScale = Math.min(maxScaleForWidth, maxScaleForHeight);
-  
+
   // Use the larger of: global scale or max scale that fits
   const actualScale = Math.max(scale, maxScale);
   
