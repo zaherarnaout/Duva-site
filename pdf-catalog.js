@@ -30,6 +30,8 @@ let leftCanvas = null;
 let rightCanvas = null;
 let leftCtx = null;
 let rightCtx = null;
+let originalPdfWidth = 623.627;
+let originalPdfHeight = 870.236;
 
 // Initialize PDF catalog functionality
 function initializePDFCatalog() {
@@ -367,24 +369,27 @@ async function initializePDFViewer(modal) {
     const totalPages = modal.querySelector('.total-pages');
     totalPages.textContent = pdfDoc.numPages;
     
+    // Get actual PDF dimensions from first page
+    const firstPage = await pdfDoc.getPage(1);
+    const viewport = firstPage.getViewport({ scale: 1 });
+    originalPdfWidth = viewport.width;
+    originalPdfHeight = viewport.height;
+    console.log('📄 Actual PDF dimensions:', originalPdfWidth, 'x', originalPdfHeight);
+    
     // Wait for container to be ready
     setTimeout(async () => {
-      // Force full width on first load
+      // Calculate initial scale for full width
       const scrollContainer = modal.querySelector('.pdf-scroll-container');
       const containerWidth = scrollContainer.clientWidth;
       console.log('📏 Container width:', containerWidth);
-      
-      const page = await pdfDoc.getPage(1);
-      const viewport = page.getViewport({ scale: 1 });
-      console.log('📄 Original PDF dimensions:', viewport.width, 'x', viewport.height);
       
       // Calculate scale to fit full width (adjusted for book mode)
       if (bookMode) {
         // For book mode, each page takes half the width minus gap
         const pageWidth = containerWidth / 2 - 20;
-        scale = pageWidth / viewport.width;
+        scale = pageWidth / originalPdfWidth;
       } else {
-        scale = containerWidth / viewport.width;
+        scale = containerWidth / originalPdfWidth;
       }
       console.log('🔍 Calculated initial scale:', scale, 'book mode:', bookMode);
       
@@ -623,7 +628,7 @@ function addPreviewEventListeners(modal) {
   
   zoomOutBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
-    const minScale = 1.28; // Minimum scale to maintain full width
+    const minScale = 0.5; // Allow smaller scale for zoom out
     scale = Math.max(minScale, scale - 0.25);
     zoomLevel.textContent = Math.round(scale * 100) + '%';
     console.log('🔍 Zoom out clicked, new scale:', scale);
@@ -632,7 +637,7 @@ function addPreviewEventListeners(modal) {
   
   zoomInBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
-    scale = Math.min(3, scale + 0.25);
+    scale = Math.min(5, scale + 0.25); // Allow larger scale for zoom in
     zoomLevel.textContent = Math.round(scale * 100) + '%';
     console.log('🔍 Zoom in clicked, new scale:', scale);
     queueRenderPage(pageNum, modal);
@@ -641,8 +646,16 @@ function addPreviewEventListeners(modal) {
   fitWidthBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
     const scrollContainer = modal.querySelector('.pdf-scroll-container');
-    const containerWidth = scrollContainer.clientWidth; // Use full width
-    scale = containerWidth / 623.627; // Original PDF width
+    const containerWidth = scrollContainer.clientWidth;
+    
+    if (bookMode) {
+      // For book mode, each page takes half the width minus gap
+      const pageWidth = containerWidth / 2 - 20;
+      scale = pageWidth / originalPdfWidth;
+    } else {
+      scale = containerWidth / originalPdfWidth;
+    }
+    
     zoomLevel.textContent = Math.round(scale * 100) + '%';
     console.log('🔍 Fit width clicked, new scale:', scale, 'container width:', containerWidth);
     queueRenderPage(pageNum, modal);
@@ -651,8 +664,16 @@ function addPreviewEventListeners(modal) {
   fitHeightBtn.addEventListener('click', () => {
     if (pageRendering) return; // Prevent multiple clicks
     const scrollContainer = modal.querySelector('.pdf-scroll-container');
-    const containerHeight = scrollContainer.clientHeight; // Use full height
-    scale = containerHeight / 870.236; // Original PDF height
+    const containerHeight = scrollContainer.clientHeight;
+    
+    if (bookMode) {
+      // For book mode, use height but maintain aspect ratio
+      const pageHeight = containerHeight - 40; // Account for padding
+      scale = pageHeight / originalPdfHeight;
+    } else {
+      scale = containerHeight / originalPdfHeight;
+    }
+    
     zoomLevel.textContent = Math.round(scale * 100) + '%';
     console.log('🔍 Fit height clicked, new scale:', scale, 'container height:', containerHeight);
     queueRenderPage(pageNum, modal);
@@ -679,6 +700,21 @@ function addPreviewEventListeners(modal) {
       bookPages.style.display = 'none';
       singleCanvas.style.display = 'block';
     }
+    
+    // Re-calculate scale for new mode
+    const scrollContainer = modal.querySelector('.pdf-scroll-container');
+    const containerWidth = scrollContainer.clientWidth;
+    
+    if (bookMode) {
+      // For book mode, each page takes half the width minus gap
+      const pageWidth = containerWidth / 2 - 20;
+      scale = pageWidth / originalPdfWidth;
+    } else {
+      scale = containerWidth / originalPdfWidth;
+    }
+    
+    zoomLevel.textContent = Math.round(scale * 100) + '%';
+    console.log('📖 Recalculated scale for new mode:', scale);
     
     // Re-render current page in new mode
     queueRenderPage(pageNum, modal);
@@ -734,12 +770,6 @@ function addPreviewEventListeners(modal) {
       }
     }
   });
-
-  // Disable resize handler for now to prevent multiple renders
-  // const handleResize = () => {
-  //   // Temporarily disabled to prevent multiple renders
-  // };
-  // window.addEventListener('resize', handleResize);
 
   // Store resize handler for cleanup
   modal.setAttribute('data-resize-handler', 'true');
