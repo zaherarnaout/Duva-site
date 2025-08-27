@@ -1448,12 +1448,12 @@
   cursor: default;
 }
 
-/* PDF Container should not be selectable - only text layer elements */
+/* PDF Container should allow text selection */
 .pdf-container {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: auto;
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
 }
 
 /* Text Layer Styling */
@@ -1464,13 +1464,13 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
-  opacity: 0;
+  opacity: 1;
   line-height: 1.0;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  pointer-events: none;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto;
   z-index: 10;
 }
 
