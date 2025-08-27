@@ -352,14 +352,8 @@ function showPreviewModal() {
   // Add event listeners
   addPreviewEventListeners(modal);
   
-  // Add scroll and resize listeners for search highlight positioning
-  const pdfContainer = modal.querySelector('.pdf-container');
-  pdfContainer.addEventListener('scroll', () => {
-    if (searchState.isActive) highlightCurrentMatch(modal);
-  });
-  window.addEventListener('resize', () => {
-    if (searchState.isActive) highlightCurrentMatch(modal);
-  });
+  // Note: Scroll and resize listeners removed - highlights are now anchored to canvas parents
+  // and will automatically stay in sync without needing manual repositioning
 }
 
 // Initialize PDF viewer - SIMPLIFIED
@@ -1061,14 +1055,6 @@ function highlightCurrentMatch(modal) {
   const currentMatch = searchState.matches[searchState.currentMatch - 1];
   if (!currentMatch) return;
   
-  // Create or update highlight overlay
-  let highlightOverlay = modal.querySelector('.search-highlight-overlay');
-  if (!highlightOverlay) {
-    highlightOverlay = document.createElement('div');
-    highlightOverlay.className = 'search-highlight-overlay';
-    modal.querySelector('.pdf-container').appendChild(highlightOverlay);
-  }
-  
   // Get the correct canvas based on current mode and page
   let targetCanvas = null;
   let canvasContainer = null;
@@ -1106,38 +1092,33 @@ function highlightCurrentMatch(modal) {
   
   if (!targetCanvas || !canvasContainer) return;
   
-  // Get the PDF container for positioning reference
-  const pdfContainer = modal.querySelector('.pdf-container');
+  // Create or update highlight overlay anchored to the canvas container
+  let highlight = canvasContainer.querySelector(`.search-highlight-overlay[data-for="${targetCanvas.id}"]`);
+  if (!highlight) {
+    highlight = document.createElement('div');
+    highlight.className = 'search-highlight-overlay';
+    highlight.dataset.for = targetCanvas.id;
+    highlight.style.position = 'absolute';
+    highlight.style.pointerEvents = 'none';
+    highlight.style.zIndex = '1000';
+    highlight.style.background = 'rgba(255, 255, 0, 0.6)';
+    highlight.style.border = '2px solid #ff6b35';
+    highlight.style.borderRadius = '2px';
+    highlight.style.animation = 'searchPulse 1s ease-in-out infinite alternate';
+    canvasContainer.appendChild(highlight);
+  }
   
-  // Calculate highlight position relative to the PDF container
-  // Use the canvas position within the PDF container
-  const canvasRect = targetCanvas.getBoundingClientRect();
-  const pdfContainerRect = pdfContainer.getBoundingClientRect();
+  // Calculate highlight position using offset positioning (no getBoundingClientRect needed)
+  const left = targetCanvas.offsetLeft + (currentMatch.x * scale);
+  const top = targetCanvas.offsetTop + ((currentMatch.y - currentMatch.height) * scale);
   
-  // Calculate the offset of the canvas within the PDF container
-  const canvasOffsetLeft = canvasRect.left - pdfContainerRect.left;
-  const canvasOffsetTop = canvasRect.top - pdfContainerRect.top;
+  highlight.style.left = left + 'px';
+  highlight.style.top = top + 'px';
+  highlight.style.width = (currentMatch.width * scale) + 'px';
+  highlight.style.height = (currentMatch.height * scale) + 'px';
   
-  // Calculate highlight position using PDF coordinates scaled to current viewport
-  const highlightLeft = canvasOffsetLeft + (currentMatch.x * scale);
-          const highlightTop = canvasOffsetTop + ((currentMatch.y - currentMatch.height) * scale);
-  
-  highlightOverlay.style.cssText = `
-    position: absolute;
-    left: ${highlightLeft}px;
-    top: ${highlightTop}px;
-    width: ${currentMatch.width * scale}px;
-    height: ${currentMatch.height * scale}px;
-    background: rgba(255, 255, 0, 0.6);
-    border: 2px solid #ff6b35;
-    border-radius: 2px;
-    pointer-events: none;
-    z-index: 1000;
-    animation: searchPulse 1s ease-in-out infinite alternate;
-  `;
-  
-  console.log('🎯 Highlight positioned at:', highlightLeft, highlightTop, 'for match:', currentMatch.text);
-  console.log('📏 Canvas offset:', canvasOffsetLeft, canvasOffsetTop, 'PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
+  console.log('🎯 Highlight positioned at:', left, top, 'for match:', currentMatch.text);
+  console.log('📏 Canvas offset:', targetCanvas.offsetLeft, targetCanvas.offsetTop, 'PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
 }
 
 // Update search UI with match counter
@@ -1216,11 +1197,9 @@ function clearSearch(modal) {
   searchState.totalMatches = 0;
   searchState.matches = [];
   
-  // Remove highlight overlay
-  const highlightOverlay = modal.querySelector('.search-highlight-overlay');
-  if (highlightOverlay) {
-    highlightOverlay.remove();
-  }
+  // Remove highlight overlays from all canvas containers
+  const highlightOverlays = modal.querySelectorAll('.search-highlight-overlay');
+  highlightOverlays.forEach(overlay => overlay.remove());
   
   // Remove search controls
   const searchControls = modal.querySelector('.search-controls');
@@ -1609,11 +1588,9 @@ async function addTextLayer(page, viewport, canvas, modal) {
       canvasContainer.appendChild(textLayer);
     }
     
-    // Position this layer exactly over its canvas
-    const canvasRect = canvas.getBoundingClientRect();
-    const parentRect = canvasContainer.getBoundingClientRect();
-    textLayer.style.left = (canvasRect.left - parentRect.left) + 'px';
-    textLayer.style.top = (canvasRect.top - parentRect.top) + 'px';
+    // Position this layer exactly over its canvas using offset positioning
+    textLayer.style.left = canvas.offsetLeft + 'px';
+    textLayer.style.top = canvas.offsetTop + 'px';
     textLayer.style.width = viewport.width + 'px';
     textLayer.style.height = viewport.height + 'px';
     
