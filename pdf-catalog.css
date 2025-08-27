@@ -436,6 +436,7 @@
   background: var(--duva-bg-secondary);
   border-bottom: 1px solid var(--duva-border-primary);
   flex-shrink: 0;
+  position: relative;
 }
 
 .search-input {
@@ -562,9 +563,17 @@
    flex-shrink: 0;
  }
  
- .pdf-sidebar.collapsed {
-   width: 50px;
- }
+   .pdf-sidebar.collapsed {
+    width: 50px;
+  }
+  
+  .pdf-sidebar.collapsed .toggle-sidebar {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
  
    .sidebar-header {
     display: flex;
@@ -1294,6 +1303,115 @@
   .go-to-page-btn {
     padding: 6px 12px;
     font-size: 11px;
+  }
+}
+
+/* === BROWSER-LIKE SEARCH STYLES === */
+
+/* Search Controls */
+.search-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  padding: 4px 8px;
+  background: var(--duva-bg-primary);
+  border: 1px solid var(--duva-border-primary);
+  border-radius: 6px;
+}
+
+.search-counter {
+  font-family: var(--btn-font);
+  font-size: 12px;
+  color: var(--duva-text-secondary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.search-nav-btn {
+  background: var(--duva-bg-primary);
+  border: 1px solid var(--duva-border-primary);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: var(--btn-font);
+  font-size: 14px;
+  color: var(--duva-text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-nav-btn:hover:not(:disabled) {
+  background: var(--duva-red);
+  color: white;
+  border-color: var(--duva-red);
+  transform: translateY(-1px);
+}
+
+.search-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.search-close-btn {
+  background: none;
+  border: none;
+  color: var(--duva-text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.search-close-btn:hover {
+  background: var(--duva-border-primary);
+  color: var(--duva-text-primary);
+}
+
+/* Search Highlight Overlay */
+.search-highlight-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes searchPulse {
+  0% {
+    background: rgba(255, 255, 0, 0.6);
+    border-color: #ff6b35;
+  }
+  100% {
+    background: rgba(255, 255, 0, 0.8);
+    border-color: #ff4500;
+  }
+}
+
+/* Mobile responsive for search controls */
+@media (max-width: 768px) {
+  .search-controls {
+    margin-left: 8px;
+    gap: 4px;
+    padding: 3px 6px;
+  }
+  
+  .search-counter {
+    font-size: 11px;
+    min-width: 50px;
+  }
+  
+  .search-nav-btn {
+    padding: 3px 6px;
+    font-size: 12px;
+    min-width: 24px;
+  }
+  
+  .search-close-btn {
+    font-size: 14px;
+    padding: 3px;
   }
 }
 
