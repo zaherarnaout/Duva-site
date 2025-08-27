@@ -548,6 +548,9 @@ async function renderBookPages(num, modal) {
     };
     
     await leftPage.render(leftRenderContext).promise;
+    
+    // Add text layer for left page
+    await addTextLayer(leftPage, leftViewport, leftCanvas, modal);
   }
   
   // Render right page
@@ -564,6 +567,9 @@ async function renderBookPages(num, modal) {
     };
     
     await rightPage.render(rightRenderContext).promise;
+    
+    // Add text layer for right page
+    await addTextLayer(rightPage, rightViewport, rightCanvas, modal);
   } else {
     // Clear right canvas if no second page
     rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
@@ -981,7 +987,7 @@ function highlightCurrentMatch(modal) {
   
   // Get the correct canvas based on current mode and page
   let targetCanvas = null;
-  let rect = null;
+  let canvasContainer = null;
   
   if (bookMode) {
     // For book mode, determine which canvas to highlight based on page number
@@ -999,28 +1005,31 @@ function highlightCurrentMatch(modal) {
     
     if (currentMatch.page === leftPageNum) {
       targetCanvas = leftCanvas;
+      canvasContainer = leftCanvas.parentElement;
     } else if (currentMatch.page === rightPageNum) {
       targetCanvas = rightCanvas;
+      canvasContainer = rightCanvas.parentElement;
     } else {
       // Fallback to left canvas
       targetCanvas = leftCanvas;
+      canvasContainer = leftCanvas.parentElement;
     }
   } else {
     // For single page mode
     targetCanvas = modal.querySelector('#pdf-canvas');
+    canvasContainer = targetCanvas.parentElement;
   }
   
-  if (!targetCanvas) return;
+  if (!targetCanvas || !canvasContainer) return;
   
-  rect = targetCanvas.getBoundingClientRect();
-  
-  // Calculate position relative to the PDF container
+  // Position highlight relative to the canvas container
+  const containerRect = canvasContainer.getBoundingClientRect();
   const pdfContainer = modal.querySelector('.pdf-container');
-  const containerRect = pdfContainer.getBoundingClientRect();
+  const pdfContainerRect = pdfContainer.getBoundingClientRect();
   
-  // Calculate highlight position
-  const highlightLeft = (rect.left - containerRect.left) + (currentMatch.x * scale);
-  const highlightTop = (rect.top - containerRect.top) + (currentMatch.y * scale);
+  // Calculate highlight position using the corrected coordinates
+  const highlightLeft = (containerRect.left - pdfContainerRect.left) + (currentMatch.x * scale);
+  const highlightTop = (containerRect.top - pdfContainerRect.top) + (currentMatch.y * scale);
   
   highlightOverlay.style.cssText = `
     position: absolute;
@@ -1035,6 +1044,8 @@ function highlightCurrentMatch(modal) {
     z-index: 1000;
     animation: searchPulse 1s ease-in-out infinite alternate;
   `;
+  
+  console.log('🎯 Highlight positioned at:', highlightLeft, highlightTop, 'for match:', currentMatch.text);
 }
 
 // Update search UI with match counter
@@ -1521,20 +1532,22 @@ async function addTextLayer(page, viewport, canvas, modal) {
     textLayer.style.width = viewport.width + 'px';
     textLayer.style.height = viewport.height + 'px';
     
-    // Create text elements
+    // Create text elements with corrected positioning
     const textDivs = textContent.items.map(item => {
-      const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+      // Use the viewport transform to get correct positioning
+      const transform = pdfjsLib.Util.transform(viewport.transform, item.transform);
       const style = textContent.styles[item.fontName];
       
-      const fontSize = Math.sqrt((tx[0] * tx[0]) + (tx[1] * tx[1]));
+      const fontSize = Math.sqrt((transform[0] * transform[0]) + (transform[1] * transform[1]));
       const fontFamily = style ? style.fontFamily : 'sans-serif';
       
       const textDiv = document.createElement('div');
       textDiv.style.cssText = `
         position: absolute;
+        left: ${transform[4]}px;
+        top: ${transform[5]}px;
         font-size: ${fontSize}px;
         font-family: ${fontFamily};
-        transform: matrix(${tx.join(',')});
         white-space: pre;
         cursor: text;
         user-select: text;
@@ -1542,6 +1555,8 @@ async function addTextLayer(page, viewport, canvas, modal) {
         -moz-user-select: text;
         -ms-user-select: text;
         pointer-events: auto;
+        color: transparent;
+        background: transparent;
       `;
       textDiv.textContent = item.str;
       
