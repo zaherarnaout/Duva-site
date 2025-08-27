@@ -1437,23 +1437,23 @@
   z-index: 1000;
 }
 
-/* Make PDF text selectable */
+/* Canvas elements should not be selectable - only text layer elements */
 .page-canvas,
 .single-canvas,
 #pdf-canvas {
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  cursor: text;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
 }
 
-/* PDF Container text selection */
+/* PDF Container should not be selectable - only text layer elements */
 .pdf-container {
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 /* Text Layer Styling */
