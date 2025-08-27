@@ -278,8 +278,9 @@ function showPreviewModal() {
   modal.className = 'catalog-preview-modal';
   modal.innerHTML = `
     <div class="preview-content">
-      <div class="preview-header">
-        <h3>DUVA Catalog Preview</h3>
+             <div class="preview-header">
+         <div class="header-logo-bg"></div>
+         <h3>DUVA Catalog Preview</h3>
                  <div class="preview-controls">
            <button class="control-btn zoom-out" title="Zoom Out">−</button>
            <span class="zoom-level">${Math.round(scale * 100)}%</span>
