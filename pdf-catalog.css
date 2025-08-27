@@ -347,11 +347,20 @@
  }
 
  .mode-icon {
-   width: 20px;
-   height: 20px;
+   height: 24px;
    filter: var(--icon-filter);
    transition: filter 0.3s ease;
    padding: 1px;
+ }
+
+ /* Single page icon - narrower */
+ .book-mode[title="Single Page Mode"] .mode-icon {
+   width: 24px;
+ }
+
+ /* Double page icon - wider to represent two pages */
+ .book-mode[title="Book Mode"] .mode-icon {
+   width: 48px;
  }
 
  .control-btn:hover .mode-icon {
