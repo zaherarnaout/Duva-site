@@ -433,11 +433,19 @@ async function renderPage(num, modal) {
   console.log('🎨 Rendering page', num, 'at scale', scale, 'book mode:', bookMode);
   pageRendering = true;
   
+  // Clean up old overlays before rendering different page
+  modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
+  
   try {
     if (bookMode) {
       await renderBookPages(num, modal);
     } else {
       await renderSinglePage(num, modal);
+    }
+    
+    // Call highlight after render if search is active
+    if (searchState.isActive) {
+      highlightCurrentMatch(modal);
     }
     
     pageRendering = false;
@@ -707,53 +715,56 @@ function addPreviewEventListeners(modal) {
      queueRenderPage(pageNum, modal);
    });
   
-  // Book mode toggle button
-  const bookModeBtn = modal.querySelector('.book-mode');
-  bookModeBtn.addEventListener('click', () => {
-    bookMode = !bookMode;
-    console.log('📖 Book mode toggled:', bookMode);
-    
-               // Update button appearance
-      const modeIcon = bookModeBtn.querySelector('.mode-icon');
-      if (bookMode) {
-        modeIcon.className = 'mode-icon single-icon';
-        bookModeBtn.title = 'Single Page Mode';
-      } else {
-        modeIcon.className = 'mode-icon book-icon';
-        bookModeBtn.title = 'Book Mode';
+     // Book mode toggle button
+   const bookModeBtn = modal.querySelector('.book-mode');
+   bookModeBtn.addEventListener('click', () => {
+     bookMode = !bookMode;
+     console.log('📖 Book mode toggled:', bookMode);
+     
+     // Clean up old overlays when toggling modes
+     modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
+     
+                // Update button appearance
+       const modeIcon = bookModeBtn.querySelector('.mode-icon');
+       if (bookMode) {
+         modeIcon.className = 'mode-icon single-icon';
+         bookModeBtn.title = 'Single Page Mode';
+       } else {
+         modeIcon.className = 'mode-icon book-icon';
+         bookModeBtn.title = 'Book Mode';
+       }
+     
+     // Toggle canvas visibility
+     const bookPages = modal.querySelector('.book-pages');
+     const singleCanvas = modal.querySelector('#pdf-canvas');
+     const zoomLevel = modal.querySelector('.zoom-level');
+     
+     if (bookMode) {
+       bookPages.style.display = 'flex';
+       singleCanvas.style.display = 'none';
+       // Reset scale for book mode
+       scale = 1.0;
+       zoomLevel.textContent = Math.round(scale * 100) + '%';
+       queueRenderPage(pageNum, modal);
+          } else {
+        bookPages.style.display = 'none';
+        singleCanvas.style.display = 'block';
+                // Calculate scale to fit width for single page mode
+         (async () => {
+           const page = await pdfDoc.getPage(pageNum);
+           const originalViewport = page.getViewport({ scale: 1 });
+           const pdfContainer = modal.querySelector('.pdf-container');
+           const containerWidth = pdfContainer.clientWidth - 40;
+           const scaleForWidth = containerWidth / originalViewport.width;
+           scale = Math.max(1.0, scaleForWidth);
+           console.log('📏 Switching to single page mode, scale set to:', scale);
+           
+           zoomLevel.textContent = Math.round(scale * 100) + '%';
+           // Force immediate render for single page mode
+           renderPage(pageNum, modal);
+         })();
       }
-    
-    // Toggle canvas visibility
-    const bookPages = modal.querySelector('.book-pages');
-    const singleCanvas = modal.querySelector('#pdf-canvas');
-    const zoomLevel = modal.querySelector('.zoom-level');
-    
-    if (bookMode) {
-      bookPages.style.display = 'flex';
-      singleCanvas.style.display = 'none';
-      // Reset scale for book mode
-      scale = 1.0;
-      zoomLevel.textContent = Math.round(scale * 100) + '%';
-      queueRenderPage(pageNum, modal);
-         } else {
-       bookPages.style.display = 'none';
-       singleCanvas.style.display = 'block';
-               // Calculate scale to fit width for single page mode
-        (async () => {
-          const page = await pdfDoc.getPage(pageNum);
-          const originalViewport = page.getViewport({ scale: 1 });
-          const pdfContainer = modal.querySelector('.pdf-container');
-          const containerWidth = pdfContainer.clientWidth - 40;
-          const scaleForWidth = containerWidth / originalViewport.width;
-          scale = Math.max(1.0, scaleForWidth);
-          console.log('📏 Switching to single page mode, scale set to:', scale);
-          
-          zoomLevel.textContent = Math.round(scale * 100) + '%';
-          // Force immediate render for single page mode
-          renderPage(pageNum, modal);
-        })();
-     }
-  });
+   });
   
   // Fullscreen button
   const fullscreenBtn = modal.querySelector('.fullscreen');
@@ -1057,7 +1068,6 @@ function highlightCurrentMatch(modal) {
   
   // Get the correct canvas based on current mode and page
   let targetCanvas = null;
-  let canvasContainer = null;
   
   if (bookMode) {
     // For book mode, determine which canvas to highlight based on page number
@@ -1075,42 +1085,42 @@ function highlightCurrentMatch(modal) {
     
     if (currentMatch.page === leftPageNum) {
       targetCanvas = leftCanvas;
-      canvasContainer = leftCanvas.parentElement;
     } else if (currentMatch.page === rightPageNum) {
       targetCanvas = rightCanvas;
-      canvasContainer = rightCanvas.parentElement;
     } else {
       // Fallback to left canvas
       targetCanvas = leftCanvas;
-      canvasContainer = leftCanvas.parentElement;
     }
   } else {
     // For single page mode
     targetCanvas = modal.querySelector('#pdf-canvas');
-    canvasContainer = targetCanvas.parentElement;
   }
   
-  if (!targetCanvas || !canvasContainer) return;
+  if (!targetCanvas) return;
   
-  // Create or update highlight overlay anchored to the canvas container
-  let highlight = canvasContainer.querySelector(`.search-highlight-overlay[data-for="${targetCanvas.id}"]`);
+  // Use the canvas's parent (same one used for .text-layer)
+  const canvasParent = targetCanvas.parentElement;
+  canvasParent.style.position = 'relative';
+  
+  // Create or reuse a per-canvas overlay
+  let highlight = canvasParent.querySelector(`.search-highlight-overlay[data-for="${targetCanvas.id}"]`);
   if (!highlight) {
     highlight = document.createElement('div');
     highlight.className = 'search-highlight-overlay';
     highlight.dataset.for = targetCanvas.id;
     highlight.style.position = 'absolute';
     highlight.style.pointerEvents = 'none';
-    highlight.style.zIndex = '1000';
-    highlight.style.background = 'rgba(255, 255, 0, 0.6)';
+    highlight.style.background = 'rgba(255, 255, 0, 0.35)';
     highlight.style.border = '2px solid #ff6b35';
     highlight.style.borderRadius = '2px';
     highlight.style.animation = 'searchPulse 1s ease-in-out infinite alternate';
-    canvasContainer.appendChild(highlight);
+    highlight.style.zIndex = '20'; // above .text-layer
+    canvasParent.appendChild(highlight);
   }
   
-  // Calculate highlight position using offset positioning (no getBoundingClientRect needed)
-  const left = targetCanvas.offsetLeft + (currentMatch.x * scale);
-  const top = targetCanvas.offsetTop + ((currentMatch.y - currentMatch.height) * scale);
+  // IMPORTANT: position purely from PDF coords × scale (no container offsets)
+  const left = currentMatch.x * scale;
+  const top = (currentMatch.y - currentMatch.height) * scale; // y is baseline → subtract height to get top
   
   highlight.style.left = left + 'px';
   highlight.style.top = top + 'px';
@@ -1118,7 +1128,7 @@ function highlightCurrentMatch(modal) {
   highlight.style.height = (currentMatch.height * scale) + 'px';
   
   console.log('🎯 Highlight positioned at:', left, top, 'for match:', currentMatch.text);
-  console.log('📏 Canvas offset:', targetCanvas.offsetLeft, targetCanvas.offsetTop, 'PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
+  console.log('📏 PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
 }
 
 // Update search UI with match counter
