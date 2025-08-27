@@ -561,6 +561,7 @@
    flex-direction: column;
    transition: width 0.3s ease;
    flex-shrink: 0;
+   position: relative;
  }
  
    .pdf-sidebar.collapsed {
