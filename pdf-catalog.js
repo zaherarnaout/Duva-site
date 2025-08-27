@@ -367,8 +367,18 @@ async function initializePDFViewer(modal) {
       windowInnerHeight: window.innerHeight
     });
     
-    // Render first page
-    renderPage(1, modal);
+         // Calculate initial scale for single page mode
+     const firstPage = await pdfDoc.getPage(1);
+     const originalViewport = firstPage.getViewport({ scale: 1 });
+     const containerWidth = pdfContainer.clientWidth - 40;
+     const initialScaleForWidth = containerWidth / originalViewport.width;
+     
+     // Set initial scale to fit width for single page mode
+     scale = Math.max(1.0, initialScaleForWidth);
+     console.log('🎯 Initial scale set to:', scale, 'to fit width:', containerWidth);
+     
+     // Render first page
+     renderPage(1, modal);
     
   } catch (error) {
     console.error('❌ Error loading PDF:', error);
@@ -421,14 +431,15 @@ async function renderSinglePage(num, modal) {
   const originalViewport = page.getViewport({ scale: 1 });
   const scaleForWidth = containerWidth / originalViewport.width;
   
-  // Use the larger of: calculated scale or current zoom scale
-  const actualScale = Math.max(scale, scaleForWidth);
+  // For single page mode, use the current zoom scale directly
+  // This allows zoom controls to work properly
+  const actualScale = scale;
   
   // Create viewport with actual scale
   const viewport = page.getViewport({ scale: actualScale });
   
   console.log('🎨 Rendering single page at scale:', actualScale, 'viewport:', viewport.width, 'x', viewport.height);
-  console.log('📏 Container width:', containerWidth, 'original PDF width:', originalViewport.width, 'scale for width:', scaleForWidth);
+  console.log('📏 Container width:', containerWidth, 'original PDF width:', originalViewport.width, 'scale for width:', scaleForWidth, 'current zoom scale:', scale);
   
   // Set canvas dimensions based on actual PDF size and scale
   canvas.height = viewport.height;
@@ -602,17 +613,31 @@ function addPreviewEventListeners(modal) {
     // Toggle canvas visibility
     const bookPages = modal.querySelector('.book-pages');
     const singleCanvas = modal.querySelector('#pdf-canvas');
+    const zoomLevel = modal.querySelector('.zoom-level');
     
     if (bookMode) {
       bookPages.style.display = 'flex';
       singleCanvas.style.display = 'none';
+      // Reset scale for book mode
+      scale = 1.0;
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
     } else {
       bookPages.style.display = 'none';
       singleCanvas.style.display = 'block';
+      // Calculate scale to fit width for single page mode
+      (async () => {
+        const page = await pdfDoc.getPage(pageNum);
+        const originalViewport = page.getViewport({ scale: 1 });
+        const containerWidth = pdfContainer.clientWidth - 40;
+        const scaleForWidth = containerWidth / originalViewport.width;
+        scale = Math.max(1.0, scaleForWidth);
+        console.log('📏 Switching to single page mode, scale set to:', scale);
+        
+        zoomLevel.textContent = Math.round(scale * 100) + '%';
+        queueRenderPage(pageNum, modal);
+      })();
     }
-    
-    // Re-render current page in new mode with proper scaling
-    queueRenderPage(pageNum, modal);
   });
   
   // Fullscreen button
