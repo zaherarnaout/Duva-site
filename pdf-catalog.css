@@ -1536,3 +1536,18 @@
 }
 
 /* === END PDF CATALOG SYSTEM === */
+
+/* FINAL OVERRIDE – ensure text selection works */
+.pdf-container { 
+  user-select: auto !important; 
+  -webkit-user-select: auto !important; 
+}
+.text-layer { 
+  opacity: 1 !important; 
+  user-select: text !important; 
+  pointer-events: auto !important; 
+}
+.text-layer div { 
+  user-select: text !important; 
+  pointer-events: auto !important; 
+}
