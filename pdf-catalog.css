@@ -635,13 +635,16 @@
    box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3);
  }
  
- .thumbnail-canvas {
-   width: 100%;
-   height: auto;
-   display: block;
-   background: white;
-   border-radius: 4px;
- }
+   .thumbnail-canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: white;
+    border-radius: 4px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
  
  .thumbnail-number {
    position: absolute;
