@@ -1600,19 +1600,27 @@ async function addTextLayer(page, viewport, canvas, modal) {
     const canvasContainer = canvas.parentElement;
     canvasContainer.style.position = 'relative';
     
-    let textLayer = canvasContainer.querySelector('.text-layer');
+    // Create unique text layer for each canvas using data-for attribute
+    let textLayer = canvasContainer.querySelector(`.text-layer[data-for="${canvas.id}"]`);
     if (!textLayer) {
       textLayer = document.createElement('div');
       textLayer.className = 'text-layer';
+      textLayer.dataset.for = canvas.id;
       canvasContainer.appendChild(textLayer);
     }
+    
+    // Position this layer exactly over its canvas
+    const canvasRect = canvas.getBoundingClientRect();
+    const parentRect = canvasContainer.getBoundingClientRect();
+    textLayer.style.left = (canvasRect.left - parentRect.left) + 'px';
+    textLayer.style.top = (canvasRect.top - parentRect.top) + 'px';
+    textLayer.style.width = viewport.width + 'px';
+    textLayer.style.height = viewport.height + 'px';
     
     // Clear existing text
     textLayer.innerHTML = '';
     
-    // Set text layer dimensions
-    textLayer.style.width = viewport.width + 'px';
-    textLayer.style.height = viewport.height + 'px';
+    // Text layer dimensions are now set above with positioning
     
     // Debug: Check text layer styles after creation
     console.log('🔍 Text layer styles after creation:', {
