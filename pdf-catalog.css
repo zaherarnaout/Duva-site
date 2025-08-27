@@ -593,8 +593,8 @@
   }
   
   .page-jump-input {
-    width: 50px;
-    padding: 4px 6px;
+    width: 70px;
+    padding: 4px 8px;
     border: 1px solid var(--duva-border-primary);
     border-radius: 4px;
     font-family: var(--btn-font);
@@ -1035,11 +1035,11 @@
       font-size: 12px;
     }
     
-    .page-jump-input {
-      width: 40px;
-      font-size: 11px;
-      padding: 3px 4px;
-    }
+         .page-jump-input {
+       width: 60px;
+       font-size: 11px;
+       padding: 3px 6px;
+     }
     
     .page-jump-btn {
       font-size: 10px;
