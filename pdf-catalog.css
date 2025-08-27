@@ -566,26 +566,73 @@
    width: 50px;
  }
  
- .sidebar-header {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   padding: 12px 16px;
-   border-bottom: 1px solid var(--duva-border-primary);
-   background: var(--duva-bg-primary);
- }
+   .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--duva-border-primary);
+    background: var(--duva-bg-primary);
+    gap: 8px;
+  }
  
- .sidebar-header h4 {
-   font-family: var(--btn-font);
-   font-size: 14px;
-   color: var(--duva-text-primary);
-   margin: 0;
-   transition: opacity 0.3s ease;
- }
+   .sidebar-header h4 {
+    font-family: var(--btn-font);
+    font-size: 14px;
+    color: var(--duva-text-primary);
+    margin: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Page Jump Controls */
+  .page-jump {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.3s ease;
+  }
+  
+  .page-jump-input {
+    width: 50px;
+    padding: 4px 6px;
+    border: 1px solid var(--duva-border-primary);
+    border-radius: 4px;
+    font-family: var(--btn-font);
+    font-size: 12px;
+    background: var(--duva-bg-primary);
+    color: var(--duva-text-primary);
+    text-align: center;
+  }
+  
+  .page-jump-input:focus {
+    outline: none;
+    border-color: var(--duva-red);
+  }
+  
+  .page-jump-btn {
+    background: var(--duva-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: var(--btn-font);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .page-jump-btn:hover {
+    background: var(--duva-d-grey);
+    transform: translateY(-1px);
+  }
  
- .pdf-sidebar.collapsed .sidebar-header h4 {
-   opacity: 0;
- }
+   .pdf-sidebar.collapsed .sidebar-header h4 {
+    opacity: 0;
+  }
+  
+  .pdf-sidebar.collapsed .page-jump {
+    opacity: 0;
+  }
  
  .toggle-sidebar {
    background: none;
@@ -984,9 +1031,20 @@
      padding: 8px 12px;
    }
    
-   .sidebar-header h4 {
-     font-size: 12px;
-   }
+       .sidebar-header h4 {
+      font-size: 12px;
+    }
+    
+    .page-jump-input {
+      width: 40px;
+      font-size: 11px;
+      padding: 3px 4px;
+    }
+    
+    .page-jump-btn {
+      font-size: 10px;
+      padding: 3px 6px;
+    }
    
    .thumbnails-container {
      padding: 4px;
