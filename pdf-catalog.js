@@ -915,14 +915,21 @@ async function searchAllPages(query) {
       const page = await pdfDoc.getPage(pageNum);
       const textContent = await page.getTextContent();
       
-      // Extract text items with their positions
-      const textItems = textContent.items.map(item => ({
-        text: item.str,
-        x: item.transform[4],
-        y: item.transform[5],
-        width: item.width,
-        height: item.height
-      }));
+      // Extract text items with their positions using viewport transform
+      const viewport = page.getViewport({ scale: 1 });
+      const textItems = textContent.items.map(item => {
+        // Transform PDF coordinates to viewport coordinates
+        const transform = pdfjsLib.Util.transform(viewport.transform, item.transform);
+        return {
+          text: item.str,
+          x: transform[4],
+          y: transform[5],
+          width: item.width,
+          height: item.height,
+          originalX: item.transform[4],
+          originalY: item.transform[5]
+        };
+      });
       
       // Find matches in this page
       textItems.forEach((item, index) => {
@@ -935,6 +942,8 @@ async function searchAllPages(query) {
             y: item.y,
             width: item.width,
             height: item.height,
+            originalX: item.originalX,
+            originalY: item.originalY,
             index: index
           });
         }
@@ -1022,14 +1031,21 @@ function highlightCurrentMatch(modal) {
   
   if (!targetCanvas || !canvasContainer) return;
   
-  // Position highlight relative to the canvas container
-  const containerRect = canvasContainer.getBoundingClientRect();
+  // Get the PDF container for positioning reference
   const pdfContainer = modal.querySelector('.pdf-container');
+  
+  // Calculate highlight position relative to the PDF container
+  // Use the canvas position within the PDF container
+  const canvasRect = targetCanvas.getBoundingClientRect();
   const pdfContainerRect = pdfContainer.getBoundingClientRect();
   
-  // Calculate highlight position using the corrected coordinates
-  const highlightLeft = (containerRect.left - pdfContainerRect.left) + (currentMatch.x * scale);
-  const highlightTop = (containerRect.top - pdfContainerRect.top) + (currentMatch.y * scale);
+  // Calculate the offset of the canvas within the PDF container
+  const canvasOffsetLeft = canvasRect.left - pdfContainerRect.left;
+  const canvasOffsetTop = canvasRect.top - pdfContainerRect.top;
+  
+  // Calculate highlight position using PDF coordinates scaled to current viewport
+  const highlightLeft = canvasOffsetLeft + (currentMatch.x * scale);
+  const highlightTop = canvasOffsetTop + (currentMatch.y * scale);
   
   highlightOverlay.style.cssText = `
     position: absolute;
@@ -1046,6 +1062,7 @@ function highlightCurrentMatch(modal) {
   `;
   
   console.log('🎯 Highlight positioned at:', highlightLeft, highlightTop, 'for match:', currentMatch.text);
+  console.log('📏 Canvas offset:', canvasOffsetLeft, canvasOffsetTop, 'PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
 }
 
 // Update search UI with match counter
