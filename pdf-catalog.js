@@ -641,19 +641,20 @@ function addPreviewEventListeners(modal) {
          } else {
        bookPages.style.display = 'none';
        singleCanvas.style.display = 'block';
-       // Calculate scale to fit width for single page mode
-       (async () => {
-         const page = await pdfDoc.getPage(pageNum);
-         const originalViewport = page.getViewport({ scale: 1 });
-         const containerWidth = pdfContainer.clientWidth - 40;
-         const scaleForWidth = containerWidth / originalViewport.width;
-         scale = Math.max(1.0, scaleForWidth);
-         console.log('📏 Switching to single page mode, scale set to:', scale);
-         
-         zoomLevel.textContent = Math.round(scale * 100) + '%';
-         // Force immediate render for single page mode
-         renderPage(pageNum, modal);
-       })();
+               // Calculate scale to fit width for single page mode
+        (async () => {
+          const page = await pdfDoc.getPage(pageNum);
+          const originalViewport = page.getViewport({ scale: 1 });
+          const pdfContainer = modal.querySelector('.pdf-container');
+          const containerWidth = pdfContainer.clientWidth - 40;
+          const scaleForWidth = containerWidth / originalViewport.width;
+          scale = Math.max(1.0, scaleForWidth);
+          console.log('📏 Switching to single page mode, scale set to:', scale);
+          
+          zoomLevel.textContent = Math.round(scale * 100) + '%';
+          // Force immediate render for single page mode
+          renderPage(pageNum, modal);
+        })();
      }
   });
   
