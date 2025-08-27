@@ -308,12 +308,16 @@ function showPreviewModal() {
       </div>
       
              <div class="pdf-viewer-layout">
-         <!-- Sidebar with thumbnails -->
-         <div class="pdf-sidebar">
-           <div class="sidebar-header">
-             <h4>Pages</h4>
-             <button class="toggle-sidebar" title="Toggle Sidebar">◀</button>
-           </div>
+                   <!-- Sidebar with thumbnails -->
+          <div class="pdf-sidebar">
+            <div class="sidebar-header">
+              <h4>Pages</h4>
+              <div class="page-jump">
+                <input type="number" class="page-jump-input" placeholder="Page" min="1" max="${pdfDoc ? pdfDoc.numPages : 150}">
+                <button class="page-jump-btn" title="Go to Page">Go</button>
+              </div>
+              <button class="toggle-sidebar" title="Toggle Sidebar">◀</button>
+            </div>
            <div class="thumbnails-container">
              <div class="thumbnails-list">
                <!-- Thumbnails will be populated here -->
@@ -745,16 +749,39 @@ function addPreviewEventListeners(modal) {
     }
   });
   
-     // Sidebar toggle
-   const toggleSidebarBtn = modal.querySelector('.toggle-sidebar');
-   const sidebar = modal.querySelector('.pdf-sidebar');
-   
-   toggleSidebarBtn.addEventListener('click', () => {
-     sidebar.classList.toggle('collapsed');
-     const isCollapsed = sidebar.classList.contains('collapsed');
-     toggleSidebarBtn.textContent = isCollapsed ? '▶' : '◀';
-     toggleSidebarBtn.title = isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar';
-   });
+         // Page jump functionality
+    const pageJumpInput = modal.querySelector('.page-jump-input');
+    const pageJumpBtn = modal.querySelector('.page-jump-btn');
+    
+    pageJumpBtn.addEventListener('click', () => {
+      const targetPage = parseInt(pageJumpInput.value);
+      if (targetPage && targetPage >= 1 && targetPage <= pdfDoc.numPages) {
+        pageNum = targetPage;
+        queueRenderPage(targetPage, modal);
+        updateActiveThumbnail(modal, targetPage);
+        pageJumpInput.value = ''; // Clear input after jump
+      } else {
+        showPreviewNotification(modal, `Please enter a valid page number (1-${pdfDoc.numPages})`);
+      }
+    });
+    
+    // Allow Enter key to trigger page jump
+    pageJumpInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        pageJumpBtn.click();
+      }
+    });
+    
+    // Sidebar toggle
+    const toggleSidebarBtn = modal.querySelector('.toggle-sidebar');
+    const sidebar = modal.querySelector('.pdf-sidebar');
+    
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      toggleSidebarBtn.textContent = isCollapsed ? '▶' : '◀';
+      toggleSidebarBtn.title = isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar';
+    });
    
    // Download from preview
    const downloadBtn = modal.querySelector('.download-from-preview');
@@ -855,8 +882,8 @@ function toggleFullscreen(modal) {
    // Clear existing thumbnails
    thumbnailsList.innerHTML = '';
    
-     // Generate thumbnails for first 20 pages (for performance)
-  const maxThumbnails = Math.min(20, totalPages);
+     // Generate thumbnails for first 50 pages (increased for better coverage)
+  const maxThumbnails = Math.min(50, totalPages);
   
   // Add loading indicator
   const loadingText = document.createElement('div');
