@@ -818,11 +818,172 @@ function addPreviewEventListeners(modal) {
   });
 }
 
-// Perform search (basic implementation)
-function performSearch(query, modal) {
+// Perform search (enhanced implementation)
+async function performSearch(query, modal) {
   if (!query.trim()) return;
+  
   console.log('🔍 Searching for:', query);
-  showPreviewNotification(modal, `Search for "${query}" - Advanced search coming soon!`);
+  
+  // Show searching notification
+  showPreviewNotification(modal, `Searching for "${query}"...`);
+  
+  try {
+    const searchResults = await searchPDFContent(query);
+    
+    if (searchResults.length === 0) {
+      showPreviewNotification(modal, `No results found for "${query}"`);
+      return;
+    }
+    
+    // Display search results
+    showSearchResults(modal, searchResults, query);
+    
+  } catch (error) {
+    console.error('❌ Search error:', error);
+    showPreviewNotification(modal, 'Search failed. Please try again.');
+  }
+}
+
+// Search PDF content
+async function searchPDFContent(query) {
+  const results = [];
+  const searchTerm = query.toLowerCase();
+  
+  console.log('🔍 Starting PDF search for:', searchTerm);
+  
+  // Search through all pages
+  for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+    try {
+      const page = await pdfDoc.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      
+      // Extract text from the page
+      const pageText = textContent.items
+        .map(item => item.str)
+        .join(' ')
+        .toLowerCase();
+      
+      // Check if search term exists in this page
+      if (pageText.includes(searchTerm)) {
+        // Find the context around the search term
+        const context = extractSearchContext(pageText, searchTerm);
+        
+        results.push({
+          page: pageNum,
+          context: context,
+          matches: countMatches(pageText, searchTerm)
+        });
+      }
+    } catch (error) {
+      console.error(`Error searching page ${pageNum}:`, error);
+    }
+  }
+  
+  console.log('🔍 Search completed. Found', results.length, 'results');
+  return results;
+}
+
+// Extract context around search term
+function extractSearchContext(pageText, searchTerm) {
+  const index = pageText.indexOf(searchTerm);
+  if (index === -1) return '';
+  
+  const start = Math.max(0, index - 50);
+  const end = Math.min(pageText.length, index + searchTerm.length + 50);
+  
+  let context = pageText.substring(start, end);
+  
+  // Add ellipsis if we're not at the beginning/end
+  if (start > 0) context = '...' + context;
+  if (end < pageText.length) context = context + '...';
+  
+  return context;
+}
+
+// Count matches in text
+function countMatches(text, searchTerm) {
+  const regex = new RegExp(searchTerm, 'gi');
+  const matches = text.match(regex);
+  return matches ? matches.length : 0;
+}
+
+// Show search results
+function showSearchResults(modal, results, query) {
+  // Create search results modal
+  const searchModal = document.createElement('div');
+  searchModal.className = 'search-results-modal';
+  searchModal.innerHTML = `
+    <div class="search-results-content">
+      <div class="search-results-header">
+        <h4>Search Results for "${query}"</h4>
+        <span class="results-count">${results.length} result${results.length !== 1 ? 's' : ''}</span>
+        <button class="close-search-results">×</button>
+      </div>
+      <div class="search-results-list">
+        ${results.map(result => `
+          <div class="search-result-item" data-page="${result.page}">
+            <div class="result-page-info">
+              <span class="page-number">Page ${result.page}</span>
+              <span class="match-count">${result.matches} match${result.matches !== 1 ? 'es' : ''}</span>
+            </div>
+            <div class="result-context">${highlightSearchTerm(result.context, query)}</div>
+            <button class="go-to-page-btn">Go to Page</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(searchModal);
+  
+  // Add event listeners
+  const closeBtn = searchModal.querySelector('.close-search-results');
+  closeBtn.addEventListener('click', () => {
+    searchModal.remove();
+  });
+  
+  // Go to page buttons
+  const goToPageBtns = searchModal.querySelectorAll('.go-to-page-btn');
+  goToPageBtns.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const resultItem = btn.closest('.search-result-item');
+      const targetPage = parseInt(resultItem.getAttribute('data-page'));
+      
+      // Close search results
+      searchModal.remove();
+      
+      // Navigate to the page
+      pageNum = targetPage;
+      queueRenderPage(targetPage, modal);
+      
+      // Generate thumbnail on-demand if needed
+      await generateThumbnailOnDemand(modal, targetPage);
+      
+      // Show notification
+      showPreviewNotification(modal, `Navigated to page ${targetPage}`);
+    });
+  });
+  
+  // Close on outside click
+  searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      searchModal.remove();
+    }
+  });
+  
+  // Close on Escape key
+  document.addEventListener('keydown', function closeOnEscape(e) {
+    if (e.key === 'Escape') {
+      searchModal.remove();
+      document.removeEventListener('keydown', closeOnEscape);
+    }
+  });
+}
+
+// Highlight search term in context
+function highlightSearchTerm(context, query) {
+  const regex = new RegExp(`(${query})`, 'gi');
+  return context.replace(regex, '<mark>$1</mark>');
 }
 
 // Show preview error
