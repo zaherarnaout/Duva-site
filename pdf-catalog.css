@@ -568,28 +568,34 @@
   }
   
   .pdf-sidebar.collapsed .toggle-sidebar {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 100 !important;
     opacity: 1 !important;
     visibility: visible !important;
     display: block !important;
-    background: var(--duva-bg-primary);
-    border: 1px solid var(--duva-border-primary);
-    border-radius: 4px;
-    padding: 6px 8px;
-    color: var(--duva-text-primary);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background: var(--duva-bg-primary) !important;
+    border: 1px solid var(--duva-border-primary) !important;
+    border-radius: 4px !important;
+    padding: 6px 8px !important;
+    color: var(--duva-text-primary) !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    text-align: center !important;
+    line-height: 1 !important;
   }
   
   .pdf-sidebar.collapsed .toggle-sidebar:hover {
-    background: var(--duva-red);
-    color: white;
-    border-color: var(--duva-red);
+    background: var(--duva-red) !important;
+    color: white !important;
+    border-color: var(--duva-red) !important;
   }
  
    .sidebar-header {
@@ -660,21 +666,55 @@
     opacity: 0;
   }
  
- .toggle-sidebar {
-   background: none;
-   border: none;
-   color: var(--duva-text-secondary);
-   font-size: 16px;
-   cursor: pointer;
-   padding: 4px;
-   border-radius: 4px;
-   transition: all 0.3s ease;
- }
- 
- .toggle-sidebar:hover {
-   background: var(--duva-border-primary);
-   color: var(--duva-text-primary);
- }
+   .toggle-sidebar {
+    background: none;
+    border: none;
+    color: var(--duva-text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 5;
+  }
+  
+  .toggle-sidebar:hover {
+    background: var(--duva-border-primary);
+    color: var(--duva-text-primary);
+  }
+  
+  /* Ensure toggle arrow is always visible when sidebar is collapsed */
+  .pdf-sidebar.collapsed .toggle-sidebar {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 100 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    background: var(--duva-bg-primary) !important;
+    border: 1px solid var(--duva-border-primary) !important;
+    border-radius: 4px !important;
+    padding: 6px 8px !important;
+    color: var(--duva-text-primary) !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    text-align: center !important;
+    line-height: 1 !important;
+  }
+  
+  .pdf-sidebar.collapsed .toggle-sidebar:hover {
+    background: var(--duva-red) !important;
+    color: white !important;
+    border-color: var(--duva-red) !important;
+  }
  
  .thumbnails-container {
    flex: 1;
