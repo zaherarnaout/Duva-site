@@ -488,6 +488,9 @@ async function renderSinglePage(num, modal) {
   
   await page.render(renderContext).promise;
   
+  // Add text layer for text selection
+  await addTextLayer(page, viewport, canvas, modal);
+  
   console.log('✅ Single page rendered, canvas size:', canvas.width, 'x', canvas.height);
   
   // Update page info
@@ -865,18 +868,26 @@ async function performSearch(query, modal) {
   showPreviewNotification(modal, `Searching for "${query}"...`);
   
   try {
-    // Search current page first
-    await searchCurrentPage(modal, query);
+    // Search ALL pages for matches
+    const allMatches = await searchAllPages(query);
     
-    if (searchState.totalMatches === 0) {
+    if (allMatches.length === 0) {
       showPreviewNotification(modal, `No results found for "${query}"`);
       searchState.isActive = false;
       return;
     }
     
+    // Update search state with all matches
+    searchState.matches = allMatches;
+    searchState.totalMatches = allMatches.length;
+    searchState.currentMatch = 1;
+    
+    // Navigate to first match
+    await navigateToFirstMatch(modal);
+    
     // Update search UI
     updateSearchUI(modal);
-    showPreviewNotification(modal, `Found ${searchState.totalMatches} match${searchState.totalMatches !== 1 ? 'es' : ''}`);
+    showPreviewNotification(modal, `Found ${searchState.totalMatches} match${searchState.totalMatches !== 1 ? 'es' : ''} across ${new Set(allMatches.map(m => m.page)).size} pages`);
     
   } catch (error) {
     console.error('❌ Search error:', error);
@@ -885,54 +896,72 @@ async function performSearch(query, modal) {
   }
 }
 
-// Search current page for matches
-async function searchCurrentPage(modal, query) {
+// Search ALL pages for matches
+async function searchAllPages(query) {
   const searchTerm = query.toLowerCase();
-  const currentPage = pageNum;
+  const allMatches = [];
   
-  try {
-    const page = await pdfDoc.getPage(currentPage);
-    const textContent = await page.getTextContent();
-    
-    // Extract text items with their positions
-    const textItems = textContent.items.map(item => ({
-      text: item.str,
-      x: item.transform[4],
-      y: item.transform[5],
-      width: item.width,
-      height: item.height
-    }));
-    
-    // Find matches in current page
-    const pageMatches = [];
-    textItems.forEach((item, index) => {
-      const itemText = item.text.toLowerCase();
-      if (itemText.includes(searchTerm)) {
-        pageMatches.push({
-          page: currentPage,
-          text: item.text,
-          x: item.x,
-          y: item.y,
-          width: item.width,
-          height: item.height,
-          index: index
-        });
-      }
-    });
-    
-    // Update search state
-    searchState.matches = pageMatches;
-    searchState.totalMatches = pageMatches.length;
-    searchState.currentMatch = pageMatches.length > 0 ? 1 : 0;
-    
-    // Highlight current match
-    if (pageMatches.length > 0) {
-      highlightCurrentMatch(modal);
+  console.log('🔍 Searching all pages for:', searchTerm);
+  
+  // Search through all pages
+  for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+    try {
+      const page = await pdfDoc.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      
+      // Extract text items with their positions
+      const textItems = textContent.items.map(item => ({
+        text: item.str,
+        x: item.transform[4],
+        y: item.transform[5],
+        width: item.width,
+        height: item.height
+      }));
+      
+      // Find matches in this page
+      textItems.forEach((item, index) => {
+        const itemText = item.text.toLowerCase();
+        if (itemText.includes(searchTerm)) {
+          allMatches.push({
+            page: pageNum,
+            text: item.text,
+            x: item.x,
+            y: item.y,
+            width: item.width,
+            height: item.height,
+            index: index
+          });
+        }
+      });
+      
+    } catch (error) {
+      console.error(`Error searching page ${pageNum}:`, error);
     }
-    
-  } catch (error) {
-    console.error(`Error searching page ${currentPage}:`, error);
   }
+  
+  console.log('🔍 Found', allMatches.length, 'matches across all pages');
+  return allMatches;
+}
+
+// Navigate to first match
+async function navigateToFirstMatch(modal) {
+  if (searchState.matches.length === 0) return;
+  
+  const firstMatch = searchState.matches[0];
+  
+  // Navigate to the page with the first match
+  if (firstMatch.page !== pageNum) {
+    pageNum = firstMatch.page;
+    await queueRenderPage(firstMatch.page, modal);
+    
+    // Generate thumbnail on-demand if needed
+    await generateThumbnailOnDemand(modal, firstMatch.page);
+  }
+  
+  // Highlight the first match
+  setTimeout(() => {
+    highlightCurrentMatch(modal);
+  }, 500); // Wait for page to render
 }
 
 // Highlight current match on the page
@@ -950,48 +979,62 @@ function highlightCurrentMatch(modal) {
     modal.querySelector('.pdf-container').appendChild(highlightOverlay);
   }
   
-  // Position highlight based on current mode
+  // Get the correct canvas based on current mode and page
+  let targetCanvas = null;
+  let rect = null;
+  
   if (bookMode) {
-    // For book mode, determine which canvas to highlight
+    // For book mode, determine which canvas to highlight based on page number
     const leftCanvas = modal.querySelector('#left-canvas');
     const rightCanvas = modal.querySelector('#right-canvas');
     
-    // Simple approach: highlight on the active canvas
-    const activeCanvas = leftCanvas;
-    const rect = activeCanvas.getBoundingClientRect();
+    // Determine which page is on which canvas
+    let leftPageNum = pageNum;
+    let rightPageNum = pageNum + 1;
     
-    highlightOverlay.style.cssText = `
-      position: absolute;
-      left: ${rect.left + currentMatch.x * scale}px;
-      top: ${rect.top + (currentMatch.y * scale)}px;
-      width: ${currentMatch.width * scale}px;
-      height: ${currentMatch.height * scale}px;
-      background: rgba(255, 255, 0, 0.6);
-      border: 2px solid #ff6b35;
-      border-radius: 2px;
-      pointer-events: none;
-      z-index: 1000;
-      animation: searchPulse 1s ease-in-out infinite alternate;
-    `;
+    if (pageNum % 2 === 0) {
+      leftPageNum = pageNum - 1;
+      rightPageNum = pageNum;
+    }
+    
+    if (currentMatch.page === leftPageNum) {
+      targetCanvas = leftCanvas;
+    } else if (currentMatch.page === rightPageNum) {
+      targetCanvas = rightCanvas;
+    } else {
+      // Fallback to left canvas
+      targetCanvas = leftCanvas;
+    }
   } else {
     // For single page mode
-    const canvas = modal.querySelector('#pdf-canvas');
-    const rect = canvas.getBoundingClientRect();
-    
-    highlightOverlay.style.cssText = `
-      position: absolute;
-      left: ${rect.left + currentMatch.x * scale}px;
-      top: ${rect.top + (currentMatch.y * scale)}px;
-      width: ${currentMatch.width * scale}px;
-      height: ${currentMatch.height * scale}px;
-      background: rgba(255, 255, 0, 0.6);
-      border: 2px solid #ff6b35;
-      border-radius: 2px;
-      pointer-events: none;
-      z-index: 1000;
-      animation: searchPulse 1s ease-in-out infinite alternate;
-    `;
+    targetCanvas = modal.querySelector('#pdf-canvas');
   }
+  
+  if (!targetCanvas) return;
+  
+  rect = targetCanvas.getBoundingClientRect();
+  
+  // Calculate position relative to the PDF container
+  const pdfContainer = modal.querySelector('.pdf-container');
+  const containerRect = pdfContainer.getBoundingClientRect();
+  
+  // Calculate highlight position
+  const highlightLeft = (rect.left - containerRect.left) + (currentMatch.x * scale);
+  const highlightTop = (rect.top - containerRect.top) + (currentMatch.y * scale);
+  
+  highlightOverlay.style.cssText = `
+    position: absolute;
+    left: ${highlightLeft}px;
+    top: ${highlightTop}px;
+    width: ${currentMatch.width * scale}px;
+    height: ${currentMatch.height * scale}px;
+    background: rgba(255, 255, 0, 0.6);
+    border: 2px solid #ff6b35;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: searchPulse 1s ease-in-out infinite alternate;
+  `;
 }
 
 // Update search UI with match counter
@@ -1040,8 +1083,23 @@ async function navigateToMatch(modal, direction) {
     searchState.currentMatch = Math.max(searchState.currentMatch - 1, 1);
   }
   
-  // Highlight current match
-  highlightCurrentMatch(modal);
+  // Get current match
+  const currentMatch = searchState.matches[searchState.currentMatch - 1];
+  if (!currentMatch) return;
+  
+  // Navigate to the page with this match if needed
+  if (currentMatch.page !== pageNum) {
+    pageNum = currentMatch.page;
+    await queueRenderPage(currentMatch.page, modal);
+    
+    // Generate thumbnail on-demand if needed
+    await generateThumbnailOnDemand(modal, currentMatch.page);
+  }
+  
+  // Highlight current match after page loads
+  setTimeout(() => {
+    highlightCurrentMatch(modal);
+  }, 300);
   
   // Update search UI
   updateSearchUI(modal);
@@ -1423,18 +1481,93 @@ function toggleFullscreen(modal) {
     }
   }
  
- // Close preview modal
- function closePreviewModal(modal) {
-   // Restore body scrolling
-   document.body.style.overflow = '';
-   
-   modal.style.opacity = '0';
-   setTimeout(() => {
-     if (modal.parentNode) {
-       modal.parentNode.removeChild(modal);
-     }
-   }, 300);
- }
+ // Add text layer for text selection
+async function addTextLayer(page, viewport, canvas, modal) {
+  try {
+    // Get text content
+    const textContent = await page.getTextContent();
+    
+    // Create text layer container
+    let textLayer = modal.querySelector('.text-layer');
+    if (!textLayer) {
+      textLayer = document.createElement('div');
+      textLayer.className = 'text-layer';
+      textLayer.style.cssText = `
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        opacity: 0.2;
+        line-height: 1.0;
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        pointer-events: none;
+      `;
+      
+      // Position text layer over canvas
+      const canvasContainer = canvas.parentElement;
+      canvasContainer.style.position = 'relative';
+      canvasContainer.appendChild(textLayer);
+    }
+    
+    // Clear existing text
+    textLayer.innerHTML = '';
+    
+    // Set text layer dimensions
+    textLayer.style.width = viewport.width + 'px';
+    textLayer.style.height = viewport.height + 'px';
+    
+    // Create text elements
+    const textDivs = textContent.items.map(item => {
+      const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+      const style = textContent.styles[item.fontName];
+      
+      const fontSize = Math.sqrt((tx[0] * tx[0]) + (tx[1] * tx[1]));
+      const fontFamily = style ? style.fontFamily : 'sans-serif';
+      
+      const textDiv = document.createElement('div');
+      textDiv.style.cssText = `
+        position: absolute;
+        font-size: ${fontSize}px;
+        font-family: ${fontFamily};
+        transform: matrix(${tx.join(',')});
+        white-space: pre;
+        cursor: text;
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        pointer-events: auto;
+      `;
+      textDiv.textContent = item.str;
+      
+      return textDiv;
+    });
+    
+    // Add text elements to layer
+    textDivs.forEach(div => textLayer.appendChild(div));
+    
+  } catch (error) {
+    console.error('Error adding text layer:', error);
+  }
+}
+
+// Close preview modal
+function closePreviewModal(modal) {
+  // Restore body scrolling
+  document.body.style.overflow = '';
+  
+  modal.style.opacity = '0';
+  setTimeout(() => {
+    if (modal.parentNode) {
+      modal.parentNode.removeChild(modal);
+    }
+  }, 300);
+}
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
