@@ -280,15 +280,17 @@ function showPreviewModal() {
     <div class="preview-content">
              <div class="preview-header">
          <div class="header-logo-bg"></div>
-                 <div class="preview-controls">
-           <button class="control-btn zoom-out" title="Zoom Out">−</button>
-           <span class="zoom-level">${Math.round(scale * 100)}%</span>
-           <button class="control-btn zoom-in" title="Zoom In">+</button>
-                       <button class="control-btn book-mode" title="Toggle Book Mode">
+                           <div class="preview-controls">
+            <button class="control-btn zoom-out" title="Zoom Out">−</button>
+            <span class="zoom-level">${Math.round(scale * 100)}%</span>
+            <button class="control-btn zoom-in" title="Zoom In">+</button>
+            <button class="control-btn fit-width" title="Fit Width">↔</button>
+            <button class="control-btn fit-height" title="Fit Height">↕</button>
+            <button class="control-btn book-mode" title="Toggle Book Mode">
               <div class="mode-icon book-icon"></div>
             </button>
-           <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
-         </div>
+            <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
+          </div>
         <button class="close-preview">×</button>
       </div>
       
@@ -305,16 +307,32 @@ function showPreviewModal() {
         <button class="nav-btn next-page">Next ›</button>
       </div>
       
-      <div class="pdf-container">
-        <!-- Book mode: Two canvases side by side -->
-        <div class="book-pages">
-          <canvas id="left-canvas" class="page-canvas"></canvas>
-          <canvas id="right-canvas" class="page-canvas"></canvas>
-        </div>
-        <!-- Single page mode: One canvas -->
-        <canvas id="pdf-canvas" class="single-canvas" style="display: none;"></canvas>
-        <div class="loading-indicator">Loading catalog...</div>
-      </div>
+             <div class="pdf-viewer-layout">
+         <!-- Sidebar with thumbnails -->
+         <div class="pdf-sidebar">
+           <div class="sidebar-header">
+             <h4>Pages</h4>
+             <button class="toggle-sidebar" title="Toggle Sidebar">◀</button>
+           </div>
+           <div class="thumbnails-container">
+             <div class="thumbnails-list">
+               <!-- Thumbnails will be populated here -->
+             </div>
+           </div>
+         </div>
+         
+         <!-- Main PDF container -->
+         <div class="pdf-container">
+           <!-- Book mode: Two canvases side by side -->
+           <div class="book-pages">
+             <canvas id="left-canvas" class="page-canvas"></canvas>
+             <canvas id="right-canvas" class="page-canvas"></canvas>
+           </div>
+           <!-- Single page mode: One canvas -->
+           <canvas id="pdf-canvas" class="single-canvas" style="display: none;"></canvas>
+           <div class="loading-indicator">Loading catalog...</div>
+         </div>
+       </div>
       
       <div class="preview-footer">
         <button class="download-from-preview">Download Full Catalog</button>
@@ -386,6 +404,9 @@ async function initializePDFViewer(modal) {
      if (loadingIndicator) {
        loadingIndicator.style.display = 'none';
      }
+     
+     // Generate thumbnails
+     generateThumbnails(modal);
      
      // Render first page
      renderPage(1, modal);
@@ -469,6 +490,9 @@ async function renderSinglePage(num, modal) {
   const currentPage = modal.querySelector('.current-page');
   currentPage.textContent = num;
   
+  // Update active thumbnail
+  updateActiveThumbnail(modal, num);
+  
   // Update navigation buttons
   const prevBtn = modal.querySelector('.prev-page');
   const nextBtn = modal.querySelector('.next-page');
@@ -542,6 +566,9 @@ async function renderBookPages(num, modal) {
   const currentPage = modal.querySelector('.current-page');
   currentPage.textContent = num;
   
+  // Update active thumbnail
+  updateActiveThumbnail(modal, num);
+  
   // Update navigation buttons
   const prevBtn = modal.querySelector('.prev-page');
   const nextBtn = modal.querySelector('.next-page');
@@ -591,24 +618,48 @@ function addPreviewEventListeners(modal) {
     }
   });
   
-  // Zoom controls - SIMPLIFIED
-  const zoomOutBtn = modal.querySelector('.zoom-out');
-  const zoomInBtn = modal.querySelector('.zoom-in');
-  const zoomLevel = modal.querySelector('.zoom-level');
-  
-  zoomOutBtn.addEventListener('click', () => {
-    if (pageRendering) return;
-    scale = Math.max(0.25, scale - 0.25);
-    zoomLevel.textContent = Math.round(scale * 100) + '%';
-    queueRenderPage(pageNum, modal);
-  });
-  
-  zoomInBtn.addEventListener('click', () => {
-    if (pageRendering) return;
-    scale = Math.min(3, scale + 0.25);
-    zoomLevel.textContent = Math.round(scale * 100) + '%';
-    queueRenderPage(pageNum, modal);
-  });
+     // Zoom controls - ENHANCED
+   const zoomOutBtn = modal.querySelector('.zoom-out');
+   const zoomInBtn = modal.querySelector('.zoom-in');
+   const fitWidthBtn = modal.querySelector('.fit-width');
+   const fitHeightBtn = modal.querySelector('.fit-height');
+   const zoomLevel = modal.querySelector('.zoom-level');
+   
+   zoomOutBtn.addEventListener('click', () => {
+     if (pageRendering) return;
+     scale = Math.max(0.25, scale - 0.25);
+     zoomLevel.textContent = Math.round(scale * 100) + '%';
+     queueRenderPage(pageNum, modal);
+   });
+   
+   zoomInBtn.addEventListener('click', () => {
+     if (pageRendering) return;
+     scale = Math.min(3, scale + 0.25);
+     zoomLevel.textContent = Math.round(scale * 100) + '%';
+     queueRenderPage(pageNum, modal);
+   });
+   
+   fitWidthBtn.addEventListener('click', async () => {
+     if (pageRendering) return;
+     const page = await pdfDoc.getPage(pageNum);
+     const originalViewport = page.getViewport({ scale: 1 });
+     const pdfContainer = modal.querySelector('.pdf-container');
+     const containerWidth = pdfContainer.clientWidth - 40;
+     scale = containerWidth / originalViewport.width;
+     zoomLevel.textContent = Math.round(scale * 100) + '%';
+     queueRenderPage(pageNum, modal);
+   });
+   
+   fitHeightBtn.addEventListener('click', async () => {
+     if (pageRendering) return;
+     const page = await pdfDoc.getPage(pageNum);
+     const originalViewport = page.getViewport({ scale: 1 });
+     const pdfContainer = modal.querySelector('.pdf-container');
+     const containerHeight = pdfContainer.clientHeight - 40;
+     scale = containerHeight / originalViewport.height;
+     zoomLevel.textContent = Math.round(scale * 100) + '%';
+     queueRenderPage(pageNum, modal);
+   });
   
   // Book mode toggle button
   const bookModeBtn = modal.querySelector('.book-mode');
@@ -678,16 +729,27 @@ function addPreviewEventListeners(modal) {
     }
   });
   
-  // Download from preview
-  const downloadBtn = modal.querySelector('.download-from-preview');
-  downloadBtn.addEventListener('click', () => {
-    closePreviewModal(modal);
-    // Trigger download
-    const link = document.createElement('a');
-    link.href = PDF_CATALOG_CONFIG.catalogUrl;
-    link.download = 'DUVA_Catalogue_2023R4.pdf';
-    link.click();
-  });
+     // Sidebar toggle
+   const toggleSidebarBtn = modal.querySelector('.toggle-sidebar');
+   const sidebar = modal.querySelector('.pdf-sidebar');
+   
+   toggleSidebarBtn.addEventListener('click', () => {
+     sidebar.classList.toggle('collapsed');
+     const isCollapsed = sidebar.classList.contains('collapsed');
+     toggleSidebarBtn.textContent = isCollapsed ? '▶' : '◀';
+     toggleSidebarBtn.title = isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar';
+   });
+   
+   // Download from preview
+   const downloadBtn = modal.querySelector('.download-from-preview');
+   downloadBtn.addEventListener('click', () => {
+     closePreviewModal(modal);
+     // Trigger download
+     const link = document.createElement('a');
+     link.href = PDF_CATALOG_CONFIG.catalogUrl;
+     link.download = 'DUVA_Catalogue_2023R4.pdf';
+     link.click();
+   });
   
   // Close on outside click
   modal.addEventListener('click', (e) => {
@@ -769,18 +831,84 @@ function toggleFullscreen(modal) {
   }
 }
 
-// Close preview modal
-function closePreviewModal(modal) {
-  // Restore body scrolling
-  document.body.style.overflow = '';
-  
-  modal.style.opacity = '0';
-  setTimeout(() => {
-    if (modal.parentNode) {
-      modal.parentNode.removeChild(modal);
-    }
-  }, 300);
-}
+ // Generate thumbnails for sidebar
+ async function generateThumbnails(modal) {
+   const thumbnailsList = modal.querySelector('.thumbnails-list');
+   const totalPages = pdfDoc.numPages;
+   
+   // Clear existing thumbnails
+   thumbnailsList.innerHTML = '';
+   
+   // Generate thumbnails for first 20 pages (for performance)
+   const maxThumbnails = Math.min(20, totalPages);
+   
+   for (let i = 1; i <= maxThumbnails; i++) {
+     try {
+       const page = await pdfDoc.getPage(i);
+       const viewport = page.getViewport({ scale: 0.2 }); // Small scale for thumbnails
+       
+       const canvas = document.createElement('canvas');
+       const ctx = canvas.getContext('2d');
+       canvas.width = viewport.width;
+       canvas.height = viewport.height;
+       
+       const renderContext = {
+         canvasContext: ctx,
+         viewport: viewport
+       };
+       
+       await page.render(renderContext).promise;
+       
+       const thumbnail = document.createElement('div');
+       thumbnail.className = 'thumbnail-item';
+       thumbnail.innerHTML = `
+         <canvas class="thumbnail-canvas"></canvas>
+         <span class="thumbnail-number">${i}</span>
+       `;
+       
+       const thumbnailCanvas = thumbnail.querySelector('.thumbnail-canvas');
+       thumbnailCanvas.width = viewport.width;
+       thumbnailCanvas.height = viewport.height;
+       thumbnailCanvas.getContext('2d').drawImage(canvas, 0, 0);
+       
+       // Add click handler to navigate to page
+       thumbnail.addEventListener('click', () => {
+         pageNum = i;
+         queueRenderPage(i, modal);
+         updateActiveThumbnail(modal, i);
+       });
+       
+       thumbnailsList.appendChild(thumbnail);
+       
+     } catch (error) {
+       console.error(`Error generating thumbnail for page ${i}:`, error);
+     }
+   }
+   
+   // Set first thumbnail as active
+   updateActiveThumbnail(modal, 1);
+ }
+ 
+ // Update active thumbnail
+ function updateActiveThumbnail(modal, pageNum) {
+   const thumbnails = modal.querySelectorAll('.thumbnail-item');
+   thumbnails.forEach((thumb, index) => {
+     thumb.classList.toggle('active', index + 1 === pageNum);
+   });
+ }
+ 
+ // Close preview modal
+ function closePreviewModal(modal) {
+   // Restore body scrolling
+   document.body.style.overflow = '';
+   
+   modal.style.opacity = '0';
+   setTimeout(() => {
+     if (modal.parentNode) {
+       modal.parentNode.removeChild(modal);
+     }
+   }, 300);
+ }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
