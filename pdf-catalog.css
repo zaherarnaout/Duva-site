@@ -349,23 +349,54 @@
  .mode-icon {
    height: 24px;
    width: 24px;
-   filter: var(--icon-filter);
-   transition: filter 0.3s ease;
-   padding: 1px;
+   background-color: var(--duva-text-primary);
+   transition: all 0.3s ease;
+   position: relative;
+   display: inline-block;
  }
 
- /* Double page icon - wider to represent two pages */
- .book-mode .mode-icon[src*="double"] {
-   width: 48px;
+ /* Book icon - two pages side by side */
+ .book-icon {
+   width: 32px;
  }
 
- /* Single page icon - narrower */
- .book-mode .mode-icon[src*="single"] {
+ .book-icon::before,
+ .book-icon::after {
+   content: '';
+   position: absolute;
+   top: 2px;
+   bottom: 2px;
+   width: 12px;
+   background-color: currentColor;
+   border-radius: 1px;
+ }
+
+ .book-icon::before {
+   left: 2px;
+ }
+
+ .book-icon::after {
+   right: 2px;
+ }
+
+ /* Single page icon - one page */
+ .single-icon {
    width: 24px;
  }
 
+ .single-icon::before {
+   content: '';
+   position: absolute;
+   top: 2px;
+   left: 2px;
+   right: 2px;
+   bottom: 2px;
+   background-color: currentColor;
+   border-radius: 1px;
+ }
+
  .control-btn:hover .mode-icon {
-   filter: brightness(0) invert(1);
+   background-color: white;
  }
 
 .zoom-level {
@@ -443,8 +474,30 @@
  .search-icon {
    width: 16px;
    height: 16px;
-   filter: brightness(0) invert(1);
-   transition: filter 0.3s ease;
+   background-color: white;
+   border-radius: 50%;
+   position: relative;
+   transition: all 0.3s ease;
+ }
+
+ .search-icon::before {
+   content: '';
+   position: absolute;
+   bottom: -2px;
+   right: -2px;
+   width: 8px;
+   height: 2px;
+   background-color: white;
+   transform: rotate(45deg);
+   border-radius: 1px;
+ }
+
+ .search-btn:hover .search-icon {
+   background-color: var(--duva-bg-primary);
+ }
+
+ .search-btn:hover .search-icon::before {
+   background-color: var(--duva-bg-primary);
  }
 
 /* Preview Navigation */
