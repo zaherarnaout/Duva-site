@@ -753,17 +753,20 @@ function addPreviewEventListeners(modal) {
     const pageJumpInput = modal.querySelector('.page-jump-input');
     const pageJumpBtn = modal.querySelector('.page-jump-btn');
     
-    pageJumpBtn.addEventListener('click', () => {
-      const targetPage = parseInt(pageJumpInput.value);
-      if (targetPage && targetPage >= 1 && targetPage <= pdfDoc.numPages) {
-        pageNum = targetPage;
-        queueRenderPage(targetPage, modal);
-        updateActiveThumbnail(modal, targetPage);
-        pageJumpInput.value = ''; // Clear input after jump
-      } else {
-        showPreviewNotification(modal, `Please enter a valid page number (1-${pdfDoc.numPages})`);
-      }
-    });
+         pageJumpBtn.addEventListener('click', async () => {
+       const targetPage = parseInt(pageJumpInput.value);
+       if (targetPage && targetPage >= 1 && targetPage <= pdfDoc.numPages) {
+         pageNum = targetPage;
+         queueRenderPage(targetPage, modal);
+         
+         // Generate thumbnail on-demand if it doesn't exist
+         await generateThumbnailOnDemand(modal, targetPage);
+         
+         pageJumpInput.value = ''; // Clear input after jump
+       } else {
+         showPreviewNotification(modal, `Please enter a valid page number (1-${pdfDoc.numPages})`);
+       }
+     });
     
     // Allow Enter key to trigger page jump
     pageJumpInput.addEventListener('keypress', (e) => {
@@ -882,8 +885,8 @@ function toggleFullscreen(modal) {
    // Clear existing thumbnails
    thumbnailsList.innerHTML = '';
    
-     // Generate thumbnails for first 50 pages (increased for better coverage)
-  const maxThumbnails = Math.min(50, totalPages);
+     // Smart thumbnail generation: Generate first 30 pages immediately, then on-demand
+  const initialThumbnails = Math.min(30, totalPages);
   
   // Add loading indicator
   const loadingText = document.createElement('div');
@@ -891,7 +894,8 @@ function toggleFullscreen(modal) {
   loadingText.style.cssText = 'text-align: center; padding: 20px; color: var(--duva-text-secondary); font-family: var(--btn-font);';
   thumbnailsList.appendChild(loadingText);
   
-  for (let i = 1; i <= maxThumbnails; i++) {
+  // Generate initial thumbnails (first 30 pages)
+  for (let i = 1; i <= initialThumbnails; i++) {
       try {
         const page = await pdfDoc.getPage(i);
         const viewport = page.getViewport({ scale: 0.5 }); // Increased scale for better quality
@@ -910,6 +914,7 @@ function toggleFullscreen(modal) {
         
         const thumbnail = document.createElement('div');
         thumbnail.className = 'thumbnail-item';
+        thumbnail.setAttribute('data-page', i);
         thumbnail.innerHTML = `
           <canvas class="thumbnail-canvas"></canvas>
           <span class="thumbnail-number">${i}</span>
@@ -920,12 +925,13 @@ function toggleFullscreen(modal) {
         thumbnailCanvas.height = viewport.height;
         thumbnailCanvas.getContext('2d').drawImage(canvas, 0, 0);
        
-       // Add click handler to navigate to page
-       thumbnail.addEventListener('click', () => {
-         pageNum = i;
-         queueRenderPage(i, modal);
-         updateActiveThumbnail(modal, i);
-       });
+               // Add click handler to navigate to page
+        thumbnail.addEventListener('click', () => {
+          const thumbPage = parseInt(thumbnail.getAttribute('data-page'));
+          pageNum = thumbPage;
+          queueRenderPage(thumbPage, modal);
+          updateActiveThumbnail(modal, thumbPage);
+        });
        
                thumbnailsList.appendChild(thumbnail);
         
@@ -943,13 +949,88 @@ function toggleFullscreen(modal) {
     updateActiveThumbnail(modal, 1);
  }
  
- // Update active thumbnail
- function updateActiveThumbnail(modal, pageNum) {
-   const thumbnails = modal.querySelectorAll('.thumbnail-item');
-   thumbnails.forEach((thumb, index) => {
-     thumb.classList.toggle('active', index + 1 === pageNum);
-   });
- }
+   // Update active thumbnail
+  function updateActiveThumbnail(modal, pageNum) {
+    const thumbnails = modal.querySelectorAll('.thumbnail-item');
+    thumbnails.forEach((thumb) => {
+      const thumbPage = parseInt(thumb.getAttribute('data-page'));
+      thumb.classList.toggle('active', thumbPage === pageNum);
+    });
+  }
+  
+  // Generate thumbnail on-demand
+  async function generateThumbnailOnDemand(modal, pageNum) {
+    const thumbnailsList = modal.querySelector('.thumbnails-list');
+    const existingThumbnail = thumbnailsList.querySelector(`[data-page="${pageNum}"]`);
+    
+    // If thumbnail already exists, just highlight it
+    if (existingThumbnail) {
+      updateActiveThumbnail(modal, pageNum);
+      return;
+    }
+    
+    try {
+      const page = await pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 0.5 });
+      
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+      
+      await page.render(renderContext).promise;
+      
+      const thumbnail = document.createElement('div');
+      thumbnail.className = 'thumbnail-item';
+      thumbnail.setAttribute('data-page', pageNum);
+      thumbnail.innerHTML = `
+        <canvas class="thumbnail-canvas"></canvas>
+        <span class="thumbnail-number">${pageNum}</span>
+      `;
+      
+      const thumbnailCanvas = thumbnail.querySelector('.thumbnail-canvas');
+      thumbnailCanvas.width = viewport.width;
+      thumbnailCanvas.height = viewport.height;
+      thumbnailCanvas.getContext('2d').drawImage(canvas, 0, 0);
+      
+      // Add click handler to navigate to page
+      thumbnail.addEventListener('click', () => {
+        const thumbPage = parseInt(thumbnail.getAttribute('data-page'));
+        pageNum = thumbPage;
+        queueRenderPage(thumbPage, modal);
+        updateActiveThumbnail(modal, thumbPage);
+      });
+      
+      // Insert thumbnail in correct position
+      const allThumbnails = thumbnailsList.querySelectorAll('.thumbnail-item');
+      let insertAfter = null;
+      
+      for (let i = 0; i < allThumbnails.length; i++) {
+        const currentPage = parseInt(allThumbnails[i].getAttribute('data-page'));
+        if (pageNum < currentPage) {
+          insertAfter = allThumbnails[i - 1] || null;
+          break;
+        }
+      }
+      
+      if (insertAfter) {
+        insertAfter.after(thumbnail);
+      } else {
+        thumbnailsList.appendChild(thumbnail);
+      }
+      
+      // Update active state
+      updateActiveThumbnail(modal, pageNum);
+      
+    } catch (error) {
+      console.error(`Error generating thumbnail for page ${pageNum}:`, error);
+    }
+  }
  
  // Close preview modal
  function closePreviewModal(modal) {
