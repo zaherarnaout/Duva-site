@@ -547,6 +547,8 @@
    display: flex;
    flex: 1;
    overflow: hidden;
+   width: 100%;
+   min-width: 0;
  }
  
  /* PDF Sidebar */
@@ -664,6 +666,9 @@
    align-items: flex-start;
    justify-content: center;
    min-height: 0;
+   width: 100%;
+   max-width: none;
+   min-width: 0;
  }
 
 /* Book Pages Layout - ULTRA SIMPLIFIED */
@@ -680,27 +685,31 @@
   display: block;
 }
 
-.single-canvas {
-  border-radius: 8px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: white;
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: none;
-  max-height: none;
-}
+ .single-canvas {
+   border-radius: 8px;
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+   background: white;
+   display: block;
+   width: auto;
+   height: auto;
+   max-width: none;
+   max-height: none;
+   min-width: 0;
+   min-height: 0;
+ }
 
-#pdf-canvas {
-  border-radius: 8px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: white;
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: none;
-  max-height: none;
-}
+ #pdf-canvas {
+   border-radius: 8px;
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+   background: white;
+   display: block;
+   width: auto;
+   height: auto;
+   max-width: none;
+   max-height: none;
+   min-width: 0;
+   min-height: 0;
+ }
 
 .loading-indicator {
   position: absolute;
