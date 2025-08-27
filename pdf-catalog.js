@@ -878,7 +878,14 @@ async function performSearch(query, modal) {
     const allMatches = await searchAllPages(query);
     
     if (allMatches.length === 0) {
-      showPreviewNotification(modal, `No results found for "${query}"`);
+      // Check if this is because there's no text content at all
+      const hasAnyTextContent = await checkForAnyTextContent();
+      
+      if (!hasAnyTextContent) {
+        showPreviewNotification(modal, 'Text search unavailable - PDF appears to have text converted to vector paths');
+      } else {
+        showPreviewNotification(modal, `No results found for "${query}"`);
+      }
       searchState.isActive = false;
       return;
     }
@@ -906,6 +913,7 @@ async function performSearch(query, modal) {
 async function searchAllPages(query) {
   const searchTerm = query.toLowerCase();
   const allMatches = [];
+  let totalTextItems = 0;
   
   console.log('🔍 Searching all pages for:', searchTerm);
   
@@ -914,6 +922,17 @@ async function searchAllPages(query) {
     try {
       const page = await pdfDoc.getPage(pageNum);
       const textContent = await page.getTextContent();
+      
+      totalTextItems += textContent.items.length;
+      
+      // Check if this page has meaningful text content
+      const hasTextContent = textContent.items.length > 0 && 
+                            textContent.items.some(item => item.str.trim().length > 0);
+      
+      if (!hasTextContent) {
+        console.log(`⚠️ Page ${pageNum}: No text content found (likely vector paths)`);
+        continue;
+      }
       
       // Extract text items with their positions using viewport transform
       const viewport = page.getViewport({ scale: 1 });
@@ -954,8 +973,41 @@ async function searchAllPages(query) {
     }
   }
   
-  console.log('🔍 Found', allMatches.length, 'matches across all pages');
+  console.log('🔍 Search summary:', {
+    totalPages: pdfDoc.numPages,
+    totalTextItems: totalTextItems,
+    matchesFound: allMatches.length,
+    hasTextContent: totalTextItems > 0
+  });
+  
+  if (totalTextItems === 0) {
+    console.log('⚠️ No text content found in entire PDF - this appears to be an Illustrator PDF with text converted to vector paths');
+  }
+  
   return allMatches;
+}
+
+// Check if the PDF has any text content at all
+async function checkForAnyTextContent() {
+  try {
+    // Check first few pages for text content
+    const pagesToCheck = Math.min(5, pdfDoc.numPages);
+    
+    for (let pageNum = 1; pageNum <= pagesToCheck; pageNum++) {
+      const page = await pdfDoc.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      
+      if (textContent.items.length > 0 && 
+          textContent.items.some(item => item.str.trim().length > 0)) {
+        return true;
+      }
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking for text content:', error);
+    return false;
+  }
 }
 
 // Navigate to first match
@@ -1515,6 +1567,12 @@ async function addTextLayer(page, viewport, canvas, modal) {
     // Get text content
     const textContent = await page.getTextContent();
     
+    console.log('🔍 Text content analysis:', {
+      totalItems: textContent.items.length,
+      hasText: textContent.items.some(item => item.str.trim()),
+      sampleText: textContent.items.slice(0, 3).map(item => item.str)
+    });
+    
     // Create text layer container
     let textLayer = modal.querySelector('.text-layer');
     if (!textLayer) {
@@ -1549,6 +1607,61 @@ async function addTextLayer(page, viewport, canvas, modal) {
     // Set text layer dimensions
     textLayer.style.width = viewport.width + 'px';
     textLayer.style.height = viewport.height + 'px';
+    
+    // Check if we have meaningful text content
+    const hasTextContent = textContent.items.length > 0 && 
+                          textContent.items.some(item => item.str.trim().length > 0);
+    
+    if (!hasTextContent) {
+      console.log('⚠️ No text content found - this may be an Illustrator PDF with text converted to paths');
+      console.log('💡 Solution: Re-export PDF from Illustrator with "Preserve Text" option enabled');
+      
+      // Show a helpful message to the user
+      const noTextMessage = document.createElement('div');
+      noTextMessage.style.cssText = `
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 193, 7, 0.9);
+        color: #000;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-family: var(--btn-font);
+        font-size: 12px;
+        z-index: 1000;
+        max-width: 300px;
+        line-height: 1.4;
+      `;
+      noTextMessage.innerHTML = `
+        <strong>Text Selection Unavailable</strong><br>
+        This PDF appears to have text converted to vector paths.<br>
+        <small>To enable text selection, re-export from Illustrator with "Preserve Text" enabled.</small>
+      `;
+      
+      // Remove any existing message
+      const existingMessage = modal.querySelector('.no-text-message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+      
+      noTextMessage.className = 'no-text-message';
+      modal.appendChild(noTextMessage);
+      
+      // Auto-remove message after 5 seconds
+      setTimeout(() => {
+        if (noTextMessage.parentNode) {
+          noTextMessage.remove();
+        }
+      }, 5000);
+      
+      return;
+    }
+    
+    // Remove any existing no-text message
+    const existingMessage = modal.querySelector('.no-text-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
     
     // Create text elements with corrected positioning
     const textDivs = textContent.items.map(item => {
