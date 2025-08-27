@@ -1573,16 +1573,16 @@ async function addTextLayer(page, viewport, canvas, modal) {
       sampleText: textContent.items.slice(0, 3).map(item => item.str)
     });
     
-         // Create text layer container for this specific canvas
-     const canvasContainer = canvas.parentElement;
-     canvasContainer.style.position = 'relative';
-     
-     let textLayer = canvasContainer.querySelector('.text-layer');
-     if (!textLayer) {
-       textLayer = document.createElement('div');
-       textLayer.className = 'text-layer';
-       canvasContainer.appendChild(textLayer);
-     }
+    // Create text layer container for this specific canvas
+    const canvasContainer = canvas.parentElement;
+    canvasContainer.style.position = 'relative';
+    
+    let textLayer = canvasContainer.querySelector('.text-layer');
+    if (!textLayer) {
+      textLayer = document.createElement('div');
+      textLayer.className = 'text-layer';
+      canvasContainer.appendChild(textLayer);
+    }
     
     // Clear existing text
     textLayer.innerHTML = '';
@@ -1590,6 +1590,15 @@ async function addTextLayer(page, viewport, canvas, modal) {
     // Set text layer dimensions
     textLayer.style.width = viewport.width + 'px';
     textLayer.style.height = viewport.height + 'px';
+    
+    // Debug: Check text layer styles after creation
+    console.log('🔍 Text layer styles after creation:', {
+      opacity: getComputedStyle(textLayer).opacity,
+      userSelect: getComputedStyle(textLayer).userSelect,
+      pointerEvents: getComputedStyle(textLayer).pointerEvents,
+      width: textLayer.style.width,
+      height: textLayer.style.height
+    });
     
     // Check if we have meaningful text content
     const hasTextContent = textContent.items.length > 0 && 
@@ -1687,7 +1696,40 @@ async function addTextLayer(page, viewport, canvas, modal) {
     // Add text elements to layer
     textDivs.forEach(div => textLayer.appendChild(div));
     
+    // Debug: Check final text layer state
     console.log('✅ Text layer added with', textDivs.length, 'text items');
+    console.log('🔍 Final text layer styles:', {
+      opacity: getComputedStyle(textLayer).opacity,
+      userSelect: getComputedStyle(textLayer).userSelect,
+      pointerEvents: getComputedStyle(textLayer).pointerEvents,
+      childCount: textLayer.children.length
+    });
+    
+    // Test text selection by adding a temporary visible text element
+    if (textDivs.length > 0) {
+      const testDiv = document.createElement('div');
+      testDiv.style.cssText = `
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(0, 255, 0, 0.8);
+        color: black;
+        padding: 2px 4px;
+        font-size: 10px;
+        z-index: 1000;
+        pointer-events: none;
+      `;
+      testDiv.textContent = `Text: ${textDivs.length} items`;
+      textLayer.appendChild(testDiv);
+      
+      // Remove test element after 3 seconds
+      setTimeout(() => {
+        if (testDiv.parentNode) {
+          testDiv.remove();
+        }
+      }, 3000);
+    }
+    
   } catch (error) {
     console.error('❌ Error adding text layer:', error);
   }
