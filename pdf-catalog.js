@@ -855,37 +855,43 @@ function toggleFullscreen(modal) {
    // Clear existing thumbnails
    thumbnailsList.innerHTML = '';
    
-   // Generate thumbnails for first 20 pages (for performance)
-   const maxThumbnails = Math.min(20, totalPages);
-   
-   for (let i = 1; i <= maxThumbnails; i++) {
-     try {
-       const page = await pdfDoc.getPage(i);
-       const viewport = page.getViewport({ scale: 0.2 }); // Small scale for thumbnails
-       
-       const canvas = document.createElement('canvas');
-       const ctx = canvas.getContext('2d');
-       canvas.width = viewport.width;
-       canvas.height = viewport.height;
-       
-       const renderContext = {
-         canvasContext: ctx,
-         viewport: viewport
-       };
-       
-       await page.render(renderContext).promise;
-       
-       const thumbnail = document.createElement('div');
-       thumbnail.className = 'thumbnail-item';
-       thumbnail.innerHTML = `
-         <canvas class="thumbnail-canvas"></canvas>
-         <span class="thumbnail-number">${i}</span>
-       `;
-       
-       const thumbnailCanvas = thumbnail.querySelector('.thumbnail-canvas');
-       thumbnailCanvas.width = viewport.width;
-       thumbnailCanvas.height = viewport.height;
-       thumbnailCanvas.getContext('2d').drawImage(canvas, 0, 0);
+     // Generate thumbnails for first 20 pages (for performance)
+  const maxThumbnails = Math.min(20, totalPages);
+  
+  // Add loading indicator
+  const loadingText = document.createElement('div');
+  loadingText.textContent = 'Generating thumbnails...';
+  loadingText.style.cssText = 'text-align: center; padding: 20px; color: var(--duva-text-secondary); font-family: var(--btn-font);';
+  thumbnailsList.appendChild(loadingText);
+  
+  for (let i = 1; i <= maxThumbnails; i++) {
+      try {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale: 0.5 }); // Increased scale for better quality
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        
+        await page.render(renderContext).promise;
+        
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'thumbnail-item';
+        thumbnail.innerHTML = `
+          <canvas class="thumbnail-canvas"></canvas>
+          <span class="thumbnail-number">${i}</span>
+        `;
+        
+        const thumbnailCanvas = thumbnail.querySelector('.thumbnail-canvas');
+        thumbnailCanvas.width = viewport.width;
+        thumbnailCanvas.height = viewport.height;
+        thumbnailCanvas.getContext('2d').drawImage(canvas, 0, 0);
        
        // Add click handler to navigate to page
        thumbnail.addEventListener('click', () => {
@@ -894,15 +900,20 @@ function toggleFullscreen(modal) {
          updateActiveThumbnail(modal, i);
        });
        
-       thumbnailsList.appendChild(thumbnail);
-       
-     } catch (error) {
-       console.error(`Error generating thumbnail for page ${i}:`, error);
-     }
-   }
-   
-   // Set first thumbnail as active
-   updateActiveThumbnail(modal, 1);
+               thumbnailsList.appendChild(thumbnail);
+        
+      } catch (error) {
+        console.error(`Error generating thumbnail for page ${i}:`, error);
+      }
+    }
+    
+    // Remove loading text
+    if (loadingText.parentNode) {
+      loadingText.parentNode.removeChild(loadingText);
+    }
+    
+    // Set first thumbnail as active
+    updateActiveThumbnail(modal, 1);
  }
  
  // Update active thumbnail
