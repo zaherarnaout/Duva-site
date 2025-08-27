@@ -639,16 +639,32 @@ function addPreviewEventListeners(modal) {
      queueRenderPage(pageNum, modal);
    });
    
-   fitWidthBtn.addEventListener('click', async () => {
-     if (pageRendering) return;
-     const page = await pdfDoc.getPage(pageNum);
-     const originalViewport = page.getViewport({ scale: 1 });
-     const pdfContainer = modal.querySelector('.pdf-container');
-     const containerWidth = pdfContainer.clientWidth - 40;
-     scale = containerWidth / originalViewport.width;
-     zoomLevel.textContent = Math.round(scale * 100) + '%';
-     queueRenderPage(pageNum, modal);
-   });
+       fitWidthBtn.addEventListener('click', async () => {
+      if (pageRendering) return;
+      const pdfContainer = modal.querySelector('.pdf-container');
+      const containerWidth = pdfContainer.clientWidth - 40;
+      
+      if (bookMode) {
+        // For book mode, we need to account for two pages side by side
+        const leftPage = await pdfDoc.getPage(pageNum);
+        const rightPage = await pdfDoc.getPage(Math.min(pageNum + 1, pdfDoc.numPages));
+        
+        const leftViewport = leftPage.getViewport({ scale: 1 });
+        const rightViewport = rightPage.getViewport({ scale: 1 });
+        
+        // Calculate total width of both pages plus gap
+        const totalPageWidth = leftViewport.width + rightViewport.width + 20; // 20px gap
+        scale = containerWidth / totalPageWidth;
+      } else {
+        // For single page mode, use the original calculation
+        const page = await pdfDoc.getPage(pageNum);
+        const originalViewport = page.getViewport({ scale: 1 });
+        scale = containerWidth / originalViewport.width;
+      }
+      
+      zoomLevel.textContent = Math.round(scale * 100) + '%';
+      queueRenderPage(pageNum, modal);
+    });
    
    fitHeightBtn.addEventListener('click', async () => {
      if (pageRendering) return;
