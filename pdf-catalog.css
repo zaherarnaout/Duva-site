@@ -573,6 +573,8 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
  
    .sidebar-header {
@@ -1377,6 +1379,25 @@
   position: absolute;
   pointer-events: none;
   z-index: 1000;
+}
+
+/* Make PDF text selectable */
+.page-canvas,
+.single-canvas,
+#pdf-canvas {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  cursor: text;
+}
+
+/* PDF Container text selection */
+.pdf-container {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
 
 @keyframes searchPulse {
