@@ -1450,6 +1450,7 @@
 
 /* PDF Container should allow text selection */
 .pdf-container {
+  position: relative;
   user-select: auto;
   -webkit-user-select: auto;
   -moz-user-select: auto;
