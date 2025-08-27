@@ -355,12 +355,12 @@
  }
 
  /* Double page icon - wider to represent two pages */
- .book-mode .mode-icon[src*="double%20Page"] {
+ .book-mode .mode-icon[src*="double"] {
    width: 48px;
  }
 
  /* Single page icon - narrower */
- .book-mode .mode-icon[src*="single%20Page"] {
+ .book-mode .mode-icon[src*="single"] {
    width: 24px;
  }
 
