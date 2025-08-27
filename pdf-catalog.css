@@ -1456,6 +1456,50 @@
   -ms-user-select: text;
 }
 
+/* Text Layer Styling */
+.text-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0;
+  line-height: 1.0;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.text-layer div {
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto;
+  color: transparent;
+  background: transparent;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+/* Ensure text selection works properly */
+.text-layer div::selection {
+  background: rgba(0, 123, 255, 0.3);
+  color: transparent;
+}
+
+.text-layer div::-moz-selection {
+  background: rgba(0, 123, 255, 0.3);
+  color: transparent;
+}
+
 @keyframes searchPulse {
   0% {
     background: rgba(255, 255, 0, 0.6);
