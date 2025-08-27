@@ -300,11 +300,10 @@
 
  .header-logo-bg {
    position: absolute;
-   top: 50%;
+   top: 0;
    left: 16px;
-   transform: translateY(-50%);
    width: 30%;
-   height: 60%;
+   height: 100%;
    background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/68a6ca33e635c79644417565_Duva%20Logo%20Cut.svg');
    background-size: contain;
    background-repeat: no-repeat;
@@ -314,14 +313,7 @@
    pointer-events: none;
  }
 
- .preview-header h3 {
-   font-family: var(--heading-font);
-   font-size: 18px;
-   color: var(--duva-text-primary);
-   margin: 0;
-   position: relative;
-   z-index: 2;
- }
+
 
  .preview-controls {
    display: flex;
