@@ -351,6 +351,15 @@ function showPreviewModal() {
   
   // Add event listeners
   addPreviewEventListeners(modal);
+  
+  // Add scroll and resize listeners for search highlight positioning
+  const pdfContainer = modal.querySelector('.pdf-container');
+  pdfContainer.addEventListener('scroll', () => {
+    if (searchState.isActive) highlightCurrentMatch(modal);
+  });
+  window.addEventListener('resize', () => {
+    if (searchState.isActive) highlightCurrentMatch(modal);
+  });
 }
 
 // Initialize PDF viewer - SIMPLIFIED
@@ -476,9 +485,13 @@ async function renderSinglePage(num, modal) {
   console.log('🎨 Rendering single page at scale:', actualScale, 'viewport:', viewport.width, 'x', viewport.height);
   console.log('📏 Container width:', containerWidth, 'original PDF width:', originalViewport.width, 'scale for width:', scaleForWidth, 'current zoom scale:', scale);
   
-  // Set canvas dimensions based on actual PDF size and scale
-  canvas.height = viewport.height;
-  canvas.width = viewport.width;
+  // Set canvas dimensions based on actual PDF size and scale with retina support
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = viewport.width * ratio;
+  canvas.height = viewport.height * ratio;
+  canvas.style.width = `${viewport.width}px`;
+  canvas.style.height = `${viewport.height}px`;
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   
   // Render PDF page
   const renderContext = {
@@ -539,8 +552,13 @@ async function renderBookPages(num, modal) {
     const leftPage = await pdfDoc.getPage(leftPageNum);
     const leftViewport = leftPage.getViewport({ scale: scale });
     
-    leftCanvas.height = leftViewport.height;
-    leftCanvas.width = leftViewport.width;
+    // Set canvas dimensions with retina support
+    const ratio = window.devicePixelRatio || 1;
+    leftCanvas.width = leftViewport.width * ratio;
+    leftCanvas.height = leftViewport.height * ratio;
+    leftCanvas.style.width = `${leftViewport.width}px`;
+    leftCanvas.style.height = `${leftViewport.height}px`;
+    leftCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
     
     const leftRenderContext = {
       canvasContext: leftCtx,
@@ -558,8 +576,13 @@ async function renderBookPages(num, modal) {
     const rightPage = await pdfDoc.getPage(rightPageNum);
     const rightViewport = rightPage.getViewport({ scale: scale });
     
-    rightCanvas.height = rightViewport.height;
-    rightCanvas.width = rightViewport.width;
+    // Set canvas dimensions with retina support
+    const ratio = window.devicePixelRatio || 1;
+    rightCanvas.width = rightViewport.width * ratio;
+    rightCanvas.height = rightViewport.height * ratio;
+    rightCanvas.style.width = `${rightViewport.width}px`;
+    rightCanvas.style.height = `${rightViewport.height}px`;
+    rightCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
     
     const rightRenderContext = {
       canvasContext: rightCtx,
@@ -1097,7 +1120,7 @@ function highlightCurrentMatch(modal) {
   
   // Calculate highlight position using PDF coordinates scaled to current viewport
   const highlightLeft = canvasOffsetLeft + (currentMatch.x * scale);
-  const highlightTop = canvasOffsetTop + (currentMatch.y * scale);
+          const highlightTop = canvasOffsetTop + ((currentMatch.y - currentMatch.height) * scale);
   
   highlightOverlay.style.cssText = `
     position: absolute;
@@ -1671,7 +1694,7 @@ async function addTextLayer(page, viewport, canvas, modal) {
       textDiv.style.cssText = `
         position: absolute;
         left: ${transform[4]}px;
-        top: ${transform[5]}px;
+        top: ${transform[5] - fontSize}px;
         font-size: ${fontSize}px;
         font-family: ${fontFamily};
         white-space: pre;
