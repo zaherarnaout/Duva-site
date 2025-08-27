@@ -1529,11 +1529,11 @@ async function addTextLayer(page, viewport, canvas, modal) {
         overflow: hidden;
         opacity: 0;
         line-height: 1.0;
-        user-select: text;
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        pointer-events: auto;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        pointer-events: none;
         z-index: 10;
       `;
       
@@ -1552,6 +1552,9 @@ async function addTextLayer(page, viewport, canvas, modal) {
     
     // Create text elements with corrected positioning
     const textDivs = textContent.items.map(item => {
+      // Only create text elements for non-empty text
+      if (!item.str.trim()) return null;
+      
       // Use the viewport transform to get correct positioning
       const transform = pdfjsLib.Util.transform(viewport.transform, item.transform);
       const style = textContent.styles[item.fontName];
@@ -1575,18 +1578,20 @@ async function addTextLayer(page, viewport, canvas, modal) {
         pointer-events: auto;
         color: transparent;
         background: transparent;
-        min-width: 1px;
-        min-height: 1px;
+        min-width: ${item.width}px;
+        min-height: ${item.height}px;
+        width: ${item.width}px;
+        height: ${item.height}px;
       `;
       textDiv.textContent = item.str;
       
       return textDiv;
-    });
+    }).filter(div => div !== null); // Remove null elements
     
     // Add text elements to layer
     textDivs.forEach(div => textLayer.appendChild(div));
     
-    console.log('✅ Text layer added with', textContent.items.length, 'text items');
+    console.log('✅ Text layer added with', textDivs.length, 'text items');
   } catch (error) {
     console.error('❌ Error adding text layer:', error);
   }
