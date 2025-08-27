@@ -4,7 +4,7 @@
 // PDF Catalog Configuration
 const PDF_CATALOG_CONFIG = {
   // Download Configuration
-  catalogUrl: 'https://raw.githubusercontent.com/zaherarnaout/Duva-site/0fb2511fb1e9fa683f222250be56e7ce0092e10f/Pages%20from%20Duva_Catalogue_2023R4.pdf',
+  catalogUrl: 'https://raw.githubusercontent.com/zaherarnaout/Duva-site/main/Pages%20from%20Duva_Catalogue_2023R4.pdf',
   catalogSize: '15.2 MB',
   catalogFormat: 'PDF',
   lastUpdated: '2023',
