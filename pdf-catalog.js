@@ -284,9 +284,9 @@ function showPreviewModal() {
            <button class="control-btn zoom-out" title="Zoom Out">−</button>
            <span class="zoom-level">${Math.round(scale * 100)}%</span>
            <button class="control-btn zoom-in" title="Zoom In">+</button>
-           <button class="control-btn book-mode" title="Toggle Book Mode">
-             <img src="https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/68ae8fc9872fdc09277900e8_double%20Page%20icon.svg" alt="Book Mode" class="mode-icon">
-           </button>
+                       <button class="control-btn book-mode" title="Toggle Book Mode">
+              <div class="mode-icon book-icon"></div>
+            </button>
            <button class="control-btn fullscreen" title="Fullscreen">⛶</button>
          </div>
         <button class="close-preview">×</button>
@@ -294,9 +294,9 @@ function showPreviewModal() {
       
              <div class="preview-search">
          <input type="text" placeholder="Search in catalog..." class="search-input">
-         <button class="search-btn">
-           <img src="https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/68903738961d84e358c2970d_magnifier-black.svg" alt="Search" class="search-icon">
-         </button>
+                   <button class="search-btn">
+            <div class="search-icon"></div>
+          </button>
        </div>
       
       <div class="preview-navigation">
@@ -616,15 +616,15 @@ function addPreviewEventListeners(modal) {
     bookMode = !bookMode;
     console.log('📖 Book mode toggled:', bookMode);
     
-         // Update button appearance
-     const modeIcon = bookModeBtn.querySelector('.mode-icon');
-     if (bookMode) {
-       modeIcon.src = 'https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/68ae8fc9d72450ddb9d34942_single%20Page%20icon.svg';
-       bookModeBtn.title = 'Single Page Mode';
-     } else {
-       modeIcon.src = 'https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/68ae8fc9872fdc09277900e8_double%20Page%20icon.svg';
-       bookModeBtn.title = 'Book Mode';
-     }
+               // Update button appearance
+      const modeIcon = bookModeBtn.querySelector('.mode-icon');
+      if (bookMode) {
+        modeIcon.className = 'mode-icon single-icon';
+        bookModeBtn.title = 'Single Page Mode';
+      } else {
+        modeIcon.className = 'mode-icon book-icon';
+        bookModeBtn.title = 'Book Mode';
+      }
     
     // Toggle canvas visibility
     const bookPages = modal.querySelector('.book-pages');
