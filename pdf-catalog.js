@@ -1573,33 +1573,16 @@ async function addTextLayer(page, viewport, canvas, modal) {
       sampleText: textContent.items.slice(0, 3).map(item => item.str)
     });
     
-    // Create text layer container
-    let textLayer = modal.querySelector('.text-layer');
-    if (!textLayer) {
-      textLayer = document.createElement('div');
-      textLayer.className = 'text-layer';
-      textLayer.style.cssText = `
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-        opacity: 0;
-        line-height: 1.0;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        pointer-events: none;
-        z-index: 10;
-      `;
-      
-      // Position text layer over canvas
-      const canvasContainer = canvas.parentElement;
-      canvasContainer.style.position = 'relative';
-      canvasContainer.appendChild(textLayer);
-    }
+         // Create text layer container for this specific canvas
+     const canvasContainer = canvas.parentElement;
+     canvasContainer.style.position = 'relative';
+     
+     let textLayer = canvasContainer.querySelector('.text-layer');
+     if (!textLayer) {
+       textLayer = document.createElement('div');
+       textLayer.className = 'text-layer';
+       canvasContainer.appendChild(textLayer);
+     }
     
     // Clear existing text
     textLayer.innerHTML = '';
