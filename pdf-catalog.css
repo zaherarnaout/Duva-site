@@ -575,6 +575,21 @@
     z-index: 10;
     opacity: 1 !important;
     visibility: visible !important;
+    display: block !important;
+    background: var(--duva-bg-primary);
+    border: 1px solid var(--duva-border-primary);
+    border-radius: 4px;
+    padding: 6px 8px;
+    color: var(--duva-text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .pdf-sidebar.collapsed .toggle-sidebar:hover {
+    background: var(--duva-red);
+    color: white;
+    border-color: var(--duva-red);
   }
  
    .sidebar-header {
