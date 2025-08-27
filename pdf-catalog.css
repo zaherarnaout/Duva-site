@@ -571,8 +571,8 @@
   .pdf-sidebar.collapsed .toggle-sidebar {
     position: absolute !important;
     right: 8px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    top: 8px !important;
+    transform: none !important;
     z-index: 100 !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -689,8 +689,8 @@
   .pdf-sidebar.collapsed .toggle-sidebar {
     position: absolute !important;
     right: 8px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    top: 8px !important;
+    transform: none !important;
     z-index: 100 !important;
     opacity: 1 !important;
     visibility: visible !important;
