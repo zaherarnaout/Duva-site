@@ -749,6 +749,22 @@ function addPreviewEventListeners(modal) {
     }
   });
   
+  // Add keyboard shortcuts for search navigation
+  document.addEventListener('keydown', (e) => {
+    if (modal.style.display !== 'none' && searchState.isActive) {
+      if (e.key === 'F3' || (e.ctrlKey && e.key === 'f')) {
+        e.preventDefault();
+        searchInput.focus();
+      } else if (e.key === 'Enter' && e.shiftKey) {
+        e.preventDefault();
+        navigateToMatch(modal, 'prev');
+      } else if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        navigateToMatch(modal, 'next');
+      }
+    }
+  });
+  
          // Page jump functionality
     const pageJumpInput = modal.querySelector('.page-jump-input');
     const pageJumpBtn = modal.querySelector('.page-jump-btn');
@@ -818,29 +834,243 @@ function addPreviewEventListeners(modal) {
   });
 }
 
-// Perform search (enhanced implementation)
+// Browser-like search state
+let searchState = {
+  query: '',
+  currentMatch: 0,
+  totalMatches: 0,
+  matches: [],
+  isActive: false
+};
+
+// Perform browser-like search
 async function performSearch(query, modal) {
-  if (!query.trim()) return;
+  if (!query.trim()) {
+    clearSearch(modal);
+    return;
+  }
   
-  console.log('🔍 Searching for:', query);
+  console.log('🔍 Starting browser-like search for:', query);
+  
+  // Clear previous search
+  clearSearch(modal);
+  
+  // Update search state
+  searchState.query = query;
+  searchState.currentMatch = 0;
+  searchState.matches = [];
+  searchState.isActive = true;
   
   // Show searching notification
   showPreviewNotification(modal, `Searching for "${query}"...`);
   
   try {
-    const searchResults = await searchPDFContent(query);
+    // Search current page first
+    await searchCurrentPage(modal, query);
     
-    if (searchResults.length === 0) {
+    if (searchState.totalMatches === 0) {
       showPreviewNotification(modal, `No results found for "${query}"`);
+      searchState.isActive = false;
       return;
     }
     
-    // Display search results
-    showSearchResults(modal, searchResults, query);
+    // Update search UI
+    updateSearchUI(modal);
+    showPreviewNotification(modal, `Found ${searchState.totalMatches} match${searchState.totalMatches !== 1 ? 'es' : ''}`);
     
   } catch (error) {
     console.error('❌ Search error:', error);
     showPreviewNotification(modal, 'Search failed. Please try again.');
+    searchState.isActive = false;
+  }
+}
+
+// Search current page for matches
+async function searchCurrentPage(modal, query) {
+  const searchTerm = query.toLowerCase();
+  const currentPage = pageNum;
+  
+  try {
+    const page = await pdfDoc.getPage(currentPage);
+    const textContent = await page.getTextContent();
+    
+    // Extract text items with their positions
+    const textItems = textContent.items.map(item => ({
+      text: item.str,
+      x: item.transform[4],
+      y: item.transform[5],
+      width: item.width,
+      height: item.height
+    }));
+    
+    // Find matches in current page
+    const pageMatches = [];
+    textItems.forEach((item, index) => {
+      const itemText = item.text.toLowerCase();
+      if (itemText.includes(searchTerm)) {
+        pageMatches.push({
+          page: currentPage,
+          text: item.text,
+          x: item.x,
+          y: item.y,
+          width: item.width,
+          height: item.height,
+          index: index
+        });
+      }
+    });
+    
+    // Update search state
+    searchState.matches = pageMatches;
+    searchState.totalMatches = pageMatches.length;
+    searchState.currentMatch = pageMatches.length > 0 ? 1 : 0;
+    
+    // Highlight current match
+    if (pageMatches.length > 0) {
+      highlightCurrentMatch(modal);
+    }
+    
+  } catch (error) {
+    console.error(`Error searching page ${currentPage}:`, error);
+  }
+}
+
+// Highlight current match on the page
+function highlightCurrentMatch(modal) {
+  if (!searchState.isActive || searchState.matches.length === 0) return;
+  
+  const currentMatch = searchState.matches[searchState.currentMatch - 1];
+  if (!currentMatch) return;
+  
+  // Create or update highlight overlay
+  let highlightOverlay = modal.querySelector('.search-highlight-overlay');
+  if (!highlightOverlay) {
+    highlightOverlay = document.createElement('div');
+    highlightOverlay.className = 'search-highlight-overlay';
+    modal.querySelector('.pdf-container').appendChild(highlightOverlay);
+  }
+  
+  // Position highlight based on current mode
+  if (bookMode) {
+    // For book mode, determine which canvas to highlight
+    const leftCanvas = modal.querySelector('#left-canvas');
+    const rightCanvas = modal.querySelector('#right-canvas');
+    
+    // Simple approach: highlight on the active canvas
+    const activeCanvas = leftCanvas;
+    const rect = activeCanvas.getBoundingClientRect();
+    
+    highlightOverlay.style.cssText = `
+      position: absolute;
+      left: ${rect.left + currentMatch.x * scale}px;
+      top: ${rect.top + (currentMatch.y * scale)}px;
+      width: ${currentMatch.width * scale}px;
+      height: ${currentMatch.height * scale}px;
+      background: rgba(255, 255, 0, 0.6);
+      border: 2px solid #ff6b35;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 1000;
+      animation: searchPulse 1s ease-in-out infinite alternate;
+    `;
+  } else {
+    // For single page mode
+    const canvas = modal.querySelector('#pdf-canvas');
+    const rect = canvas.getBoundingClientRect();
+    
+    highlightOverlay.style.cssText = `
+      position: absolute;
+      left: ${rect.left + currentMatch.x * scale}px;
+      top: ${rect.top + (currentMatch.y * scale)}px;
+      width: ${currentMatch.width * scale}px;
+      height: ${currentMatch.height * scale}px;
+      background: rgba(255, 255, 0, 0.6);
+      border: 2px solid #ff6b35;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 1000;
+      animation: searchPulse 1s ease-in-out infinite alternate;
+    `;
+  }
+}
+
+// Update search UI with match counter
+function updateSearchUI(modal) {
+  const searchContainer = modal.querySelector('.preview-search');
+  
+  // Remove existing search controls
+  const existingControls = searchContainer.querySelector('.search-controls');
+  if (existingControls) {
+    existingControls.remove();
+  }
+  
+  // Create search controls
+  const searchControls = document.createElement('div');
+  searchControls.className = 'search-controls';
+  searchControls.innerHTML = `
+    <span class="search-counter">${searchState.currentMatch} of ${searchState.totalMatches}</span>
+    <button class="search-nav-btn prev-match" title="Previous Match">‹</button>
+    <button class="search-nav-btn next-match" title="Next Match">›</button>
+    <button class="search-close-btn" title="Close Search">×</button>
+  `;
+  
+  searchContainer.appendChild(searchControls);
+  
+  // Add event listeners
+  const prevBtn = searchControls.querySelector('.prev-match');
+  const nextBtn = searchControls.querySelector('.next-match');
+  const closeBtn = searchControls.querySelector('.search-close-btn');
+  
+  prevBtn.addEventListener('click', () => navigateToMatch(modal, 'prev'));
+  nextBtn.addEventListener('click', () => navigateToMatch(modal, 'next'));
+  closeBtn.addEventListener('click', () => clearSearch(modal));
+  
+  // Update button states
+  prevBtn.disabled = searchState.currentMatch <= 1;
+  nextBtn.disabled = searchState.currentMatch >= searchState.totalMatches;
+}
+
+// Navigate to next/previous match
+async function navigateToMatch(modal, direction) {
+  if (!searchState.isActive || searchState.matches.length === 0) return;
+  
+  if (direction === 'next') {
+    searchState.currentMatch = Math.min(searchState.currentMatch + 1, searchState.totalMatches);
+  } else {
+    searchState.currentMatch = Math.max(searchState.currentMatch - 1, 1);
+  }
+  
+  // Highlight current match
+  highlightCurrentMatch(modal);
+  
+  // Update search UI
+  updateSearchUI(modal);
+}
+
+// Clear search
+function clearSearch(modal) {
+  searchState.isActive = false;
+  searchState.query = '';
+  searchState.currentMatch = 0;
+  searchState.totalMatches = 0;
+  searchState.matches = [];
+  
+  // Remove highlight overlay
+  const highlightOverlay = modal.querySelector('.search-highlight-overlay');
+  if (highlightOverlay) {
+    highlightOverlay.remove();
+  }
+  
+  // Remove search controls
+  const searchControls = modal.querySelector('.search-controls');
+  if (searchControls) {
+    searchControls.remove();
+  }
+  
+  // Clear search input
+  const searchInput = modal.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.value = '';
   }
 }
 
