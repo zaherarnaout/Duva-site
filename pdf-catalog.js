@@ -1527,13 +1527,14 @@ async function addTextLayer(page, viewport, canvas, modal) {
         right: 0;
         bottom: 0;
         overflow: hidden;
-        opacity: 0.2;
+        opacity: 0;
         line-height: 1.0;
         user-select: text;
         -webkit-user-select: text;
         -moz-user-select: text;
         -ms-user-select: text;
-        pointer-events: none;
+        pointer-events: auto;
+        z-index: 10;
       `;
       
       // Position text layer over canvas
@@ -1574,6 +1575,8 @@ async function addTextLayer(page, viewport, canvas, modal) {
         pointer-events: auto;
         color: transparent;
         background: transparent;
+        min-width: 1px;
+        min-height: 1px;
       `;
       textDiv.textContent = item.str;
       
@@ -1583,8 +1586,9 @@ async function addTextLayer(page, viewport, canvas, modal) {
     // Add text elements to layer
     textDivs.forEach(div => textLayer.appendChild(div));
     
+    console.log('✅ Text layer added with', textContent.items.length, 'text items');
   } catch (error) {
-    console.error('Error adding text layer:', error);
+    console.error('❌ Error adding text layer:', error);
   }
 }
 
