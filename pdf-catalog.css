@@ -1538,9 +1538,5 @@
 
 /* === END PDF CATALOG SYSTEM === */
 
-/* === PDF highlight & selection – final override === */
-/* Text selection disabled for stability - only search highlights remain */
-.search-highlight-overlay { 
-  pointer-events: none; 
-  z-index: 30; 
-}
+/* === Search highlighting - DISABLED for stability === */
+/* Search highlighting disabled - navigation only */
