@@ -535,6 +535,11 @@ async function renderSinglePage(num, modal) {
   
   // Keep highlight in sync after render
   refreshHighlight(modal);
+  
+  // Safe highlight update after render
+  if (window.searchState?.isActive) {
+    setTimeout(() => highlightCurrentMatch(modal), 0);
+  }
 }
 
 // Render book pages - SIMPLIFIED
@@ -648,6 +653,11 @@ async function renderBookPages(num, modal) {
   
   // Keep highlight in sync after render
   refreshHighlight(modal);
+  
+  // Safe highlight update after render
+  if (window.searchState?.isActive) {
+    setTimeout(() => highlightCurrentMatch(modal), 0);
+  }
 }
 
 // Queue page rendering
@@ -704,6 +714,11 @@ function addPreviewEventListeners(modal) {
      scale = Math.max(0.25, scale - 0.25);
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
+     
+     // Safe highlight update after zoom
+     if (window.searchState?.isActive) {
+       setTimeout(() => highlightCurrentMatch(modal), 0);
+     }
    });
    
    zoomInBtn.addEventListener('click', () => {
@@ -711,6 +726,11 @@ function addPreviewEventListeners(modal) {
      scale = Math.min(3, scale + 0.25);
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
+     
+     // Safe highlight update after zoom
+     if (window.searchState?.isActive) {
+       setTimeout(() => highlightCurrentMatch(modal), 0);
+     }
    });
    
        fitWidthBtn.addEventListener('click', async () => {
@@ -738,6 +758,11 @@ function addPreviewEventListeners(modal) {
       
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
+      
+      // Safe highlight update after zoom
+      if (window.searchState?.isActive) {
+        setTimeout(() => highlightCurrentMatch(modal), 0);
+      }
     });
    
    fitHeightBtn.addEventListener('click', async () => {
@@ -749,6 +774,11 @@ function addPreviewEventListeners(modal) {
      scale = containerHeight / originalViewport.height;
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
+     
+     // Safe highlight update after zoom
+     if (window.searchState?.isActive) {
+       setTimeout(() => highlightCurrentMatch(modal), 0);
+     }
    });
   
      // Book mode toggle button
@@ -1095,36 +1125,65 @@ async function navigateToFirstMatch(modal) {
   }, 500); // Wait for page to render
 }
 
-/* === PDF Search Highlight (stable, per-canvas, scale-aware) === */
+// Robust highlight: safe index, supports pageIndex or page, per-canvas overlay.
 function highlightCurrentMatch(modal) {
-  if (!searchState?.isActive || !searchState.matches?.length) return;
-  const m = searchState.matches[searchState.index];
-  const pageNo = (m.pageIndex ?? m.page) + 1;
-  const canvas = modal.querySelector(`canvas[data-page-number="${pageNo}"]`);
-  if (!canvas) return;
-  // use the SAME positioned box as text spans
-  const layer = canvas.parentElement.querySelector(`.text-layer[data-for="${canvas.id}"]`);
-  if (!layer) return;
-  // page scale = drawn CSS width / original PDF width
-  const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
-  const scale = parseFloat(canvas.dataset.pageScale) || (layer.clientWidth / originalW);
-  // create or reuse a highlight inside the layer
-  let hl = layer.querySelector('.search-highlight-overlay');
-  if (!hl) {
-    hl = document.createElement('div');
-    hl.className = 'search-highlight-overlay';
-    hl.style.position = 'absolute';
-    hl.style.pointerEvents = 'none';
-    hl.style.background = 'rgba(255,255,0,0.35)';
-    hl.style.outline = '2px solid #C0392B';
-    hl.style.zIndex = '30';
-    layer.appendChild(hl);
-  }
-  // position purely by PDF coords × scale — no container offsets
-  hl.style.left = (m.x * scale) + 'px';
-  hl.style.top = ((m.y - m.height) * scale) + 'px'; // baseline → top
-  hl.style.width = (m.width * scale) + 'px';
-  hl.style.height = (m.height * scale) + 'px';
+    const st = window.searchState || {};
+    const matches = Array.isArray(st.matches) ? st.matches : [];
+    if (!st.isActive || matches.length === 0) return;
+
+    // Accept either 0-based "index" or 1-based "currentMatch"
+    let idx = typeof st.index === 'number' ? st.index
+             : typeof st.currentMatch === 'number' ? st.currentMatch - 1
+             : 0;
+    if (idx < 0) idx = 0;
+    if (idx >= matches.length) idx = matches.length - 1;
+
+    const m = matches[idx];
+    if (!m) return;
+
+    // Some code builds page as 1-based "page"; others as 0-based "pageIndex"
+    const pageIndex = (typeof m.pageIndex === 'number')
+        ? m.pageIndex
+        : (typeof m.page === 'number' ? m.page - 1 : null);
+
+    if (pageIndex == null || pageIndex < 0) return;
+    const pageNumber = pageIndex + 1;
+
+    // Get the canvas for that page
+    const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
+    if (!canvas) return;
+
+    // Use the same positioned wrapper as your .text-layer
+    const parent = canvas.parentElement;
+    if (!parent) return;
+    if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+
+    // Reuse the per-canvas text layer (so coords are local to the page)
+    const textLayer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
+    if (!textLayer) return; // render creates this; wait until it exists
+
+    // Compute scale from how you rendered the page
+    const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
+    const scale = (textLayer.clientWidth || canvas.clientWidth) / originalW;
+
+    // Create/reuse highlight inside the text layer
+    let hl = textLayer.querySelector('.search-highlight-overlay');
+    if (!hl) {
+        hl = document.createElement('div');
+        hl.className = 'search-highlight-overlay';
+        hl.style.position = 'absolute';
+        hl.style.pointerEvents = 'none';
+        hl.style.background = 'rgba(255,255,0,0.35)';
+        hl.style.outline = '2px solid #C0392B';
+        hl.style.zIndex = '30';
+        textLayer.appendChild(hl);
+    }
+
+    // PDF.js y is baseline → subtract height to get top
+    hl.style.left   = (m.x * scale) + 'px';
+    hl.style.top    = ((m.y - m.height) * scale) + 'px';
+    hl.style.width  = (m.width  * scale) + 'px';
+    hl.style.height = (m.height * scale) + 'px';
 }
 /* === End PDF Search Highlight === */
 
@@ -1181,16 +1240,17 @@ function updateSearchUI(modal) {
 
 // Navigate to next/previous match
 async function navigateToMatch(modal, direction) {
-  if (!searchState.isActive || searchState.matches.length === 0) return;
+  const s = window.searchState;
+  if (!s?.matches?.length) return;
   
   if (direction === 'next') {
-    searchState.currentMatch = Math.min(searchState.currentMatch + 1, searchState.totalMatches);
+    s.currentMatch = Math.min(s.currentMatch + 1, s.totalMatches);
   } else {
-    searchState.currentMatch = Math.max(searchState.currentMatch - 1, 1);
+    s.currentMatch = Math.max(s.currentMatch - 1, 1);
   }
   
   // Get current match
-  const currentMatch = searchState.matches[searchState.currentMatch - 1];
+  const currentMatch = s.matches[s.currentMatch - 1];
   if (!currentMatch) return;
   
   // Navigate to the page with this match if needed
@@ -1203,9 +1263,7 @@ async function navigateToMatch(modal, direction) {
   }
   
   // Highlight current match after page loads
-  setTimeout(() => {
-    highlightCurrentMatch(modal);
-  }, 300);
+  setTimeout(() => highlightCurrentMatch(modal), 0);
   
   // Update search UI
   updateSearchUI(modal);
