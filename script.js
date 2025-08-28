@@ -6342,23 +6342,22 @@ setTimeout(initializeNewItemsReadMore, 1000);
       }
 
       link.addEventListener("click", (e) => {
-        const current = normalizePath(window.location.pathname);
-        const target = normalizePath(SLUGS[page]);
-
-        console.log('🖱️ Deep-link clicked:', { page, id, current, target });
-
-        if (current === target) {
-          // same page → smooth scroll (no full navigation)
+        // Fast path: check if we're on the same page first
+        const currentPath = window.location.pathname;
+        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+        
+        if (isOnGalleryPage) {
+          // Same page → immediate smooth scroll (like header tabs)
           const scrolled = smoothScrollToId(id);
           if (scrolled) {
             e.preventDefault();
             // Keep the hash updated without jump
             history.replaceState(null, "", `#${id}`);
-            console.log('✅ Smooth scroll completed to:', id);
+            console.log('✅ Footer link smooth scroll completed to:', id);
           }
         } else {
-          // cross-page navigation - let it proceed normally (preserves ?locale)
-          console.log('🌐 Navigating to:', href);
+          // Cross-page navigation - let it proceed normally
+          console.log('🌐 Footer link navigating to:', href);
         }
       });
       
@@ -6379,21 +6378,21 @@ setTimeout(initializeNewItemsReadMore, 1000);
     }
   }
 
-  // Initialize when DOM is ready
+  // Initialize immediately for faster response
+  initializeDeepLinks();
+  handleInitialHash();
+
+  // Also initialize when DOM is ready for any late elements
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       initializeDeepLinks();
-      handleInitialHash();
     });
-  } else {
-    initializeDeepLinks();
-    handleInitialHash();
   }
 
-  // Also initialize after a delay to catch dynamically loaded content
+  // Final initialization for dynamically loaded content
   setTimeout(() => {
     initializeDeepLinks();
-  }, 1000);
+  }, 500);
 
   console.log('✅ DUVA deep-link router initialized');
 })();
@@ -6416,7 +6415,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
   // Adjust to your fixed header height
   const SCROLL_OFFSET = 80; // px
 
-  // Utility: smooth scroll with offset
+  // Utility: smooth scroll with offset (optimized for speed)
   function smoothScrollToId(id) {
     const el = document.getElementById(id);
     if (!el) {
@@ -6424,15 +6423,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
       return false;
     }
     
-    const rect = el.getBoundingClientRect();
-    const top = window.scrollY + rect.top - SCROLL_OFFSET;
-    
-    window.scrollTo({ 
-      top, 
-      behavior: "smooth" 
+    // Use requestAnimationFrame for immediate response
+    requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      const top = window.scrollY + rect.top - SCROLL_OFFSET;
+      
+      window.scrollTo({ 
+        top, 
+        behavior: "smooth" 
+      });
+      
+      console.log('📜 Smooth scrolling to:', id, 'at position:', top);
     });
     
-    console.log('📜 Smooth scrolling to:', id, 'at position:', top);
     return true;
   }
 
@@ -6466,16 +6469,15 @@ setTimeout(initializeNewItemsReadMore, 1000);
       tab.setAttribute("href", href);
 
       tab.addEventListener("click", (e) => {
+        // Fast path: check if we're on the same page first
         const currentPath = window.location.pathname;
         const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
 
-        console.log('🖱️ Header tab clicked:', { tabId, config, currentPath, isOnGalleryPage });
-
         if (isOnGalleryPage) {
-          // Same page → smooth scroll
+          // Same page → immediate smooth scroll
+          e.preventDefault();
           const scrolled = smoothScrollToId(config.target);
           if (scrolled) {
-            e.preventDefault();
             // Keep the hash updated without jump
             history.replaceState(null, "", `#${config.target}`);
             console.log('✅ Header tab smooth scroll completed to:', config.target);
