@@ -1538,28 +1538,8 @@
 
 /* === END PDF CATALOG SYSTEM === */
 
-/* FINAL OVERRIDE – ensure text selection works */
-.pdf-container {
-  user-select: auto !important;
-  -webkit-user-select: auto !important;
-}
-.text-layer {
-  opacity: 1 !important;
-  user-select: text !important;
-  pointer-events: auto !important;
-}
-.text-layer div {
-  user-select: text !important;
-  pointer-events: auto !important;
-}
-
-/* Ensure canvas parents are positioned for highlight overlays */
-.book-pages, .pdf-container {
-  position: relative !important;
-}
-
-/* Keep the overlay above text but non-interactive */
-.search-highlight-overlay {
-  pointer-events: none !important;
-  z-index: 20 !important;
-}
+/* === PDF highlight & selection – final override === */
+/* make sure selection & highlight sit above the canvas and scroll together */
+.text-layer { position: absolute; z-index: 20; opacity: 1 !important; user-select: text !important; pointer-events: auto !important; }
+.text-layer div { user-select: text !important; pointer-events: auto !important; color: transparent; }
+.search-highlight-overlay { pointer-events: none; z-index: 30; }
