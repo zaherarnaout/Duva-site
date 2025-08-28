@@ -6067,6 +6067,8 @@ function initializeViewportFadeEffects() {
     '#about-duva',
     '#new-items',
     '#news-journal',
+    '#update',
+    '#insight',
     '#gallery',
     '#testimonial',
     '[data-ix="download"]',
@@ -6271,7 +6273,7 @@ setTimeout(initializeNewItemsReadMore, 1000);
   const VALID_IDS = new Set([
     "privacy", "terms", "cookies", "warranty",
     "about", "news", "gallery", "testimonials",
-    "new-items", "news-journal"
+    "new-items", "news-journal", "update", "insight"
   ]);
 
   // Adjust to your fixed header height
@@ -6406,7 +6408,9 @@ setTimeout(initializeNewItemsReadMore, 1000);
   const HEADER_TABS = {
     'header-newproducts-tab': { page: 'gallery', target: 'new-items' },
     'header-gallery-tab': { page: 'gallery', target: 'gallery' },
-    'header-news-tab': { page: 'gallery', target: 'news-journal' }
+    'header-news-tab': { page: 'gallery', target: 'news-journal' },
+    'header-update-tab': { page: 'gallery', target: 'update' },
+    'header-insight-tab': { page: 'gallery', target: 'insight' }
   };
 
   // Adjust to your fixed header height
