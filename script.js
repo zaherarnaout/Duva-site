@@ -6329,39 +6329,42 @@ setTimeout(initializeNewItemsReadMore, 1000);
       const page = link.getAttribute("data-page")?.trim();
       const id = link.getAttribute("data-target")?.trim();
       
-      if (!page || !id || !VALID_IDS.has(id) || !SLUGS[page]) {
-        console.log('⚠️ Invalid deep-link config:', { page, id, index });
+      // Simplified validation
+      if (!page || !id) {
+        console.log('⚠️ Missing data attributes:', { page, id, index });
         return;
       }
 
-      // Always set a real href for no-JS fallback
-      const href = buildUrl(page, id);
-      if (href) {
-        link.setAttribute("href", href);
-        console.log('🔗 Set href for link', index, ':', href);
-      }
+      // Simple href
+      const href = `${window.location.origin}/gallery#${id}`;
+      link.setAttribute("href", href);
 
+      // Ultra-fast click handler
       link.addEventListener("click", (e) => {
-        // Fast path: check if we're on the same page first
         const currentPath = window.location.pathname;
         const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
         
         if (isOnGalleryPage) {
-          // Same page → immediate smooth scroll (like header tabs)
-          const scrolled = smoothScrollToId(id);
-          if (scrolled) {
-            e.preventDefault();
-            // Keep the hash updated without jump
-            history.replaceState(null, "", `#${id}`);
-            console.log('✅ Footer link smooth scroll completed to:', id);
+          // Instant scroll - no function calls, no validation
+          e.preventDefault();
+          
+          const targetElement = document.getElementById(id);
+          if (targetElement) {
+            // Direct calculation and scroll
+            const rect = targetElement.getBoundingClientRect();
+            const scrollTop = window.scrollY + rect.top - 80;
+            
+            requestAnimationFrame(() => {
+              window.scrollTo({ top: scrollTop, behavior: "smooth" });
+              history.replaceState(null, "", `#${id}`);
+              console.log('⚡ Footer link instant scroll to:', id);
+            });
           }
-        } else {
-          // Cross-page navigation - let it proceed normally
-          console.log('🌐 Footer link navigating to:', href);
         }
+        // Cross-page navigation handled by href
       });
       
-      console.log('✅ Deep-link initialized:', { page, id, index });
+      console.log('⚡ Footer link initialized:', id);
     });
   }
 
@@ -6378,21 +6381,13 @@ setTimeout(initializeNewItemsReadMore, 1000);
     }
   }
 
-  // Initialize immediately for faster response
+  // Ultra-fast initialization
   initializeDeepLinks();
   handleInitialHash();
 
-  // Also initialize when DOM is ready for any late elements
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      initializeDeepLinks();
-    });
-  }
-
-  // Final initialization for dynamically loaded content
-  setTimeout(() => {
-    initializeDeepLinks();
-  }, 500);
+  // Immediate re-initialization
+  setTimeout(initializeDeepLinks, 10);
+  setTimeout(initializeDeepLinks, 100);
 
   console.log('✅ DUVA deep-link router initialized');
 })();
@@ -6616,6 +6611,73 @@ if (typeof Webflow !== 'undefined') {
 }
 
 /* === END BACK TO TOP BUTTON FUNCTIONALITY === */
+
+// === END DUVA DEEP-LINK ROUTER ===
+
+// === ULTRA-FAST FOOTER NAVIGATION ===
+/* Separate system for footer links - optimized for speed */
+
+(function () {
+  console.log('⚡ Initializing ultra-fast footer navigation...');
+  
+  // Direct footer link handling - no complex validation
+  function initializeFooterLinks() {
+    const footerLinks = document.querySelectorAll(".deep-link[data-target]");
+    
+    if (footerLinks.length === 0) {
+      console.log('⚠️ No footer links found');
+      return;
+    }
+    
+    console.log('⚡ Found', footerLinks.length, 'footer links');
+    
+    footerLinks.forEach((link) => {
+      const targetId = link.getAttribute("data-target")?.trim();
+      
+      if (!targetId) return;
+      
+      // Set simple href
+      link.setAttribute("href", `#${targetId}`);
+      
+      // Ultra-fast click handler
+      link.addEventListener("click", (e) => {
+        const currentPath = window.location.pathname;
+        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+        
+        if (isOnGalleryPage) {
+          // Instant scroll - no delays
+          e.preventDefault();
+          
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            // Immediate scroll calculation and execution
+            const rect = targetElement.getBoundingClientRect();
+            const scrollTop = window.scrollY + rect.top - 80; // 80px offset
+            
+            // Use requestAnimationFrame for immediate execution
+            requestAnimationFrame(() => {
+              window.scrollTo({ top: scrollTop, behavior: "smooth" });
+              history.replaceState(null, "", `#${targetId}`);
+              console.log('⚡ Footer link instant scroll to:', targetId);
+            });
+          }
+        }
+        // Cross-page navigation handled by href
+      });
+      
+      console.log('⚡ Footer link initialized:', targetId);
+    });
+  }
+  
+  // Initialize immediately
+  initializeFooterLinks();
+  
+  // Re-initialize quickly for any late elements
+  setTimeout(initializeFooterLinks, 50);
+  setTimeout(initializeFooterLinks, 200);
+  
+  console.log('✅ Ultra-fast footer navigation initialized');
+})();
 
 
 
