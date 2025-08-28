@@ -6635,6 +6635,32 @@ if (typeof Webflow !== 'undefined') {
     'design and  services': 'design-and-services'
   };
   
+  // Use the same smooth scroll function as header navigation
+  const SCROLL_OFFSET = 80; // px
+  
+  function smoothScrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.log('⚠️ Target element not found:', id);
+      return false;
+    }
+    
+    // Use requestAnimationFrame for immediate response (same as header)
+    requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      const top = window.scrollY + rect.top - SCROLL_OFFSET;
+      
+      window.scrollTo({ 
+        top, 
+        behavior: "smooth" 
+      });
+      
+      console.log('📜 Footer smooth scrolling to:', id, 'at position:', top);
+    });
+    
+    return true;
+  }
+  
   function initializeFooterNavigation() {
     // Target footer div elements that should be clickable
     const footerSection = document.querySelector('.footer-section');
@@ -6665,7 +6691,7 @@ if (typeof Webflow !== 'undefined') {
       // Make div clickable
       div.style.cursor = 'pointer';
       
-      // Simple click handler - like the original system
+      // Use the same click handler approach as header navigation
       div.addEventListener("click", (e) => {
         console.log('🖱️ Footer div clicked:', text, '→', targetId);
         
@@ -6675,26 +6701,20 @@ if (typeof Webflow !== 'undefined') {
         const isOnPrivacyPage = currentPath.includes('/privacy') || currentPath.includes('/legal');
         
         if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'update', 'insight'].includes(targetId)) {
-          // Same page navigation
+          // Same page navigation - use same approach as header
           e.preventDefault();
-          const targetElement = document.getElementById(targetId);
-          if (targetElement) {
-            const rect = targetElement.getBoundingClientRect();
-            const scrollTop = window.scrollY + rect.top - 80;
-            window.scrollTo({ top: scrollTop, behavior: "smooth" });
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
             history.replaceState(null, "", `#${targetId}`);
-            console.log('✅ Footer navigation to:', targetId);
+            console.log('✅ Footer navigation completed to:', targetId);
           }
         } else if (isOnPrivacyPage && ['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
-          // Same page navigation for privacy page
+          // Same page navigation for privacy page - use same approach as header
           e.preventDefault();
-          const targetElement = document.getElementById(targetId);
-          if (targetElement) {
-            const rect = targetElement.getBoundingClientRect();
-            const scrollTop = window.scrollY + rect.top - 80;
-            window.scrollTo({ top: scrollTop, behavior: "smooth" });
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
             history.replaceState(null, "", `#${targetId}`);
-            console.log('✅ Footer navigation to:', targetId);
+            console.log('✅ Footer navigation completed to:', targetId);
           }
         } else {
           // Cross-page navigation
