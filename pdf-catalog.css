@@ -1540,6 +1540,6 @@
 
 /* === PDF highlight & selection – final override === */
 /* make sure selection & highlight sit above the canvas and scroll together */
-.text-layer { position: absolute; z-index: 20; opacity: 1 !important; user-select: text !important; pointer-events: auto !important; }
+.text-layer { position: absolute; z-index: 20; opacity: 1; user-select: text; pointer-events: auto; }
 .text-layer div { user-select: text !important; pointer-events: auto !important; color: transparent; }
 .search-highlight-overlay { pointer-events: none; z-index: 30; }
