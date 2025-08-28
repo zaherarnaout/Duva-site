@@ -509,6 +509,15 @@ async function renderSinglePage(num, modal) {
   // Add text layer for text selection
   await addTextLayer(page, viewport, canvas, modal);
   
+  // ensure the canvas's parent is the positioning context
+  const parent = canvas.parentElement;
+  if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+  
+  // keep numbers we'll reuse later
+  canvas.dataset.originalWidth = originalViewport.width; // ~595.28
+  canvas.dataset.originalHeight = originalViewport.height;
+  canvas.dataset.pageScale = (viewport.width / originalViewport.width).toString();
+  
   console.log('✅ Single page rendered, canvas size:', canvas.width, 'x', canvas.height);
   
   // Update page info
@@ -577,6 +586,15 @@ async function renderBookPages(num, modal) {
     
     // Add text layer for left page
     await addTextLayer(leftPage, leftViewport, leftCanvas, modal);
+    
+    // ensure the canvas's parent is the positioning context
+    const leftParent = leftCanvas.parentElement;
+    if (getComputedStyle(leftParent).position === 'static') leftParent.style.position = 'relative';
+    
+    // keep numbers we'll reuse later
+    leftCanvas.dataset.originalWidth = leftPage.getViewport({ scale: 1 }).width;
+    leftCanvas.dataset.originalHeight = leftPage.getViewport({ scale: 1 }).height;
+    leftCanvas.dataset.pageScale = (leftViewport.width / leftPage.getViewport({ scale: 1 }).width).toString();
   }
   
   // Render right page
@@ -601,6 +619,15 @@ async function renderBookPages(num, modal) {
     
     // Add text layer for right page
     await addTextLayer(rightPage, rightViewport, rightCanvas, modal);
+    
+    // ensure the canvas's parent is the positioning context
+    const rightParent = rightCanvas.parentElement;
+    if (getComputedStyle(rightParent).position === 'static') rightParent.style.position = 'relative';
+    
+    // keep numbers we'll reuse later
+    rightCanvas.dataset.originalWidth = rightPage.getViewport({ scale: 1 }).width;
+    rightCanvas.dataset.originalHeight = rightPage.getViewport({ scale: 1 }).height;
+    rightCanvas.dataset.pageScale = (rightViewport.width / rightPage.getViewport({ scale: 1 }).width).toString();
   } else {
     // Clear right canvas if no second page
     rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
@@ -1071,45 +1098,32 @@ async function navigateToFirstMatch(modal) {
 /* === PDF Search Highlight (stable, per-canvas, scale-aware) === */
 function highlightCurrentMatch(modal) {
   if (!searchState?.isActive || !searchState.matches?.length) return;
-
-  const m = searchState.matches[searchState.currentMatch - 1];
-  const pageNumber = (m.pageIndex ?? m.page) + 1;
-
-  // 1) find the canvas for this page
-  const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
+  const m = searchState.matches[searchState.index];
+  const pageNo = (m.pageIndex ?? m.page) + 1;
+  const canvas = modal.querySelector(`canvas[data-page-number="${pageNo}"]`);
   if (!canvas) return;
-
-  // 2) anchor everything to the canvas's parent (same parent as your .text-layer)
-  const parent = canvas.parentElement;
-  parent.style.position = 'relative';
-
-  // 3) compute the page scale the same way you render the page
-  //    (fallback to the "original PDF width" if you store it; default 595.28)
-  const ORIGINAL_PDF_WIDTH = PDF_CATALOG_CONFIG?.originalWidth || 595.28;
-  const scale = canvas.clientWidth / ORIGINAL_PDF_WIDTH;
-
-  // 4) create/reuse an overlay tied to THIS canvas only
-  let hl = parent.querySelector(`.search-highlight-overlay[data-for="${canvas.id}"]`);
+  // use the SAME positioned box as text spans
+  const layer = canvas.parentElement.querySelector(`.text-layer[data-for="${canvas.id}"]`);
+  if (!layer) return;
+  // page scale = drawn CSS width / original PDF width
+  const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
+  const scale = parseFloat(canvas.dataset.pageScale) || (layer.clientWidth / originalW);
+  // create or reuse a highlight inside the layer
+  let hl = layer.querySelector('.search-highlight-overlay');
   if (!hl) {
     hl = document.createElement('div');
     hl.className = 'search-highlight-overlay';
-    hl.dataset.for = canvas.id;
     hl.style.position = 'absolute';
     hl.style.pointerEvents = 'none';
-    hl.style.background = 'rgba(255,255,0,0.35)';   // visible fill
-    hl.style.outline    = '2px solid #C0392B';      // DUVA red edge
-    hl.style.zIndex = 30;                            // above .text-layer
-    parent.appendChild(hl);
+    hl.style.background = 'rgba(255,255,0,0.35)';
+    hl.style.outline = '2px solid #C0392B';
+    hl.style.zIndex = '30';
+    layer.appendChild(hl);
   }
-
-  // 5) IMPORTANT: position purely from PDF coords × scale (no container offsets)
-  //    PDF.js "y" is baseline → subtract height to get the box's top
-  const left = (m.x) * scale;
-  const top  = (m.y - m.height) * scale;
-
-  hl.style.left   = left  + 'px';
-  hl.style.top    = top   + 'px';
-  hl.style.width  = (m.width  * scale) + 'px';
+  // position purely by PDF coords × scale — no container offsets
+  hl.style.left = (m.x * scale) + 'px';
+  hl.style.top = ((m.y - m.height) * scale) + 'px'; // baseline → top
+  hl.style.width = (m.width * scale) + 'px';
   hl.style.height = (m.height * scale) + 'px';
 }
 /* === End PDF Search Highlight === */
@@ -1592,13 +1606,14 @@ async function addTextLayer(page, viewport, canvas, modal) {
       layer = document.createElement('div');
       layer.className = 'text-layer';
       layer.dataset.for = canvas.id;
+      layer.style.position = 'absolute';
       parent.appendChild(layer);
     }
-    layer.style.position = 'absolute';
-    layer.style.left  = '0';
-    layer.style.top   = '0';
+    // align the layer to the canvas box
+    layer.style.left = canvas.offsetLeft + 'px';
+    layer.style.top = canvas.offsetTop + 'px';
     layer.style.width = viewport.width + 'px';
-    layer.style.height= viewport.height + 'px';
+    layer.style.height = viewport.height + 'px';
     
     // Clear existing text
     layer.innerHTML = '';
