@@ -6554,6 +6554,63 @@ setTimeout(initializeNewItemsReadMore, 1000);
 // Moved to pdf-catalog.js
 // === END CATALOG PREVIEW SYSTEM ===
 
+/* === BACK TO TOP BUTTON FUNCTIONALITY === */
+function initializeBackToTopButton() {
+  console.log('🔼 Initializing back to top button...');
+  
+  // Create the back to top button
+  const backToTopBtn = document.createElement('button');
+  backToTopBtn.className = 'back-to-top-btn';
+  backToTopBtn.setAttribute('aria-label', 'Back to top');
+  backToTopBtn.setAttribute('title', 'Back to top');
+  
+  // Add to body
+  document.body.appendChild(backToTopBtn);
+  
+  // Show/hide button based on scroll position
+  function toggleBackToTopButton() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const showButton = scrollTop > 300; // Show after 300px scroll
+    
+    if (showButton) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  }
+  
+  // Smooth scroll to top
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  
+  // Add event listeners
+  window.addEventListener('scroll', toggleBackToTopButton);
+  backToTopBtn.addEventListener('click', scrollToTop);
+  
+  // Initialize on page load
+  toggleBackToTopButton();
+  
+  console.log('✅ Back to top button initialized');
+}
+
+// Initialize back to top button when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initializeBackToTopButton();
+});
+
+// Also initialize when Webflow's page loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeBackToTopButton();
+  });
+}
+
+/* === END BACK TO TOP BUTTON FUNCTIONALITY === */
+
 
 
 
