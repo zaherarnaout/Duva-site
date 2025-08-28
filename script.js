@@ -6615,17 +6615,25 @@ if (typeof Webflow !== 'undefined') {
 // === END DUVA DEEP-LINK ROUTER ===
 
 // === ULTRA-FAST FOOTER NAVIGATION ===
-/* Separate system for footer links - optimized for speed */
+/* Completely separate system for footer links - bypasses all complex logic */
 
 (function () {
   console.log('⚡ Initializing ultra-fast footer navigation...');
   
-  // Direct footer link handling - no complex validation
+  // Target footer links specifically - avoid deep-link system entirely
   function initializeFooterLinks() {
-    const footerLinks = document.querySelectorAll(".deep-link[data-target]");
+    // Target links in footer section specifically
+    const footerSection = document.querySelector('.footer-section');
+    if (!footerSection) {
+      console.log('⚠️ Footer section not found');
+      return;
+    }
+    
+    // Find all links in footer that have data-target
+    const footerLinks = footerSection.querySelectorAll("a[data-target]");
     
     if (footerLinks.length === 0) {
-      console.log('⚠️ No footer links found');
+      console.log('⚠️ No footer links with data-target found');
       return;
     }
     
@@ -6639,27 +6647,35 @@ if (typeof Webflow !== 'undefined') {
       // Set simple href
       link.setAttribute("href", `#${targetId}`);
       
-      // Ultra-fast click handler
-      link.addEventListener("click", (e) => {
+      // Remove any existing click listeners to avoid conflicts
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+      
+      // Ultra-fast click handler - no complex logic
+      newLink.addEventListener("click", (e) => {
+        // Check if we're on gallery page
         const currentPath = window.location.pathname;
         const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
         
         if (isOnGalleryPage) {
-          // Instant scroll - no delays
+          // Instant scroll - no function calls, no validation
           e.preventDefault();
+          e.stopPropagation(); // Prevent other handlers
           
           const targetElement = document.getElementById(targetId);
           if (targetElement) {
-            // Immediate scroll calculation and execution
+            // Direct calculation and scroll - no delays
             const rect = targetElement.getBoundingClientRect();
-            const scrollTop = window.scrollY + rect.top - 80; // 80px offset
+            const scrollTop = window.scrollY + rect.top - 80;
             
-            // Use requestAnimationFrame for immediate execution
-            requestAnimationFrame(() => {
-              window.scrollTo({ top: scrollTop, behavior: "smooth" });
-              history.replaceState(null, "", `#${targetId}`);
-              console.log('⚡ Footer link instant scroll to:', targetId);
-            });
+            // Immediate execution - bypass all other systems
+            window.scrollTo({ top: scrollTop, behavior: "smooth" });
+            history.replaceState(null, "", `#${targetId}`);
+            
+            // Force target section to be visible immediately
+            targetElement.classList.add('viewport-visible');
+            
+            console.log('⚡ Footer link instant scroll to:', targetId);
           }
         }
         // Cross-page navigation handled by href
@@ -6673,6 +6689,7 @@ if (typeof Webflow !== 'undefined') {
   initializeFooterLinks();
   
   // Re-initialize quickly for any late elements
+  setTimeout(initializeFooterLinks, 10);
   setTimeout(initializeFooterLinks, 50);
   setTimeout(initializeFooterLinks, 200);
   
