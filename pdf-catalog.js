@@ -1170,13 +1170,10 @@ function highlightCurrentMatch(modal) {
   const canvas = modal.querySelector(`canvas[data-page-number="${pageNum}"]`);
   if (!canvas) return;
 
-  // Get the canvas position relative to its parent
-  const canvasRect = canvas.getBoundingClientRect();
-  const parentRect = canvas.parentElement.getBoundingClientRect();
-  
-  // Calculate the offset of canvas within its parent
-  const canvasOffsetX = canvasRect.left - parentRect.left;
-  const canvasOffsetY = canvasRect.top - parentRect.top;
+  // Get the canvas position relative to its parent using offsetLeft/offsetTop
+  // This is more stable than getBoundingClientRect() when screen size changes
+  const canvasOffsetX = canvas.offsetLeft;
+  const canvasOffsetY = canvas.offsetTop;
 
   // compute page scale from canvas dimensions
   const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
@@ -1219,7 +1216,10 @@ function highlightCurrentMatch(modal) {
 
 /* === Keep highlight in sync on render/zoom/scroll === */
 function refreshHighlight(modal) {
-  if (window.searchState?.isActive) highlightCurrentMatch(modal);
+  if (window.searchState?.isActive) {
+    // Force a small delay to ensure DOM is updated
+    setTimeout(() => highlightCurrentMatch(modal), 10);
+  }
 }
 
 // keep it in sync while scrolling the PDF container
@@ -1229,7 +1229,15 @@ function refreshHighlight(modal) {
   const container = modal.querySelector('.pdf-container');
   if (!container) return;
   container.addEventListener('scroll', () => refreshHighlight(modal));
-  window.addEventListener('resize', () => refreshHighlight(modal));
+  
+  // Add debounced resize listener to prevent excessive updates
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      refreshHighlight(modal);
+    }, 100); // Wait 100ms after resize stops
+  });
 })();
 
 // Update search UI with match counter
