@@ -453,8 +453,8 @@ async function renderPage(num, modal) {
   console.log('🎨 Rendering page', num, 'at scale', scale, 'book mode:', bookMode);
   pageRendering = true;
   
-  // Clean up old overlays before rendering different page
-  modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
+  // Clean up old overlays (disabled)
+  // modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
   
   try {
     if (bookMode) {
@@ -463,10 +463,10 @@ async function renderPage(num, modal) {
       await renderSinglePage(num, modal);
     }
     
-    // Call highlight after render if search is active
-    if (searchState.isActive) {
-      highlightCurrentMatch(modal);
-    }
+         // Highlight call disabled for stability
+     // if (searchState.isActive) {
+     //   highlightCurrentMatch(modal);
+     // }
     
     pageRendering = false;
     
@@ -735,10 +735,10 @@ function addPreviewEventListeners(modal) {
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
      
-     // Safe highlight update after zoom
-     if (window.searchState?.isActive) {
-       setTimeout(() => highlightCurrentMatch(modal), 0);
-     }
+     // Highlight update disabled for stability
+     // if (window.searchState?.isActive) {
+     //   setTimeout(() => highlightCurrentMatch(modal), 0);
+     // }
    });
    
    zoomInBtn.addEventListener('click', () => {
@@ -747,10 +747,10 @@ function addPreviewEventListeners(modal) {
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
      
-     // Safe highlight update after zoom
-     if (window.searchState?.isActive) {
-       setTimeout(() => highlightCurrentMatch(modal), 0);
-     }
+     // Highlight update disabled for stability
+     // if (window.searchState?.isActive) {
+     //   setTimeout(() => highlightCurrentMatch(modal), 0);
+     // }
    });
    
        fitWidthBtn.addEventListener('click', async () => {
@@ -779,10 +779,10 @@ function addPreviewEventListeners(modal) {
       zoomLevel.textContent = Math.round(scale * 100) + '%';
       queueRenderPage(pageNum, modal);
       
-      // Safe highlight update after zoom
-      if (window.searchState?.isActive) {
-        setTimeout(() => highlightCurrentMatch(modal), 0);
-      }
+      // Highlight update disabled for stability
+      // if (window.searchState?.isActive) {
+      //   setTimeout(() => highlightCurrentMatch(modal), 0);
+      // }
     });
    
    fitHeightBtn.addEventListener('click', async () => {
@@ -795,10 +795,10 @@ function addPreviewEventListeners(modal) {
      zoomLevel.textContent = Math.round(scale * 100) + '%';
      queueRenderPage(pageNum, modal);
      
-     // Safe highlight update after zoom
-     if (window.searchState?.isActive) {
-       setTimeout(() => highlightCurrentMatch(modal), 0);
-     }
+     // Highlight update disabled for stability
+     // if (window.searchState?.isActive) {
+     //   setTimeout(() => highlightCurrentMatch(modal), 0);
+     // }
    });
   
      // Book mode toggle button
@@ -807,8 +807,8 @@ function addPreviewEventListeners(modal) {
      bookMode = !bookMode;
      console.log('📖 Book mode toggled:', bookMode);
      
-     // Clean up old overlays when toggling modes
-     modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
+           // Clean up old overlays when toggling modes (disabled)
+      // modal.querySelectorAll('.search-highlight-overlay').forEach(n => n.remove());
      
                 // Update button appearance
        const modeIcon = bookModeBtn.querySelector('.mode-icon');
@@ -1146,99 +1146,23 @@ async function navigateToFirstMatch(modal) {
   }, 500); // Wait for page to render
 }
 
-// === Simplified search highlight - no text layer dependency ===
+// === Search highlight - DISABLED for stability ===
 function highlightCurrentMatch(modal) {
-  const st = window.searchState || {};
-  const matches = Array.isArray(st.matches) ? st.matches : [];
-  if (!st.isActive || !matches.length) return;
-
-  // clamp index
-  let i = Number.isFinite(st.index) ? st.index : 0;
-  if (i < 0) i = 0;
-  if (i >= matches.length) i = matches.length - 1;
-
-  const m = matches[i];
-  if (!m) return;
-
-  // accept either 1-based `page` or 0-based `pageIndex`
-  const pageNum = (typeof m.pageIndex === 'number')
-    ? m.pageIndex + 1
-    : (typeof m.page === 'number' ? m.page : null);
-  if (!pageNum) return;
-
-  // canvas for that page
-  const canvas = modal.querySelector(`canvas[data-page-number="${pageNum}"]`);
-  if (!canvas) return;
-
-  // Get the canvas position relative to its parent using offsetLeft/offsetTop
-  // This is more stable than getBoundingClientRect() when screen size changes
-  const canvasOffsetX = canvas.offsetLeft;
-  const canvasOffsetY = canvas.offsetTop;
-
-  // compute page scale from canvas dimensions
-  const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
-  const scale = canvas.clientWidth / originalW;
-
-  // ensure we have a height
-  const h = (typeof m.height === 'number' && m.height > 0)
-    ? m.height
-    : (typeof m.fontSize === 'number' ? m.fontSize : 10);
-
-  // create/reuse a highlight directly on the canvas parent
-  const parent = canvas.parentElement;
-  if (getComputedStyle(parent).position === 'static') {
-    parent.style.position = 'relative';
-  }
-
-  let hl = parent.querySelector('.search-highlight-overlay');
-  if (!hl) {
-    hl = document.createElement('div');
-    hl.className = 'search-highlight-overlay';
-    Object.assign(hl.style, {
-      position: 'absolute',
-      pointerEvents: 'none',
-      background: 'rgba(255,255,0,0.35)',
-      outline: '2px solid #C0392B',
-      zIndex: 30
-    });
-    parent.appendChild(hl);
-  }
-
-  // Position highlight relative to canvas within its parent
-  // Add canvas offset to position the highlight correctly over the PDF content
-  hl.style.left   = (canvasOffsetX + (m.x * scale)) + 'px';
-  hl.style.top    = (canvasOffsetY + ((m.y - h) * scale)) + 'px';
-  hl.style.width  = (m.width * scale) + 'px';
-  hl.style.height = (h * scale) + 'px';
+  // Highlight functionality disabled - search navigation only
+  console.log('ℹ️ Search highlighting disabled for stability');
 }
 // === /highlightCurrentMatch ===
 /* === End PDF Search Highlight === */
 
-/* === Keep highlight in sync on render/zoom/scroll === */
+/* === Highlight sync - DISABLED for stability === */
 function refreshHighlight(modal) {
-  if (window.searchState?.isActive) {
-    // Force a small delay to ensure DOM is updated
-    setTimeout(() => highlightCurrentMatch(modal), 10);
-  }
+  // Highlight sync disabled for stability
 }
 
-// keep it in sync while scrolling the PDF container
-(function attachHighlightSync() {
-  const modal = document.querySelector('#catalog-preview-modal');
-  if (!modal) return;
-  const container = modal.querySelector('.pdf-container');
-  if (!container) return;
-  container.addEventListener('scroll', () => refreshHighlight(modal));
-  
-  // Add debounced resize listener to prevent excessive updates
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      refreshHighlight(modal);
-    }, 100); // Wait 100ms after resize stops
-  });
-})();
+// Highlight sync disabled
+// (function attachHighlightSync() {
+//   // Disabled for stability
+// })();
 
 // Update search UI with match counter
 function updateSearchUI(modal) {
@@ -1295,8 +1219,8 @@ async function navigateToMatch(modal, newIndex) {
   pageNum = targetPage;
   await queueRenderPage(targetPage, modal);
   
-  // defer highlight until the page/text-layer exists
-  setTimeout(() => highlightCurrentMatch(modal), 0);
+  // highlight disabled for stability
+  // setTimeout(() => highlightCurrentMatch(modal), 0);
   
   // Update search UI
   updateSearchUI(modal);
@@ -1311,9 +1235,9 @@ function clearSearch(modal) {
   st.totalMatches = 0;
   st.matches = [];
   
-  // Remove highlight overlays from all canvas containers
-  const highlightOverlays = modal.querySelectorAll('.search-highlight-overlay');
-  highlightOverlays.forEach(overlay => overlay.remove());
+     // Remove highlight overlays (disabled)
+   // const highlightOverlays = modal.querySelectorAll('.search-highlight-overlay');
+   // highlightOverlays.forEach(overlay => overlay.remove());
   
   // Remove search controls
   const searchControls = modal.querySelector('.search-controls');
