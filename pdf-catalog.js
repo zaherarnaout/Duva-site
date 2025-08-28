@@ -1170,7 +1170,15 @@ function highlightCurrentMatch(modal) {
   const canvas = modal.querySelector(`canvas[data-page-number="${pageNum}"]`);
   if (!canvas) return;
 
-  // compute page scale
+  // Get the canvas position relative to its parent
+  const canvasRect = canvas.getBoundingClientRect();
+  const parentRect = canvas.parentElement.getBoundingClientRect();
+  
+  // Calculate the offset of canvas within its parent
+  const canvasOffsetX = canvasRect.left - parentRect.left;
+  const canvasOffsetY = canvasRect.top - parentRect.top;
+
+  // compute page scale from canvas dimensions
   const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
   const scale = canvas.clientWidth / originalW;
 
@@ -1199,9 +1207,10 @@ function highlightCurrentMatch(modal) {
     parent.appendChild(hl);
   }
 
-  // Position highlight relative to canvas
-  hl.style.left   = (m.x * scale) + 'px';
-  hl.style.top    = ((m.y - h) * scale) + 'px';
+  // Position highlight relative to canvas within its parent
+  // Add canvas offset to position the highlight correctly over the PDF content
+  hl.style.left   = (canvasOffsetX + (m.x * scale)) + 'px';
+  hl.style.top    = (canvasOffsetY + ((m.y - h) * scale)) + 'px';
   hl.style.width  = (m.width * scale) + 'px';
   hl.style.height = (h * scale) + 'px';
 }
