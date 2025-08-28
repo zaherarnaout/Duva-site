@@ -3495,8 +3495,8 @@ function initializeGlobalSearch() {
 
 // Navigate to products page with search term
 function navigateToProductsPage(searchTerm) {
-  // Try to find the products page URL from the site structure
-  let productsPageUrl = 'products.html';
+  // Use the actual Webflow products page URL
+  let productsPageUrl = '/products'; // Default Webflow products page URL
   
   // Check if we can find a products link on the page
   const productsLinks = document.querySelectorAll('a[href*="products"], a[href*="product"], a[href*="collection"]');
@@ -3514,7 +3514,9 @@ function navigateToProductsPage(searchTerm) {
   const targetUrl = `${productsPageUrl}?search=${searchParam}`;
   
   console.log(`🔍 Navigating to products page with search: ${targetUrl}`);
-  window.location.href = targetUrl;
+  // Temporarily disabled to fix navigation issue
+  // window.location.href = targetUrl;
+  console.log('⚠️ Global search navigation temporarily disabled to fix products page navigation');
 }
 
 // Navigate back to original page
