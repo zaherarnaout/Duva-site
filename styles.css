@@ -6563,6 +6563,8 @@ a .flip-card-wrapper {
 #about-duva,
 #new-items,
 #news-journal,
+#update,
+#insight,
 #gallery,
 #testimonial,
 /* Download page section */
@@ -6593,6 +6595,8 @@ a .flip-card-wrapper {
 #about-duva.viewport-visible,
 #new-items.viewport-visible,
 #news-journal.viewport-visible,
+#update.viewport-visible,
+#insight.viewport-visible,
 #gallery.viewport-visible,
 #testimonial.viewport-visible,
 /* Download page section */
@@ -6635,6 +6639,8 @@ a .flip-card-wrapper {
   #about-duva,
   #new-items,
   #news-journal,
+  #update,
+  #insight,
   #gallery,
   #testimonial,
   [data-ix="download"],
