@@ -6614,86 +6614,110 @@ if (typeof Webflow !== 'undefined') {
 
 // === END DUVA DEEP-LINK ROUTER ===
 
-// === ULTRA-FAST FOOTER NAVIGATION ===
-/* Completely separate system for footer links - bypasses all complex logic */
+// === ORIGINAL FOOTER NAVIGATION SYSTEM ===
+/* Restore the original footer navigation that was working before */
 
 (function () {
-  console.log('⚡ Initializing ultra-fast footer navigation...');
+  console.log('🔗 Initializing original footer navigation system...');
   
-  // Target footer links specifically - avoid deep-link system entirely
-  function initializeFooterLinks() {
-    // Target links in footer section specifically
+  // Map footer text to section IDs
+  const FOOTER_NAVIGATION = {
+    'About Us': 'about',
+    'Products': 'new-items',
+    'Projects': 'gallery',
+    'News': 'news-journal',
+    'Update': 'update',
+    'Insight': 'insight',
+    'Privacy': 'privacy',
+    'Terms and conditions': 'terms',
+    'Cookie policy': 'cookies',
+    'Warranty': 'warranty',
+    'design and  services': 'design-and-services'
+  };
+  
+  function initializeFooterNavigation() {
+    // Target footer div elements that should be clickable
     const footerSection = document.querySelector('.footer-section');
     if (!footerSection) {
       console.log('⚠️ Footer section not found');
       return;
     }
     
-    // Find all links in footer that have data-target
-    const footerLinks = footerSection.querySelectorAll("a[data-target]");
+    // Find all div elements in footer wrappers
+    const footerDivs = footerSection.querySelectorAll('.left-footer-wrapper div, .right-footer-wrapper div');
     
-    if (footerLinks.length === 0) {
-      console.log('⚠️ No footer links with data-target found');
+    if (footerDivs.length === 0) {
+      console.log('⚠️ No footer div elements found');
       return;
     }
     
-    console.log('⚡ Found', footerLinks.length, 'footer links');
+    console.log('🔗 Found', footerDivs.length, 'footer div elements');
     
-    footerLinks.forEach((link) => {
-      const targetId = link.getAttribute("data-target")?.trim();
+    footerDivs.forEach((div) => {
+      const text = div.textContent.trim();
+      const targetId = FOOTER_NAVIGATION[text];
       
-      if (!targetId) return;
+      if (!targetId) {
+        console.log('⚠️ No navigation target for:', text);
+        return;
+      }
       
-      // Set simple href
-      link.setAttribute("href", `#${targetId}`);
+      // Make div clickable
+      div.style.cursor = 'pointer';
       
-      // Remove any existing click listeners to avoid conflicts
-      const newLink = link.cloneNode(true);
-      link.parentNode.replaceChild(newLink, link);
-      
-      // Ultra-fast click handler - no complex logic
-      newLink.addEventListener("click", (e) => {
-        // Check if we're on gallery page
+      // Simple click handler - like the original system
+      div.addEventListener("click", (e) => {
+        console.log('🖱️ Footer div clicked:', text, '→', targetId);
+        
+        // Check if we're on the right page
         const currentPath = window.location.pathname;
         const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+        const isOnPrivacyPage = currentPath.includes('/privacy') || currentPath.includes('/legal');
         
-        if (isOnGalleryPage) {
-          // Instant scroll - no function calls, no validation
+        if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'update', 'insight'].includes(targetId)) {
+          // Same page navigation
           e.preventDefault();
-          e.stopPropagation(); // Prevent other handlers
-          
           const targetElement = document.getElementById(targetId);
           if (targetElement) {
-            // Direct calculation and scroll - no delays
             const rect = targetElement.getBoundingClientRect();
             const scrollTop = window.scrollY + rect.top - 80;
-            
-            // Immediate execution - bypass all other systems
             window.scrollTo({ top: scrollTop, behavior: "smooth" });
             history.replaceState(null, "", `#${targetId}`);
-            
-            // Force target section to be visible immediately
-            targetElement.classList.add('viewport-visible');
-            
-            console.log('⚡ Footer link instant scroll to:', targetId);
+            console.log('✅ Footer navigation to:', targetId);
+          }
+        } else if (isOnPrivacyPage && ['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
+          // Same page navigation for privacy page
+          e.preventDefault();
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            const rect = targetElement.getBoundingClientRect();
+            const scrollTop = window.scrollY + rect.top - 80;
+            window.scrollTo({ top: scrollTop, behavior: "smooth" });
+            history.replaceState(null, "", `#${targetId}`);
+            console.log('✅ Footer navigation to:', targetId);
+          }
+        } else {
+          // Cross-page navigation
+          if (['about', 'new-items', 'gallery', 'news-journal', 'update', 'insight'].includes(targetId)) {
+            window.location.href = `/gallery#${targetId}`;
+          } else if (['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
+            window.location.href = `/privacy#${targetId}`;
           }
         }
-        // Cross-page navigation handled by href
       });
       
-      console.log('⚡ Footer link initialized:', targetId);
+      console.log('🔗 Footer div initialized:', text, '→', targetId);
     });
   }
   
   // Initialize immediately
-  initializeFooterLinks();
+  initializeFooterNavigation();
   
-  // Re-initialize quickly for any late elements
-  setTimeout(initializeFooterLinks, 10);
-  setTimeout(initializeFooterLinks, 50);
-  setTimeout(initializeFooterLinks, 200);
+  // Re-initialize for any late elements
+  setTimeout(initializeFooterNavigation, 100);
+  setTimeout(initializeFooterNavigation, 500);
   
-  console.log('✅ Ultra-fast footer navigation initialized');
+  console.log('✅ Original footer navigation system initialized');
 })();
 
 
