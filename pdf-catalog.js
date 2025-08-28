@@ -19,6 +19,20 @@ const PDF_CATALOG_CONFIG = {
   originalWidth: 623.627 // Original PDF width in points
 };
 
+// --- GLOBAL SEARCH STATE ---
+window.searchState = window.searchState || {
+  isActive: false,
+  matches: [],   // [{ pageIndex: 0, x, y, width, height }, ...]
+  index: 0       // current match index (0-based)
+};
+
+// Reset search state function
+function resetSearchState() {
+  window.searchState.isActive = false;
+  window.searchState.matches = [];
+  window.searchState.index = 0;
+}
+
 // PDF Preview State - SIMPLIFIED
 let pdfDoc = null;
 let pageNum = 1;
@@ -274,6 +288,9 @@ async function loadPDFjs() {
 }
 
 function showPreviewModal() {
+  // Reset search state when opening modal
+  resetSearchState();
+  
   // Prevent body scrolling
   document.body.style.overflow = 'hidden';
   
@@ -959,10 +976,11 @@ async function performSearch(query, modal) {
   clearSearch(modal);
   
   // Update search state
-  searchState.query = query;
-  searchState.currentMatch = 0;
-  searchState.matches = [];
-  searchState.isActive = true;
+  const st = window.searchState;
+  st.query = query;
+  st.index = 0;
+  st.matches = [];
+  st.isActive = true;
   
   // Show searching notification
   showPreviewNotification(modal, `Searching for "${query}"...`);
@@ -985,21 +1003,21 @@ async function performSearch(query, modal) {
     }
     
     // Update search state with all matches
-    searchState.matches = allMatches;
-    searchState.totalMatches = allMatches.length;
-    searchState.currentMatch = 1;
+    st.matches = allMatches;
+    st.totalMatches = allMatches.length;
+    st.index = 0;
     
     // Navigate to first match
-    await navigateToFirstMatch(modal);
+    await navigateToMatch(modal, 0);
     
     // Update search UI
     updateSearchUI(modal);
-    showPreviewNotification(modal, `Found ${searchState.totalMatches} match${searchState.totalMatches !== 1 ? 'es' : ''} across ${new Set(allMatches.map(m => m.page)).size} pages`);
+    showPreviewNotification(modal, `Found ${st.totalMatches} match${st.totalMatches !== 1 ? 'es' : ''} across ${new Set(allMatches.map(m => m.page)).size} pages`);
     
   } catch (error) {
     console.error('❌ Search error:', error);
     showPreviewNotification(modal, 'Search failed. Please try again.');
-    searchState.isActive = false;
+    st.isActive = false;
   }
 }
 
@@ -1127,69 +1145,69 @@ async function navigateToFirstMatch(modal) {
 
 // Robust highlight: safe index, supports pageIndex or page, per-canvas overlay.
 function highlightCurrentMatch(modal) {
-    const st = window.searchState || {};
-    const matches = Array.isArray(st.matches) ? st.matches : [];
-    if (!st.isActive || matches.length === 0) return;
+  const st = window.searchState || {};
+  const matches = Array.isArray(st.matches) ? st.matches : [];
+  if (!st.isActive || matches.length === 0) return;
 
-    // Accept either 0-based "index" or 1-based "currentMatch"
-    let idx = typeof st.index === 'number' ? st.index
-             : typeof st.currentMatch === 'number' ? st.currentMatch - 1
-             : 0;
-    if (idx < 0) idx = 0;
-    if (idx >= matches.length) idx = matches.length - 1;
+  // Accept either 0-based "index" or 1-based "currentMatch"
+  let idx = typeof st.index === 'number' ? st.index
+           : typeof st.currentMatch === 'number' ? st.currentMatch - 1
+           : 0;
+  if (idx < 0) idx = 0;
+  if (idx >= matches.length) idx = matches.length - 1;
 
-    const m = matches[idx];
-    if (!m) return;
+  const m = matches[idx];
+  if (!m) return;
 
-    // Some code builds page as 1-based "page"; others as 0-based "pageIndex"
-    const pageIndex = (typeof m.pageIndex === 'number')
-        ? m.pageIndex
-        : (typeof m.page === 'number' ? m.page - 1 : null);
+  // Some code builds page as 1-based "page"; others as 0-based "pageIndex"
+  const pageIndex = (typeof m.pageIndex === 'number')
+      ? m.pageIndex
+      : (typeof m.page === 'number' ? m.page - 1 : null);
 
-    if (pageIndex == null || pageIndex < 0) return;
-    const pageNumber = pageIndex + 1;
+  if (pageIndex == null || pageIndex < 0) return;
+  const pageNumber = pageIndex + 1;
 
-    // Get the canvas for that page
-    const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
-    if (!canvas) return;
+  // Get the canvas for that page
+  const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
+  if (!canvas) return;
 
-    // Use the same positioned wrapper as your .text-layer
-    const parent = canvas.parentElement;
-    if (!parent) return;
-    if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+  // Use the same positioned wrapper as your .text-layer
+  const parent = canvas.parentElement;
+  if (!parent) return;
+  if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
 
-    // Reuse the per-canvas text layer (so coords are local to the page)
-    const textLayer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
-    if (!textLayer) return; // render creates this; wait until it exists
+  // Reuse the per-canvas text layer (so coords are local to the page)
+  const textLayer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
+  if (!textLayer) return; // render creates this; wait until it exists
 
-    // Compute scale from how you rendered the page
-    const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
-    const scale = (textLayer.clientWidth || canvas.clientWidth) / originalW;
+  // Compute scale from how you rendered the page
+  const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
+  const scale = (textLayer.clientWidth || canvas.clientWidth) / originalW;
 
-    // Create/reuse highlight inside the text layer
-    let hl = textLayer.querySelector('.search-highlight-overlay');
-    if (!hl) {
-        hl = document.createElement('div');
-        hl.className = 'search-highlight-overlay';
-        hl.style.position = 'absolute';
-        hl.style.pointerEvents = 'none';
-        hl.style.background = 'rgba(255,255,0,0.35)';
-        hl.style.outline = '2px solid #C0392B';
-        hl.style.zIndex = '30';
-        textLayer.appendChild(hl);
-    }
+  // Create/reuse highlight inside the text layer
+  let hl = textLayer.querySelector('.search-highlight-overlay');
+  if (!hl) {
+      hl = document.createElement('div');
+      hl.className = 'search-highlight-overlay';
+      hl.style.position = 'absolute';
+      hl.style.pointerEvents = 'none';
+      hl.style.background = 'rgba(255,255,0,0.35)';
+      hl.style.outline = '2px solid #C0392B';
+      hl.style.zIndex = '30';
+      textLayer.appendChild(hl);
+  }
 
-    // PDF.js y is baseline → subtract height to get top
-    hl.style.left   = (m.x * scale) + 'px';
-    hl.style.top    = ((m.y - m.height) * scale) + 'px';
-    hl.style.width  = (m.width  * scale) + 'px';
-    hl.style.height = (m.height * scale) + 'px';
+  // PDF.js y is baseline → subtract height to get top
+  hl.style.left   = (m.x * scale) + 'px';
+  hl.style.top    = ((m.y - m.height) * scale) + 'px';
+  hl.style.width  = (m.width  * scale) + 'px';
+  hl.style.height = (m.height * scale) + 'px';
 }
 /* === End PDF Search Highlight === */
 
 /* === Keep highlight in sync on render/zoom/scroll === */
 function refreshHighlight(modal) {
-  if (searchState?.isActive) highlightCurrentMatch(modal);
+  if (window.searchState?.isActive) highlightCurrentMatch(modal);
 }
 
 // keep it in sync while scrolling the PDF container
@@ -1204,6 +1222,7 @@ function refreshHighlight(modal) {
 
 // Update search UI with match counter
 function updateSearchUI(modal) {
+  const st = window.searchState;
   const searchContainer = modal.querySelector('.preview-search');
   
   // Remove existing search controls
@@ -1216,7 +1235,7 @@ function updateSearchUI(modal) {
   const searchControls = document.createElement('div');
   searchControls.className = 'search-controls';
   searchControls.innerHTML = `
-    <span class="search-counter">${searchState.currentMatch} of ${searchState.totalMatches}</span>
+    <span class="search-counter">${st.index + 1} of ${st.totalMatches}</span>
     <button class="search-nav-btn prev-match" title="Previous Match">‹</button>
     <button class="search-nav-btn next-match" title="Next Match">›</button>
     <button class="search-close-btn" title="Close Search">×</button>
@@ -1229,40 +1248,34 @@ function updateSearchUI(modal) {
   const nextBtn = searchControls.querySelector('.next-match');
   const closeBtn = searchControls.querySelector('.search-close-btn');
   
-  prevBtn.addEventListener('click', () => navigateToMatch(modal, 'prev'));
-  nextBtn.addEventListener('click', () => navigateToMatch(modal, 'next'));
+  prevBtn.addEventListener('click', () => navigateToMatch(modal, st.index - 1));
+  nextBtn.addEventListener('click', () => navigateToMatch(modal, st.index + 1));
   closeBtn.addEventListener('click', () => clearSearch(modal));
   
   // Update button states
-  prevBtn.disabled = searchState.currentMatch <= 1;
-  nextBtn.disabled = searchState.currentMatch >= searchState.totalMatches;
+  prevBtn.disabled = st.index <= 0;
+  nextBtn.disabled = st.index >= st.totalMatches - 1;
 }
 
 // Navigate to next/previous match
-async function navigateToMatch(modal, direction) {
-  const s = window.searchState;
-  if (!s?.matches?.length) return;
+async function navigateToMatch(modal, newIndex) {
+  const st = window.searchState;
+  if (!st?.matches?.length) return;
   
-  if (direction === 'next') {
-    s.currentMatch = Math.min(s.currentMatch + 1, s.totalMatches);
-  } else {
-    s.currentMatch = Math.max(s.currentMatch - 1, 1);
-  }
+  st.index = Math.max(0, Math.min(newIndex, st.matches.length - 1));
+  const m = st.matches[st.index];
+  if (!m) return;
   
-  // Get current match
-  const currentMatch = s.matches[s.currentMatch - 1];
-  if (!currentMatch) return;
+  const targetPage = (typeof m.pageIndex === 'number') ? m.pageIndex + 1
+                   : (typeof m.page === 'number') ? m.page
+                   : null;
+  if (targetPage == null) return;
   
-  // Navigate to the page with this match if needed
-  if (currentMatch.page !== pageNum) {
-    pageNum = currentMatch.page;
-    await queueRenderPage(currentMatch.page, modal);
-    
-    // Generate thumbnail on-demand if needed
-    await generateThumbnailOnDemand(modal, currentMatch.page);
-  }
+  // go render that page (your existing logic)
+  pageNum = targetPage;
+  await queueRenderPage(targetPage, modal);
   
-  // Highlight current match after page loads
+  // defer highlight until the page/text-layer exists
   setTimeout(() => highlightCurrentMatch(modal), 0);
   
   // Update search UI
@@ -1271,11 +1284,12 @@ async function navigateToMatch(modal, direction) {
 
 // Clear search
 function clearSearch(modal) {
-  searchState.isActive = false;
-  searchState.query = '';
-  searchState.currentMatch = 0;
-  searchState.totalMatches = 0;
-  searchState.matches = [];
+  const st = window.searchState;
+  st.isActive = false;
+  st.query = '';
+  st.index = 0;
+  st.totalMatches = 0;
+  st.matches = [];
   
   // Remove highlight overlays from all canvas containers
   const highlightOverlays = modal.querySelectorAll('.search-highlight-overlay');
@@ -1824,6 +1838,9 @@ async function addTextLayer(page, viewport, canvas, modal) {
 
 // Close preview modal
 function closePreviewModal(modal) {
+  // Reset search state when closing modal
+  resetSearchState();
+  
   // Restore body scrolling
   document.body.style.overflow = '';
   
