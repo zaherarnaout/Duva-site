@@ -534,6 +534,7 @@ async function renderSinglePage(num, modal) {
   canvas.dataset.originalWidth = originalViewport.width; // ~595.28
   canvas.dataset.originalHeight = originalViewport.height;
   canvas.dataset.pageScale = (viewport.width / originalViewport.width).toString();
+  canvas.dataset.pageNumber = num.toString();
   
   console.log('✅ Single page rendered, canvas size:', canvas.width, 'x', canvas.height);
   
@@ -613,10 +614,11 @@ async function renderBookPages(num, modal) {
     const leftParent = leftCanvas.parentElement;
     if (getComputedStyle(leftParent).position === 'static') leftParent.style.position = 'relative';
     
-    // keep numbers we'll reuse later
-    leftCanvas.dataset.originalWidth = leftPage.getViewport({ scale: 1 }).width;
-    leftCanvas.dataset.originalHeight = leftPage.getViewport({ scale: 1 }).height;
-    leftCanvas.dataset.pageScale = (leftViewport.width / leftPage.getViewport({ scale: 1 }).width).toString();
+         // keep numbers we'll reuse later
+     leftCanvas.dataset.originalWidth = leftPage.getViewport({ scale: 1 }).width;
+     leftCanvas.dataset.originalHeight = leftPage.getViewport({ scale: 1 }).height;
+     leftCanvas.dataset.pageScale = (leftViewport.width / leftPage.getViewport({ scale: 1 }).width).toString();
+     leftCanvas.dataset.pageNumber = leftPageNum.toString();
   }
   
   // Render right page
@@ -646,10 +648,11 @@ async function renderBookPages(num, modal) {
     const rightParent = rightCanvas.parentElement;
     if (getComputedStyle(rightParent).position === 'static') rightParent.style.position = 'relative';
     
-    // keep numbers we'll reuse later
-    rightCanvas.dataset.originalWidth = rightPage.getViewport({ scale: 1 }).width;
-    rightCanvas.dataset.originalHeight = rightPage.getViewport({ scale: 1 }).height;
-    rightCanvas.dataset.pageScale = (rightViewport.width / rightPage.getViewport({ scale: 1 }).width).toString();
+         // keep numbers we'll reuse later
+     rightCanvas.dataset.originalWidth = rightPage.getViewport({ scale: 1 }).width;
+     rightCanvas.dataset.originalHeight = rightPage.getViewport({ scale: 1 }).height;
+     rightCanvas.dataset.pageScale = (rightViewport.width / rightPage.getViewport({ scale: 1 }).width).toString();
+     rightCanvas.dataset.pageNumber = rightPageNum.toString();
   } else {
     // Clear right canvas if no second page
     rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
@@ -1143,66 +1146,73 @@ async function navigateToFirstMatch(modal) {
   }, 500); // Wait for page to render
 }
 
-// Robust highlight: safe index, supports pageIndex or page, per-canvas overlay.
+// === Stable PDF highlight (per-canvas, scale-aware, no drift) ===
 function highlightCurrentMatch(modal) {
   const st = window.searchState || {};
   const matches = Array.isArray(st.matches) ? st.matches : [];
-  if (!st.isActive || matches.length === 0) return;
+  if (!st.isActive || !matches.length) return;
 
-  // Accept either 0-based "index" or 1-based "currentMatch"
-  let idx = typeof st.index === 'number' ? st.index
-           : typeof st.currentMatch === 'number' ? st.currentMatch - 1
-           : 0;
-  if (idx < 0) idx = 0;
-  if (idx >= matches.length) idx = matches.length - 1;
+  // clamp index
+  let i = Number.isFinite(st.index) ? st.index : 0;
+  if (i < 0) i = 0;
+  if (i >= matches.length) i = matches.length - 1;
 
-  const m = matches[idx];
+  const m = matches[i];
   if (!m) return;
 
-  // Some code builds page as 1-based "page"; others as 0-based "pageIndex"
-  const pageIndex = (typeof m.pageIndex === 'number')
-      ? m.pageIndex
-      : (typeof m.page === 'number' ? m.page - 1 : null);
+  // accept either 1-based `page` or 0-based `pageIndex`
+  const pageNum = (typeof m.pageIndex === 'number')
+    ? m.pageIndex + 1
+    : (typeof m.page === 'number' ? m.page : null);
+  if (!pageNum) return;
 
-  if (pageIndex == null || pageIndex < 0) return;
-  const pageNumber = pageIndex + 1;
-
-  // Get the canvas for that page
-  const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
+  // canvas for that page
+  const canvas = modal.querySelector(`canvas[data-page-number="${pageNum}"]`);
   if (!canvas) return;
 
-  // Use the same positioned wrapper as your .text-layer
+  // use SAME positioned parent as the .text-layer
   const parent = canvas.parentElement;
   if (!parent) return;
   if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
 
-  // Reuse the per-canvas text layer (so coords are local to the page)
+  // find the per-canvas text-layer (created during render)
   const textLayer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
-  if (!textLayer) return; // render creates this; wait until it exists
+  if (!textLayer) {
+    // render might still be finishing; try again on next frame
+    return setTimeout(() => highlightCurrentMatch(modal), 0);
+  }
 
-  // Compute scale from how you rendered the page
+  // compute page scale exactly like render: CSS width / original PDF width
   const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
   const scale = (textLayer.clientWidth || canvas.clientWidth) / originalW;
 
-  // Create/reuse highlight inside the text layer
+  // ensure we have a height; if not provided, fall back to a sane value
+  const h = (typeof m.height === 'number' && m.height > 0)
+    ? m.height
+    : (typeof m.fontSize === 'number' ? m.fontSize : 10);
+
+  // create/reuse a highlight INSIDE the text-layer
   let hl = textLayer.querySelector('.search-highlight-overlay');
   if (!hl) {
-      hl = document.createElement('div');
-      hl.className = 'search-highlight-overlay';
-      hl.style.position = 'absolute';
-      hl.style.pointerEvents = 'none';
-      hl.style.background = 'rgba(255,255,0,0.35)';
-      hl.style.outline = '2px solid #C0392B';
-      hl.style.zIndex = '30';
-      textLayer.appendChild(hl);
+    hl = document.createElement('div');
+    hl.className = 'search-highlight-overlay';
+    Object.assign(hl.style, {
+      position: 'absolute',
+      pointerEvents: 'none',
+      background: 'rgba(255,255,0,0.35)',
+      outline: '2px solid #C0392B',
+      zIndex: 30
+    });
+    textLayer.appendChild(hl);
   }
 
   // PDF.js y is baseline → subtract height to get top
   hl.style.left   = (m.x * scale) + 'px';
-  hl.style.top    = ((m.y - m.height) * scale) + 'px';
+  hl.style.top    = ((m.y - h) * scale) + 'px';
   hl.style.width  = (m.width  * scale) + 'px';
-  hl.style.height = (m.height * scale) + 'px';
+  hl.style.height = (h * scale) + 'px';
 }
+// === /highlightCurrentMatch ===
 /* === End PDF Search Highlight === */
 
 /* === Keep highlight in sync on render/zoom/scroll === */
