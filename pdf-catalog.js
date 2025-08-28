@@ -1146,7 +1146,7 @@ async function navigateToFirstMatch(modal) {
   }, 500); // Wait for page to render
 }
 
-// === Stable PDF highlight (per-canvas, scale-aware, no drift) ===
+// === Simplified search highlight - no text layer dependency ===
 function highlightCurrentMatch(modal) {
   const st = window.searchState || {};
   const matches = Array.isArray(st.matches) ? st.matches : [];
@@ -1170,29 +1170,22 @@ function highlightCurrentMatch(modal) {
   const canvas = modal.querySelector(`canvas[data-page-number="${pageNum}"]`);
   if (!canvas) return;
 
-  // use SAME positioned parent as the .text-layer
-  const parent = canvas.parentElement;
-  if (!parent) return;
-  if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
-
-  // find the per-canvas text-layer (created during render)
-  const textLayer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
-  if (!textLayer) {
-    // render might still be finishing; try again on next frame
-    return setTimeout(() => highlightCurrentMatch(modal), 0);
-  }
-
-  // compute page scale exactly like render: CSS width / original PDF width
+  // compute page scale
   const originalW = parseFloat(canvas.dataset.originalWidth || '595.28');
-  const scale = (textLayer.clientWidth || canvas.clientWidth) / originalW;
+  const scale = canvas.clientWidth / originalW;
 
-  // ensure we have a height; if not provided, fall back to a sane value
+  // ensure we have a height
   const h = (typeof m.height === 'number' && m.height > 0)
     ? m.height
     : (typeof m.fontSize === 'number' ? m.fontSize : 10);
 
-  // create/reuse a highlight INSIDE the text-layer
-  let hl = textLayer.querySelector('.search-highlight-overlay');
+  // create/reuse a highlight directly on the canvas parent
+  const parent = canvas.parentElement;
+  if (getComputedStyle(parent).position === 'static') {
+    parent.style.position = 'relative';
+  }
+
+  let hl = parent.querySelector('.search-highlight-overlay');
   if (!hl) {
     hl = document.createElement('div');
     hl.className = 'search-highlight-overlay';
@@ -1203,13 +1196,16 @@ function highlightCurrentMatch(modal) {
       outline: '2px solid #C0392B',
       zIndex: 30
     });
-    textLayer.appendChild(hl);
+    parent.appendChild(hl);
   }
 
-  // PDF.js y is baseline → subtract height to get top
+  // Position highlight relative to canvas
+  const canvasRect = canvas.getBoundingClientRect();
+  const parentRect = parent.getBoundingClientRect();
+  
   hl.style.left   = (m.x * scale) + 'px';
   hl.style.top    = ((m.y - h) * scale) + 'px';
-  hl.style.width  = (m.width  * scale) + 'px';
+  hl.style.width  = (m.width * scale) + 'px';
   hl.style.height = (h * scale) + 'px';
 }
 // === /highlightCurrentMatch ===
