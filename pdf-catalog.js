@@ -13,7 +13,10 @@ const PDF_CATALOG_CONFIG = {
   
   // Preview Configuration
   pdfjsLib: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
-  pdfjsWorker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+  pdfjsWorker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js',
+  
+  // PDF dimensions for accurate scaling
+  originalWidth: 623.627 // Original PDF width in points
 };
 
 // PDF Preview State - SIMPLIFIED
@@ -520,6 +523,9 @@ async function renderSinglePage(num, modal) {
   const nextBtn = modal.querySelector('.next-page');
   prevBtn.disabled = num <= 1;
   nextBtn.disabled = num >= pdfDoc.numPages;
+  
+  // Keep highlight in sync after render
+  refreshHighlight(modal);
 }
 
 // Render book pages - SIMPLIFIED
@@ -612,6 +618,9 @@ async function renderBookPages(num, modal) {
   const nextBtn = modal.querySelector('.next-page');
   prevBtn.disabled = num <= 1;
   nextBtn.disabled = num >= pdfDoc.numPages;
+  
+  // Keep highlight in sync after render
+  refreshHighlight(modal);
 }
 
 // Queue page rendering
@@ -1059,77 +1068,66 @@ async function navigateToFirstMatch(modal) {
   }, 500); // Wait for page to render
 }
 
-// Highlight current match on the page
+/* === PDF Search Highlight (stable, per-canvas, scale-aware) === */
 function highlightCurrentMatch(modal) {
-  if (!searchState.isActive || searchState.matches.length === 0) return;
-  
-  const currentMatch = searchState.matches[searchState.currentMatch - 1];
-  if (!currentMatch) return;
-  
-  // Get the correct canvas based on current mode and page
-  let targetCanvas = null;
-  
-  if (bookMode) {
-    // For book mode, determine which canvas to highlight based on page number
-    const leftCanvas = modal.querySelector('#left-canvas');
-    const rightCanvas = modal.querySelector('#right-canvas');
-    
-    // Determine which page is on which canvas
-    let leftPageNum = pageNum;
-    let rightPageNum = pageNum + 1;
-    
-    if (pageNum % 2 === 0) {
-      leftPageNum = pageNum - 1;
-      rightPageNum = pageNum;
-    }
-    
-    if (currentMatch.page === leftPageNum) {
-      targetCanvas = leftCanvas;
-    } else if (currentMatch.page === rightPageNum) {
-      targetCanvas = rightCanvas;
-    } else {
-      // Fallback to left canvas
-      targetCanvas = leftCanvas;
-    }
-  } else {
-    // For single page mode
-    targetCanvas = modal.querySelector('#pdf-canvas');
+  if (!searchState?.isActive || !searchState.matches?.length) return;
+
+  const m = searchState.matches[searchState.currentMatch - 1];
+  const pageNumber = (m.pageIndex ?? m.page) + 1;
+
+  // 1) find the canvas for this page
+  const canvas = modal.querySelector(`canvas[data-page-number="${pageNumber}"]`);
+  if (!canvas) return;
+
+  // 2) anchor everything to the canvas's parent (same parent as your .text-layer)
+  const parent = canvas.parentElement;
+  parent.style.position = 'relative';
+
+  // 3) compute the page scale the same way you render the page
+  //    (fallback to the "original PDF width" if you store it; default 595.28)
+  const ORIGINAL_PDF_WIDTH = PDF_CATALOG_CONFIG?.originalWidth || 595.28;
+  const scale = canvas.clientWidth / ORIGINAL_PDF_WIDTH;
+
+  // 4) create/reuse an overlay tied to THIS canvas only
+  let hl = parent.querySelector(`.search-highlight-overlay[data-for="${canvas.id}"]`);
+  if (!hl) {
+    hl = document.createElement('div');
+    hl.className = 'search-highlight-overlay';
+    hl.dataset.for = canvas.id;
+    hl.style.position = 'absolute';
+    hl.style.pointerEvents = 'none';
+    hl.style.background = 'rgba(255,255,0,0.35)';   // visible fill
+    hl.style.outline    = '2px solid #C0392B';      // DUVA red edge
+    hl.style.zIndex = 30;                            // above .text-layer
+    parent.appendChild(hl);
   }
-  
-  if (!targetCanvas) return;
-  
-  // Use the canvas's parent (same one used for .text-layer)
-  const canvasParent = targetCanvas.parentElement;
-  canvasParent.style.position = 'relative';
-  
-  // Create or reuse a per-canvas overlay
-  let highlight = canvasParent.querySelector(`.search-highlight-overlay[data-for="${targetCanvas.id}"]`);
-  if (!highlight) {
-    highlight = document.createElement('div');
-    highlight.className = 'search-highlight-overlay';
-    highlight.dataset.for = targetCanvas.id;
-    highlight.style.position = 'absolute';
-    highlight.style.pointerEvents = 'none';
-    highlight.style.background = 'rgba(255, 255, 0, 0.35)';
-    highlight.style.border = '2px solid #ff6b35';
-    highlight.style.borderRadius = '2px';
-    highlight.style.animation = 'searchPulse 1s ease-in-out infinite alternate';
-    highlight.style.zIndex = '20'; // above .text-layer
-    canvasParent.appendChild(highlight);
-  }
-  
-  // IMPORTANT: position purely from PDF coords × scale (no container offsets)
-  const left = currentMatch.x * scale;
-  const top = (currentMatch.y - currentMatch.height) * scale; // y is baseline → subtract height to get top
-  
-  highlight.style.left = left + 'px';
-  highlight.style.top = top + 'px';
-  highlight.style.width = (currentMatch.width * scale) + 'px';
-  highlight.style.height = (currentMatch.height * scale) + 'px';
-  
-  console.log('🎯 Highlight positioned at:', left, top, 'for match:', currentMatch.text);
-  console.log('📏 PDF coords:', currentMatch.x, currentMatch.y, 'scale:', scale);
+
+  // 5) IMPORTANT: position purely from PDF coords × scale (no container offsets)
+  //    PDF.js "y" is baseline → subtract height to get the box's top
+  const left = (m.x) * scale;
+  const top  = (m.y - m.height) * scale;
+
+  hl.style.left   = left  + 'px';
+  hl.style.top    = top   + 'px';
+  hl.style.width  = (m.width  * scale) + 'px';
+  hl.style.height = (m.height * scale) + 'px';
 }
+/* === End PDF Search Highlight === */
+
+/* === Keep highlight in sync on render/zoom/scroll === */
+function refreshHighlight(modal) {
+  if (searchState?.isActive) highlightCurrentMatch(modal);
+}
+
+// keep it in sync while scrolling the PDF container
+(function attachHighlightSync() {
+  const modal = document.querySelector('#catalog-preview-modal');
+  if (!modal) return;
+  const container = modal.querySelector('.pdf-container');
+  if (!container) return;
+  container.addEventListener('scroll', () => refreshHighlight(modal));
+  window.addEventListener('resize', () => refreshHighlight(modal));
+})();
 
 // Update search UI with match counter
 function updateSearchUI(modal) {
@@ -1585,37 +1583,35 @@ async function addTextLayer(page, viewport, canvas, modal) {
       sampleText: textContent.items.slice(0, 3).map(item => item.str)
     });
     
-    // Create text layer container for this specific canvas
-    const canvasContainer = canvas.parentElement;
-    canvasContainer.style.position = 'relative';
-    
-    // Create unique text layer for each canvas using data-for attribute
-    let textLayer = canvasContainer.querySelector(`.text-layer[data-for="${canvas.id}"]`);
-    if (!textLayer) {
-      textLayer = document.createElement('div');
-      textLayer.className = 'text-layer';
-      textLayer.dataset.for = canvas.id;
-      canvasContainer.appendChild(textLayer);
+    // inside addTextLayer(canvas, textContent, viewport)
+    const parent = canvas.parentElement;
+    parent.style.position = 'relative';
+
+    let layer = parent.querySelector(`.text-layer[data-for="${canvas.id}"]`);
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'text-layer';
+      layer.dataset.for = canvas.id;
+      parent.appendChild(layer);
     }
-    
-    // Position this layer exactly over its canvas using offset positioning
-    textLayer.style.left = canvas.offsetLeft + 'px';
-    textLayer.style.top = canvas.offsetTop + 'px';
-    textLayer.style.width = viewport.width + 'px';
-    textLayer.style.height = viewport.height + 'px';
+    layer.style.position = 'absolute';
+    layer.style.left  = '0';
+    layer.style.top   = '0';
+    layer.style.width = viewport.width + 'px';
+    layer.style.height= viewport.height + 'px';
     
     // Clear existing text
-    textLayer.innerHTML = '';
+    layer.innerHTML = '';
     
     // Text layer dimensions are now set above with positioning
     
     // Debug: Check text layer styles after creation
     console.log('🔍 Text layer styles after creation:', {
-      opacity: getComputedStyle(textLayer).opacity,
-      userSelect: getComputedStyle(textLayer).userSelect,
-      pointerEvents: getComputedStyle(textLayer).pointerEvents,
-      width: textLayer.style.width,
-      height: textLayer.style.height
+      opacity: getComputedStyle(layer).opacity,
+      userSelect: getComputedStyle(layer).userSelect,
+      pointerEvents: getComputedStyle(layer).pointerEvents,
+      width: layer.style.width,
+      height: layer.style.height
     });
     
     // Check if we have meaningful text content
@@ -1712,15 +1708,15 @@ async function addTextLayer(page, viewport, canvas, modal) {
     }).filter(div => div !== null); // Remove null elements
     
     // Add text elements to layer
-    textDivs.forEach(div => textLayer.appendChild(div));
+    textDivs.forEach(div => layer.appendChild(div));
     
     // Debug: Check final text layer state
     console.log('✅ Text layer added with', textDivs.length, 'text items');
     console.log('🔍 Final text layer styles:', {
-      opacity: getComputedStyle(textLayer).opacity,
-      userSelect: getComputedStyle(textLayer).userSelect,
-      pointerEvents: getComputedStyle(textLayer).pointerEvents,
-      childCount: textLayer.children.length
+      opacity: getComputedStyle(layer).opacity,
+      userSelect: getComputedStyle(layer).userSelect,
+      pointerEvents: getComputedStyle(layer).pointerEvents,
+      childCount: layer.children.length
     });
     
     // Test text selection by adding a temporary visible text element
@@ -1738,7 +1734,7 @@ async function addTextLayer(page, viewport, canvas, modal) {
         pointer-events: none;
       `;
       testDiv.textContent = `Text: ${textDivs.length} items`;
-      textLayer.appendChild(testDiv);
+      layer.appendChild(testDiv);
       
       // Remove test element after 3 seconds
       setTimeout(() => {
