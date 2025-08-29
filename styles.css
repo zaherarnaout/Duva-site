@@ -6071,25 +6071,11 @@ a .flip-card-wrapper {
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
 
-/* Menu Panel Link Base Styles - Unified Animation */
+/* Menu Panel Link Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-panel-link {
-  color: var(--duva-light-grey, #F4F5F6);
-  font-family: Gotham, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  display: inline-block;
-  padding: 8px 0;
-  outline: none;
-  border: none;
-  box-shadow: none;
 }
 
-/* Menu Panel Link Hover Effects - Unified Animation */
 .menu-panel-link:hover {
   color: var(--duva-red, #C0392B);
   transform: translateX(8px) scale(1.05);
@@ -6185,7 +6171,6 @@ a .flip-card-wrapper {
 /* Responsive adjustments for footer and menu panel text elements */
 @media screen and (max-width: 767px) {
   .footer-link,
-  .menu-panel-link,
   .right-footer-wrapper a:not(.text-block-69),
   .right-footer-wrapper .text-block:not(.text-block-69),
   .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
