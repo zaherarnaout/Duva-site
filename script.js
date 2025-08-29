@@ -5946,6 +5946,7 @@ function initializeViewportFadeEffects() {
     '.main-page-hero-section-wrapper',
     '.main-page-categories-wrapper',
     '.main-filter-wrapper',
+    '.cards-Container',
     '.privacy-policy',
     '.accessories-section',
     '.related-section',
