@@ -151,10 +151,10 @@
 }
 
 /* === SHIMMER EFFECT FOR PRODUCT CARDS === */
+/* Only apply shimmer to non-flip cards */
 .collection-item::before,
 .product-card::before,
-.related-card::before,
-.flip-card-wrapper::before {
+.related-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -267,7 +267,6 @@
 .current-product:hover .flip-card-back {
   display: flex;
   z-index: 2;
-  border-color: var(--duva-red, #C0392B) !important;
 }
 
 /* === FLIP CARD OVERLAY SLIDE EFFECT === */
@@ -288,9 +287,7 @@
 }
 
 /* === FLIP CARD SHIMMER ANIMATION === */
-.flip-card-wrapper:hover::before {
-  left: 100%;
-}
+/* Removed front card shimmer - only back card shows on hover */
 
 /* === REMOVE UNDERLINES FROM ALL PRODUCT CARD LINKS === */
 .flip-card-wrapper a,
