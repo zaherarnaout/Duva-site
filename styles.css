@@ -3441,6 +3441,13 @@ footer, .footer {
   --hover-shimmer-position: -100%;
 }
 
+/* Prevent any text color changes on flip card elements */
+.flip-card-wrapper *,
+.flip-card-wrapper:hover *,
+.flip-card-wrapper:hover {
+  color: inherit !important;
+}
+
 /* Apply hover effects using custom properties */
 .product-image:hover,
 .thumbnail-image:hover,
