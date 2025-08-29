@@ -6556,25 +6556,26 @@ if (typeof Webflow !== 'undefined') {
 
 // === END DUVA DEEP-LINK ROUTER ===
 
-// === ORIGINAL FOOTER NAVIGATION SYSTEM ===
-/* Restore the original footer navigation that was working before */
+// === UPDATED FOOTER NAVIGATION SYSTEM ===
+/* Updated footer navigation system for anchor tag structure */
 
 (function () {
-  console.log('🔗 Initializing original footer navigation system...');
+  console.log('🔗 Initializing updated footer navigation system...');
   
-  // Map footer text to section IDs
+  // Map footer link classes to section IDs
   const FOOTER_NAVIGATION = {
-    'About Us': 'about',
-    'Products': 'new-items',
-    'Projects': 'gallery',
-    'News': 'news-journal',
-    'Update': 'update',
-    'Insight': 'insight',
-    'Privacy': 'privacy',
-    'Terms and conditions': 'terms',
-    'Cookie policy': 'cookies',
-    'Warranty': 'warranty',
-    'design and  services': 'design-and-services'
+    'about-us-f': 'about',
+    'products-f': 'new-items',
+    'new-products-f': 'new-items',
+    'news-f': 'news-journal',
+    'insight-f': 'insight',
+    'gallery-f': 'gallery',
+    'contact-f': 'contact',
+    'privacy-f': 'privacy',
+    'terms-f': 'terms',
+    'cookies-f': 'cookies',
+    'warranty-f': 'warranty',
+    'design-services-f': 'design-and-services'
   };
   
   // Use the same smooth scroll function as header navigation
@@ -6604,47 +6605,40 @@ if (typeof Webflow !== 'undefined') {
   }
   
   function initializeFooterNavigation() {
-    // Target footer div elements that should be clickable
-    const footerSection = document.querySelector('.footer-section');
-    if (!footerSection) {
-      console.log('⚠️ Footer section not found');
+    // Target footer anchor elements with footer-link class
+    const footerLinks = document.querySelectorAll('.footer-link');
+    
+    if (footerLinks.length === 0) {
+      console.log('⚠️ No footer link elements found');
       return;
     }
     
-    // Find all div elements in footer wrappers
-    const footerDivs = footerSection.querySelectorAll('.left-footer-wrapper div, .right-footer-wrapper div');
+    console.log('🔗 Found', footerLinks.length, 'footer link elements');
     
-    if (footerDivs.length === 0) {
-      console.log('⚠️ No footer div elements found');
-      return;
-    }
-    
-    console.log('🔗 Found', footerDivs.length, 'footer div elements');
-    
-    footerDivs.forEach((div) => {
-      const text = div.textContent.trim();
-      const targetId = FOOTER_NAVIGATION[text];
+    footerLinks.forEach((link) => {
+      // Get the specific class that indicates the target
+      const linkClasses = Array.from(link.classList);
+      const navigationClass = linkClasses.find(cls => FOOTER_NAVIGATION[cls]);
       
-      if (!targetId) {
-        console.log('⚠️ No navigation target for:', text);
+      if (!navigationClass) {
+        console.log('⚠️ No navigation target for link classes:', linkClasses);
         return;
       }
       
-      // Make div clickable
-      div.style.cursor = 'pointer';
+      const targetId = FOOTER_NAVIGATION[navigationClass];
       
-      // Use the same click handler approach as header navigation
-      div.addEventListener("click", (e) => {
-        console.log('🖱️ Footer div clicked:', text, '→', targetId);
+      // Override the default anchor behavior
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('🖱️ Footer link clicked:', navigationClass, '→', targetId);
         
         // Check if we're on the right page
         const currentPath = window.location.pathname;
         const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
         const isOnPrivacyPage = currentPath.includes('/privacy') || currentPath.includes('/legal');
         
-        if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'update', 'insight'].includes(targetId)) {
+        if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'insight'].includes(targetId)) {
           // Same page navigation - use same approach as header
-          e.preventDefault();
           const scrolled = smoothScrollToId(targetId);
           if (scrolled) {
             history.replaceState(null, "", `#${targetId}`);
@@ -6652,23 +6646,19 @@ if (typeof Webflow !== 'undefined') {
           }
         } else if (isOnPrivacyPage && ['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
           // Same page navigation for privacy page - use same approach as header
-          e.preventDefault();
           const scrolled = smoothScrollToId(targetId);
           if (scrolled) {
             history.replaceState(null, "", `#${targetId}`);
             console.log('✅ Footer navigation completed to:', targetId);
           }
         } else {
-          // Cross-page navigation
-          if (['about', 'new-items', 'gallery', 'news-journal', 'update', 'insight'].includes(targetId)) {
-            window.location.href = `/gallery#${targetId}`;
-          } else if (['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
-            window.location.href = `/privacy#${targetId}`;
-          }
+          // Cross-page navigation - use the href attribute
+          console.log('🌐 Footer cross-page navigation to:', link.href);
+          window.location.href = link.href;
         }
       });
       
-      console.log('🔗 Footer div initialized:', text, '→', targetId);
+      console.log('🔗 Footer link initialized:', navigationClass, '→', targetId);
     });
   }
   
@@ -6679,7 +6669,7 @@ if (typeof Webflow !== 'undefined') {
   setTimeout(initializeFooterNavigation, 100);
   setTimeout(initializeFooterNavigation, 500);
   
-  console.log('✅ Original footer navigation system initialized');
+  console.log('✅ Updated footer navigation system initialized');
 })();
 
 
