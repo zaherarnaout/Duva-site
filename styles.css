@@ -3176,26 +3176,11 @@ footer, .footer {
 }
 
 
-/* === Essential Flip Card Animation Only === */
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  display: none;
-  width: 100%;
-  height: 100%;
-}
-
-/* Show back card on hover */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-}
+/* === FLIP CARD FUNCTIONALITY MOVED TO SEPARATE FILE === */
+/* All flip card styles have been moved to product-cards.css */
 
 /* Remove underlines from all product card links */
-.flip-card-wrapper a,
-.current-product,
-.flip-card-link {
+.current-product {
   text-decoration: none !important;
 }
 
@@ -3203,9 +3188,6 @@ footer, .footer {
 .collection-item *,
 .product-card *,
 .related-card *,
-.flip-card-wrapper *,
-.flip-card-front *,
-.flip-card-back *,
 .collection-list-6 .w-dyn-item *,
 .related-section .w-dyn-item * {
   text-decoration: none !important;
