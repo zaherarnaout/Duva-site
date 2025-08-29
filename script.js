@@ -6468,10 +6468,42 @@ setTimeout(initializeNewItemsReadMore, 1000);
     
     // Handle text-based navigation (main menu buttons)
     Object.entries(MAIN_MENU_NAVIGATION).forEach(([text, config]) => {
-      // Find menu tabs by text content
-      const menuTabs = document.querySelectorAll('.menu-tab');
-      const matchingTabs = Array.from(menuTabs).filter(tab => 
-        tab.textContent.trim() === text
+      // Comprehensive search for menu buttons by text content
+      const possibleSelectors = [
+        '.menu-tab',
+        '.nav-link',
+        '.nav-item a',
+        '.menu-item a',
+        '.header-nav a',
+        '.main-nav a',
+        '.navigation a',
+        'nav a',
+        '.w-nav-link',
+        '.w-dropdown-toggle',
+        '.w-dropdown-link',
+        'a[href*="gallery"]',
+        'a[href*="products"]',
+        'a[href*="news"]'
+      ];
+      
+      let matchingTabs = [];
+      
+      // Search through all possible selectors
+      possibleSelectors.forEach(selector => {
+        try {
+          const elements = document.querySelectorAll(selector);
+          const found = Array.from(elements).filter(tab => 
+            tab.textContent.trim() === text
+          );
+          matchingTabs = matchingTabs.concat(found);
+        } catch (error) {
+          // Ignore invalid selectors
+        }
+      });
+      
+      // Remove duplicates
+      matchingTabs = matchingTabs.filter((tab, index, self) => 
+        self.indexOf(tab) === index
       );
       
       matchingTabs.forEach(tab => {
@@ -6540,6 +6572,16 @@ setTimeout(initializeNewItemsReadMore, 1000);
     console.log('🔄 Retrying header tabs initialization (3s delay)...');
     initializeHeaderTabs();
   }, 3000);
+  
+  setTimeout(() => {
+    console.log('🔄 Retrying header tabs initialization (5s delay)...');
+    initializeHeaderTabs();
+  }, 5000);
+  
+  setTimeout(() => {
+    console.log('🔄 Retrying header tabs initialization (10s delay)...');
+    initializeHeaderTabs();
+  }, 10000);
 
   // Use MutationObserver to catch dynamically loaded content
   const observer = new MutationObserver((mutations) => {
@@ -6547,8 +6589,19 @@ setTimeout(initializeNewItemsReadMore, 1000);
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList') {
         mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === 1 && (node.classList?.contains('menu-tab') || node.querySelector?.('.menu-tab'))) {
-            shouldRetry = true;
+          if (node.nodeType === 1) {
+            // Check for any navigation-related elements
+            const hasNavElements = node.classList?.contains('menu-tab') || 
+                                 node.classList?.contains('nav-link') ||
+                                 node.classList?.contains('w-nav-link') ||
+                                 node.querySelector?.('.menu-tab') ||
+                                 node.querySelector?.('.nav-link') ||
+                                 node.querySelector?.('.w-nav-link') ||
+                                 node.querySelector?.('nav') ||
+                                 node.querySelector?.('a');
+            if (hasNavElements) {
+              shouldRetry = true;
+            }
           }
         });
       }
