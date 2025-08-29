@@ -6430,14 +6430,18 @@ setTimeout(initializeNewItemsReadMore, 1000);
   // Simple navigation handler
   function handleNavigation(buttonText, targetSection) {
     const currentPath = window.location.pathname;
-    const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+    const isOnGalleryPage = currentPath.includes('/gallery');
+    const isOnHomePage = currentPath === '/' || currentPath === '';
     
-    if (isOnGalleryPage) {
-      // Same page - smooth scroll
+    // Check if the target section exists on current page
+    const sectionExists = document.getElementById(targetSection);
+    
+    if (isOnGalleryPage && sectionExists) {
+      // On gallery page and section exists - smooth scroll
       smoothScrollToSection(targetSection);
       history.replaceState(null, '', `#${targetSection}`);
     } else {
-      // Different page - navigate to gallery
+      // Either not on gallery page, or section doesn't exist - navigate to gallery
       window.location.href = `/gallery#${targetSection}`;
     }
   }
