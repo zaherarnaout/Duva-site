@@ -3407,8 +3407,7 @@ function initializeGlobalSearch() {
   let isOnProductsPage = window.location.pathname.includes('/products') || 
                          window.location.pathname.includes('/product') || 
                          window.location.pathname.includes('/collection') ||
-                         window.location.pathname.includes('products.html') ||
-                         document.querySelector('.cards-container') !== null;
+                         window.location.pathname.includes('products.html');
   
   // If we're on products page with search parameter, we came from another page
   // Store the original page URL (without search parameter) for navigation back
@@ -3544,132 +3543,21 @@ function navigateBackToOriginalPage() {
 
 // Extract all searchable text from a product card
 function extractCardText(card) {
-  const searchableText = [];
-  
-  // Get all text content from the card
-  const allText = card.textContent || card.innerText || '';
-  searchableText.push(allText);
-  
-  // Get specific fields that might be in data attributes
-  const dataFields = [
-    'data-product-code', 'data-name', 'data-family', 'data-description',
-    'data-wattage', 'data-ip', 'data-cct', 'data-cri', 'data-ordering-code',
-    'data-title', 'data-short-description', 'data-full-description'
-  ];
-  
-  dataFields.forEach(field => {
-    const value = card.getAttribute(field);
-    if (value) {
-      searchableText.push(value);
-    }
-  });
-  
-  // Get text from specific elements that might contain product info
-  const specificSelectors = [
-    '.product-title', '.product-name', '.product-code', '.product-family',
-    '.product-description', '.product-specs', '.product-details',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div'
-  ];
-  
-  specificSelectors.forEach(selector => {
-    const elements = card.querySelectorAll(selector);
-    elements.forEach(element => {
-      const text = element.textContent || element.innerText || '';
-      if (text.trim()) {
-        searchableText.push(text);
-      }
-    });
-  });
-  
-  // Get text from Webflow CMS binding elements
-  const cmsElements = card.querySelectorAll('[data-wf-cms-bind]');
-  cmsElements.forEach(element => {
-    const text = element.textContent || element.innerText || '';
-    if (text.trim()) {
-      searchableText.push(text);
-    }
-  });
-  
-  return searchableText.join(' ').toLowerCase();
+  // Product card text extraction moved to product-cards.js
+  console.log('🔍 Card text extraction moved to product-cards.js');
+  return '';
 }
 
 // Perform the global search
 function performGlobalSearch(searchTerm) {
-  // Target the same elements as the main filter to maintain grid layout
-  const cardsContainer = document.querySelector('.cards-container');
-  if (!cardsContainer) {
-    return;
-  }
-  
-  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
-  
-  if (productCards.length === 0) {
-    return;
-  }
-  
-  let visibleCount = 0;
-  
-  productCards.forEach(card => {
-    // Extract text from the entire card (both front and back cards)
-    const cardText = extractCardText(card);
-    const matches = searchTerm === '' || cardText.includes(searchTerm);
-    
-    if (matches) {
-      // Remove any inline display style to let CSS handle the layout
-      card.style.removeProperty('display');
-      visibleCount++;
-    } else {
-      card.style.display = 'none';
-    }
-  });
-  
-  // Show/hide no results message
-  const noResultsMessage = document.querySelector('.no-results-message');
-  if (noResultsMessage) {
-    if (visibleCount === 0 && searchTerm !== '') {
-      noResultsMessage.style.display = 'block';
-    } else {
-      noResultsMessage.style.display = 'none';
-    }
-  }
-  
-  // Update search input placeholder to show results
-  const searchInput = document.getElementById('globalSearchInput');
-  if (searchInput) {
-    if (searchTerm === '') {
-      searchInput.placeholder = 'Search products...';
-    } else {
-      searchInput.placeholder = `Found ${visibleCount} results...`;
-    }
-  }
+  // Product card search functionality moved to product-cards.js
+  console.log('🔍 Global search functionality moved to product-cards.js');
 }
 
 // Show all product cards (when search is cleared)
 function showAllProductCards() {
-  // Target the same elements as the main filter to maintain grid layout
-  const cardsContainer = document.querySelector('.cards-container');
-  if (!cardsContainer) {
-    return;
-  }
-  
-  const productCards = cardsContainer.querySelectorAll('.collection-item, .w-dyn-item');
-  
-  productCards.forEach(card => {
-    // Remove any inline display style to let CSS handle the layout
-    card.style.removeProperty('display');
-  });
-  
-  // Hide no results message when showing all products
-  const noResultsMessage = document.querySelector('.no-results-message');
-  if (noResultsMessage) {
-    noResultsMessage.style.display = 'none';
-  }
-  
-  // Reset search input placeholder
-  const searchInput = document.getElementById('globalSearchInput');
-  if (searchInput) {
-    searchInput.placeholder = 'Search products...';
-  }
+  // Product card functionality moved to product-cards.js
+  console.log('🔍 Show all cards functionality moved to product-cards.js');
 }
 
 // Initialize global search when DOM is ready
@@ -6058,7 +5946,6 @@ function initializeViewportFadeEffects() {
     '.main-page-hero-section-wrapper',
     '.main-page-categories-wrapper',
     '.main-filter-wrapper',
-    '.cards-Container',
     '.privacy-policy',
     '.accessories-section',
     '.related-section',
