@@ -30,9 +30,7 @@
   opacity: 0.3;
   transform: translateY(20px);
   
-  /* TEST: Make it more visible for debugging */
-  border: 3px solid #ff0000 !important;
-  background-color: rgba(255, 0, 0, 0.1) !important;
+
 }
 
 /* Viewport visible state */
@@ -41,18 +39,14 @@
   transform: translateY(0);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   
-  /* TEST: Make it more visible when viewport visible */
-  border: 3px solid #00ff00 !important;
-  background-color: rgba(0, 255, 0, 0.1) !important;
+
 }
 
 /* Parallax effect for cards container */
 .cards-Container.parallax-active {
   transform: translateY(calc(var(--scroll-y, 0) * -0.03px));
   
-  /* TEST: Make parallax visible */
-  border: 3px solid #0000ff !important;
-  background-color: rgba(0, 0, 255, 0.1) !important;
+
 }
 
 /* Subtle hover growth effect */
@@ -61,20 +55,14 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   border-color: var(--duva-red, #C0392B);
   
-  /* TEST: Make hover very visible */
-  border: 5px solid #ffff00 !important;
-  background-color: rgba(255, 255, 0, 0.2) !important;
-  transform: scale(1.05) !important;
+
 }
 
 /* Enhanced hover with parallax */
 .cards-Container:hover.parallax-active {
   transform: scale(1.02) translateY(calc(var(--scroll-y, 0) * -0.03px));
   
-  /* TEST: Make hover + parallax very visible */
-  border: 5px solid #ff00ff !important;
-  background-color: rgba(255, 0, 255, 0.2) !important;
-  transform: scale(1.05) translateY(calc(var(--scroll-y, 0) * -0.03px)) !important;
+
 }
 
 /* Shimmer effect for cards container */
@@ -179,9 +167,10 @@
 }
 
 /* === ENHANCED HOVER EFFECTS FOR PRODUCT CARDS === */
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
+/* Only apply hover effects to non-flip cards */
+.collection-item:not(.flip-card-wrapper):hover,
+.product-card:not(.flip-card-wrapper):hover,
+.related-card:not(.flip-card-wrapper):hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
   border-color: var(--duva-red, #C0392B) !important;
@@ -235,27 +224,30 @@
 }
 
 /* === SHIMMER ANIMATION ON HOVER === */
-.collection-item:hover::before,
-.product-card:hover::before,
-.related-card:hover::before {
+/* Only apply shimmer to non-flip cards */
+.collection-item:not(.flip-card-wrapper):hover::before,
+.product-card:not(.flip-card-wrapper):hover::before,
+.related-card:not(.flip-card-wrapper):hover::before {
   left: 100%;
 }
 
 /* === PRODUCT CODE/TITLE COLOR CHANGE ON HOVER === */
-.collection-item:hover .main-code-text,
-.product-card:hover .main-code-text,
-.related-card:hover .related-code,
-.collection-item:hover .item-description,
-.product-card:hover .item-description {
+/* Only apply text color changes to non-flip cards */
+.collection-item:not(.flip-card-wrapper):hover .main-code-text,
+.product-card:not(.flip-card-wrapper):hover .main-code-text,
+.related-card:not(.flip-card-wrapper):hover .related-code,
+.collection-item:not(.flip-card-wrapper):hover .item-description,
+.product-card:not(.flip-card-wrapper):hover .item-description {
   color: var(--duva-red, #C0392B) !important;
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
 
 /* === PRODUCT IMAGE SCALING ON HOVER === */
-.collection-item:hover img,
-.product-card:hover img,
-.related-card:hover img {
+/* Only apply image scaling to non-flip cards */
+.collection-item:not(.flip-card-wrapper):hover img,
+.product-card:not(.flip-card-wrapper):hover img,
+.related-card:not(.flip-card-wrapper):hover img {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
