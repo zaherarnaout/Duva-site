@@ -4,7 +4,7 @@
 (function() {
   'use strict';
   
-  console.log('🎴 Initializing Product Cards System...');
+  console.log('🎴 Product Cards System: Script loaded successfully!');
   
   // Configuration
   const CARDS_CONFIG = {
@@ -20,11 +20,16 @@
   function initializeCardsContainerParallax() {
     const cardsContainer = document.querySelector('.cards-Container');
     
+    console.log('🔍 Looking for cards-Container element...');
+    console.log('🔍 Found elements with "cards" in class:', document.querySelectorAll('[class*="cards"]'));
+    
     if (!cardsContainer) {
-      console.log('🎴 Cards container not found');
+      console.log('⚠️ Cards container (.cards-Container) not found');
+      console.log('🔍 Available containers:', document.querySelectorAll('[class*="container"]'));
       return;
     }
     
+    console.log('✅ Cards container found:', cardsContainer);
     console.log('🎴 Initializing cards container parallax...');
     
     let ticking = false;
@@ -37,6 +42,7 @@
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         cardsContainer.style.setProperty('--scroll-y', scrollY);
         cardsContainer.classList.add('parallax-active');
+        console.log('🎴 Cards container parallax active, scrollY:', scrollY);
       } else {
         cardsContainer.classList.remove('parallax-active');
       }
@@ -291,13 +297,18 @@
   
   // Main initialization function
   function initializeProductCardsSystem() {
+    console.log('🎴 Product Cards System: Starting initialization...');
+    
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
+        console.log('🎴 DOM loaded, initializing...');
         setTimeout(initializeProductCardsSystem, 100);
       });
       return;
     }
+    
+    console.log('🎴 DOM ready, initializing systems...');
     
     // Initialize all systems
     initializeCardsContainerParallax();
