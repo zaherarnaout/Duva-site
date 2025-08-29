@@ -6392,233 +6392,95 @@ setTimeout(initializeNewItemsReadMore, 1000);
   console.log('✅ DUVA deep-link router initialized');
 })();
 
-// === HEADER MENU TABS DEEP-LINK ROUTER ===
-/* Navigation system for header menu tabs with smooth scrolling */
+// === SIMPLE HEADER NAVIGATION SYSTEM ===
+// Clean, reliable navigation that works like it used to
 
-(function () {
-  console.log('🔗 Initializing header menu tabs deep-link router...');
+(function() {
+  console.log('🔗 Initializing simple navigation system...');
   
-  // Header menu tab configurations
-  const HEADER_TABS = {
-    'header-newproducts-tab': { page: 'gallery', target: 'new-items' },
-    'header-gallery-tab': { page: 'gallery', target: 'gallery' },
-    'header-news-tab': { page: 'gallery', target: 'news-journal' },
-    'header-update-tab': { page: 'gallery', target: 'update' },
-    'header-insight-tab': { page: 'gallery', target: 'insight' }
-  };
-  
-  // Text-based navigation mapping for main menu buttons
-  const MAIN_MENU_NAVIGATION = {
-    'New Products': { page: 'gallery', target: 'new-items' },
-    'Products': { page: 'gallery', target: 'new-items' },
-    'Gallery': { page: 'gallery', target: 'gallery' },
-    'News': { page: 'gallery', target: 'news-journal' },
-    'Update': { page: 'gallery', target: 'update' },
-    'Insight': { page: 'gallery', target: 'insight' }
+  // Simple navigation mapping
+  const NAVIGATION_MAP = {
+    'New Products': 'new-items',
+    'Gallery': 'gallery', 
+    'News': 'news-journal',
+    'Update': 'update',
+    'Insight': 'insight'
   };
 
-  // Adjust to your fixed header height
-  const SCROLL_OFFSET = 80; // px
-
-  // Utility: smooth scroll with offset (optimized for speed)
-  function smoothScrollToId(id) {
-    const el = document.getElementById(id);
-    if (!el) {
-      console.log('⚠️ Target element not found:', id);
+  // Simple smooth scroll function
+  function smoothScrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (!section) {
+      console.log('⚠️ Section not found:', sectionId);
       return false;
     }
     
-    // Use requestAnimationFrame for immediate response
-    requestAnimationFrame(() => {
-      const rect = el.getBoundingClientRect();
-      const top = window.scrollY + rect.top - SCROLL_OFFSET;
-      
-      window.scrollTo({ 
-        top, 
-        behavior: "smooth" 
-      });
-      
-      console.log('📜 Smooth scrolling to:', id, 'at position:', top);
+    const offset = 80; // Header height
+    const targetPosition = section.offsetTop - offset;
+    
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
     });
     
+    console.log('📜 Scrolling to:', sectionId);
     return true;
   }
 
-  // Initialize header menu tabs
-  function initializeHeaderTabs() {
-    console.log('🔍 Searching for header tabs...');
-    console.log('🔍 Available IDs:', Object.keys(HEADER_TABS));
+  // Simple navigation handler
+  function handleNavigation(buttonText, targetSection) {
+    const currentPath = window.location.pathname;
+    const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
     
-    // Debug: Check if any menu-tab elements exist
-    const allMenuTabs = document.querySelectorAll('.menu-tab');
-    console.log('🔍 Found', allMenuTabs.length, 'menu-tab elements:', Array.from(allMenuTabs).map(tab => ({ id: tab.id, text: tab.textContent.trim() })));
-    
-    // Handle ID-based navigation (existing system)
-    Object.entries(HEADER_TABS).forEach(([tabId, config]) => {
-      const tab = document.getElementById(tabId);
-      
-      if (!tab) {
-        console.log('⚠️ Header tab not found:', tabId);
-        return;
-      }
-
-      console.log('🔗 Found header tab:', tabId, '→', config, tab);
-      initializeTabNavigation(tab, config);
-    });
-    
-    // Handle text-based navigation (main menu buttons)
-    Object.entries(MAIN_MENU_NAVIGATION).forEach(([text, config]) => {
-      // Comprehensive search for menu buttons by text content
-      const possibleSelectors = [
-        '.menu-tab',
-        '.nav-link',
-        '.nav-item a',
-        '.menu-item a',
-        '.header-nav a',
-        '.main-nav a',
-        '.navigation a',
-        'nav a',
-        '.w-nav-link',
-        '.w-dropdown-toggle',
-        '.w-dropdown-link',
-        'a[href*="gallery"]',
-        'a[href*="products"]',
-        'a[href*="news"]'
-      ];
-      
-      let matchingTabs = [];
-      
-      // Search through all possible selectors
-      possibleSelectors.forEach(selector => {
-        try {
-          const elements = document.querySelectorAll(selector);
-          const found = Array.from(elements).filter(tab => 
-            tab.textContent.trim() === text
-          );
-          matchingTabs = matchingTabs.concat(found);
-        } catch (error) {
-          // Ignore invalid selectors
-        }
-      });
-      
-      // Remove duplicates
-      matchingTabs = matchingTabs.filter((tab, index, self) => 
-        self.indexOf(tab) === index
-      );
-      
-      matchingTabs.forEach(tab => {
-        console.log('🔗 Found main menu tab by text:', text, '→', config, tab);
-        initializeTabNavigation(tab, config);
-      });
-    });
-  }
-  
-  // Shared navigation function for both ID-based and text-based tabs
-  function initializeTabNavigation(tab, config) {
-    // Set href for no-JS fallback
-    const href = `${window.location.origin}${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
-    tab.setAttribute("href", href);
-
-    tab.addEventListener("click", (e) => {
-      // Fast path: check if we're on the same page first
-      const currentPath = window.location.pathname;
-      const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
-
-      if (isOnGalleryPage) {
-        // Same page → immediate smooth scroll
-        e.preventDefault();
-        const scrolled = smoothScrollToId(config.target);
-        if (scrolled) {
-          // Keep the hash updated without jump
-          history.replaceState(null, "", `#${config.target}`);
-          console.log('✅ Header tab smooth scroll completed to:', config.target);
-        }
-      } else {
-        // Cross-page navigation - use relative URLs to avoid domain issues
-        e.preventDefault();
-        const relativeUrl = `/gallery#${config.target}`;
-        console.log('🌐 Header tab navigating to relative URL:', relativeUrl);
-        
-        // Try to navigate using window.location
-        try {
-          window.location.href = relativeUrl;
-        } catch (error) {
-          console.error('❌ Navigation failed:', error);
-          // Fallback: let the href handle it
-          window.location.href = href;
-        }
-      }
-    });
-    
-    console.log('✅ Header tab initialized:', tab.textContent.trim(), '→', config.target);
-  }
-
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      initializeHeaderTabs();
-    });
-  } else {
-    initializeHeaderTabs();
-  }
-
-  // Also initialize after delays to catch dynamically loaded content
-  setTimeout(() => {
-    console.log('🔄 Retrying header tabs initialization (1s delay)...');
-    initializeHeaderTabs();
-  }, 1000);
-
-  setTimeout(() => {
-    console.log('🔄 Retrying header tabs initialization (3s delay)...');
-    initializeHeaderTabs();
-  }, 3000);
-  
-  setTimeout(() => {
-    console.log('🔄 Retrying header tabs initialization (5s delay)...');
-    initializeHeaderTabs();
-  }, 5000);
-  
-  setTimeout(() => {
-    console.log('🔄 Retrying header tabs initialization (10s delay)...');
-    initializeHeaderTabs();
-  }, 10000);
-
-  // Use MutationObserver to catch dynamically loaded content
-  const observer = new MutationObserver((mutations) => {
-    let shouldRetry = false;
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList') {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === 1) {
-            // Check for any navigation-related elements
-            const hasNavElements = node.classList?.contains('menu-tab') || 
-                                 node.classList?.contains('nav-link') ||
-                                 node.classList?.contains('w-nav-link') ||
-                                 node.querySelector?.('.menu-tab') ||
-                                 node.querySelector?.('.nav-link') ||
-                                 node.querySelector?.('.w-nav-link') ||
-                                 node.querySelector?.('nav') ||
-                                 node.querySelector?.('a');
-            if (hasNavElements) {
-              shouldRetry = true;
-            }
-          }
-        });
-      }
-    });
-    
-    if (shouldRetry) {
-      console.log('🔄 DOM changed, retrying header tabs initialization...');
-      setTimeout(initializeHeaderTabs, 100);
+    if (isOnGalleryPage) {
+      // Same page - smooth scroll
+      smoothScrollToSection(targetSection);
+      history.replaceState(null, '', `#${targetSection}`);
+    } else {
+      // Different page - navigate to gallery
+      window.location.href = `/gallery#${targetSection}`;
     }
-  });
+  }
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
+  // Initialize navigation
+  function initNavigation() {
+    console.log('🔍 Setting up navigation...');
+    
+    // Find all navigation links
+    const allLinks = document.querySelectorAll('a');
+    
+    allLinks.forEach(link => {
+      const linkText = link.textContent.trim();
+      
+      // Check if this link matches our navigation map
+      if (NAVIGATION_MAP[linkText]) {
+        const targetSection = NAVIGATION_MAP[linkText];
+        
+        console.log('🔗 Found navigation link:', linkText, '→', targetSection);
+        
+        // Add click handler
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleNavigation(linkText, targetSection);
+        });
+        
+        // Set href for fallback
+        link.setAttribute('href', `/gallery#${targetSection}`);
+      }
+    });
+  }
 
-  console.log('✅ Header menu tabs deep-link router initialized');
+  // Initialize when ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavigation);
+  } else {
+    initNavigation();
+  }
+
+  // Retry once after a short delay
+  setTimeout(initNavigation, 1000);
+
+  console.log('✅ Simple navigation system initialized');
 })();
 
 // === END HEADER MENU TABS DEEP-LINK ROUTER ===
