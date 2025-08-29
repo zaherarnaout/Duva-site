@@ -3699,55 +3699,8 @@ ARROWS:
 ================================
 */
 
-/* === TARGETED FLIP CARD FIXES === */
-/* Only affect flip cards, not other cards */
-.flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Flip card shimmer effect */
-.flip-card-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Flip card hover - ONLY flip animation, no transform */
-.flip-card-wrapper:hover .flip-card-back {
-  display: flex;
-  z-index: 2;
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Add overlay slide effect to flip card back ONLY */
-.flip-card-back::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease 0.3s; /* Add delay to wait for back card to appear */
-  z-index: 1;
-}
-
-.flip-card-wrapper:hover .flip-card-back::before {
-  left: 100%;
-}
-
-/* Flip card shimmer animation */
-.flip-card-wrapper:hover::before {
-  left: 100%;
-}
+/* === FLIP CARD FUNCTIONALITY MOVED TO PRODUCT-CARDS.CSS === */
+/* All flip card functionality has been moved to the separate product-cards.css file */
 
 /* === TARGETED RELATED ITEMS FIXES === */
 /* Note: Related card styles are handled by the general product card styles above */
@@ -3803,75 +3756,8 @@ ARROWS:
 /* === REMOVE BROAD SELECTORS === */
 /* Note: Product card styles (including related cards) are handled by the general styles above */
 
-/* === ESSENTIAL FLIP CARD ANIMATION ONLY === */
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  display: none;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transform: translateZ(-10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* Show back card on hover */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-  opacity: 1;
-  transform: translateZ(0);
-}
-
-/* === Flip Card Click Fix === */
-.flip-card-front, 
-.flip-card-back {
-  pointer-events: none;
-}
-
-.flip-card-wrapper {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-/* Ensure parent links also show pointer cursor */
-.flip-card-wrapper a,
-a .flip-card-wrapper {
-  cursor: pointer;
-}
-/* === End Flip Card Click Fix === */
-
-/* === Reduced Motion Safe-Guard === */
-@media (prefers-reduced-motion: reduce) {
-  .flip-card, .flip-card * { 
-    transition: none !important; 
-    animation: none !important; 
-  }
-}
-
-/* Remove underlines from all product card links */
-.flip-card-wrapper a,
-.current-product,
-.flip-card-link {
-  text-decoration: none !important;
-}
-
-/* Remove underlines from all product card text elements */
-.collection-item *,
-.product-card *,
-.related-card *,
-.flip-card-wrapper *,
-.flip-card-front *,
-.flip-card-back *,
-.collection-list-6 .w-dyn-item *,
-.related-section .w-dyn-item * {
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-  text-decoration-line: none !important;
-  text-decoration-style: none !important;
-  text-decoration-color: transparent !important;
-}
+/* === PRODUCT CARD FUNCTIONALITY MOVED TO PRODUCT-CARDS.CSS === */
+/* All product card functionality has been moved to the separate product-cards.css file */
 
 /* === COMPREHENSIVE FILTER SECTION ENHANCEMENTS === */
 
@@ -6409,7 +6295,6 @@ a .flip-card-wrapper {
 .main-page-hero-section-wrapper,
 .main-page-categories-wrapper,
 .main-filter-wrapper,
-.cards-Container,
 .privacy-policy,
 .accessories-section,
 .related-section,
@@ -6441,7 +6326,6 @@ a .flip-card-wrapper {
 .main-page-hero-section-wrapper.viewport-visible,
 .main-page-categories-wrapper.viewport-visible,
 .main-filter-wrapper.viewport-visible,
-.cards-Container.viewport-visible,
 .privacy-policy.viewport-visible,
 .accessories-section.viewport-visible,
 .related-section.viewport-visible,
@@ -6485,7 +6369,6 @@ a .flip-card-wrapper {
   .main-page-hero-section-wrapper,
   .main-page-categories-wrapper,
   .main-filter-wrapper,
-  .cards-Container,
   .privacy-policy,
   .accessories-section,
   .related-section,
