@@ -3419,6 +3419,17 @@ footer, .footer {
 }
 
 /* Enhanced hover effects for product images and thumbnails */
+/* Only apply to non-flip card images */
+.flip-card-wrapper .product-image:hover,
+.flip-card-wrapper .thumbnail-image:hover,
+.flip-card-wrapper .image-3:hover {
+  /* No hover effects for flip card images */
+  transform: none;
+  box-shadow: none;
+  border-color: transparent !important;
+}
+
+/* Apply hover effects only to non-flip card images */
 .product-image:hover,
 .thumbnail-image:hover,
 .image-3:hover {
@@ -3428,6 +3439,14 @@ footer, .footer {
 }
 
 /* Shimmer animation on hover */
+/* No shimmer for flip card images */
+.flip-card-wrapper .product-image:hover::before,
+.flip-card-wrapper .thumbnail-image:hover::before,
+.flip-card-wrapper .image-3:hover::before {
+  left: -100%;
+}
+
+/* Shimmer for non-flip card images */
 .product-image:hover::before,
 .thumbnail-image:hover::before,
 .image-3:hover::before {
@@ -3435,6 +3454,14 @@ footer, .footer {
 }
 
 /* Product image scaling on hover */
+/* No scaling for flip card images */
+.flip-card-wrapper .product-image:hover img,
+.flip-card-wrapper .thumbnail-image:hover img,
+.flip-card-wrapper .image-3:hover img {
+  transform: none;
+}
+
+/* Scaling for non-flip card images */
 .product-image:hover img,
 .thumbnail-image:hover img,
 .image-3:hover img {
