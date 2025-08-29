@@ -29,6 +29,10 @@
   /* Viewport fade effect (copied from main-filter-wrapper) */
   opacity: 0.3;
   transform: translateY(20px);
+  
+  /* TEST: Make it more visible for debugging */
+  border: 3px solid #ff0000 !important;
+  background-color: rgba(255, 0, 0, 0.1) !important;
 }
 
 /* Viewport visible state */
@@ -36,11 +40,19 @@
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  
+  /* TEST: Make it more visible when viewport visible */
+  border: 3px solid #00ff00 !important;
+  background-color: rgba(0, 255, 0, 0.1) !important;
 }
 
 /* Parallax effect for cards container */
 .cards-Container.parallax-active {
   transform: translateY(calc(var(--scroll-y, 0) * -0.03px));
+  
+  /* TEST: Make parallax visible */
+  border: 3px solid #0000ff !important;
+  background-color: rgba(0, 0, 255, 0.1) !important;
 }
 
 /* Subtle hover growth effect */
@@ -48,11 +60,21 @@
   transform: scale(1.02);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   border-color: var(--duva-red, #C0392B);
+  
+  /* TEST: Make hover very visible */
+  border: 5px solid #ffff00 !important;
+  background-color: rgba(255, 255, 0, 0.2) !important;
+  transform: scale(1.05) !important;
 }
 
 /* Enhanced hover with parallax */
 .cards-Container:hover.parallax-active {
   transform: scale(1.02) translateY(calc(var(--scroll-y, 0) * -0.03px));
+  
+  /* TEST: Make hover + parallax very visible */
+  border: 5px solid #ff00ff !important;
+  background-color: rgba(255, 0, 255, 0.2) !important;
+  transform: scale(1.05) translateY(calc(var(--scroll-y, 0) * -0.03px)) !important;
 }
 
 /* Shimmer effect for cards container */
