@@ -3382,155 +3382,8 @@ footer, .footer {
   }
 }
 
-/* === Product Card Hover Animation === */
-/* Enhanced hover effects for product cards - preserves existing functionality */
-.collection-item,
-.product-card,
-.related-card,
-.flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shimmer effect for product cards */
-.collection-item::before,
-.product-card::before,
-.related-card::before,
-.flip-card-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-/* Enhanced hover effects for product cards */
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
-}
-
-/* Product cards parallax and animation effects - OPTIMIZED */
-.collection-item,
-.product-card,
-.related-card,
-.flip-card-wrapper {
-  will-change: transform;
-  /* Animation is now handled in the entrance animation section above */
-}
-
-/* Floating animation for product cards - OPTIMIZED */
-@keyframes productCardFloat {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-/* Parallax effect for product cards - only active on scroll */
-.collection-item.parallax-active,
-.product-card.parallax-active,
-.related-card.parallax-active,
-.flip-card-wrapper.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.06px));
-}
-
-/* Initial state - no parallax until scroll starts */
-.collection-item,
-.product-card,
-.related-card,
-.flip-card-wrapper {
-  transform: translateY(0);
-  transition: transform 0.4s ease-out;
-}
-
-/* Staggered entrance animation for product cards - OPTIMIZED */
-.collection-item,
-.product-card,
-.related-card,
-.flip-card-wrapper {
-  /* Using optimized animation from performance optimization section */
-  animation: optimizedCardEnter 0.7s ease-out both;
-  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
-  /* Float animation will be added on hover */
-}
-
-@keyframes productCardEnter {
-  0% {
-    opacity: 0;
-    transform: translateY(35px) scale(0.92);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Shimmer animation on hover */
-.collection-item:hover::before,
-.product-card:hover::before,
-.related-card:hover::before {
-  left: 100%;
-}
-
-/* Product code/title color change on hover */
-.collection-item:hover .main-code-text,
-.product-card:hover .main-code-text,
-.related-card:hover .related-code,
-.collection-item:hover .item-description,
-.product-card:hover .item-description {
-  color: var(--duva-red, #C0392B) !important;
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-
-/* Product image scaling on hover */
-.collection-item:hover img,
-.product-card:hover img,
-.related-card:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* Preserve existing flip card functionality */
-.flip-card-wrapper:hover .flip-card-back,
-.current-product:hover .flip-card-back {
-  display: flex;
-  z-index: 2; /* Ensure back card appears above shimmer */
-}
-
-/* Responsive adjustments for product cards */
-@media screen and (max-width: 767px) {
-  .collection-item:hover,
-  .product-card:hover,
-  .related-card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .collection-item:hover img,
-  .product-card:hover img,
-  .related-card:hover img {
-    transform: scale(1.03);
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .collection-item:hover,
-  .product-card:hover,
-  .related-card:hover {
-    transform: translateY(-2px);
-  }
-}
+/* === PRODUCT CARDS MOVED TO SEPARATE FILE === */
+/* All product card styles have been moved to product-cards.css */
 
 /* === Product Image and Thumbnail Hover Animation === */
 /* Enhanced hover effects for product images and thumbnails */
@@ -6494,8 +6347,7 @@ a .flip-card-wrapper {
 /* Removed duplicate declarations to prevent conflicts */
 
 /* === PERFORMANCE-OPTIMIZED PRODUCT CARDS === */
-/* These animations are now handled in the main CSS sections above */
-/* Removed duplicate declarations to prevent conflicts */
+/* Product card animations moved to product-cards.css */
 
 /* === PERFORMANCE-OPTIMIZED TEXT AND IMAGE EFFECTS === */
 /* These animations are now handled in the main CSS sections above */
@@ -6504,9 +6356,6 @@ a .flip-card-wrapper {
 /* === REDUCED MOTION SUPPORT === */
 @media (prefers-reduced-motion: reduce) {
   .main-page-categories-wrapper a,
-  .collection-item,
-  .product-card,
-  .related-card,
   .main-page-categories-wrapper .text-block-48,
   .main-page-categories-wrapper .text-block-49,
   .main-page-categories-wrapper .text-block-50,
@@ -6540,18 +6389,12 @@ a .flip-card-wrapper {
 
 /* === PERFORMANCE MONITORING === */
 /* Add will-change property only when animations are active */
-.main-page-categories-wrapper a:hover,
-.collection-item:hover,
-.product-card:hover,
-.related-card:hover {
+.main-page-categories-wrapper a:hover {
   will-change: transform;
 }
 
 /* Remove will-change when not animating to free up GPU memory */
-.main-page-categories-wrapper a,
-.collection-item,
-.product-card,
-.related-card {
+.main-page-categories-wrapper a {
   will-change: auto;
 }
 
@@ -6566,7 +6409,6 @@ a .flip-card-wrapper {
 .main-page-hero-section-wrapper,
 .main-page-categories-wrapper,
 .main-filter-wrapper,
-.cards-Container,
 .privacy-policy,
 .accessories-section,
 .related-section,
@@ -6598,7 +6440,6 @@ a .flip-card-wrapper {
 .main-page-hero-section-wrapper.viewport-visible,
 .main-page-categories-wrapper.viewport-visible,
 .main-filter-wrapper.viewport-visible,
-.cards-Container.viewport-visible,
 .privacy-policy.viewport-visible,
 .accessories-section.viewport-visible,
 .related-section.viewport-visible,
@@ -6624,8 +6465,7 @@ a .flip-card-wrapper {
 }
 
 /* Staggered entrance for better visual flow */
-.main-page-categories-wrapper.viewport-visible,
-.cards-Container.viewport-visible {
+.main-page-categories-wrapper.viewport-visible {
   transition-delay: 0.1s;
 }
 
@@ -6643,7 +6483,6 @@ a .flip-card-wrapper {
   .main-page-hero-section-wrapper,
   .main-page-categories-wrapper,
   .main-filter-wrapper,
-  .cards-Container,
   .privacy-policy,
   .accessories-section,
   .related-section,
