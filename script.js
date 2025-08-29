@@ -6406,6 +6406,16 @@ setTimeout(initializeNewItemsReadMore, 1000);
     'header-update-tab': { page: 'gallery', target: 'update' },
     'header-insight-tab': { page: 'gallery', target: 'insight' }
   };
+  
+  // Text-based navigation mapping for main menu buttons
+  const MAIN_MENU_NAVIGATION = {
+    'New Products': { page: 'gallery', target: 'new-items' },
+    'Products': { page: 'gallery', target: 'new-items' },
+    'Gallery': { page: 'gallery', target: 'gallery' },
+    'News': { page: 'gallery', target: 'news-journal' },
+    'Update': { page: 'gallery', target: 'update' },
+    'Insight': { page: 'gallery', target: 'insight' }
+  };
 
   // Adjust to your fixed header height
   const SCROLL_OFFSET = 80; // px
@@ -6443,59 +6453,72 @@ setTimeout(initializeNewItemsReadMore, 1000);
     const allMenuTabs = document.querySelectorAll('.menu-tab');
     console.log('🔍 Found', allMenuTabs.length, 'menu-tab elements:', Array.from(allMenuTabs).map(tab => ({ id: tab.id, text: tab.textContent.trim() })));
     
+    // Handle ID-based navigation (existing system)
     Object.entries(HEADER_TABS).forEach(([tabId, config]) => {
       const tab = document.getElementById(tabId);
       
       if (!tab) {
         console.log('⚠️ Header tab not found:', tabId);
-        // Debug: Check if element exists without ID
-        const menuTabs = document.querySelectorAll('.menu-tab');
-        const matchingTab = Array.from(menuTabs).find(tab => tab.textContent.trim() === 'New Products' || tab.textContent.trim() === 'Gallery' || tab.textContent.trim() === 'News');
-        if (matchingTab) {
-          console.log('🔍 Found matching tab without ID:', matchingTab.textContent.trim(), matchingTab);
-        }
         return;
       }
 
       console.log('🔗 Found header tab:', tabId, '→', config, tab);
-
-      // Set href for no-JS fallback (using HTTP to avoid SSL issues)
-      const href = `http://duva-lighting.design.webflow.io${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
-      tab.setAttribute("href", href);
-
-      tab.addEventListener("click", (e) => {
-        // Fast path: check if we're on the same page first
-        const currentPath = window.location.pathname;
-        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
-
-        if (isOnGalleryPage) {
-          // Same page → immediate smooth scroll
-          e.preventDefault();
-          const scrolled = smoothScrollToId(config.target);
-          if (scrolled) {
-            // Keep the hash updated without jump
-            history.replaceState(null, "", `#${config.target}`);
-            console.log('✅ Header tab smooth scroll completed to:', config.target);
-          }
-        } else {
-          // Cross-page navigation - use relative URLs to avoid domain issues
-          e.preventDefault();
-          const relativeUrl = `/gallery#${config.target}`;
-          console.log('🌐 Header tab navigating to relative URL:', relativeUrl);
-          
-          // Try to navigate using window.location
-          try {
-            window.location.href = relativeUrl;
-          } catch (error) {
-            console.error('❌ Navigation failed:', error);
-            // Fallback: let the href handle it
-            window.location.href = href;
-          }
-        }
-      });
-      
-      console.log('✅ Header tab initialized:', tabId);
+      initializeTabNavigation(tab, config);
     });
+    
+    // Handle text-based navigation (main menu buttons)
+    Object.entries(MAIN_MENU_NAVIGATION).forEach(([text, config]) => {
+      // Find menu tabs by text content
+      const menuTabs = document.querySelectorAll('.menu-tab');
+      const matchingTabs = Array.from(menuTabs).filter(tab => 
+        tab.textContent.trim() === text
+      );
+      
+      matchingTabs.forEach(tab => {
+        console.log('🔗 Found main menu tab by text:', text, '→', config, tab);
+        initializeTabNavigation(tab, config);
+      });
+    });
+  }
+  
+  // Shared navigation function for both ID-based and text-based tabs
+  function initializeTabNavigation(tab, config) {
+    // Set href for no-JS fallback
+    const href = `${window.location.origin}${config.page === 'gallery' ? '/gallery' : ''}#${config.target}`;
+    tab.setAttribute("href", href);
+
+    tab.addEventListener("click", (e) => {
+      // Fast path: check if we're on the same page first
+      const currentPath = window.location.pathname;
+      const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+
+      if (isOnGalleryPage) {
+        // Same page → immediate smooth scroll
+        e.preventDefault();
+        const scrolled = smoothScrollToId(config.target);
+        if (scrolled) {
+          // Keep the hash updated without jump
+          history.replaceState(null, "", `#${config.target}`);
+          console.log('✅ Header tab smooth scroll completed to:', config.target);
+        }
+      } else {
+        // Cross-page navigation - use relative URLs to avoid domain issues
+        e.preventDefault();
+        const relativeUrl = `/gallery#${config.target}`;
+        console.log('🌐 Header tab navigating to relative URL:', relativeUrl);
+        
+        // Try to navigate using window.location
+        try {
+          window.location.href = relativeUrl;
+        } catch (error) {
+          console.error('❌ Navigation failed:', error);
+          // Fallback: let the href handle it
+          window.location.href = href;
+        }
+      }
+    });
+    
+    console.log('✅ Header tab initialized:', tab.textContent.trim(), '→', config.target);
   }
 
   // Initialize when DOM is ready
