@@ -1,0 +1,242 @@
+/* === PRODUCT CARDS STYLES === */
+/* All styles for product cards, flip cards, and related animations */
+
+/* === PRODUCT CARD BASE STYLES === */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* === SHIMMER EFFECT FOR PRODUCT CARDS === */
+.collection-item::before,
+.product-card::before,
+.related-card::before,
+.flip-card-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+/* === ENHANCED HOVER EFFECTS FOR PRODUCT CARDS === */
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* === FLOATING ANIMATION FOR PRODUCT CARDS === */
+@keyframes productCardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* === PARALLAX EFFECT FOR PRODUCT CARDS === */
+.collection-item.parallax-active,
+.product-card.parallax-active,
+.related-card.parallax-active,
+.flip-card-wrapper.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.06px));
+}
+
+/* === INITIAL STATE - NO PARALLAX UNTIL SCROLL STARTS === */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  transform: translateY(0);
+  transition: transform 0.4s ease-out;
+}
+
+/* === STAGGERED ENTRANCE ANIMATION FOR PRODUCT CARDS === */
+.collection-item,
+.product-card,
+.related-card,
+.flip-card-wrapper {
+  animation: optimizedCardEnter 0.7s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 0.12s + 0.6s + var(--random-delay, 0s));
+}
+
+@keyframes productCardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(35px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* === SHIMMER ANIMATION ON HOVER === */
+.collection-item:hover::before,
+.product-card:hover::before,
+.related-card:hover::before {
+  left: 100%;
+}
+
+/* === PRODUCT CODE/TITLE COLOR CHANGE ON HOVER === */
+.collection-item:hover .main-code-text,
+.product-card:hover .main-code-text,
+.related-card:hover .related-code,
+.collection-item:hover .item-description,
+.product-card:hover .item-description {
+  color: var(--duva-red, #C0392B) !important;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* === PRODUCT IMAGE SCALING ON HOVER === */
+.collection-item:hover img,
+.product-card:hover img,
+.related-card:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* === FLIP CARD SPECIFIC STYLES === */
+.flip-card-back {
+  position: absolute;
+  inset: 0%;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* === SHOW BACK CARD ON HOVER === */
+.flip-card-wrapper:hover .flip-card-back,
+.current-product:hover .flip-card-back {
+  display: flex;
+  z-index: 2;
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* === FLIP CARD OVERLAY SLIDE EFFECT === */
+.flip-card-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease 0.3s; /* Add delay to wait for back card to appear */
+  z-index: 1;
+}
+
+.flip-card-wrapper:hover .flip-card-back::before {
+  left: 100%;
+}
+
+/* === FLIP CARD SHIMMER ANIMATION === */
+.flip-card-wrapper:hover::before {
+  left: 100%;
+}
+
+/* === REMOVE UNDERLINES FROM ALL PRODUCT CARD LINKS === */
+.flip-card-wrapper a,
+.current-product,
+.flip-card-link {
+  text-decoration: none !important;
+}
+
+/* === REMOVE UNDERLINES FROM ALL PRODUCT CARD TEXT ELEMENTS === */
+.collection-item *,
+.product-card *,
+.related-card *,
+.flip-card-wrapper *,
+.flip-card-front *,
+.flip-card-back *,
+.collection-list-6 .w-dyn-item *,
+.related-section .w-dyn-item * {
+  text-decoration: none !important;
+  -webkit-text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
+}
+
+/* === RESPONSIVE ADJUSTMENTS FOR PRODUCT CARDS === */
+@media screen and (max-width: 767px) {
+  .collection-item:hover,
+  .product-card:hover,
+  .related-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .collection-item:hover img,
+  .product-card:hover img,
+  .related-card:hover img {
+    transform: scale(1.03);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .collection-item:hover,
+  .product-card:hover,
+  .related-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* === PERFORMANCE OPTIMIZATION === */
+/* Add will-change property only when animations are active */
+.collection-item:hover,
+.product-card:hover,
+.related-card:hover {
+  will-change: transform;
+}
+
+/* Remove will-change when not animating to free up GPU memory */
+.collection-item,
+.product-card,
+.related-card {
+  will-change: auto;
+}
+
+/* === REDUCED MOTION SUPPORT === */
+@media (prefers-reduced-motion: reduce) {
+  .collection-item,
+  .product-card,
+  .related-card,
+  .flip-card-wrapper {
+    animation: none !important;
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
+  
+  .collection-item:hover,
+  .product-card:hover,
+  .related-card:hover {
+    transform: none !important;
+  }
+}
+
+/* === INTERSECTION OBSERVER SUPPORT === */
+/* Classes to be added via JavaScript for viewport-based animation activation */
+.animate-on-viewport {
+  animation-play-state: running !important;
+}
+
+.animate-on-hover:hover {
+  animation-play-state: running !important;
+}
+
+/* === END PRODUCT CARDS STYLES === */
