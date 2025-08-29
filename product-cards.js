@@ -214,9 +214,9 @@
   
   // === PRODUCT CARD INTERACTIONS ===
   
-  // Handle card clicks
+  // Handle card clicks and navigation
   function initializeCardClicks() {
-    const cards = document.querySelectorAll('.collection-item, .product-card, .related-card');
+    const cards = document.querySelectorAll('.collection-item, .product-card, .related-card, .flip-card-wrapper');
     
     cards.forEach(card => {
       card.addEventListener('click', function(e) {
@@ -231,8 +231,38 @@
         setTimeout(() => {
           card.classList.remove('card-clicked');
         }, 200);
+        
+        // Extract product code and navigate
+        const productCode = extractProductCode(card);
+        if (productCode) {
+          console.log(`🎴 Card clicked, navigating to product: ${productCode}`);
+          const productUrl = `/?search=${productCode.toLowerCase()}`;
+          window.location.href = productUrl;
+        } else {
+          console.log('🎴 Card clicked but no product code found');
+        }
       });
     });
+  }
+  
+  // Helper function to extract product code from card
+  function extractProductCode(element) {
+    // Look for product code in various elements
+    const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+    if (codeElement) {
+      const text = codeElement.textContent?.trim();
+      if (text) {
+        // Extract product code (e.g., "C331", "4709")
+        const codeMatch = text.match(/([A-Z]?\d+)/);
+        if (codeMatch) {
+          return codeMatch[1];
+        } else {
+          // If no pattern found, use first word
+          return text.split(' ')[0];
+        }
+      }
+    }
+    return null;
   }
   
   // === PERFORMANCE OPTIMIZATIONS ===
