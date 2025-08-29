@@ -14,6 +14,52 @@
     entranceAnimationDelay: 120
   };
   
+  // === CARDS CONTAINER PARALLAX SYSTEM ===
+  
+  // Initialize cards container parallax
+  function initializeCardsContainerParallax() {
+    const cardsContainer = document.querySelector('.cards-Container');
+    
+    if (!cardsContainer) {
+      console.log('🎴 Cards container not found');
+      return;
+    }
+    
+    console.log('🎴 Initializing cards container parallax...');
+    
+    let ticking = false;
+    
+    function updateCardsContainerParallax() {
+      const scrollY = window.pageYOffset;
+      const rect = cardsContainer.getBoundingClientRect();
+      
+      // Check if container is in viewport
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        cardsContainer.style.setProperty('--scroll-y', scrollY);
+        cardsContainer.classList.add('parallax-active');
+      } else {
+        cardsContainer.classList.remove('parallax-active');
+      }
+      
+      ticking = false;
+    }
+    
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateCardsContainerParallax);
+        ticking = true;
+      }
+    }
+    
+    // Add scroll listener
+    window.addEventListener('scroll', requestTick, { passive: true });
+    
+    // Initial update
+    updateCardsContainerParallax();
+    
+    console.log('✅ Cards container parallax initialized');
+  }
+  
   // === PRODUCT CARDS ANIMATION SYSTEM ===
   
   // Initialize product cards animations
@@ -209,11 +255,13 @@
   function getCardStats() {
     const cards = document.querySelectorAll('.collection-item, .product-card, .related-card, .flip-card-wrapper');
     const flipCards = document.querySelectorAll('.flip-card-wrapper');
+    const cardsContainer = document.querySelector('.cards-Container');
     
     return {
       totalCards: cards.length,
       flipCards: flipCards.length,
       regularCards: cards.length - flipCards.length,
+      cardsContainer: cardsContainer ? 'Found' : 'Not found',
       visibleCards: Array.from(cards).filter(card => {
         const rect = card.getBoundingClientRect();
         return rect.top < window.innerHeight && rect.bottom > 0;
@@ -252,6 +300,7 @@
     }
     
     // Initialize all systems
+    initializeCardsContainerParallax();
     initializeProductCards();
     initializeFlipCards();
     initializeCardClicks();
@@ -280,7 +329,8 @@
               node.classList.contains('product-card') ||
               node.classList.contains('related-card') ||
               node.classList.contains('flip-card-wrapper') ||
-              node.querySelector('.collection-item, .product-card, .related-card, .flip-card-wrapper')
+              node.classList.contains('cards-Container') ||
+              node.querySelector('.collection-item, .product-card, .related-card, .flip-card-wrapper, .cards-Container')
             )) {
               shouldReinitialize = true;
             }
