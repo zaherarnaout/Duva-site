@@ -1,5 +1,5 @@
 console.log("DUVA script.js loaded!");
-console.log("🎯 Flip card functionality should be working!");
+console.log("🎯 Main script loaded successfully!");
 console.log("TESTING - If you see this, the script is loading!");
 
 /* === Auto Filter on Page Load via URL === */
@@ -192,14 +192,12 @@ if (typeof Webflow !== 'undefined') {
   });
 }
 
-// Quick test to see if flip card elements exist
+// Quick test to see if product elements exist
 setTimeout(() => {
   console.log("TIMEOUT TEST - Script is still running after 1 second");
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  const flipCardLinks = document.querySelectorAll('.flip-card-link');
-  console.log('🔍 Quick test - Flip card elements found:', {
-    wrappers: flipCardWrappers.length,
-    links: flipCardLinks.length
+  const productCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
+  console.log('🔍 Quick test - Product elements found:', {
+    cards: productCards.length
   });
 }, 1000);
 
@@ -3068,265 +3066,8 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log('✅ Accessories section - scrolling functionality removed (not needed)');
 });
 
-/* === Flip Card Linking Functionality === */
-// Helper function to extract product code from element
-function extractProductCode(element) {
-  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-  if (codeElement) {
-    const text = codeElement.textContent?.trim();
-    if (text) {
-      const codeMatch = text.match(/([A-Z]?\d+)/);
-      if (codeMatch) {
-        return codeMatch[1];
-      } else {
-        return text.split(' ')[0];
-      }
-    }
-  }
-  return null;
-}
-
-function initializeFlipCardLinks() {
-  console.log('=== initializeFlipCardLinks function called ===');
-  console.log('Script is working!');
-  
-  // ONLY target flip card wrappers - don't affect other sections
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  
-  console.log('Found flip card wrappers:', flipCardWrappers.length);
-  
-  // Log what we found to debug
-  flipCardWrappers.forEach((wrapper, index) => {
-    console.log(`Flip card ${index + 1}:`, wrapper.className, wrapper.tagName);
-  });
-  
-  // Only process flip card wrappers, not related items
-  const targetElements = flipCardWrappers;
-  
-  if (targetElements.length === 0) {
-    console.log('No flip card wrappers found, skipping');
-    return;
-  }
-  
-  console.log('Processing', targetElements.length, 'target elements');
-  
-  targetElements.forEach((element, index) => {
-    // Check if this element already has a link
-    const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
-    if (existingFlipLink) {
-      console.log(`Element ${index + 1} already has a link, updating URL...`);
-      // Update the existing link instead of skipping
-      const productCode = extractProductCode(element);
-      if (productCode) {
-        const newUrl = `/?search=${productCode.toLowerCase()}`;
-        existingFlipLink.href = newUrl;
-        console.log(`Element ${index + 1} - Updated URL to:`, newUrl);
-      }
-      return;
-    }
-    
-    // Create the link element
-    const link = document.createElement('a');
-    link.className = 'flip-card-link';
-    
-    // Try to get the product URL from various sources
-    let productUrl = element.getAttribute('data-product-url') || 
-                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
-                    element.getAttribute('href') ||
-                    element.querySelector('a')?.getAttribute('href') ||
-                    '#';
-    
-    // Check if this is a flip card with an existing proper URL
-    const existingLink = element.querySelector('a');
-    if (existingLink && existingLink.href) {
-      // Use the existing URL (whether it's product or search)
-      productUrl = existingLink.href;
-      console.log(`Flip card - using existing URL:`, productUrl);
-    } else if (productUrl === '#' || !productUrl) {
-      // Only construct search URL if no proper URL exists
-      const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-      let productCode = null;
-      
-      if (codeElement) {
-        const text = codeElement.textContent?.trim();
-        // Extract just the product code (e.g., "C331", "4709") from the text
-        if (text) {
-          // Look for patterns like C331, 4709, etc.
-          const codeMatch = text.match(/([A-Z]?\d+)/);
-          if (codeMatch) {
-            productCode = codeMatch[1];
-          } else {
-            // If no pattern found, use first word
-            productCode = text.split(' ')[0];
-          }
-        }
-      }
-      
-      if (productCode) {
-        // For flip cards, use search functionality instead of non-existent product pages
-        // Navigate to products page with search parameter to filter to this specific product
-        productUrl = `/?search=${productCode.toLowerCase()}`;
-        console.log(`Flip card - constructed search URL for ${productCode}:`, productUrl);
-      } else {
-        console.log('Flip card - no product code found, keeping URL as #');
-      }
-    }
-    
-    link.href = productUrl;
-    link.setAttribute('data-product-url', productUrl);
-    
-    console.log(`Element ${index + 1} - URL:`, productUrl);
-    
-    // Wrap the element in the link
-    element.parentNode.insertBefore(link, element);
-    link.appendChild(element);
-    
-    // Add click event listener
-    link.addEventListener('click', function(e) {
-      console.log('Flip card clicked! URL:', productUrl);
-      
-      // For flip cards, allow navigation even if URL is '#'
-      // This prevents the alert from showing on flip cards
-      if (productUrl === '#' || !productUrl) {
-        e.preventDefault();
-        console.log('Flip card - no URL configured, preventing navigation');
-        return;
-      }
-      
-      // Allow navigation for valid URLs
-      console.log('Flip card - navigating to:', productUrl);
-      
-      // Navigate to the URL
-      window.location.href = productUrl;
-      
-      // Optional: Add loading state
-      this.style.pointerEvents = 'none';
-      setTimeout(() => {
-        this.style.pointerEvents = 'auto';
-      }, 1000);
-    });
-    
-    // Add hover effects for fade animation
-    link.addEventListener('mouseenter', function() {
-      console.log('Mouse enter triggered on flip card link');
-      this.style.transform = 'translateY(-2px)';
-      // Ensure fade animation works
-      const flipCard = this.querySelector('.flip-card');
-      const flipCardFront = this.querySelector('.flip-card-front');
-      const flipCardBack = this.querySelector('.flip-card-back');
-      
-      console.log('Flip card elements found:', {
-        flipCard: !!flipCard,
-        flipCardFront: !!flipCardFront,
-        flipCardBack: !!flipCardBack
-      });
-      
-      if (flipCard) {
-        flipCard.style.transition = 'all 0.6s ease';
-      }
-      if (flipCardFront) {
-        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardFront.style.opacity = '0';
-        flipCardFront.style.transform = 'translateZ(-10px)';
-      }
-      if (flipCardBack) {
-        // Remove any conflicting inline styles and let CSS handle the display
-        flipCardBack.style.removeProperty('display');
-        flipCardBack.style.removeProperty('visibility');
-        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardBack.style.opacity = '1';
-        flipCardBack.style.transform = 'translateZ(0)';
-        flipCardBack.style.zIndex = '10';
-      }
-    });
-    
-    link.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0)';
-      // Reset fade animation
-      const flipCard = this.querySelector('.flip-card');
-      const flipCardFront = this.querySelector('.flip-card-front');
-      const flipCardBack = this.querySelector('.flip-card-back');
-      
-      if (flipCard) {
-        flipCard.style.transition = 'all 0.6s ease';
-      }
-      if (flipCardFront) {
-        flipCardFront.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardFront.style.opacity = '1';
-        flipCardFront.style.transform = 'translateZ(0)';
-      }
-      if (flipCardBack) {
-        flipCardBack.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        flipCardBack.style.opacity = '0';
-        flipCardBack.style.transform = 'translateZ(-10px)';
-        flipCardBack.style.zIndex = '1';
-        // Let CSS handle the display/visibility after transition
-        setTimeout(() => {
-          if (!this.matches(':hover')) {
-            flipCardBack.style.display = 'none';
-            flipCardBack.style.visibility = 'hidden';
-          }
-        }, 600);
-      }
-    });
-  });
-}
-
-/* === Cards Scroll Animation === */
-function initializeCardsScrollAnimation() {
-  const cards = document.querySelectorAll('.collection-item');
-  
-  if (!cards.length) return;
-  
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-      }
-    });
-  }, observerOptions);
-  
-  cards.forEach(card => {
-    observer.observe(card);
-  });
-}
-
-// Initialize flip card links when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 DOMContentLoaded - Initializing flip card links');
-  initializeFlipCardLinks();
-  initializeCardsScrollAnimation();
-  
-  // Debug test removed for cleanup
-});
-
-// Re-initialize when Webflow's dynamic content loads
-document.addEventListener('DOMContentLoaded', function() {
-  // Wait for Webflow's dynamic content to load
-  setTimeout(() => {
-    console.log('DOMContentLoaded timeout - Re-initializing flip card links');
-    initializeFlipCardLinks();
-    initializeCardsScrollAnimation();
-    
-    // Debug test removed for cleanup
-  }, 100);
-});
-
-// Also initialize when Webflow's page loads
-if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    console.log('Webflow.push - Initializing flip card links');
-    initializeFlipCardLinks();
-    initializeCardsScrollAnimation();
-    
-    // Debug test removed for cleanup
-  });
-}
+/* === FLIP CARD FUNCTIONALITY MOVED TO PRODUCT-CARDS.JS === */
+/* All flip card functionality has been moved to the separate product-cards.js file */
 
 // Debug function removed for cleanup
 
@@ -4074,8 +3815,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeRelatedItemsSingleClick() {
   console.log('🖱️ Initializing related items single-click fix...');
   
-  // ONLY target related items, not flip cards or other sections
-  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item:not(.flip-card-wrapper):not([class*="flip"])');
+  // Target related items
+  const relatedItems = document.querySelectorAll('.collection-list-6 .w-dyn-item');
   
   console.log(`Found ${relatedItems.length} related items to process`);
   
@@ -4085,12 +3826,7 @@ function initializeRelatedItemsSingleClick() {
   });
   
   relatedItems.forEach((item, index) => {
-    // Double-check this is not a flip card
-    const isFlipCard = item.closest('.flip-card-wrapper') || item.querySelector('.flip-card') || item.classList.contains('flip-card-wrapper');
-    if (isFlipCard) {
-      console.log(`Related item ${index + 1} is actually a flip card, skipping`);
-      return;
-    }
+
     
     // Check if this item already has a link
     const existingLink = item.querySelector('a');
@@ -4122,27 +3858,14 @@ function initializeRelatedItemsSingleClick() {
       }
     });
     
-    // Add hover effect for better UX - ONLY for related items, not flip cards
+    // Add hover effect for better UX
     item.addEventListener('mouseenter', function() {
-      // Check if this is a flip card to avoid conflicts
-      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
-      if (isFlipCard) {
-        console.log('Skipping hover effect for flip card');
-        return;
-      }
-      
       this.style.cursor = 'pointer';
       this.style.transform = 'translateY(-2px)';
       this.style.transition = 'transform 0.2s ease';
     });
     
     item.addEventListener('mouseleave', function() {
-      // Check if this is a flip card to avoid conflicts
-      const isFlipCard = this.closest('.flip-card-wrapper') || this.querySelector('.flip-card');
-      if (isFlipCard) {
-        return;
-      }
-      
       this.style.transform = 'translateY(0)';
     });
   });
@@ -4875,7 +4598,7 @@ function initializeCategoriesParallax() {
 
 /* === Product Cards Parallax Effects === */
 function initializeProductCardsParallax() {
-  const productCards = document.querySelectorAll('.collection-item, .product-card, .related-card, .flip-card-wrapper');
+  const productCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
 
   if (productCards.length === 0) {
     console.log('⚠️ No product cards found');
