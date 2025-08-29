@@ -6592,6 +6592,16 @@ if (typeof Webflow !== 'undefined') {
     'warranty-m': 'warranty',
     'terms-m': 'terms'
   };
+
+  // Map header button classes to section IDs
+  const HEADER_NAVIGATION = {
+    'products-h': 'products',
+    'new-products-h': 'new-items',
+    'gallery-h': 'gallery',
+    'news-h': 'news-journal',
+    'contact-us-h': 'contact',
+    'download-h': 'download'
+  };
   
   // Use the same smooth scroll function as header navigation
   const SCROLL_OFFSET = 80; // px
@@ -6624,6 +6634,8 @@ if (typeof Webflow !== 'undefined') {
     initializeFooterNavigation();
     // Initialize menu panel navigation
     initializeMenuPanelNavigation();
+    // Initialize header navigation
+    initializeHeaderNavigation();
   }
 
   function initializeFooterNavigation() {
@@ -6739,6 +6751,64 @@ if (typeof Webflow !== 'undefined') {
       });
       
       console.log('🔗 Menu panel link initialized:', navigationClass, '→', targetId);
+    });
+  }
+
+  function initializeHeaderNavigation() {
+    // Target header button elements with menu-tab-btn class
+    const headerButtons = document.querySelectorAll('.menu-tab-btn');
+    
+    if (headerButtons.length === 0) {
+      console.log('⚠️ No header button elements found');
+      return;
+    }
+    
+    console.log('🔗 Found', headerButtons.length, 'header button elements');
+    
+    headerButtons.forEach((button) => {
+      // Get the specific class that indicates the target
+      const buttonClasses = Array.from(button.classList);
+      const navigationClass = buttonClasses.find(cls => HEADER_NAVIGATION[cls]);
+      
+      if (!navigationClass) {
+        console.log('⚠️ No navigation target for header button classes:', buttonClasses);
+        return;
+      }
+      
+      const targetId = HEADER_NAVIGATION[navigationClass];
+      
+      // Override the default anchor behavior
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('🖱️ Header button clicked:', navigationClass, '→', targetId);
+        
+        // Check if we're on the right page
+        const currentPath = window.location.pathname;
+        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+        const isOnPrivacyPage = currentPath.includes('/privacy') || currentPath.includes('/legal');
+        
+        if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'insight', 'update'].includes(targetId)) {
+          // Same page navigation - use same approach as header
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
+            history.replaceState(null, "", `#${targetId}`);
+            console.log('✅ Header navigation completed to:', targetId);
+          }
+        } else if (isOnPrivacyPage && ['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
+          // Same page navigation for privacy page - use same approach as header
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
+            history.replaceState(null, "", `#${targetId}`);
+            console.log('✅ Header navigation completed to:', targetId);
+          }
+        } else {
+          // Cross-page navigation - use the href attribute
+          console.log('🌐 Header cross-page navigation to:', button.href);
+          window.location.href = button.href;
+        }
+      });
+      
+      console.log('🔗 Header button initialized:', navigationClass, '→', targetId);
     });
   }
   
