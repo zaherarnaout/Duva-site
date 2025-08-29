@@ -4052,36 +4052,7 @@ a .flip-card-wrapper {
   left: 100%;
 }
 
-/* 4. Enhanced Filter Buttons */
-.filter-apply-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
 
-.filter-apply-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-
-.filter-apply-button:hover::before {
-  left: 100%;
-}
-
-.filter-apply-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
-}
 
 /* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
 .filter-reset-button {
@@ -4826,7 +4797,6 @@ a .flip-card-wrapper {
 
 /* 10. Filter Section Focus States */
 /* Filter checkmark focus styles moved to duva-Fliter-style.css */
-.filter-apply-button:focus,
 .filter-reset-button:focus {
   outline: 2px solid var(--duva-red, #C0392B);
   outline-offset: 2px;
@@ -6076,6 +6046,31 @@ a .flip-card-wrapper {
 }
 
 /* === Footer Wrapper Text Elements - Menu Panel Style === */
+/* Footer Link Base Styles - Unified Animation */
+.footer-link {
+  color: var(--duva-light-grey, #F4F5F6);
+  font-family: Gotham, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  padding: 8px 0;
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Footer Link Hover Effects - Unified Animation */
+.footer-link:hover {
+  color: var(--duva-red, #C0392B);
+  transform: translateX(8px) scale(1.05);
+  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+}
+
 /* Right Footer Wrapper Text Elements (excluding Text Block 69) */
 .right-footer-wrapper a:not(.text-block-69),
 .right-footer-wrapper .text-block:not(.text-block-69),
@@ -6097,8 +6092,6 @@ a .flip-card-wrapper {
   box-shadow: none;
 }
 
-
-
 .right-footer-wrapper a:not(.text-block-69):hover,
 .right-footer-wrapper .text-block:not(.text-block-69):hover,
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
@@ -6118,7 +6111,7 @@ a .flip-card-wrapper {
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -6129,15 +6122,13 @@ a .flip-card-wrapper {
   box-shadow: none;
 }
 
-
-
 .left-footer-wrapper a:not(.text-block-68):hover,
 .left-footer-wrapper .text-block:not(.text-block-68):hover,
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
 .left-footer-wrapper div:not(.text-block-68):hover {
   color: var(--duva-red, #C0392B);
-  transform: translateX(3px) scale(1.02);
-  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
+  transform: translateX(8px) scale(1.05);
+  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
 
 /* Footer Text Active States */
@@ -6168,6 +6159,7 @@ a .flip-card-wrapper {
 
 /* Responsive adjustments for footer text elements */
 @media screen and (max-width: 767px) {
+  .footer-link,
   .right-footer-wrapper a:not(.text-block-69),
   .right-footer-wrapper .text-block:not(.text-block-69),
   .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
@@ -6180,18 +6172,16 @@ a .flip-card-wrapper {
     padding: 6px 0;
   }
   
+  .footer-link:hover,
   .right-footer-wrapper a:not(.text-block-69):hover,
   .right-footer-wrapper .text-block:not(.text-block-69):hover,
   .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
-  .right-footer-wrapper div:not(.text-block-69):hover {
-    transform: translateX(4px) scale(1.03);
-  }
-  
+  .right-footer-wrapper div:not(.text-block-69):hover,
   .left-footer-wrapper a:not(.text-block-68):hover,
   .left-footer-wrapper .text-block:not(.text-block-68):hover,
   .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
   .left-footer-wrapper div:not(.text-block-68):hover {
-    transform: translateX(2px) scale(1.01);
+    transform: translateX(6px) scale(1.04);
   }
 }
 
