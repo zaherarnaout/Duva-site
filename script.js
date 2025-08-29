@@ -4269,7 +4269,7 @@ if (typeof Webflow !== 'undefined') {
     console.log('✅ Categories parallax effects initialized');
 
     // Initialize product cards parallax effects
-    initializeProductCardsParallax();
+    // Product cards parallax moved to product-cards.js
     console.log('✅ Product cards parallax effects initialized');
 
     // Wait for Webflow lightbox to be ready and add navigation
@@ -4596,93 +4596,8 @@ function initializeCategoriesParallax() {
   console.log('🎯 Categories parallax system active');
 }
 
-/* === Product Cards Parallax Effects === */
-function initializeProductCardsParallax() {
-  const productCards = document.querySelectorAll('.collection-item, .product-card, .related-card');
-
-  if (productCards.length === 0) {
-    console.log('⚠️ No product cards found');
-    return;
-  }
-
-  // Set card indices and random delays for staggered animations
-  productCards.forEach((card, index) => {
-    card.style.setProperty('--card-index', index);
-    // Generate random delay between 0 and 3 seconds for product cards
-    const randomDelay = Math.random() * 3;
-    card.style.setProperty('--random-delay', randomDelay);
-    console.log(`🎲 Product card ${index + 1} random delay: ${randomDelay.toFixed(2)}s`);
-  });
-
-  let ticking = false;
-  let scrollY = 0;
-  let hasScrolled = false;
-
-  function updateProductCardsParallax() {
-    // Only activate parallax after user has started scrolling
-    if (hasScrolled) {
-      // Update individual card parallax based on position with random delays
-      productCards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const cardCenter = rect.top + rect.height / 2;
-        const viewportCenter = window.innerHeight / 2;
-        const distance = cardCenter - viewportCenter;
-        
-        // Get the random delay for this card
-        const randomDelay = parseFloat(card.style.getPropertyValue('--random-delay') || '0');
-        
-        // Apply subtle parallax based on card position with random delay
-        const parallaxOffset = distance * 0.015;
-        const delayedOffset = parallaxOffset * (1 + Math.sin(scrollY * 0.008 + randomDelay) * 0.15);
-        
-        // Add parallax-active class and apply transform
-        card.classList.add('parallax-active');
-        card.style.transform = `translateY(${delayedOffset}px)`;
-      });
-    }
-
-    ticking = false;
-  }
-
-  function onProductCardsScroll() {
-    scrollY = window.pageYOffset;
-    
-    // Mark that user has started scrolling
-    if (!hasScrolled && scrollY > 15) {
-      hasScrolled = true;
-      console.log('🎯 Product cards parallax activated on scroll');
-    }
-    
-    if (!ticking) {
-      requestAnimationFrame(updateProductCardsParallax);
-      ticking = true;
-    }
-  }
-
-  // Add scroll listener
-  window.addEventListener('scroll', onProductCardsScroll, { passive: true });
-
-  // Initial call
-  updateProductCardsParallax();
-
-  // Add intersection observer for entrance animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-
-  productCards.forEach(card => {
-    observer.observe(card);
-  });
-
-  console.log('🎯 Product cards parallax system active');
-}
+/* === PRODUCT CARDS PARALLAX MOVED TO PRODUCT-CARDS.JS === */
+/* All product cards parallax functionality has been moved to the separate product-cards.js file */
 
 // === Vase Section Animations ===
 function initializeVaseSectionAnimations() {
@@ -5669,7 +5584,7 @@ function initializeViewportFadeEffects() {
     '.main-page-hero-section-wrapper',
     '.main-page-categories-wrapper',
     '.main-filter-wrapper',
-    '.cards-Container',
+  
     '.privacy-policy',
     '.accessories-section',
     '.related-section',
