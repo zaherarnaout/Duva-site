@@ -3419,53 +3419,49 @@ footer, .footer {
 }
 
 /* Enhanced hover effects for product images and thumbnails */
-/* Only apply to non-flip card images */
-.flip-card-wrapper .product-image:hover,
-.flip-card-wrapper .thumbnail-image:hover,
-.flip-card-wrapper .image-3:hover {
-  /* No hover effects for flip card images */
-  transform: none;
-  box-shadow: none;
-  border-color: transparent !important;
+/* Use CSS custom properties for cleaner, more maintainable code */
+.product-image,
+.thumbnail-image,
+.image-3 {
+  --hover-transform: translateY(-4px);
+  --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --hover-border-color: var(--duva-red, #c0392b);
+  --hover-image-scale: scale(1.1);
+  --hover-shimmer-position: 100%;
 }
 
-/* Apply hover effects only to non-flip card images */
+/* Disable hover effects for flip card images */
+.flip-card-wrapper .product-image,
+.flip-card-wrapper .thumbnail-image,
+.flip-card-wrapper .image-3 {
+  --hover-transform: none;
+  --hover-box-shadow: none;
+  --hover-border-color: transparent;
+  --hover-image-scale: none;
+  --hover-shimmer-position: -100%;
+}
+
+/* Apply hover effects using custom properties */
 .product-image:hover,
 .thumbnail-image:hover,
 .image-3:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: var(--duva-red, #c0392b) !important;
+  transform: var(--hover-transform);
+  box-shadow: var(--hover-box-shadow);
+  border-color: var(--hover-border-color) !important;
 }
 
 /* Shimmer animation on hover */
-/* No shimmer for flip card images */
-.flip-card-wrapper .product-image:hover::before,
-.flip-card-wrapper .thumbnail-image:hover::before,
-.flip-card-wrapper .image-3:hover::before {
-  left: -100%;
-}
-
-/* Shimmer for non-flip card images */
 .product-image:hover::before,
 .thumbnail-image:hover::before,
 .image-3:hover::before {
-  left: 100%;
+  left: var(--hover-shimmer-position);
 }
 
 /* Product image scaling on hover */
-/* No scaling for flip card images */
-.flip-card-wrapper .product-image:hover img,
-.flip-card-wrapper .thumbnail-image:hover img,
-.flip-card-wrapper .image-3:hover img {
-  transform: none;
-}
-
-/* Scaling for non-flip card images */
 .product-image:hover img,
 .thumbnail-image:hover img,
 .image-3:hover img {
-  transform: scale(1.1);
+  transform: var(--hover-image-scale);
   transition: transform 0.3s ease;
 }
 
