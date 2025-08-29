@@ -6556,11 +6556,11 @@ if (typeof Webflow !== 'undefined') {
 
 // === END DUVA DEEP-LINK ROUTER ===
 
-// === UPDATED FOOTER NAVIGATION SYSTEM ===
-/* Updated footer navigation system for anchor tag structure */
+// === UPDATED FOOTER & MENU PANEL NAVIGATION SYSTEM ===
+/* Updated navigation system for footer and menu panel anchor tag structure */
 
 (function () {
-  console.log('🔗 Initializing updated footer navigation system...');
+  console.log('🔗 Initializing updated footer and menu panel navigation system...');
   
   // Map footer link classes to section IDs
   const FOOTER_NAVIGATION = {
@@ -6576,6 +6576,21 @@ if (typeof Webflow !== 'undefined') {
     'cookies-f': 'cookies',
     'warranty-f': 'warranty',
     'design-services-f': 'design-and-services'
+  };
+
+  // Map menu panel link classes to section IDs
+  const MENU_PANEL_NAVIGATION = {
+    'products-m': 'new-items',
+    'new-products-m': 'new-items',
+    'news-m': 'news-journal',
+    'update-m': 'update',
+    'insight-m': 'insight',
+    'download-m': 'download',
+    'about-us-m': 'about',
+    'gallery-m': 'gallery',
+    'design-services-m': 'design-and-services',
+    'warranty-m': 'warranty',
+    'terms-m': 'terms'
   };
   
   // Use the same smooth scroll function as header navigation
@@ -6604,6 +6619,13 @@ if (typeof Webflow !== 'undefined') {
     return true;
   }
   
+  function initializeNavigation() {
+    // Initialize footer navigation
+    initializeFooterNavigation();
+    // Initialize menu panel navigation
+    initializeMenuPanelNavigation();
+  }
+
   function initializeFooterNavigation() {
     // Target footer anchor elements with footer-link class
     const footerLinks = document.querySelectorAll('.footer-link');
@@ -6621,7 +6643,7 @@ if (typeof Webflow !== 'undefined') {
       const navigationClass = linkClasses.find(cls => FOOTER_NAVIGATION[cls]);
       
       if (!navigationClass) {
-        console.log('⚠️ No navigation target for link classes:', linkClasses);
+        console.log('⚠️ No navigation target for footer link classes:', linkClasses);
         return;
       }
       
@@ -6661,15 +6683,73 @@ if (typeof Webflow !== 'undefined') {
       console.log('🔗 Footer link initialized:', navigationClass, '→', targetId);
     });
   }
+
+  function initializeMenuPanelNavigation() {
+    // Target menu panel anchor elements with menu-panel-link class
+    const menuPanelLinks = document.querySelectorAll('.menu-panel-link');
+    
+    if (menuPanelLinks.length === 0) {
+      console.log('⚠️ No menu panel link elements found');
+      return;
+    }
+    
+    console.log('🔗 Found', menuPanelLinks.length, 'menu panel link elements');
+    
+    menuPanelLinks.forEach((link) => {
+      // Get the specific class that indicates the target
+      const linkClasses = Array.from(link.classList);
+      const navigationClass = linkClasses.find(cls => MENU_PANEL_NAVIGATION[cls]);
+      
+      if (!navigationClass) {
+        console.log('⚠️ No navigation target for menu panel link classes:', linkClasses);
+        return;
+      }
+      
+      const targetId = MENU_PANEL_NAVIGATION[navigationClass];
+      
+      // Override the default anchor behavior
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('🖱️ Menu panel link clicked:', navigationClass, '→', targetId);
+        
+        // Check if we're on the right page
+        const currentPath = window.location.pathname;
+        const isOnGalleryPage = currentPath.includes('/gallery') || currentPath === '/';
+        const isOnPrivacyPage = currentPath.includes('/privacy') || currentPath.includes('/legal');
+        
+        if (isOnGalleryPage && ['about', 'new-items', 'gallery', 'news-journal', 'insight', 'update'].includes(targetId)) {
+          // Same page navigation - use same approach as header
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
+            history.replaceState(null, "", `#${targetId}`);
+            console.log('✅ Menu panel navigation completed to:', targetId);
+          }
+        } else if (isOnPrivacyPage && ['privacy', 'terms', 'cookies', 'warranty', 'design-and-services'].includes(targetId)) {
+          // Same page navigation for privacy page - use same approach as header
+          const scrolled = smoothScrollToId(targetId);
+          if (scrolled) {
+            history.replaceState(null, "", `#${targetId}`);
+            console.log('✅ Menu panel navigation completed to:', targetId);
+          }
+        } else {
+          // Cross-page navigation - use the href attribute
+          console.log('🌐 Menu panel cross-page navigation to:', link.href);
+          window.location.href = link.href;
+        }
+      });
+      
+      console.log('🔗 Menu panel link initialized:', navigationClass, '→', targetId);
+    });
+  }
   
   // Initialize immediately
-  initializeFooterNavigation();
+  initializeNavigation();
   
   // Re-initialize for any late elements
-  setTimeout(initializeFooterNavigation, 100);
-  setTimeout(initializeFooterNavigation, 500);
+  setTimeout(initializeNavigation, 100);
+  setTimeout(initializeNavigation, 500);
   
-  console.log('✅ Updated footer navigation system initialized');
+  console.log('✅ Updated footer and menu panel navigation system initialized');
 })();
 
 
