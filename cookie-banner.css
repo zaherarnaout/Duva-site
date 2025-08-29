@@ -1,0 +1,295 @@
+/* === COOKIE CONSENT BANNER STYLES === */
+/* Modern cookie consent banner with smooth animations */
+
+/* Cookie Banner Container */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--duva-light-grey, #F4F5F6);
+  border-top: 2px solid var(--duva-red, #C0392B);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: Gotham, Arial, sans-serif;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .cookie-banner {
+  background: var(--duva-background, #212121);
+  border-top-color: var(--duva-red, #C0392B);
+  color: var(--duva-light-grey, #F4F5F6);
+}
+
+/* Banner visible state */
+.cookie-banner.cookie-banner-visible {
+  transform: translateY(0);
+}
+
+/* Banner content wrapper */
+.cookie-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Banner text section */
+.cookie-banner-text {
+  flex: 1;
+  max-width: 600px;
+}
+
+/* Banner title */
+.cookie-banner-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--duva-background, #212121);
+}
+
+[data-theme="dark"] .cookie-banner-title {
+  color: var(--duva-light-grey, #F4F5F6);
+}
+
+/* Banner description */
+.cookie-banner-description {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--duva-background, #212121);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .cookie-banner-description {
+  color: var(--duva-light-grey, #F4F5F6);
+  opacity: 0.8;
+}
+
+/* Cookie policy link */
+.cookie-policy-link {
+  color: var(--duva-red, #C0392B);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cookie-policy-link:hover {
+  color: var(--duva-red, #C0392B);
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/* Banner actions */
+.cookie-banner-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Cookie buttons */
+.cookie-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Gotham, Arial, sans-serif;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decline button */
+.cookie-btn-decline {
+  background: transparent;
+  color: var(--duva-background, #212121);
+  border: 2px solid var(--duva-background, #212121);
+}
+
+[data-theme="dark"] .cookie-btn-decline {
+  color: var(--duva-light-grey, #F4F5F6);
+  border-color: var(--duva-light-grey, #F4F5F6);
+}
+
+.cookie-btn-decline:hover {
+  background: var(--duva-background, #212121);
+  color: var(--duva-light-grey, #F4F5F6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .cookie-btn-decline:hover {
+  background: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-background, #212121);
+}
+
+/* Accept button */
+.cookie-btn-accept {
+  background: var(--duva-red, #C0392B);
+  color: var(--duva-light-grey, #F4F5F6);
+  border: 2px solid var(--duva-red, #C0392B);
+}
+
+.cookie-btn-accept:hover {
+  background: var(--duva-red, #C0392B);
+  color: var(--duva-light-grey, #F4F5F6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3);
+  opacity: 0.9;
+}
+
+/* Button active states */
+.cookie-btn:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+/* Cookie message notifications */
+.cookie-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Gotham, Arial, sans-serif;
+  z-index: 10000;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 300px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cookie-message-visible {
+  transform: translateX(0);
+}
+
+/* Message types */
+.cookie-message-success {
+  background: #10B981;
+  color: white;
+  border-left: 4px solid #059669;
+}
+
+.cookie-message-info {
+  background: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-background, #212121);
+  border-left: 4px solid var(--duva-red, #C0392B);
+}
+
+[data-theme="dark"] .cookie-message-info {
+  background: var(--duva-background, #212121);
+  color: var(--duva-light-grey, #F4F5F6);
+  border-left-color: var(--duva-red, #C0392B);
+}
+
+.cookie-message-error {
+  background: #EF4444;
+  color: white;
+  border-left: 4px solid #DC2626;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+  .cookie-banner-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .cookie-banner-text {
+    max-width: none;
+  }
+  
+  .cookie-banner-title {
+    font-size: 16px;
+  }
+  
+  .cookie-banner-description {
+    font-size: 13px;
+  }
+  
+  .cookie-banner-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .cookie-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    flex: 1;
+    max-width: 120px;
+  }
+  
+  .cookie-message {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    transform: translateY(-100%);
+  }
+  
+  .cookie-message-visible {
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cookie-banner-content {
+    padding: 12px;
+  }
+  
+  .cookie-banner-title {
+    font-size: 15px;
+  }
+  
+  .cookie-banner-description {
+    font-size: 12px;
+  }
+  
+  .cookie-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+/* Accessibility improvements */
+.cookie-btn:focus {
+  outline: 2px solid var(--duva-red, #C0392B);
+  outline-offset: 2px;
+}
+
+.cookie-policy-link:focus {
+  outline: 2px solid var(--duva-red, #C0392B);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cookie-banner,
+  .cookie-btn,
+  .cookie-message {
+    transition: none;
+  }
+  
+  .cookie-btn:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .cookie-banner,
+  .cookie-message {
+    display: none !important;
+  }
+}
