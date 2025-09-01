@@ -216,16 +216,11 @@
   
   // Handle card clicks and navigation
   function initializeCardClicks() {
-    const cards = document.querySelectorAll('.collection-item, .product-card, .related-card, .flip-card-wrapper');
+    // Only handle clicks for non-flip cards
+    const cards = document.querySelectorAll('.collection-item, .product-card, .related-card');
     
     cards.forEach(card => {
       card.addEventListener('click', function(e) {
-        // Prevent click if clicking on flip card back
-        if (e.target.closest('.flip-card-back')) {
-          e.preventDefault();
-          return;
-        }
-        
         // Add click feedback
         card.classList.add('card-clicked');
         setTimeout(() => {
@@ -233,10 +228,12 @@
         }, 200);
         
         // Let Webflow handle the navigation - don't prevent default
-        // The flip-card-wrapper already has the proper link set up in Webflow
         console.log('🎴 Card clicked, letting Webflow handle navigation');
       });
     });
+    
+    // For flip cards, let Webflow handle everything - no JavaScript interference
+    console.log('🎴 Flip cards: Letting Webflow handle all navigation');
   }
   
   // Helper function to extract product code from card
