@@ -6701,6 +6701,37 @@ ARROWS:
   opacity: 1 !important;
 }
 
+/* Dark theme for filter-arrow replacement with Image 60 */
+[data-theme="dark"] .filter-arrow {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+[data-theme="dark"] .image-60 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Sub-filter-wattage turns red when checkbox is marked */
+.sub-filter-wattage input[type="checkbox"]:checked + .sub-filter-wattage,
+.sub-filter-wattage input[type="checkbox"]:checked ~ .sub-filter-wattage,
+.sub-filter-wattage.active,
+.sub-filter-wattage.checked {
+  color: var(--duva-red, #C0392B) !important;
+  font-weight: 600 !important;
+}
+
+/* Dark theme for sub-filter-wattage when checked */
+[data-theme="dark"] .sub-filter-wattage input[type="checkbox"]:checked + .sub-filter-wattage,
+[data-theme="dark"] .sub-filter-wattage input[type="checkbox"]:checked ~ .sub-filter-wattage,
+[data-theme="dark"] .sub-filter-wattage.active,
+[data-theme="dark"] .sub-filter-wattage.checked {
+  color: var(--duva-red, #C0392B) !important;
+  font-weight: 600 !important;
+}
+
 /* Dark theme for placeholder text */
 [data-theme="dark"] input::placeholder,
 [data-theme="dark"] textarea::placeholder,
