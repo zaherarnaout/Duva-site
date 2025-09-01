@@ -176,6 +176,28 @@
   border-color: var(--duva-red, #C0392B) !important;
 }
 
+/* === DARK THEME SUPPORT FOR PRODUCT CARDS === */
+[data-theme="dark"] .collection-item,
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .related-card {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
+[data-theme="dark"] .collection-item:hover,
+[data-theme="dark"] .product-card:hover,
+[data-theme="dark"] .related-card:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
+  background-color: var(--duva-bg-tertiary, #333333) !important;
+}
+
+[data-theme="dark"] .collection-item::before,
+[data-theme="dark"] .product-card::before,
+[data-theme="dark"] .related-card::before {
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.15), transparent) !important;
+}
+
 /* === FLOATING ANIMATION FOR PRODUCT CARDS === */
 @keyframes productCardFloat {
   0%, 100% {
@@ -285,6 +307,18 @@
   justify-content: center !important;
   align-items: center !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* === DARK THEME SUPPORT FOR FLIP CARDS === */
+[data-theme="dark"] .flip-card-back {
+  background-color: rgba(33, 33, 33, 0.95) !important; /* Dark background */
+  border-color: var(--duva-red, #C0392B) !important;
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
+}
+
+[data-theme="dark"] .flip-card-wrapper:hover .flip-card-back {
+  background-color: rgba(42, 42, 42, 0.98) !important; /* Slightly lighter on hover */
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
 }
 
 /* === FRONT CARD FADE OUT ON HOVER === */
