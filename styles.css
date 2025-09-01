@@ -6591,13 +6591,26 @@ ARROWS:
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
+/* Dark theme for search input style */
+[data-theme="dark"] .search-input-style {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
+[data-theme="dark"] .search-input-style input {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
 /* Dark theme for menu tab button */
 [data-theme="dark"] .menu-tab-btn {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
 [data-theme="dark"] .menu-tab-btn:hover {
-  color: var(--duva-red, #C0392B) !important;
+  background-color: var(--duva-red, #C0392B) !important;
+  color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
 /* === NEW ITEMS READ MORE TOGGLE === */
@@ -7871,7 +7884,7 @@ ARROWS:
 }
 
 [data-theme="dark"] .search-input {
-  background: var(--duva-bg-secondary);
+  background: var(--duva-bg-secondary, #2a2a2a);
   border-color: var(--duva-border-primary);
   color: var(--duva-text-primary);
 }
