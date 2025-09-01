@@ -6570,6 +6570,76 @@ ARROWS:
   background-color: var(--duva-bg-secondary) !important;
 }
 
+/* Dark theme for main filter wrapper and filter sections */
+[data-theme="dark"] .main-filter-wrapper {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
+[data-theme="dark"] .filter-sections-wrapper {
+  background: linear-gradient(135deg, rgba(42, 42, 42, 0.1), rgba(42, 42, 42, 0.05)) !important;
+  border-color: rgba(51, 51, 51, 0.2) !important;
+}
+
+[data-theme="dark"] .filter-header-wrapper,
+[data-theme="dark"] .filter-header-wrapper-main,
+[data-theme="dark"] .filter-right-wrapper,
+[data-theme="dark"] .fliter-right-wrapper {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
+/* Dark theme for filter text elements - keep dark color for important text, light grey for secondary */
+[data-theme="dark"] .main-filter-wrapper .text-block,
+[data-theme="dark"] .main-filter-wrapper .text-block-2,
+[data-theme="dark"] .main-filter-wrapper .text-block-3,
+[data-theme="dark"] .main-filter-wrapper .text-block-4,
+[data-theme="dark"] .main-filter-wrapper .text-block-5,
+[data-theme="dark"] .main-filter-wrapper .text-block-6,
+[data-theme="dark"] .main-filter-wrapper .text-block-7,
+[data-theme="dark"] .main-filter-wrapper .text-block-8,
+[data-theme="dark"] .main-filter-wrapper .text-block-9,
+[data-theme="dark"] .main-filter-wrapper .text-block-10,
+[data-theme="dark"] .main-filter-wrapper .text-block-11,
+[data-theme="dark"] .main-filter-wrapper .text-block-12,
+[data-theme="dark"] .main-filter-wrapper .text-block-13,
+[data-theme="dark"] .main-filter-wrapper .text-block-14,
+[data-theme="dark"] .main-filter-wrapper .text-block-15,
+[data-theme="dark"] .main-filter-wrapper .text-block-16,
+[data-theme="dark"] .main-filter-wrapper .text-block-17,
+[data-theme="dark"] .main-filter-wrapper .text-block-18,
+[data-theme="dark"] .main-filter-wrapper .text-block-19,
+[data-theme="dark"] .main-filter-wrapper .text-block-20 {
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for filter buttons */
+[data-theme="dark"] .filter-apply-button,
+[data-theme="dark"] .filter-reset-button,
+[data-theme="dark"] .button-2 {
+  background-color: var(--duva-bg-tertiary, #333333) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+[data-theme="dark"] .filter-apply-button:hover,
+[data-theme="dark"] .filter-reset-button:hover,
+[data-theme="dark"] .button-2:hover {
+  background-color: var(--duva-red, #C0392B) !important;
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for filter shimmer effects */
+[data-theme="dark"] .filter-header-wrapper-main::before,
+[data-theme="dark"] .filter-right-wrapper::before,
+[data-theme="dark"] .fliter-right-wrapper::before {
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.2), transparent) !important;
+}
+
+[data-theme="dark"] .button-2::before {
+  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.2), transparent) !important;
+}
+
 /* Dark theme for language toggle text */
 [data-theme="dark"] .lang-toggle-switch .lang-en,
 [data-theme="dark"] .lang-toggle-switch .lang-ar,
