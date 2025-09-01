@@ -5825,6 +5825,7 @@ ARROWS:
 /* Menu Panel Link Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-panel-link {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--duva-text-secondary, #D1D1D1);
 }
 
 .menu-panel-link:hover {
@@ -5836,12 +5837,13 @@ ARROWS:
 /* Header Button Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-tab-btn {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--duva-text-primary, #212121);
 }
 
 .menu-tab-btn:hover {
-  color: var(--btn-light-text, #F4F5F6);
+  color: var(--duva-red, #C0392B);
   transform: translateX(8px) scale(1.05);
-  text-shadow: 0 2px 4px rgba(244, 245, 246, 0.3);
+  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
 
 /* Right Footer Wrapper Text Elements (excluding Text Block 69) */
@@ -6566,6 +6568,36 @@ ARROWS:
 [data-theme="dark"] .header-section,
 [data-theme="dark"] .sidebar {
   background-color: var(--duva-bg-secondary) !important;
+}
+
+/* Dark theme for language toggle text */
+[data-theme="dark"] .lang-toggle-switch .lang-en,
+[data-theme="dark"] .lang-toggle-switch .lang-ar,
+[data-theme="dark"] .lang-toggle-switch span {
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for magnifier icon */
+[data-theme="dark"] .magnifier-grey.svg,
+[data-theme="dark"] .search-icon,
+[data-theme="dark"] .magnifier-icon {
+  filter: brightness(0) saturate(100%) invert(85%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%) !important;
+}
+
+/* Dark theme for placeholder text */
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] .placeholder-text {
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for menu tab button */
+[data-theme="dark"] .menu-tab-btn {
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+[data-theme="dark"] .menu-tab-btn:hover {
+  color: var(--duva-red, #C0392B) !important;
 }
 
 /* === NEW ITEMS READ MORE TOGGLE === */
@@ -7842,6 +7874,10 @@ ARROWS:
   background: var(--duva-bg-secondary);
   border-color: var(--duva-border-primary);
   color: var(--duva-text-primary);
+}
+
+[data-theme="dark"] .search-input::placeholder {
+  color: var(--duva-text-secondary, #D1D1D1);
 }
 
 [data-theme="dark"] .control-btn,
