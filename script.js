@@ -201,117 +201,6 @@ setTimeout(() => {
   });
 }, 1000);
 
-/* === RESTORE ORIGINAL FLIP CARD NAVIGATION === */
-// Restore the original flip card navigation system that was working before
-
-// Helper function to extract product code from card (same as original)
-function extractProductCode(element) {
-  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
-  if (codeElement) {
-    const text = codeElement.textContent?.trim();
-    if (text) {
-      const codeMatch = text.match(/([A-Z]?\d+)/);
-      if (codeMatch) {
-        return codeMatch[1];
-      } else {
-        return text.split(' ')[0];
-      }
-    }
-  }
-  return null;
-}
-
-// Restore the original flip card links function
-function initializeFlipCardLinks() {
-  console.log('=== initializeFlipCardLinks function called ===');
-  
-  // ONLY target flip card wrappers - don't affect other sections
-  const flipCardWrappers = document.querySelectorAll('.flip-card-wrapper');
-  
-  console.log('Found flip card wrappers:', flipCardWrappers.length);
-  
-  if (flipCardWrappers.length === 0) {
-    console.log('No flip card wrappers found, skipping');
-    return;
-  }
-  
-  flipCardWrappers.forEach((element, index) => {
-    // Check if this element already has a link
-    const existingFlipLink = element.querySelector('.flip-card-link') || element.closest('.flip-card-link');
-    if (existingFlipLink) {
-      console.log(`Flip card ${index + 1} already has a link, updating URL...`);
-      // Update the existing link instead of skipping
-      const productCode = extractProductCode(element);
-      if (productCode) {
-        const newUrl = `/?search=${productCode.toLowerCase()}`;
-        existingFlipLink.href = newUrl;
-        console.log(`Flip card ${index + 1} - Updated URL to:`, newUrl);
-      }
-      return;
-    }
-    
-    // Create the link element
-    const link = document.createElement('a');
-    link.className = 'flip-card-link';
-    
-    // Try to get the product URL from various sources
-    let productUrl = element.getAttribute('data-product-url') || 
-                    element.querySelector('[data-product-url]')?.getAttribute('data-product-url') ||
-                    element.getAttribute('href') ||
-                    element.querySelector('a')?.getAttribute('href') ||
-                    '#';
-    
-    // Check if this is a flip card with an existing proper URL
-    const existingLink = element.querySelector('a');
-    if (existingLink && existingLink.href) {
-      // Use the existing URL (whether it's product or search)
-      productUrl = existingLink.href;
-      console.log(`Flip card ${index + 1} - using existing URL:`, productUrl);
-    } else if (productUrl === '#' || !productUrl) {
-      // Only construct search URL if no proper URL exists
-      const productCode = extractProductCode(element);
-      
-      if (productCode) {
-        // For flip cards, use search functionality instead of non-existent product pages
-        productUrl = `/?search=${productCode.toLowerCase()}`;
-        console.log(`Flip card ${index + 1} - constructed search URL for ${productCode}:`, productUrl);
-      } else {
-        console.log(`Flip card ${index + 1} - no product code found, keeping URL as #`);
-      }
-    }
-    
-    link.href = productUrl;
-    link.setAttribute('data-product-url', productUrl);
-    
-    console.log(`Flip card ${index + 1} - URL:`, productUrl);
-    
-    // Wrap the element in the link
-    element.parentNode.insertBefore(link, element);
-    link.appendChild(element);
-    
-    // Add click event listener
-    link.addEventListener('click', function(e) {
-      console.log('Flip card clicked! URL:', productUrl);
-    });
-  });
-  
-  console.log('✅ Flip card links initialized');
-}
-
-// Initialize flip card links when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 DOMContentLoaded - Initializing flip card links');
-  initializeFlipCardLinks();
-});
-
-// Also initialize when Webflow loads
-if (typeof Webflow !== 'undefined') {
-  Webflow.push(function() {
-    console.log('Webflow.push - Initializing flip card links');
-    initializeFlipCardLinks();
-  });
-}
-
 /* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
 document.querySelectorAll('.accessory-image').forEach(container => { 
@@ -1917,18 +1806,43 @@ let isExporting = false; // Guard to prevent double export
 function showPDFContainer() {
   const pdfContainer = document.querySelector('#pdf-container');
   if (pdfContainer) {
+    // Store current scroll position
+    const currentScrollY = window.pageYOffset;
+    
+    // Position the PDF container at the top of the viewport, regardless of scroll position
     pdfContainer.classList.remove('hidden');
     pdfContainer.style.display = 'block';
     pdfContainer.style.visibility = 'visible';
     pdfContainer.style.opacity = '1';
-    pdfContainer.style.position = 'relative';
+    pdfContainer.style.position = 'fixed';
+    pdfContainer.style.top = '0';
     pdfContainer.style.left = '0';
     pdfContainer.style.width = '100vw';
+    pdfContainer.style.height = '100vh';
+    pdfContainer.style.zIndex = '9999';
+    pdfContainer.style.background = 'white';
+    pdfContainer.style.overflow = 'hidden';
+    
+    // Temporarily scroll to top to ensure PDF starts from the very top
+    window.scrollTo(0, 0);
+    
+    // Store the scroll position to restore it later
+    pdfContainer.setAttribute('data-original-scroll', currentScrollY);
+    
+    console.log('📄 PDF container positioned at top of viewport');
   }
 }
 function hidePDFContainer() {
   const pdfContainer = document.querySelector('#pdf-container');
   if (pdfContainer) {
+    // Restore original scroll position
+    const originalScroll = pdfContainer.getAttribute('data-original-scroll');
+    if (originalScroll) {
+      window.scrollTo(0, parseInt(originalScroll));
+      pdfContainer.removeAttribute('data-original-scroll');
+    }
+    
+    // Reset all styles
     pdfContainer.classList.add('hidden');
     pdfContainer.style.display = 'none';
     pdfContainer.style.visibility = 'hidden';
@@ -1937,6 +1851,12 @@ function hidePDFContainer() {
     pdfContainer.style.top = '';
     pdfContainer.style.left = '';
     pdfContainer.style.width = '';
+    pdfContainer.style.height = '';
+    pdfContainer.style.zIndex = '';
+    pdfContainer.style.background = '';
+    pdfContainer.style.overflow = '';
+    
+    console.log('📄 PDF container hidden and scroll position restored');
   }
 }
 
@@ -2071,6 +1991,20 @@ function generatePDF() {
   if (isExporting) return; // Prevent double export
   isExporting = true;
   
+  // Show user feedback
+  console.log('📄 Starting PDF generation...');
+  
+  // Optional: Add a loading indicator to the download button
+  const downloadButton = document.querySelector('.download-arrow');
+  if (downloadButton) {
+    const originalContent = downloadButton.innerHTML;
+    downloadButton.innerHTML = '<span style="color: #C0392B;">Generating...</span>';
+    downloadButton.style.pointerEvents = 'none';
+    
+    // Store original content to restore later
+    downloadButton.setAttribute('data-original-content', originalContent);
+  }
+  
   // --- Accessories block temporarily removed for testing ---
   // const pdfAccessories = document.querySelector('.pdf-accessories');
   // if (pdfAccessories) {
@@ -2096,87 +2030,121 @@ function generatePDF() {
   // --- End accessories block ---
   // 3. Show the PDF container (off-screen but rendered)
   showPDFContainer();
-  // 4. Prepare PDF export
-  const element = document.querySelector('#pdf-container');
   
-  // Get the generated code for filename
-  const orderingCodeElement = document.querySelector('.ordering-code-value');
-  let code = 'file'; // default fallback
-  
-  if (orderingCodeElement) {
-    // Get the plain text content (without HTML styling)
-    const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
-    code = plainText.trim();
+  // Small delay to ensure positioning is applied
+  setTimeout(() => {
+    // 4. Prepare PDF export
+    const element = document.querySelector('#pdf-container');
     
-    // Sanitize filename for file system compatibility
-    code = code.replace(/[<>:"/\\|?*]/g, '_'); // Replace invalid characters
-    code = code.replace(/\s+/g, '_'); // Replace spaces with underscores
-    code = code.replace(/\.+/g, '.'); // Replace multiple dots with single dot
+    // Get the generated code for filename
+    const orderingCodeElement = document.querySelector('.ordering-code-value');
+    let code = 'file'; // default fallback
     
-    console.log('📄 PDF filename will be:', code);
-  } else {
-    console.log('⚠️ Ordering code element not found, using default filename');
-  }
-  
-  if (!element) {
-    hidePDFContainer();
-    alert('PDF container not found!');
-    isExporting = false;
-    return;
-  }
-  // === Inject Product Image Dynamically ===
-  const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
-  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
-  if (imageElement && pdfImageContainer) {
-    const imageUrl = imageElement.src;
-    pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
-  }
-  // === Inject Product, Dimension, and Photometric Images into PDF ===
-  injectPdfImages();
-  // === Inject Generated Ordering Code into PDF ===
-  injectPdfOrderingCode();
-  // === Inject Product Code into PDF ===
-  updateProductCodeInjection();
-  // === Inject Generated Code into PDF ===
-  updateGeneratedCodeInjection();
-  // === Update Specifications Table ===
-  updateSpecsTable();
-  // === Inject Family Name, Subtitle, Description, and Features into PDF ===
-  injectPdfContent();
-  // 5. Export PDF
-  waitForImagesToLoad(document.querySelector('#pdf-container .header-right-wrapper'), function() {
-    injectPdfIcons(); // Inject icons into PDF container
-    html2pdf()
-      .from(element)
-      .set({
-        margin: 0,
-        filename: `${code}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          width: 794,
-          height: 1123,
-          useCORS: true
-        },
-        jsPDF: { 
-          unit: 'px', 
-          format: [794, 1123], 
-          orientation: 'portrait' 
-        }
-      })
-      .save()
-      .then(() => {
-        // 6. Cleanup after export
-        // if (pdfAccessories) {
-        //   pdfAccessories.innerHTML = '';
-        // }
-        hidePDFContainer();
-        isExporting = false;
-      })
-      .catch(() => {
-        isExporting = false;
-      });
-  });
+    if (orderingCodeElement) {
+      // Get the plain text content (without HTML styling)
+      const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
+      code = plainText.trim();
+      
+      // Sanitize filename for file system compatibility
+      code = code.replace(/[<>:"/\\|?*]/g, '_'); // Replace invalid characters
+      code = code.replace(/\s+/g, '_'); // Replace spaces with underscores
+      code = code.replace(/\.+/g, '.'); // Replace multiple dots with single dot
+      
+      console.log('📄 PDF filename will be:', code);
+    } else {
+      console.log('⚠️ Ordering code element not found, using default filename');
+    }
+    
+    if (!element) {
+      hidePDFContainer();
+      alert('PDF container not found!');
+      isExporting = false;
+      return;
+    }
+    
+    // === Inject Product Image Dynamically ===
+    const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
+    const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+    if (imageElement && pdfImageContainer) {
+      const imageUrl = imageElement.src;
+      pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
+    }
+    
+    // === Inject Product, Dimension, and Photometric Images into PDF ===
+    injectPdfImages();
+    // === Inject Generated Ordering Code into PDF ===
+    injectPdfOrderingCode();
+    // === Inject Product Code into PDF ===
+    updateProductCodeInjection();
+    // === Inject Generated Code into PDF ===
+    updateGeneratedCodeInjection();
+    // === Update Specifications Table ===
+    updateSpecsTable();
+    // === Inject Family Name, Subtitle, Description, and Features into PDF ===
+    injectPdfContent();
+    
+    // 5. Export PDF
+    waitForImagesToLoad(document.querySelector('#pdf-container .header-right-wrapper'), function() {
+      injectPdfIcons(); // Inject icons into PDF container
+      html2pdf()
+        .from(element)
+        .set({
+          margin: 0,
+          filename: `${code}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { 
+            scale: 2,
+            width: 794,
+            height: 1123,
+            useCORS: true
+          },
+          jsPDF: { 
+            unit: 'px', 
+            format: [794, 1123], 
+            orientation: 'portrait' 
+          }
+        })
+        .save()
+        .then(() => {
+          // 6. Cleanup after export
+          // if (pdfAccessories) {
+          //   pdfAccessories.innerHTML = '';
+          // }
+          hidePDFContainer();
+          isExporting = false;
+          
+          // Restore download button
+          const downloadButton = document.querySelector('.download-arrow');
+          if (downloadButton) {
+            const originalContent = downloadButton.getAttribute('data-original-content');
+            if (originalContent) {
+              downloadButton.innerHTML = originalContent;
+              downloadButton.removeAttribute('data-original-content');
+            }
+            downloadButton.style.pointerEvents = '';
+          }
+          
+          console.log('✅ PDF generation completed successfully');
+        })
+        .catch((error) => {
+          console.error('❌ PDF generation failed:', error);
+          isExporting = false;
+          
+          // Restore download button on error
+          const downloadButton = document.querySelector('.download-arrow');
+          if (downloadButton) {
+            const originalContent = downloadButton.getAttribute('data-original-content');
+            if (originalContent) {
+              downloadButton.innerHTML = originalContent;
+              downloadButton.removeAttribute('data-original-content');
+            }
+            downloadButton.style.pointerEvents = '';
+          }
+          
+          hidePDFContainer();
+        });
+    });
+  }, 100); // 100ms delay to ensure positioning is applied
 }
 // === PDF Download Button Binding by Class ===
 // REMOVED: This was causing conflicts with the unified download handler above
