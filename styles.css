@@ -878,6 +878,41 @@ opacity: 1 !important;
   display: block;
 }
 
+/* === PDF Container Fixed Positioning for Generation === */
+#pdf-container[style*="position: fixed"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  z-index: 9999 !important;
+  background: white !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#pdf-container[style*="position: fixed"] .pdf-export-wrapper {
+  width: 794px !important;
+  max-width: 794px !important;
+  height: 1123px !important;
+  max-height: 1123px !important;
+  margin: 0 !important;
+  background: white !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+/* === Ensure PDF content is properly positioned === */
+#pdf-container[style*="position: fixed"] .pdf-export-wrapper > * {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
 /* === Override hidden class for PDF generation === */
 #pdf-container:not(.hidden) {
   display: block !important;
