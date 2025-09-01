@@ -1956,7 +1956,9 @@ function getCurrentProductFamily() {
   return familyElement ? familyElement.textContent.trim() : null;
 }
 
-// Original PDF generation function - now internal
+// Original PDF generation function - DEPRECATED (not used)
+// Use generatePDF() instead which uses the stable wrapper
+/*
 function generatePdfLegacy() {
   if (isExporting) return; // Prevent double export
   isExporting = true;
@@ -2068,6 +2070,7 @@ function generatePdfLegacy() {
       });
   });
 }
+*/
 // === PDF Download Button Binding by Class ===
 // REMOVED: This was causing conflicts with the unified download handler above
 // The first row (Data Sheet) now properly calls generatePDF() in the unified system
@@ -3098,6 +3101,43 @@ async function duvaInsertSmartBreaks({
   root.classList.remove('print-neutralize-transform');
 }
 
+/* === DUVA: pad last page so the footer sits on the bottom === */
+function duvaPadFooterToBottom({
+  rootSelector = '#pdf-container',
+  footerSelector = '.footer-wrapper',
+  topMarginMM = 10,     // match your html2pdf top margin
+  bottomMarginMM = 16   // match your html2pdf bottom margin
+} = {}) {
+  const root = document.querySelector(rootSelector);
+  const footer = root?.querySelector(footerSelector);
+  if (!root || !footer) return;
+
+  // remove an old spacer if present
+  root.querySelectorAll('.__footer-spacer').forEach(n => n.remove());
+
+  // usable content height per A4 page (exclude page margins)
+  const usablePx = mmToPx(297 - (topMarginMM + bottomMarginMM));
+
+  // where does the last page start? (after the last .page-break)
+  const breaks = [...root.querySelectorAll('.page-break')];
+  const lastStart = breaks.length ? breaks[breaks.length - 1].offsetTop : 0;
+
+  // how much space does the last-page content (up to and incl. footer) take?
+  const fromStartToFooterBottom = (footer.offsetTop + footer.offsetHeight) - lastStart;
+
+  // how much space is left on that last page?
+  const remaining = usablePx - fromStartToFooterBottom;
+
+  if (remaining > 0 && remaining < usablePx) {
+    const spacer = document.createElement('div');
+    spacer.className = '__footer-spacer';
+    spacer.style.cssText = `height:${remaining}px;width:100%;display:block;`;
+    footer.parentNode.insertBefore(spacer, footer);
+    
+    console.log(`📄 Added footer spacer: ${remaining}px to push footer to bottom`);
+  }
+}
+
 /* === DUVA: Stable Export Wrapper (kills scroll offset) === */
 async function duvaStablePdfExport(runExportFn) {
   const prev = { x: window.scrollX, y: window.scrollY };
@@ -3106,8 +3146,15 @@ async function duvaStablePdfExport(runExportFn) {
   try {
     await duvaInsertSmartBreaks({
       rootSelector: '#pdf-container',
-      pageHeightMM: 297, topMarginMM: 18, bottomMarginMM: 18
+      pageHeightMM: 297, topMarginMM: 10, bottomMarginMM: 16
     });
+
+    duvaPadFooterToBottom({
+      rootSelector: '#pdf-container',
+      footerSelector: '.footer-wrapper',
+      topMarginMM: 10, bottomMarginMM: 16
+    });
+
     await runExportFn();
   } finally {
     document.body.classList.remove('exporting-pdf');
