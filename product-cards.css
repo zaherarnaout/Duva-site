@@ -273,10 +273,10 @@
   z-index: 2 !important;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(20px);
+  transform: translateY(50px) !important; /* Much bigger slide distance */
   width: 100% !important;
   height: 100% !important;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Smoother easing */
   border: 2px solid transparent;
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0);
@@ -291,7 +291,7 @@
 .current-product:hover .flip-card-back {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) !important;
+  transform: translateY(0) !important; /* Slides up to final position */
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
@@ -303,7 +303,7 @@
 .flip-card:hover .flip-card-back {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) !important;
+  transform: translateY(0) !important; /* Slides up to final position */
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
@@ -345,7 +345,7 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.4s ease 0.25s; /* Slightly longer delay for slide animation */
+  transition: left 0.4s ease 0.3s; /* Delay to wait for slide animation to complete */
   z-index: 1;
 }
 
