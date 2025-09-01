@@ -10,7 +10,7 @@
   grid-row-gap: 12px;
   border: 1px solid var(--border-divider-light);
   border-radius: var(--border-4px-cornner);
-  background-color: var(--duva-white);
+  background-color: var(--duva-bg-primary, var(--duva-white));
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
@@ -85,8 +85,8 @@
 
 /* Dark theme support */
 [data-theme="dark"] .cards-Container {
-  background-color: var(--duva-d-grey);
-  border-color: var(--dark-border);
+  background-color: var(--duva-bg-secondary, #2a2a2a);
+  border-color: var(--duva-border-secondary, #333333);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -181,7 +181,6 @@
 [data-theme="dark"] .product-card,
 [data-theme="dark"] .related-card {
   background-color: var(--duva-bg-secondary, #2a2a2a) !important;
-  border-color: var(--duva-border-secondary, #333333) !important;
   color: var(--duva-text-primary, #F4F5F6) !important;
 }
 
@@ -312,7 +311,6 @@
 /* === DARK THEME SUPPORT FOR FLIP CARDS === */
 [data-theme="dark"] .flip-card-back {
   background-color: rgba(33, 33, 33, 0.95) !important; /* Dark background */
-  border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
 }
 
