@@ -52,7 +52,7 @@ html, body {
   clear: none;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  background-color: var(--white, #fff);
+  background-color: var(--duva-bg-primary, #fff);
   object-fit: fill;
   border-radius: 4px;
   flex-flow: row;
@@ -66,12 +66,14 @@ html, body {
   display: flex;
   position: static;
   transition: all 0.3s ease;
+  border: 1px solid var(--duva-border-secondary, #E4E3E3);
 }
 
 .menu-wrapper:hover {
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: var(--duva-bg-secondary, #f5f5f5);
   transform: translateY(-1px);
+  border-color: var(--duva-red, #C0392B);
 }
 
 /* === Menu Panel Improvements === */
@@ -83,9 +85,9 @@ html, body {
   width: 520px !important;
   max-width: 90vw !important;
   height: auto !important;
-  background-color: #fff !important;
+  background-color: var(--duva-bg-primary, #fff) !important;
   border-radius: 12px !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 12px 40px var(--duva-shadow, rgba(0, 0, 0, 0.2)) !important;
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -93,6 +95,7 @@ html, body {
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   pointer-events: none !important;
   overflow: hidden !important;
+  border: 1px solid var(--duva-border-secondary, #E4E3E3);
 }
 
 /* Menu Panel Shimmer Overlay Effect */
@@ -304,7 +307,7 @@ body.menu-open {
 
 /* === Enhanced Menu Links === */
 .link-13 {
-  color: #333;
+  color: var(--duva-text-primary, #333);
   margin-top: 52px;
   margin-bottom: 0;
   padding-top: 0;
@@ -351,7 +354,7 @@ body.menu-open {
 }
 
 .link-14 {
-  color: #333;
+  color: var(--duva-text-primary, #333);
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;
@@ -379,7 +382,7 @@ body.menu-open {
 .menu-icon {
   font-size: 20px;
   font-weight: bold;
-  color: #333;
+  color: var(--duva-text-primary, #333);
   margin-right: 5px;
 }
 
@@ -6404,6 +6407,135 @@ ARROWS:
 }
 
 /* === END VIEWPORT FADE EFFECTS === */
+
+/* === COMPREHENSIVE DARK THEME ENHANCEMENTS === */
+[data-theme="dark"] {
+  /* Enhanced dark theme variables */
+  --duva-bg-primary: #212121;
+  --duva-bg-secondary: #2a2a2a;
+  --duva-bg-tertiary: #333333;
+  --duva-text-primary: #F4F5F6;
+  --duva-text-secondary: #D1D1D1;
+  --duva-text-tertiary: #999999;
+  --duva-border-primary: #C0392B;
+  --duva-border-secondary: #333333;
+  --duva-shadow: rgba(0, 0, 0, 0.3);
+  --duva-overlay: rgba(0, 0, 0, 0.4);
+}
+
+/* Dark theme for form elements */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--duva-bg-secondary) !important;
+  color: var(--duva-text-primary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--duva-red, #C0392B) !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2) !important;
+}
+
+/* Dark theme for buttons */
+[data-theme="dark"] button {
+  background-color: var(--duva-bg-secondary) !important;
+  color: var(--duva-text-primary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] button:hover {
+  background-color: var(--duva-bg-tertiary) !important;
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Dark theme for dropdowns */
+[data-theme="dark"] .dropdown-wrapper {
+  background-color: var(--duva-bg-secondary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] .dropdown-options {
+  background-color: var(--duva-bg-tertiary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] .dropdown-option {
+  color: var(--duva-text-primary) !important;
+}
+
+[data-theme="dark"] .dropdown-option:hover {
+  background-color: var(--duva-red, #C0392B) !important;
+  color: white !important;
+}
+
+/* Dark theme for accessories section */
+[data-theme="dark"] .accessories-section {
+  background-color: var(--duva-bg-secondary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] .accessories-item {
+  background-color: var(--duva-bg-tertiary) !important;
+  border-color: var(--duva-border-secondary) !important;
+  color: var(--duva-text-primary) !important;
+}
+
+[data-theme="dark"] .accessories-item:hover {
+  background-color: var(--duva-bg-primary) !important;
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Dark theme for footer */
+[data-theme="dark"] .footer-section {
+  background-color: var(--duva-bg-primary) !important;
+  color: var(--duva-text-primary) !important;
+}
+
+[data-theme="dark"] .footer-section a {
+  color: var(--duva-text-secondary) !important;
+}
+
+[data-theme="dark"] .footer-section a:hover {
+  color: var(--duva-red, #C0392B) !important;
+}
+
+/* Dark theme for newsletter */
+[data-theme="dark"] .newsletter-input {
+  background-color: var(--duva-bg-secondary) !important;
+  color: var(--duva-text-primary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] .newsletter-input:focus {
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Dark theme for checkboxes */
+[data-theme="dark"] .checkbox {
+  background-color: var(--duva-bg-secondary) !important;
+  border-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] .checkbox.active {
+  background-color: var(--duva-red, #C0392B) !important;
+  border-color: var(--duva-red, #C0392B) !important;
+}
+
+/* Dark theme for scrollbars */
+[data-theme="dark"] ::-webkit-scrollbar {
+  background-color: var(--duva-bg-secondary) !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: var(--duva-border-secondary) !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--duva-red, #C0392B) !important;
+}
 
 /* === NEW ITEMS READ MORE TOGGLE === */
 /* Styles for the read more functionality in the new items section */
