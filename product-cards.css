@@ -287,6 +287,19 @@
   background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
+/* === FRONT CARD FADE OUT ON HOVER === */
+.flip-card-front {
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  opacity: 1;
+  visibility: visible;
+}
+
+.flip-card-wrapper:hover .flip-card-front,
+.current-product:hover .flip-card-front {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
   opacity: 1 !important;
@@ -307,6 +320,14 @@
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
+}
+
+/* === FALLBACK: Ensure front card fades out on any hover === */
+.flip-card-wrapper:hover .flip-card-front,
+.flip-card-wrapper:hover .flip-card .flip-card-front,
+.flip-card:hover .flip-card-front {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* === ALTERNATIVE ANIMATION OPTIONS === */
