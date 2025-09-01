@@ -1494,9 +1494,10 @@ opacity: 1 !important;
   border-bottom: none !important;
 }
 
+/* Header tighter to the top in PDF */
 #pdf-container .header-wrapper {
   margin-top: 0 !important;   /* was 10px */
-  padding-top: 0 !important;  /* already 0 inside #pdf-container */
+  padding-top: 0 !important;  /* keep zero */
   border-bottom: none !important;
 }
 
