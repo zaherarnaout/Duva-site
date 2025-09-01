@@ -3875,7 +3875,7 @@ ARROWS:
   position: relative !important;
   overflow: hidden;
   transition: all 0.3s ease;
-  background-color: var(--duva-light-grey, #F4F5F6);
+  background-color: var(--duva-d-grey, #212121);
 }
 
 .fliter-right-wrapper::before {
@@ -6612,6 +6612,12 @@ ARROWS:
 [data-theme="dark"] .main-filter-wrapper .text-block-20,
 [data-theme="dark"] .main-filter-wrapper .text-block-30 {
   color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Light mode for text blocks in fliter-right-wrapper - dark grey text for contrast */
+.main-filter-wrapper .text-block-31,
+.main-filter-wrapper .text-block-32 {
+  color: var(--duva-light-grey, #F4F5F6) !important;
 }
 
 /* Dark theme for specific text blocks that should be dark grey */
