@@ -278,7 +278,7 @@
 .current-product:hover .flip-card-back {
   display: flex;
   z-index: 2;
-  border: 2px solid var(--duva-red, #C0392B) !important;
+  border: 1px solid var(--duva-red, #C0392B) !important;
   border-radius: var(--border-4px-cornner);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2);
 }
