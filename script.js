@@ -3101,40 +3101,41 @@ async function duvaInsertSmartBreaks({
   root.classList.remove('print-neutralize-transform');
 }
 
-/* === DUVA: pad last page so the footer sits on the bottom === */
-function duvaPadFooterToBottom({
+/* === DUVA: Footer-to-bottom (Modulo method, html2pdf-friendly) === */
+async function duvaPadFooterToBottomModulo({
   rootSelector = '#pdf-container',
   footerSelector = '.footer-wrapper',
-  topMarginMM = 10,     // match your html2pdf top margin
-  bottomMarginMM = 16   // match your html2pdf bottom margin
+  topMarginMM = 10,           // must match html2pdf margin[0]
+  bottomMarginMM = 16         // must match html2pdf margin[2]
 } = {}) {
   const root = document.querySelector(rootSelector);
   const footer = root?.querySelector(footerSelector);
   if (!root || !footer) return;
 
-  // remove an old spacer if present
+  // remove any previous spacer
   root.querySelectorAll('.__footer-spacer').forEach(n => n.remove());
 
-  // usable content height per A4 page (exclude page margins)
+  // Usable page height in CSS px (page minus top/bottom margins)
   const usablePx = mmToPx(297 - (topMarginMM + bottomMarginMM));
 
-  // where does the last page start? (after the last .page-break)
-  const breaks = [...root.querySelectorAll('.page-break')];
-  const lastStart = breaks.length ? breaks[breaks.length - 1].offsetTop : 0;
+  // Total content height from top of root to BOTTOM of footer
+  const totalToFooterBottom = footer.offsetTop + footer.offsetHeight;
 
-  // how much space does the last-page content (up to and incl. footer) take?
-  const fromStartToFooterBottom = (footer.offsetTop + footer.offsetHeight) - lastStart;
+  // The remainder of the last page
+  const remainder = totalToFooterBottom % usablePx;
 
-  // how much space is left on that last page?
-  const remaining = usablePx - fromStartToFooterBottom;
-
-  if (remaining > 0 && remaining < usablePx) {
-    const spacer = document.createElement('div');
-    spacer.className = '__footer-spacer';
-    spacer.style.cssText = `height:${remaining}px;width:100%;display:block;`;
-    footer.parentNode.insertBefore(spacer, footer);
-    
-    console.log(`📄 Added footer spacer: ${remaining}px to push footer to bottom`);
+  // If remainder is 0, footer already sits at bottom. Otherwise pad.
+  if (remainder > 0) {
+    const spacerH = usablePx - remainder;
+    // sanity: avoid crazy pads if something is off
+    if (spacerH > 0 && spacerH < usablePx) {
+      const spacer = document.createElement('div');
+      spacer.className = '__footer-spacer';
+      spacer.style.cssText = `height:${spacerH}px;width:100%;display:block;`;
+      footer.parentNode.insertBefore(spacer, footer);
+      
+      console.log(`📄 Added modulo footer spacer: ${spacerH}px (remainder was ${remainder}px)`);
+    }
   }
 }
 
@@ -3149,7 +3150,7 @@ async function duvaStablePdfExport(runExportFn) {
       pageHeightMM: 297, topMarginMM: 10, bottomMarginMM: 16
     });
 
-    duvaPadFooterToBottom({
+    await duvaPadFooterToBottomModulo({
       rootSelector: '#pdf-container',
       footerSelector: '.footer-wrapper',
       topMarginMM: 10, bottomMarginMM: 16
