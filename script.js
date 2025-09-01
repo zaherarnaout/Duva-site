@@ -201,6 +201,82 @@ setTimeout(() => {
   });
 }, 1000);
 
+/* === PRODUCT CARD CLICK FUNCTIONALITY === */
+// Add product card click handlers since product-cards.js is disabled
+
+// Helper function to extract product code from card
+function extractProductCode(element) {
+  // Look for product code in various elements
+  const codeElement = element.querySelector('[class*="code"], [class*="number"], [class*="product"]');
+  if (codeElement) {
+    const text = codeElement.textContent?.trim();
+    if (text) {
+      // Extract product code (e.g., "C331", "4709")
+      const codeMatch = text.match(/([A-Z]?\d+)/);
+      if (codeMatch) {
+        return codeMatch[1];
+      } else {
+        // If no pattern found, use first word
+        return text.split(' ')[0];
+      }
+    }
+  }
+  return null;
+}
+
+// Initialize product card clicks
+function initializeProductCardClicks() {
+  const cards = document.querySelectorAll('.collection-item, .product-card, .related-card, .flip-card-wrapper');
+  
+  if (cards.length === 0) {
+    console.log('🎴 No product cards found for click initialization');
+    return;
+  }
+  
+  console.log(`🎴 Initializing click handlers for ${cards.length} product cards`);
+  
+  cards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Prevent click if clicking on flip card back
+      if (e.target.closest('.flip-card-back')) {
+        e.preventDefault();
+        return;
+      }
+      
+      // Add click feedback
+      card.classList.add('card-clicked');
+      setTimeout(() => {
+        card.classList.remove('card-clicked');
+      }, 200);
+      
+      // Extract product code and navigate
+      const productCode = extractProductCode(card);
+      if (productCode) {
+        console.log(`🎴 Card clicked, navigating to product: ${productCode}`);
+        const productUrl = `/?search=${productCode.toLowerCase()}`;
+        window.location.href = productUrl;
+      } else {
+        console.log('🎴 Card clicked but no product code found');
+      }
+    });
+    
+    // Add visual feedback that it's clickable
+    card.style.cursor = 'pointer';
+  });
+  
+  console.log('✅ Product card click handlers initialized');
+}
+
+// Initialize product card clicks when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeProductCardClicks);
+
+// Also initialize when Webflow loads
+if (typeof Webflow !== 'undefined') {
+  Webflow.push(function() {
+    initializeProductCardClicks();
+  });
+}
+
 /* === Accessories Image Zoom on Hover (Constrained to Container) === */ 
 
 document.querySelectorAll('.accessory-image').forEach(container => { 
