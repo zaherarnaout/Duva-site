@@ -66,14 +66,12 @@ html, body {
   display: flex;
   position: static;
   transition: all 0.3s ease;
-  border: 1px solid var(--duva-border-secondary, #E4E3E3);
 }
 
 .menu-wrapper:hover {
   border-radius: 4px;
   background-color: var(--duva-bg-secondary, #f5f5f5);
   transform: translateY(-1px);
-  border-color: var(--duva-red, #C0392B);
 }
 
 /* === Menu Panel Improvements === */
@@ -95,7 +93,6 @@ html, body {
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   pointer-events: none !important;
   overflow: hidden !important;
-  border: 1px solid var(--duva-border-secondary, #E4E3E3);
 }
 
 /* Menu Panel Shimmer Overlay Effect */
@@ -202,7 +199,7 @@ body.menu-open {
   padding-right: 35px;
   padding-left: 35px;
   border-radius: 8px;
-  background-color: var(--duva-d-grey, #333);
+  background-color: var(--duva-bg-secondary, #2a2a2a);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -255,7 +252,7 @@ body.menu-open {
   padding-right: 35px !important;
   padding-left: 35px !important;
   border-radius: 8px !important;
-  background-color: var(--duva-d-grey, #333) !important;
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
   color: #fff !important;
   font-size: 16px !important;
   font-weight: 600 !important;
@@ -3211,7 +3208,7 @@ footer, .footer {
 .no-results-message {
   margin-right: 40px;
   font-family: var(--section-title);
-  color: var(--duva-d-grey);
+  color: var(--duva-text-primary, var(--duva-d-grey));
   font-size: var(--section-title-size);
   line-height: var(--section-title-height);
   font-weight: var(--section-title-weight);
@@ -3293,7 +3290,7 @@ footer, .footer {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border-color: var(--duva-red, #C0392B) !important;
-  background-color: var(--duva-white, #ffffff) !important;
+  background-color: var(--duva-bg-primary, #ffffff) !important;
 }
 
 .main-page-categories-wrapper a:hover::before {
@@ -4127,7 +4124,7 @@ ARROWS:
 
 /* Active States - Light Mode (Sun Active) */
 .lang-toggle-switch[data-theme="light"] {
-  background-color: var(--duva-light-grey, #f4f5f6);
+  background-color: var(--duva-bg-secondary, #f4f5f6);
 }
 
 .lang-toggle-switch[data-theme="light"] .theme-icon .sun-d-icon {
@@ -4157,7 +4154,7 @@ ARROWS:
 
 /* Default State (Light Mode) */
 .lang-toggle-switch:not([data-theme]) {
-  background-color: var(--duva-light-grey, #f4f5f6);
+  background-color: var(--duva-bg-secondary, #f4f5f6);
 }
 
 .lang-toggle-switch:not([data-theme]) .theme-icon .sun-d-icon {
@@ -4771,7 +4768,7 @@ ARROWS:
   border-top-right-radius: var(--border-8px);
   border-bottom-left-radius: var(--border-8px);
   border-bottom-right-radius: var(--border-8px);
-  background-color: var(--duva-white);
+  background-color: var(--duva-bg-primary, var(--duva-white));
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
   position: relative;
   overflow: hidden;
@@ -5003,7 +5000,7 @@ ARROWS:
 .text-block-55 {
   align-self: center;
   font-family: Gotham;
-  color: var(--duva-d-grey);
+  color: var(--duva-text-primary, var(--duva-d-grey));
   font-size: 90px;
   line-height: 100px;
   font-weight: 700;
@@ -5034,7 +5031,7 @@ ARROWS:
 }
 
 .text-span-4 {
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   font-size: 85px;
   line-height: 90px;
   letter-spacing: 3px;
@@ -5084,7 +5081,7 @@ ARROWS:
 }
 
 .text-span-5 {
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   font-size: 80px;
   line-height: 90px;
   font-weight: 500;
@@ -5110,7 +5107,7 @@ ARROWS:
 }
 
 .text-span-3 {
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   font-size: 80px;
   line-height: 90px;
   font-weight: 300;
@@ -5137,7 +5134,7 @@ ARROWS:
 
 .text-block-70 {
   font-family: Gotham;
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   font-size: 50px;
   line-height: 55px;
   font-weight: 200;
@@ -5336,9 +5333,9 @@ ARROWS:
   border-top-right-radius: var(--border-8px);
   border-bottom-left-radius: var(--border-8px);
   border-bottom-right-radius: var(--border-8px);
-  background-color: var(--duva-d-grey);
+  background-color: var(--duva-bg-secondary, #2a2a2a);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
 }
 
 /* === Footer Newsletter Input Styling === */
@@ -5431,7 +5428,7 @@ ARROWS:
 .text-block-55.vase2 {
   align-self: center;
   font-family: Gotham;
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   font-size: 80px;
   line-height: 80px;
   font-weight: 700;
@@ -5689,7 +5686,7 @@ ARROWS:
 .footer-section {
   position: relative;
   overflow: hidden;
-  background: var(--duva-d-grey, #212121);
+  background: var(--duva-bg-primary, #212121);
 }
 
 /* Footer content animations */
@@ -5802,7 +5799,7 @@ ARROWS:
 /* === Footer Wrapper Text Elements - Menu Panel Style === */
 /* Footer Link Base Styles - Unified Animation */
 .footer-link {
-  color: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-text-secondary, #F4F5F6);
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5852,7 +5849,7 @@ ARROWS:
 .right-footer-wrapper .text-block:not(.text-block-69),
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
 .right-footer-wrapper div:not(.text-block-69) {
-  color: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-text-secondary, #F4F5F6);
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5882,7 +5879,7 @@ ARROWS:
 .left-footer-wrapper .text-block:not(.text-block-68),
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68),
 .left-footer-wrapper div:not(.text-block-68) {
-  color: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-text-secondary, #F4F5F6);
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5980,7 +5977,7 @@ ARROWS:
   font-family: "Gotham Rounded", Arial, sans-serif;
   font-size: 40px;
   line-height: 50px;
-  color: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-text-secondary, #F4F5F6);
   font-weight: 400;
 }
 
@@ -5993,7 +5990,7 @@ ARROWS:
   font-family: "Gotham Rounded", Arial, sans-serif;
   font-size: 40px;
   line-height: 50px;
-  color: var(--duva-light-grey, #F4F5F6);
+  color: var(--duva-text-secondary, #F4F5F6);
   font-weight: 400;
   position: relative;
 }
@@ -6025,7 +6022,7 @@ ARROWS:
     font-family: "Gotham Rounded", Arial, sans-serif;
     font-size: 24px;
     line-height: 30px;
-    color: var(--duva-light-grey, #F4F5F6);
+    color: var(--duva-text-secondary, #F4F5F6);
     font-weight: 400;
   }
   
@@ -6429,13 +6426,11 @@ ARROWS:
 [data-theme="dark"] select {
   background-color: var(--duva-bg-secondary) !important;
   color: var(--duva-text-primary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] input:focus,
 [data-theme="dark"] textarea:focus,
 [data-theme="dark"] select:focus {
-  border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2) !important;
 }
 
@@ -6443,23 +6438,19 @@ ARROWS:
 [data-theme="dark"] button {
   background-color: var(--duva-bg-secondary) !important;
   color: var(--duva-text-primary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] button:hover {
   background-color: var(--duva-bg-tertiary) !important;
-  border-color: var(--duva-red, #C0392B) !important;
 }
 
 /* Dark theme for dropdowns */
 [data-theme="dark"] .dropdown-wrapper {
   background-color: var(--duva-bg-secondary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] .dropdown-options {
   background-color: var(--duva-bg-tertiary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] .dropdown-option {
@@ -6474,18 +6465,15 @@ ARROWS:
 /* Dark theme for accessories section */
 [data-theme="dark"] .accessories-section {
   background-color: var(--duva-bg-secondary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] .accessories-item {
   background-color: var(--duva-bg-tertiary) !important;
-  border-color: var(--duva-border-secondary) !important;
   color: var(--duva-text-primary) !important;
 }
 
 [data-theme="dark"] .accessories-item:hover {
   background-color: var(--duva-bg-primary) !important;
-  border-color: var(--duva-red, #C0392B) !important;
 }
 
 /* Dark theme for footer */
@@ -6506,22 +6494,19 @@ ARROWS:
 [data-theme="dark"] .newsletter-input {
   background-color: var(--duva-bg-secondary) !important;
   color: var(--duva-text-primary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] .newsletter-input:focus {
-  border-color: var(--duva-red, #C0392B) !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2) !important;
 }
 
 /* Dark theme for checkboxes */
 [data-theme="dark"] .checkbox {
   background-color: var(--duva-bg-secondary) !important;
-  border-color: var(--duva-border-secondary) !important;
 }
 
 [data-theme="dark"] .checkbox.active {
   background-color: var(--duva-red, #C0392B) !important;
-  border-color: var(--duva-red, #C0392B) !important;
 }
 
 /* Dark theme for scrollbars */
@@ -7107,7 +7092,7 @@ ARROWS:
 
 .email-capture-form button[type="submit"] {
   background: var(--duva-red);
-  color: var(--duva-light-grey);
+  color: var(--duva-text-secondary, var(--duva-light-grey));
   border: none;
   padding: 16px 24px;
   border-radius: 8px;
@@ -7119,7 +7104,7 @@ ARROWS:
 }
 
 .email-capture-form button[type="submit"]:hover {
-  background: var(--duva-d-grey);
+  background: var(--duva-bg-secondary, #2a2a2a);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
@@ -7503,7 +7488,7 @@ ARROWS:
 }
 
 .search-btn:hover {
-  background: var(--duva-d-grey);
+  background: var(--duva-bg-secondary, #2a2a2a);
   transform: translateY(-1px);
 }
 
@@ -7652,7 +7637,7 @@ ARROWS:
 }
 
 .download-from-preview:hover {
-  background: var(--duva-d-grey);
+  background: var(--duva-bg-secondary, #2a2a2a);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
@@ -7690,7 +7675,7 @@ ARROWS:
 }
 
 .preview-error button:hover {
-  background: var(--duva-d-grey);
+  background: var(--duva-bg-secondary, #2a2a2a);
   transform: translateY(-1px);
 }
 
@@ -7857,7 +7842,7 @@ ARROWS:
 }
 
 .back-to-top-btn:hover {
-  background: var(--duva-d-grey, #212121);
+  background: var(--duva-bg-primary, #212121);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
