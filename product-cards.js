@@ -232,15 +232,9 @@
           card.classList.remove('card-clicked');
         }, 200);
         
-        // Extract product code and navigate
-        const productCode = extractProductCode(card);
-        if (productCode) {
-          console.log(`🎴 Card clicked, navigating to product: ${productCode}`);
-          const productUrl = `/?search=${productCode.toLowerCase()}`;
-          window.location.href = productUrl;
-        } else {
-          console.log('🎴 Card clicked but no product code found');
-        }
+        // Let Webflow handle the navigation - don't prevent default
+        // The flip-card-wrapper already has the proper link set up in Webflow
+        console.log('🎴 Card clicked, letting Webflow handle navigation');
       });
     });
   }
