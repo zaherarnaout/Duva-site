@@ -863,19 +863,21 @@ opacity: 1 !important;
   color: #111 !important;
 }
 
-/* === Force PDF Container Visibility During Generation === */
+/* === PDF container: allow multipage flow === */
 #pdf-container {
   width: 794px;
   max-width: 794px;
-  height: 1123px;
-  max-height: 1123px;
-  margin: 12px auto 0 auto;
-  padding: 20px;
+  min-height: 1123px;       /* was height:1123px */
+  height: auto;             /* NEW */
+  max-height: none;         /* was max-height:1123px */
+  margin: 0 auto;           /* was 12px auto 0 auto (removes top gap) */
+  padding: 10px 20px 20px;  /* a little top breathing room */
   box-sizing: border-box;
   position: relative;
   border: none;
-  background: white;
+  background: #fff;
   display: block;
+  overflow: visible !important;
 }
 
 /* === Override hidden class for PDF generation === */
@@ -1493,8 +1495,8 @@ opacity: 1 !important;
 }
 
 #pdf-container .header-wrapper {
-  margin-top: 10px !important;
-  padding-top: 0 !important;
+  margin-top: 0 !important;   /* was 10px */
+  padding-top: 0 !important;  /* already 0 inside #pdf-container */
   border-bottom: none !important;
 }
 
@@ -7793,6 +7795,13 @@ body.exporting-pdf #pdf-container {
   /* neutralize transforms that confuse pagination */
   .print-neutralize-transform * {
     transform: none !important;
+  }
+  
+  /* Optional: helps footer + accessories keep together */
+  #pdf-container .accessories-pdf-section .accessory-item,
+  #pdf-container .footer-wrapper {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 
