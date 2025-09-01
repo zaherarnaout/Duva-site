@@ -3878,6 +3878,7 @@ ARROWS:
   position: relative !important;
   overflow: hidden;
   transition: all 0.3s ease;
+  background-color: var(--duva-light-grey, #F4F5F6);
 }
 
 .fliter-right-wrapper::before {
@@ -4499,8 +4500,7 @@ ARROWS:
   
   /* Filter checkmark styles moved to duva-Fliter-style.css */
   
-  .filter-apply-button,
-  .filter-reset-button {
+  .filter-apply-button {
     min-height: 48px;
     padding: 12px 24px;
     font-size: 16px;
@@ -4514,8 +4514,7 @@ ARROWS:
 @media screen and (max-width: 479px) {
   /* Filter checkmark styles moved to duva-Fliter-style.css */
   
-  .filter-apply-button,
-  .filter-reset-button {
+  .filter-apply-button {
     min-height: 52px;
     padding: 14px 28px;
   }
@@ -6582,10 +6581,14 @@ ARROWS:
 }
 
 [data-theme="dark"] .filter-header-wrapper,
-[data-theme="dark"] .filter-header-wrapper-main,
+[data-theme="dark"] .filter-header-wrapper-main {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
 [data-theme="dark"] .filter-right-wrapper,
 [data-theme="dark"] .fliter-right-wrapper {
-  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  background-color: var(--duva-light-grey, #F4F5F6) !important;
   color: var(--duva-text-primary, #F4F5F6) !important;
 }
 
@@ -6614,6 +6617,12 @@ ARROWS:
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
+/* Dark theme for specific text blocks that should be dark grey */
+[data-theme="dark"] .main-filter-wrapper .text-block-31,
+[data-theme="dark"] .main-filter-wrapper .text-block-32 {
+  color: var(--duva-text-primary, #212121) !important;
+}
+
 /* Dark theme for mounting type */
 [data-theme="dark"] .mounting-type,
 [data-theme="dark"] .mounting-type-text,
@@ -6623,16 +6632,24 @@ ARROWS:
 }
 
 /* Dark theme for filter buttons */
-[data-theme="dark"] .filter-apply-button,
-[data-theme="dark"] .filter-reset-button,
-[data-theme="dark"] .button-2 {
+[data-theme="dark"] .filter-apply-button {
   background-color: var(--duva-bg-tertiary, #333333) !important;
   color: var(--duva-text-primary, #F4F5F6) !important;
   border-color: var(--duva-border-secondary, #333333) !important;
 }
 
-[data-theme="dark"] .filter-apply-button:hover,
-[data-theme="dark"] .filter-reset-button:hover,
+[data-theme="dark"] .filter-apply-button:hover {
+  background-color: var(--duva-red, #C0392B) !important;
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for button 2 - light grey background with dark text */
+[data-theme="dark"] .button-2 {
+  background-color: var(--duva-light-grey, #F4F5F6) !important;
+  color: var(--duva-text-primary, #212121) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
 [data-theme="dark"] .button-2:hover {
   background-color: var(--duva-red, #C0392B) !important;
   color: var(--duva-text-secondary, #D1D1D1) !important;
