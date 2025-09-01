@@ -201,6 +201,7 @@
 .flip-card-wrapper {
   transform: translateY(0);
   transition: transform 0.4s ease-out;
+  will-change: transform;
 }
 
 /* === STAGGERED ENTRANCE ANIMATION FOR PRODUCT CARDS === */
@@ -278,8 +279,8 @@
 .current-product:hover .flip-card-back {
   display: flex;
   z-index: 2;
-  border: 1px solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner);
+  border: 2px solid var(--duva-red, #C0392B) !important;
+  border-radius: 8px;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2);
 }
 
