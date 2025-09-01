@@ -9,7 +9,7 @@
   // Configuration
   const CARDS_CONFIG = {
     animationDelay: 100,
-    parallaxThreshold: 0.06,
+    parallaxThreshold: 0.15,
     floatAnimationDuration: 3000,
     entranceAnimationDelay: 120
   };
