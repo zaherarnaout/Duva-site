@@ -44,7 +44,7 @@
 
 /* Parallax effect for cards container */
 .cards-Container.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.03px));
+  transform: translateY(calc(var(--scroll-y, 0) * -0.08px));
   
 
 }
@@ -191,7 +191,7 @@
 .product-card.parallax-active,
 .related-card.parallax-active,
 .flip-card-wrapper.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.06px));
+  transform: translateY(calc(var(--scroll-y, 0) * -0.15px));
 }
 
 /* === INITIAL STATE - NO PARALLAX UNTIL SCROLL STARTS === */
