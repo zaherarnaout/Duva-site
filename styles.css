@@ -612,7 +612,7 @@ cursor: pointer;
 
   z-index: 10; 
 
-  background: white; 
+  background: var(--duva-bg-primary, white); 
 
   border: 1px solid #ddd; 
 
@@ -652,7 +652,7 @@ cursor: pointer;
 
 .dropdown-option:hover { 
 
-  background-color: #f4f5f6; 
+  background-color: var(--duva-bg-secondary, #f4f5f6); 
 
 } 
 
@@ -1486,7 +1486,7 @@ opacity: 1 !important;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  background: #fff;
+  background: var(--duva-bg-primary, #fff);
   font-family: Arial, sans-serif;
   color: #212121;
 }
@@ -1908,7 +1908,7 @@ opacity: 1 !important;
   page-break-after: always;
   position: relative;
   overflow: hidden;
-  background-color: white;
+  background-color: var(--duva-bg-primary, white);
 }
 
 /* Header pinned at top */
@@ -4339,7 +4339,7 @@ ARROWS:
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  background-color: white;
+  background-color: var(--duva-bg-primary, white);
   width: 25px;
   height: 25px;
   border: 1px solid var(--border-divider-light);
@@ -6522,6 +6522,52 @@ ARROWS:
   background-color: var(--duva-red, #C0392B) !important;
 }
 
+/* Dark theme for main content areas and sections */
+[data-theme="dark"] .main-content,
+[data-theme="dark"] .content-section,
+[data-theme="dark"] .page-section,
+[data-theme="dark"] .section-wrapper,
+[data-theme="dark"] .container,
+[data-theme="dark"] .wrapper {
+  background-color: var(--duva-bg-primary) !important;
+}
+
+/* Dark theme for specific sections */
+[data-theme="dark"] .hero-section,
+[data-theme="dark"] .product-section,
+[data-theme="dark"] .specifications-section,
+[data-theme="dark"] .accessories-section,
+[data-theme="dark"] .related-section,
+[data-theme="dark"] .gallery-section,
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .contact-section {
+  background-color: var(--duva-bg-primary) !important;
+}
+
+/* Dark theme for cards and panels */
+[data-theme="dark"] .card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .block,
+[data-theme="dark"] .div-block {
+  background-color: var(--duva-bg-secondary) !important;
+}
+
+/* Dark theme for modals and overlays */
+[data-theme="dark"] .modal,
+[data-theme="dark"] .overlay,
+[data-theme="dark"] .popup,
+[data-theme="dark"] .lightbox {
+  background-color: var(--duva-bg-primary) !important;
+}
+
+/* Dark theme for navigation areas */
+[data-theme="dark"] .nav-section,
+[data-theme="dark"] .navigation,
+[data-theme="dark"] .header-section,
+[data-theme="dark"] .sidebar {
+  background-color: var(--duva-bg-secondary) !important;
+}
+
 /* === NEW ITEMS READ MORE TOGGLE === */
 /* Styles for the read more functionality in the new items section */
 
@@ -7560,7 +7606,7 @@ ARROWS:
 .page-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: white;
+  background: var(--duva-bg-primary, white);
   display: block;
   max-width: 50%;
   max-height: 100%;
@@ -7569,7 +7615,7 @@ ARROWS:
 .single-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: white;
+  background: var(--duva-bg-primary, white);
   display: block;
   margin: 0 auto;
   max-width: 100%;
@@ -7592,7 +7638,7 @@ ARROWS:
 #pdf-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: white;
+  background: var(--duva-bg-primary, white);
   display: block;
   margin: 0 auto;
   max-width: 100%;
