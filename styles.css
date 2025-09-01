@@ -6573,7 +6573,9 @@ ARROWS:
 /* Dark theme for language toggle text */
 [data-theme="dark"] .lang-toggle-switch .lang-en,
 [data-theme="dark"] .lang-toggle-switch .lang-ar,
-[data-theme="dark"] .lang-toggle-switch span {
+[data-theme="dark"] .lang-toggle-switch span,
+[data-theme="dark"] .lang-toggle-switch .text-block-3,
+[data-theme="dark"] .lang-toggle-switch .text-block-4 {
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
@@ -6582,6 +6584,29 @@ ARROWS:
 [data-theme="dark"] .search-icon,
 [data-theme="dark"] .magnifier-icon {
   filter: brightness(0) saturate(100%) invert(85%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%) !important;
+}
+
+/* Dark theme for light grey search icon (Image 58) */
+[data-theme="dark"] .image-58 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Hide the default search icon in dark mode */
+[data-theme="dark"] .search-icon:not(.image-58),
+[data-theme="dark"] .magnifier-grey.svg:not(.image-58) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Show the light grey search icon in dark mode */
+[data-theme="dark"] .search-icon.image-58,
+[data-theme="dark"] .magnifier-grey.svg.image-58 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Dark theme for placeholder text */
