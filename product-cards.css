@@ -243,6 +243,17 @@
   transition: all 0.3s ease;
 }
 
+/* === EXPLICITLY DISABLE TEXT COLOR CHANGES FOR FLIP CARDS === */
+.flip-card-wrapper:hover .main-code-text,
+.flip-card-wrapper:hover .related-code,
+.flip-card-wrapper:hover .item-description,
+.flip-card-wrapper:hover .flip-card-front .main-code-text,
+.flip-card-wrapper:hover .flip-card-front .related-code,
+.flip-card-wrapper:hover .flip-card-front .item-description {
+  color: inherit !important;
+  transform: none !important;
+}
+
 /* === PRODUCT IMAGE SCALING ON HOVER === */
 /* Only apply image scaling to non-flip cards */
 .collection-item:not(.flip-card-wrapper):hover img,
