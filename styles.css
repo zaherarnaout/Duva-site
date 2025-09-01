@@ -3807,10 +3807,7 @@ ARROWS:
 
 /* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
 .filter-reset-button {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  /* Just a wrapper - no styling needed */
 }
 
 /* 4.5. Button 2 Specific Shimmer Effect (NOT reset-button div) */
@@ -6620,7 +6617,7 @@ ARROWS:
 /* Dark theme for specific text blocks that should be dark grey */
 [data-theme="dark"] .main-filter-wrapper .text-block-31,
 [data-theme="dark"] .main-filter-wrapper .text-block-32 {
-  color: var(--duva-text-primary, #212121) !important;
+  color: var(--duva-d-grey, #212121) !important;
 }
 
 /* Dark theme for mounting type */
@@ -6641,6 +6638,14 @@ ARROWS:
 [data-theme="dark"] .filter-apply-button:hover {
   background-color: var(--duva-red, #C0392B) !important;
   color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Remove hover effect from filter reset button since it's just a wrapper */
+[data-theme="dark"] .filter-reset-button:hover {
+  background-color: transparent !important;
+  color: inherit !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* Dark theme for button 2 - light grey background with dark text */
