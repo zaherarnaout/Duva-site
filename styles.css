@@ -878,41 +878,6 @@ opacity: 1 !important;
   display: block;
 }
 
-/* === PDF Container Fixed Positioning for Generation === */
-#pdf-container[style*="position: fixed"] {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  margin: 0 !important;
-  padding: 20px !important;
-  z-index: 9999 !important;
-  background: white !important;
-  overflow: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-#pdf-container[style*="position: fixed"] .pdf-export-wrapper {
-  width: 794px !important;
-  max-width: 794px !important;
-  height: 1123px !important;
-  max-height: 1123px !important;
-  margin: 0 !important;
-  background: white !important;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 4px !important;
-}
-
-/* === Ensure PDF content is properly positioned === */
-#pdf-container[style*="position: fixed"] .pdf-export-wrapper > * {
-  position: relative !important;
-  top: 0 !important;
-  left: 0 !important;
-}
-
 /* === Override hidden class for PDF generation === */
 #pdf-container:not(.hidden) {
   display: block !important;
@@ -7783,6 +7748,65 @@ ARROWS:
 /* Smooth scroll behavior for the page */
 html {
   scroll-behavior: smooth;
+}
+
+/* === DUVA PDF Export — Scroll/Gaps Kill Switch === */
+body.exporting-pdf,
+body.exporting-pdf html {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body.exporting-pdf #pdf-container {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+  transform: none !important;
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+}
+
+/* === DUVA PDF — Paged Media & Break Rules === */
+@page { size: A4; margin: 18mm 14mm; }
+
+@media print {
+  /* keep key blocks whole */
+  .avoid-break,
+  .specifications,
+  .photometric-block,
+  .dimension-block,
+  .accessories-pdf-section,
+  table, tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* force a new page where needed */
+  .page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  p, li { orphans: 3; widows: 3; }
+
+  /* neutralize transforms that confuse pagination */
+  .print-neutralize-transform * {
+    transform: none !important;
+  }
+}
+
+/* === DUVA PDF — Alias fixes for small typos in HTML === */
+/* Your HTML uses .series-divaider and .finish-volor; keep aliases so CSS still hits. */
+#pdf-container .series-divider { border-right: 2px solid #C0392B; height: 40px; width: 2px; margin-right: 4px; }
+#pdf-container .series-divaider { border-right: 2px solid #C0392B; height: 40px; width: 2px; margin-right: 4px; } /* alias */
+
+#pdf-container .finish-color .text-block-16,
+#pdf-container .finish-volor .text-block-16 { /* alias */
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 500 !important;
+  color: #111 !important;
 }
 
 /* === END BACK TO TOP BUTTON === */
