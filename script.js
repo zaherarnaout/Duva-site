@@ -1806,43 +1806,18 @@ let isExporting = false; // Guard to prevent double export
 function showPDFContainer() {
   const pdfContainer = document.querySelector('#pdf-container');
   if (pdfContainer) {
-    // Store current scroll position
-    const currentScrollY = window.pageYOffset;
-    
-    // Position the PDF container at the top of the viewport, regardless of scroll position
     pdfContainer.classList.remove('hidden');
     pdfContainer.style.display = 'block';
     pdfContainer.style.visibility = 'visible';
     pdfContainer.style.opacity = '1';
-    pdfContainer.style.position = 'fixed';
-    pdfContainer.style.top = '0';
+    pdfContainer.style.position = 'relative';
     pdfContainer.style.left = '0';
     pdfContainer.style.width = '100vw';
-    pdfContainer.style.height = '100vh';
-    pdfContainer.style.zIndex = '9999';
-    pdfContainer.style.background = 'white';
-    pdfContainer.style.overflow = 'hidden';
-    
-    // Temporarily scroll to top to ensure PDF starts from the very top
-    window.scrollTo(0, 0);
-    
-    // Store the scroll position to restore it later
-    pdfContainer.setAttribute('data-original-scroll', currentScrollY);
-    
-    console.log('📄 PDF container positioned at top of viewport');
   }
 }
 function hidePDFContainer() {
   const pdfContainer = document.querySelector('#pdf-container');
   if (pdfContainer) {
-    // Restore original scroll position
-    const originalScroll = pdfContainer.getAttribute('data-original-scroll');
-    if (originalScroll) {
-      window.scrollTo(0, parseInt(originalScroll));
-      pdfContainer.removeAttribute('data-original-scroll');
-    }
-    
-    // Reset all styles
     pdfContainer.classList.add('hidden');
     pdfContainer.style.display = 'none';
     pdfContainer.style.visibility = 'hidden';
@@ -1851,12 +1826,6 @@ function hidePDFContainer() {
     pdfContainer.style.top = '';
     pdfContainer.style.left = '';
     pdfContainer.style.width = '';
-    pdfContainer.style.height = '';
-    pdfContainer.style.zIndex = '';
-    pdfContainer.style.background = '';
-    pdfContainer.style.overflow = '';
-    
-    console.log('📄 PDF container hidden and scroll position restored');
   }
 }
 
@@ -1987,23 +1956,10 @@ function getCurrentProductFamily() {
   return familyElement ? familyElement.textContent.trim() : null;
 }
 
-function generatePDF() {
+// Original PDF generation function - now internal
+function generatePdfLegacy() {
   if (isExporting) return; // Prevent double export
   isExporting = true;
-  
-  // Show user feedback
-  console.log('📄 Starting PDF generation...');
-  
-  // Optional: Add a loading indicator to the download button
-  const downloadButton = document.querySelector('.download-arrow');
-  if (downloadButton) {
-    const originalContent = downloadButton.innerHTML;
-    downloadButton.innerHTML = '<span style="color: #C0392B;">Generating...</span>';
-    downloadButton.style.pointerEvents = 'none';
-    
-    // Store original content to restore later
-    downloadButton.setAttribute('data-original-content', originalContent);
-  }
   
   // --- Accessories block temporarily removed for testing ---
   // const pdfAccessories = document.querySelector('.pdf-accessories');
@@ -2030,121 +1986,87 @@ function generatePDF() {
   // --- End accessories block ---
   // 3. Show the PDF container (off-screen but rendered)
   showPDFContainer();
+  // 4. Prepare PDF export
+  const element = document.querySelector('#pdf-container');
   
-  // Small delay to ensure positioning is applied
-  setTimeout(() => {
-    // 4. Prepare PDF export
-    const element = document.querySelector('#pdf-container');
+  // Get the generated code for filename
+  const orderingCodeElement = document.querySelector('.ordering-code-value');
+  let code = 'file'; // default fallback
+  
+  if (orderingCodeElement) {
+    // Get the plain text content (without HTML styling)
+    const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
+    code = plainText.trim();
     
-    // Get the generated code for filename
-    const orderingCodeElement = document.querySelector('.ordering-code-value');
-    let code = 'file'; // default fallback
+    // Sanitize filename for file system compatibility
+    code = code.replace(/[<>:"/\\|?*]/g, '_'); // Replace invalid characters
+    code = code.replace(/\s+/g, '_'); // Replace spaces with underscores
+    code = code.replace(/\.+/g, '.'); // Replace multiple dots with single dot
     
-    if (orderingCodeElement) {
-      // Get the plain text content (without HTML styling)
-      const plainText = orderingCodeElement.textContent || orderingCodeElement.innerText;
-      code = plainText.trim();
-      
-      // Sanitize filename for file system compatibility
-      code = code.replace(/[<>:"/\\|?*]/g, '_'); // Replace invalid characters
-      code = code.replace(/\s+/g, '_'); // Replace spaces with underscores
-      code = code.replace(/\.+/g, '.'); // Replace multiple dots with single dot
-      
-      console.log('📄 PDF filename will be:', code);
-    } else {
-      console.log('⚠️ Ordering code element not found, using default filename');
-    }
-    
-    if (!element) {
-      hidePDFContainer();
-      alert('PDF container not found!');
-      isExporting = false;
-      return;
-    }
-    
-    // === Inject Product Image Dynamically ===
-    const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
-    const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
-    if (imageElement && pdfImageContainer) {
-      const imageUrl = imageElement.src;
-      pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
-    }
-    
-    // === Inject Product, Dimension, and Photometric Images into PDF ===
-    injectPdfImages();
-    // === Inject Generated Ordering Code into PDF ===
-    injectPdfOrderingCode();
-    // === Inject Product Code into PDF ===
-    updateProductCodeInjection();
-    // === Inject Generated Code into PDF ===
-    updateGeneratedCodeInjection();
-    // === Update Specifications Table ===
-    updateSpecsTable();
-    // === Inject Family Name, Subtitle, Description, and Features into PDF ===
-    injectPdfContent();
-    
-    // 5. Export PDF
-    waitForImagesToLoad(document.querySelector('#pdf-container .header-right-wrapper'), function() {
-      injectPdfIcons(); // Inject icons into PDF container
-      html2pdf()
-        .from(element)
-        .set({
-          margin: 0,
-          filename: `${code}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { 
-            scale: 2,
-            width: 794,
-            height: 1123,
-            useCORS: true
-          },
-          jsPDF: { 
-            unit: 'px', 
-            format: [794, 1123], 
-            orientation: 'portrait' 
-          }
-        })
-        .save()
-        .then(() => {
-          // 6. Cleanup after export
-          // if (pdfAccessories) {
-          //   pdfAccessories.innerHTML = '';
-          // }
-          hidePDFContainer();
-          isExporting = false;
-          
-          // Restore download button
-          const downloadButton = document.querySelector('.download-arrow');
-          if (downloadButton) {
-            const originalContent = downloadButton.getAttribute('data-original-content');
-            if (originalContent) {
-              downloadButton.innerHTML = originalContent;
-              downloadButton.removeAttribute('data-original-content');
-            }
-            downloadButton.style.pointerEvents = '';
-          }
-          
-          console.log('✅ PDF generation completed successfully');
-        })
-        .catch((error) => {
-          console.error('❌ PDF generation failed:', error);
-          isExporting = false;
-          
-          // Restore download button on error
-          const downloadButton = document.querySelector('.download-arrow');
-          if (downloadButton) {
-            const originalContent = downloadButton.getAttribute('data-original-content');
-            if (originalContent) {
-              downloadButton.innerHTML = originalContent;
-              downloadButton.removeAttribute('data-original-content');
-            }
-            downloadButton.style.pointerEvents = '';
-          }
-          
-          hidePDFContainer();
-        });
-    });
-  }, 100); // 100ms delay to ensure positioning is applied
+    console.log('📄 PDF filename will be:', code);
+  } else {
+    console.log('⚠️ Ordering code element not found, using default filename');
+  }
+  
+  if (!element) {
+    hidePDFContainer();
+    alert('PDF container not found!');
+    isExporting = false;
+    return;
+  }
+  // === Inject Product Image Dynamically ===
+  const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
+  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+  if (imageElement && pdfImageContainer) {
+    const imageUrl = imageElement.src;
+    pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
+  }
+  // === Inject Product, Dimension, and Photometric Images into PDF ===
+  injectPdfImages();
+  // === Inject Generated Ordering Code into PDF ===
+  injectPdfOrderingCode();
+  // === Inject Product Code into PDF ===
+  updateProductCodeInjection();
+  // === Inject Generated Code into PDF ===
+  updateGeneratedCodeInjection();
+  // === Update Specifications Table ===
+  updateSpecsTable();
+  // === Inject Family Name, Subtitle, Description, and Features into PDF ===
+  injectPdfContent();
+  // 5. Export PDF
+  waitForImagesToLoad(document.querySelector('#pdf-container .header-right-wrapper'), function() {
+    injectPdfIcons(); // Inject icons into PDF container
+    html2pdf()
+      .from(element)
+      .set({
+        margin: 0,
+        filename: `${code}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          width: 794,
+          height: 1123,
+          useCORS: true
+        },
+        jsPDF: { 
+          unit: 'px', 
+          format: [794, 1123], 
+          orientation: 'portrait' 
+        }
+      })
+      .save()
+      .then(() => {
+        // 6. Cleanup after export
+        // if (pdfAccessories) {
+        //   pdfAccessories.innerHTML = '';
+        // }
+        hidePDFContainer();
+        isExporting = false;
+      })
+      .catch(() => {
+        isExporting = false;
+      });
+  });
 }
 // === PDF Download Button Binding by Class ===
 // REMOVED: This was causing conflicts with the unified download handler above
@@ -3096,6 +3018,169 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// New PDF generation function using stable export wrapper
+async function generatePDF() {
+  if (isExporting) return; // Prevent double export
+  isExporting = true;
+  
+  console.log('📄 Starting PDF generation with stable wrapper...');
+  
+  try {
+    // Use the stable export wrapper which handles scroll positioning and page breaks
+    await duvaStablePdfExport(generatePdfWithHtml2Pdf);
+    console.log('✅ PDF generation completed successfully');
+  } catch (error) {
+    console.error('❌ PDF generation failed:', error);
+  } finally {
+    isExporting = false;
+  }
+}
+
+/* === DUVA: Smart Page-Break Inserter (A4) === */
+function mmToPx(mm) { return Math.round(mm * (96 / 25.4)); } // 96dpi baseline
+
+async function duvaWaitForImages(root) {
+  const imgs = Array.from(root.querySelectorAll('img'));
+  await Promise.all(imgs.map(img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {})));
+}
+
+function duvaCollectBlocks(root) {
+  // Adjust selectors to your sections present in the PDF embed
+  // (from your embed: .overview-header, .specifications, .accessories-pdf-section, .footer-wrapper)
+  const order = [
+    '.overview-header',
+    '.specifications-full-width', // wraps .specifications grid
+    '.accessories-pdf-section',
+    '.footer-wrapper'
+  ];
+  const list = [];
+  order.forEach(sel => root.querySelectorAll(sel).forEach(el => list.push(el)));
+  return list.filter(el => el && el.offsetParent !== null);
+}
+
+async function duvaInsertSmartBreaks({
+  rootSelector = '#pdf-container',
+  pageHeightMM = 297,
+  topMarginMM = 18,
+  bottomMarginMM = 18,
+  extraTopPaddingPx = 0
+} = {}) {
+  const root = document.querySelector(rootSelector);
+  if (!root) return;
+  await duvaWaitForImages(root);
+
+  const pagePx   = mmToPx(pageHeightMM);
+  const usablePx = pagePx - mmToPx(topMarginMM + bottomMarginMM);
+
+  root.classList.add('print-neutralize-transform');
+
+  // clean old auto breaks
+  root.querySelectorAll('.page-break.__auto').forEach(n => n.remove());
+
+  let used = extraTopPaddingPx;
+  const blocks = duvaCollectBlocks(root);
+
+  blocks.forEach(el => {
+    const h = Math.ceil(el.getBoundingClientRect().height);
+    const tooTall = h > usablePx;
+
+    if (!tooTall && used > 0 && (used + h) > usablePx) {
+      const br = document.createElement('div');
+      br.className = 'page-break __auto';
+      el.parentNode.insertBefore(br, el);
+      used = 0;
+    }
+    used = Math.min(usablePx, used + Math.min(h, usablePx));
+    if (used >= usablePx) used = 0;
+  });
+
+  root.classList.remove('print-neutralize-transform');
+}
+
+/* === DUVA: Stable Export Wrapper (kills scroll offset) === */
+async function duvaStablePdfExport(runExportFn) {
+  const prev = { x: window.scrollX, y: window.scrollY };
+  window.scrollTo(0, 0);
+  document.body.classList.add('exporting-pdf');
+  try {
+    await duvaInsertSmartBreaks({
+      rootSelector: '#pdf-container',
+      pageHeightMM: 297, topMarginMM: 18, bottomMarginMM: 18
+    });
+    await runExportFn();
+  } finally {
+    document.body.classList.remove('exporting-pdf');
+    window.scrollTo(prev.x, prev.y);
+  }
+}
+
+/* === DUVA: html2pdf.js Export (fallback/temporary) === */
+async function generatePdfWithHtml2Pdf() {
+  // Show the PDF container and inject all dynamic content
+  showPDFContainer();
+  
+  // Give time for layout to settle
+  await new Promise(resolve => setTimeout(resolve, 100));
+  
+  const el = document.querySelector('#pdf-container');
+  if (!el) {
+    throw new Error('PDF container not found!');
+  }
+  
+  // === Inject all dynamic content ===
+  
+  // Inject Product Image Dynamically
+  const imageElement = document.querySelector('#product-image img');
+  const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
+  if (imageElement && pdfImageContainer) {
+    const imageUrl = imageElement.src;
+    pdfImageContainer.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; height: auto;">`;
+  }
+  
+  // Inject all PDF content
+  injectPdfImages();
+  injectPdfOrderingCode();
+  updateProductCodeInjection();
+  updateGeneratedCodeInjection();
+  updateSpecsTable();
+  injectPdfContent();
+  
+  // Wait for images to load
+  await duvaWaitForImages(el);
+  
+  // Inject icons after everything else is ready
+  injectPdfIcons();
+  
+  // Generate filename from ordering code
+  const orderingCodeElement = document.querySelector('.ordering-code-value') || document.getElementById('ordering-code-value');
+  const filename = (orderingCodeElement?.textContent?.trim() || 'DUVA-datasheet') + '.pdf';
+  
+  const opt = {
+    margin: [18,14,18,14],
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scrollY: 0, // CRITICAL: ignore page scroll
+      windowWidth: document.documentElement.scrollWidth,
+      scale: 2,
+      useCORS: true
+    },
+    pagebreak: { mode: ['css','legacy','avoid-all'] },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait'
+    }
+  };
+  
+  try {
+    await html2pdf().set(opt).from(el).save();
+  } finally {
+    // Always hide the PDF container after generation
+    hidePDFContainer();
+  }
+}
 
 // Initialize gallery auto-scroll when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
