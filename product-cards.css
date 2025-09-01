@@ -266,32 +266,32 @@
 
 /* === FLIP CARD SPECIFIC STYLES === */
 
-/* === SLIDE IN FROM BOTTOM ANIMATION (ACTIVE) === */
+/* === FADE IN WITH SCALE ANIMATION (ACTIVE) === */
 .flip-card-back {
   position: absolute !important;
   inset: 0% !important;
   z-index: 2 !important;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(50px) !important; /* Much bigger slide distance */
+  transform: scale(0.85) !important; /* Start smaller */
   width: 100% !important;
   height: 100% !important;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Smoother easing */
-  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Faster and smoother */
+  border: 1px solid transparent;
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0);
-  display: flex !important; /* Ensure it's flex when visible */
+  display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: rgba(255, 255, 255, 0.95) !important; /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) !important; /* Slides up to final position */
+  transform: scale(1) !important; /* Scale to full size */
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
@@ -303,7 +303,7 @@
 .flip-card:hover .flip-card-back {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) !important; /* Slides up to final position */
+  transform: scale(1) !important; /* Scale to full size */
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
@@ -345,7 +345,7 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.4s ease 0.3s; /* Delay to wait for slide animation to complete */
+  transition: left 0.4s ease 0.2s; /* Delay to wait for scale animation to complete */
   z-index: 1;
 }
 
