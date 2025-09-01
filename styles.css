@@ -6609,7 +6609,16 @@ ARROWS:
 [data-theme="dark"] .main-filter-wrapper .text-block-17,
 [data-theme="dark"] .main-filter-wrapper .text-block-18,
 [data-theme="dark"] .main-filter-wrapper .text-block-19,
-[data-theme="dark"] .main-filter-wrapper .text-block-20 {
+[data-theme="dark"] .main-filter-wrapper .text-block-20,
+[data-theme="dark"] .main-filter-wrapper .text-block-30 {
+  color: var(--duva-text-secondary, #D1D1D1) !important;
+}
+
+/* Dark theme for mounting type */
+[data-theme="dark"] .mounting-type,
+[data-theme="dark"] .mounting-type-text,
+[data-theme="dark"] [class*="mounting"],
+[data-theme="dark"] [class*="Mounting"] {
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
@@ -6674,6 +6683,19 @@ ARROWS:
 /* Show the light grey search icon in dark mode */
 [data-theme="dark"] .search-icon.image-58,
 [data-theme="dark"] .magnifier-grey.svg.image-58 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Dark theme for Image 20 replacement with Image 59 */
+[data-theme="dark"] .image-20 {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+[data-theme="dark"] .image-59 {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
