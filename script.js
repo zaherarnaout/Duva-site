@@ -3157,20 +3157,22 @@ async function generatePdfWithHtml2Pdf() {
   const filename = (orderingCodeElement?.textContent?.trim() || 'DUVA-datasheet') + '.pdf';
   
   const opt = {
-    margin: [18,14,18,14],
+    margin: [10, 14, 16, 14], // top, right, bottom, left (mm)
     filename: filename,
     image: { type: 'jpeg', quality: 0.98 },
+    pagebreak: { mode: ['css', 'legacy', 'avoid-all'] },
     html2canvas: {
-      scrollY: 0, // CRITICAL: ignore page scroll
+      scrollY: 0,
       windowWidth: document.documentElement.scrollWidth,
       scale: 2,
       useCORS: true
+      // ❌ DO NOT set width/height here – let it grow to full content height
     },
-    pagebreak: { mode: ['css','legacy','avoid-all'] },
     jsPDF: {
       unit: 'mm',
       format: 'a4',
       orientation: 'portrait'
+      // ✅ No pixel format; let html2pdf do the multipage slicing
     }
   };
   
