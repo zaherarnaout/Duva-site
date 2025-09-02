@@ -8295,8 +8295,22 @@ body.exporting-pdf #pdf-container {
   background-color: #212121 !important; /* Force dark grey */
 }
 
-/* Simple and direct: Override ALL borders in dark mode */
-[data-theme="dark"] * {
+/* Override borders for main page elements in dark mode */
+[data-theme="dark"] .main-page-hero-section-wrapper,
+[data-theme="dark"] .main-page-categories-wrapper,
+[data-theme="dark"] .main-filter-wrapper,
+[data-theme="dark"] .filter-sections-wrapper,
+[data-theme="dark"] .filter-header-wrapper,
+[data-theme="dark"] .filter-right-wrapper,
+[data-theme="dark"] .fliter-right-wrapper,
+[data-theme="dark"] .cards-Container,
+[data-theme="dark"] .collection-item,
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .related-card,
+[data-theme="dark"] .flip-card-wrapper,
+[data-theme="dark"] .new-items-container,
+[data-theme="dark"] .gallery-section,
+[data-theme="dark"] .footer-section {
   border-color: #E4E3E3 !important; /* Force same border color */
 }
 
