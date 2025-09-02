@@ -85,7 +85,7 @@
 
 /* Dark theme support */
 [data-theme="dark"] .cards-Container {
-  background-color: var(--duva-bg-secondary, #2a2a2a);
+  background-color: var(--duva-d-grey, #212121);
   border-color: var(--duva-border-secondary, #333333);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -182,6 +182,19 @@
 [data-theme="dark"] .related-card {
   background-color: var(--duva-bg-secondary, #2a2a2a) !important;
   color: var(--duva-text-primary, #F4F5F6) !important;
+}
+
+/* Dark theme for front card text elements - only change color */
+[data-theme="dark"] .main-code-text,
+[data-theme="dark"] .item-description,
+[data-theme="dark"] .related-code {
+  color: var(--duva-light-grey, #F4F5F6) !important;
+}
+
+/* Dark theme for back-spec-item text elements - only change color */
+[data-theme="dark"] .back-spec-item,
+[data-theme="dark"] .back-spec-item * {
+  color: var(--duva-light-grey, #F4F5F6) !important;
 }
 
 [data-theme="dark"] .collection-item:hover,
