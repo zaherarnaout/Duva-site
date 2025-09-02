@@ -8214,6 +8214,8 @@ body.exporting-pdf #pdf-container {
   --duva-white: #212121 !important; /* Override to dark grey */
   --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
   --border-divider-light: #E4E3E3 !important; /* Keep same border color */
+  --duva-light-color-bg: var(--main-body-color, #212121) !important;
+  --light-color-bg: var(--main-body-color, #212121) !important;
 }
 
 /* Change all duva-light-color-bg elements to main-body-color in dark mode */
@@ -8223,12 +8225,6 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[class*="light-color-bg"],
 [data-theme="dark"] *[class*="duva-light-color"] {
   background-color: var(--main-body-color, #212121) !important; /* Use main-body-color */
-}
-
-/* Also try to override any CSS variable if it exists */
-[data-theme="dark"] {
-  --duva-light-color-bg: var(--main-body-color, #212121) !important;
-  --light-color-bg: var(--main-body-color, #212121) !important;
 }
 
 /* Change all duva-white text colors to light grey in dark mode */
@@ -8289,4 +8285,14 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[class*="duva-light-grey-bg"],
 [data-theme="dark"] *[class*="Duva-light-grey-bg"] {
   background-color: #000000 !important; /* Absolute black */
+}
+
+/* Force main background and borders in dark mode */
+[data-theme="dark"] body,
+[data-theme="dark"] html {
+  background-color: var(--duva-d-grey, #212121) !important;
+}
+
+[data-theme="dark"] * {
+  border-color: var(--border-divider-light, #E4E3E3) !important;
 }
