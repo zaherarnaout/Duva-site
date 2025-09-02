@@ -1765,14 +1765,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const isOpen = section.classList.toggle("open"); 
 
-        // Toggle rotation on both arrows (one will be visible, one hidden)
-        if (arrow) {
-          arrow.classList.toggle("rotated");
-          console.log('🔄 Light theme arrow rotated:', arrow.classList.contains('rotated'));
+        // Get current arrows based on current theme
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const lightArrow = section.querySelector('.accessories-arrow');
+        const darkArrow = section.querySelector('.accessories-arrow-wh');
+        
+        const visibleArrow = isDark ? darkArrow : lightArrow;
+        const hiddenArrow = isDark ? lightArrow : darkArrow;
+
+        // Toggle rotation on the visible arrow
+        if (visibleArrow) {
+          visibleArrow.classList.toggle("rotated");
+          console.log('🔄 Visible arrow rotated:', visibleArrow.classList.contains('rotated'), 'Theme:', document.documentElement.getAttribute('data-theme'));
         }
-        if (arrowDark) {
-          arrowDark.classList.toggle("rotated");
-          console.log('🔄 Dark theme arrow rotated:', arrowDark.classList.contains('rotated'));
+        
+        // Also toggle the hidden arrow to keep them in sync
+        if (hiddenArrow) {
+          hiddenArrow.classList.toggle("rotated");
         } 
 
  
@@ -4397,8 +4406,19 @@ if (typeof Webflow !== 'undefined') {
     // Re-initialize accessories toggle functionality
     const toggle = accessoriesSection.querySelector('.accessories-toggle');
     const wrapper = accessoriesSection.querySelector('.accessories-wrapper');
-    const arrow = accessoriesSection.querySelector('.accessories-arrow');
-    const arrowDark = accessoriesSection.querySelector('.accessories-arrow-wh');
+    
+    // Function to get current arrows based on theme
+    const getCurrentArrows = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const lightArrow = accessoriesSection.querySelector('.accessories-arrow');
+      const darkArrow = accessoriesSection.querySelector('.accessories-arrow-wh');
+      
+      if (isDark) {
+        return { visibleArrow: darkArrow, hiddenArrow: lightArrow };
+      } else {
+        return { visibleArrow: lightArrow, hiddenArrow: darkArrow };
+      }
+    };
 
     if (toggle && wrapper) {
       // Remove existing listeners to prevent duplicates
@@ -4408,14 +4428,18 @@ if (typeof Webflow !== 'undefined') {
       newToggle.addEventListener('click', function () {
         const isOpen = accessoriesSection.classList.toggle('open');
         
-        // Toggle rotation on both arrows (one will be visible, one hidden)
-        if (arrow) {
-          arrow.classList.toggle('rotated');
-          console.log('🔄 Light theme arrow rotated:', arrow.classList.contains('rotated'));
+        // Get current arrows based on current theme
+        const { visibleArrow, hiddenArrow } = getCurrentArrows();
+        
+        // Toggle rotation on the visible arrow
+        if (visibleArrow) {
+          visibleArrow.classList.toggle('rotated');
+          console.log('🔄 Visible arrow rotated:', visibleArrow.classList.contains('rotated'), 'Theme:', document.documentElement.getAttribute('data-theme'));
         }
-        if (arrowDark) {
-          arrowDark.classList.toggle('rotated');
-          console.log('🔄 Dark theme arrow rotated:', arrowDark.classList.contains('rotated'));
+        
+        // Also toggle the hidden arrow to keep them in sync
+        if (hiddenArrow) {
+          hiddenArrow.classList.toggle('rotated');
         }
 
         if (isOpen) {
