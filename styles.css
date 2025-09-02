@@ -8198,3 +8198,49 @@ body.exporting-pdf #pdf-container {
 }
 
 /* === END BACK TO TOP BUTTON === */
+
+/* === GLOBAL COLOR VARIABLE OVERRIDES FOR DARK THEME === */
+/* This changes ALL elements using specific color variables to dark theme colors */
+
+/* Change all duva-white backgrounds to dark grey in dark mode */
+[data-theme="dark"] *[style*="var(--duva-white)"],
+[data-theme="dark"] *[style*="duva-white"],
+[data-theme="dark"] *[class*="duva-white"] {
+  background-color: var(--duva-d-grey, #212121) !important;
+}
+
+/* Change all duva-white text colors to light grey in dark mode */
+[data-theme="dark"] *[style*="var(--duva-white)"] *,
+[data-theme="dark"] *[style*="duva-white"] *,
+[data-theme="dark"] *[class*="duva-white"] * {
+  color: var(--duva-light-grey, #F4F5F6) !important;
+}
+
+/* Change all duva-light-grey backgrounds to dark grey in dark mode */
+[data-theme="dark"] *[style*="var(--duva-light-grey)"],
+[data-theme="dark"] *[style*="duva-light-grey"],
+[data-theme="dark"] *[class*="duva-light-grey"] {
+  background-color: var(--duva-d-grey, #212121) !important;
+}
+
+/* Change all duva-d-grey text to light grey in dark mode */
+[data-theme="dark"] *[style*="var(--duva-d-grey)"],
+[data-theme="dark"] *[style*="duva-d-grey"],
+[data-theme="dark"] *[class*="duva-d-grey"] {
+  color: var(--duva-light-grey, #F4F5F6) !important;
+}
+
+/* Keep all border-divider-light elements using the same border color in both themes */
+[data-theme="dark"] *[style*="var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-divider-light"],
+[data-theme="dark"] *[class*="border-divider-light"] {
+  border-color: var(--border-divider-light, #E4E3E3) !important;
+}
+
+/* Change all Duva-light-grey-bg elements to absolute black in dark mode */
+[data-theme="dark"] *[style*="Duva-light-grey-bg"],
+[data-theme="dark"] *[style*="duva-light-grey-bg"],
+[data-theme="dark"] *[class*="duva-light-grey-bg"],
+[data-theme="dark"] *[class*="Duva-light-grey-bg"] {
+  background-color: #000000 !important; /* Absolute black */
+}
