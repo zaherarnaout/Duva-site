@@ -1754,18 +1754,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const wrapper = document.querySelector(".accessories-wrapper"); 
 
     const arrow = document.querySelector(".accessories-arrow"); 
-
+    const arrowDark = document.querySelector(".accessories-arrow-wh");
     const section = document.querySelector(".accessories-section"); 
 
  
 
-    if (toggle && wrapper && arrow && section) { 
+    if (toggle && wrapper && section) { 
 
       toggle.addEventListener("click", function () { 
 
         const isOpen = section.classList.toggle("open"); 
 
-        arrow.classList.toggle("rotated"); 
+        // Toggle rotation on both arrows (one will be visible, one hidden)
+        if (arrow) arrow.classList.toggle("rotated"); 
+        if (arrowDark) arrowDark.classList.toggle("rotated"); 
 
  
 
@@ -4390,15 +4392,19 @@ if (typeof Webflow !== 'undefined') {
     const toggle = accessoriesSection.querySelector('.accessories-toggle');
     const wrapper = accessoriesSection.querySelector('.accessories-wrapper');
     const arrow = accessoriesSection.querySelector('.accessories-arrow');
+    const arrowDark = accessoriesSection.querySelector('.accessories-arrow-wh');
 
-    if (toggle && wrapper && arrow) {
+    if (toggle && wrapper) {
       // Remove existing listeners to prevent duplicates
       const newToggle = toggle.cloneNode(true);
       toggle.parentNode.replaceChild(newToggle, toggle);
       
       newToggle.addEventListener('click', function () {
         const isOpen = accessoriesSection.classList.toggle('open');
-        arrow.classList.toggle('rotated');
+        
+        // Toggle rotation on both arrows (one will be visible, one hidden)
+        if (arrow) arrow.classList.toggle('rotated');
+        if (arrowDark) arrowDark.classList.toggle('rotated');
 
         if (isOpen) {
           wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
