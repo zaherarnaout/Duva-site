@@ -749,24 +749,23 @@ display: none !important;
 
 .accessories-arrow { 
 
-transition: transform 0.3s ease; 
-
-} 
-
-
-
-.accessories-arrow.rotated { 
-
-transform: rotate(180deg); 
+transition: transform 0.3s ease !important; 
 
 }
 
-/* Dark theme arrow rotation - same as light theme */
+/* Target the div wrapper for rotation */
+.accessories-arrow.rotated,
 .accessories-arrow-wh.rotated { 
 
-transform: rotate(180deg); 
+transform: rotate(180deg) !important; 
 
 } 
+
+
+
+/* Removed - now handled by wrapper rule above */
+
+/* Removed - now handled by wrapper rule above */ 
 
 /* === Custom Zoom Classes for JS Refactor === */
 .zoomed {
@@ -7001,17 +7000,7 @@ body.theme-dark .cards-Container {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Ensure both arrows have rotation capability with maximum specificity */
-.accessories-section .accessories-arrow-wh.rotated,
-[data-theme="dark"] .accessories-section .accessories-arrow-wh.rotated {
-  transform: rotate(180deg) !important;
-}
-
-/* Debug: Force accessories arrow rotation to work */
-.accessories-section .accessories-arrow-wh.rotated {
-  transform: rotate(180deg) !important;
-  transition: transform 0.3s ease !important;
-}
+/* Removed - now handled by wrapper rule above */
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
 /* Ensures proper offset when scrolling to sections with fixed header */
