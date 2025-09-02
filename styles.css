@@ -1085,7 +1085,7 @@ opacity: 1 !important;
   overflow-wrap: break-word;
 }
 .pdf-footer {
-  font-size: 10px;
+  font-size: var(--btn-size, 10px);
   margin-top: 20px;
   text-align: center;
   color: #666;
@@ -1621,14 +1621,14 @@ opacity: 1 !important;
 #pdf-container .family-name .text-block-13 {
   writing-mode: horizontal-tb !important;
   transform: none !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
+  font-size: var(--btn-size, 14px) !important;
+  font-weight: var(--btn-weight, 400) !important;
   color: #212121 !important;
-  line-height: 20px !important;
+  line-height: var(--btn-height, 20px) !important;
   margin-bottom: 4px !important;
   text-align: right !important;
   padding-left: 4px !important;
-  font-family: "Gotham", Arial, sans-serif !important;
+  font-family: var(--section-title, Gotham, Georgia, sans-serif) !important;
   font-style: normal !important;
   font-variant: normal !important;
   text-decoration: none !important;
@@ -1737,7 +1737,7 @@ opacity: 1 !important;
 /* Override for PDF container - more specific */
 #pdf-container .overview-header {
   font-size: var(--btn-size, 15px) !important;
-  font-weight: 500 !important;
+  font-weight: var(--btn-weight, 500) !important;
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -1761,7 +1761,7 @@ opacity: 1 !important;
 
 /* Override for PDF container - more specific */
 #pdf-container .text-block-14 {
-  font-size: 13px !important;
+  font-size: var(--btn-size, 13px) !important;
   color: #222 !important;
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
@@ -1779,7 +1779,7 @@ opacity: 1 !important;
 
 /* Override for PDF container - more specific */
 #pdf-container .key-features {
-  font-size: 13px !important;
+  font-size: var(--btn-size, 13px) !important;
   color: #222 !important;
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
@@ -2535,8 +2535,8 @@ opacity: 1 !important;
 
 #pdf-container .product-code {
   color: #C0392B !important;
-  font-weight: 700 !important;
-  font-size: 15px !important;
+  font-weight: var(--btn-weight, 700) !important;
+  font-size: var(--btn-size, 15px) !important;
   margin-bottom: 8px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -2545,8 +2545,8 @@ opacity: 1 !important;
 }
 #pdf-container .generated-code {
   color: #111 !important;
-  font-weight: 700 !important;
-  font-size: 15px !important;
+  font-weight: var(--btn-weight, 700) !important;
+  font-size: var(--btn-size, 15px) !important;
   margin-bottom: 8px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -2565,11 +2565,11 @@ opacity: 1 !important;
 }
 #pdf-container .specifications-full-width .text-block-16 .label {
   color: #212121 !important;
-  font-weight: 500 !important;
+  font-weight: var(--btn-weight, 500) !important;
 }
 #pdf-container .specifications-full-width .text-block-16 .value {
   color: #C0392B !important;
-  font-weight: 500 !important;
+  font-weight: var(--btn-weight, 500) !important;
 }
 
 /* === PDF Accessory Styling (Override Conflicts) === */
@@ -2624,14 +2624,14 @@ opacity: 1 !important;
   border-radius: 0 !important;
 }
 #pdf-container .accessories-pdf-section .accessory-title {
-  font-size: 13px !important;
-  font-weight: bold !important;
+  font-size: var(--btn-size, 13px) !important;
+  font-weight: var(--btn-weight, 700) !important;
   color: #212121 !important;
   margin: 0 !important;
 }
 #pdf-container .accessories-pdf-section .accessory-code {
-  font-size: 14px !important;
-  font-weight: bold !important;
+  font-size: var(--btn-size, 14px) !important;
+  font-weight: var(--btn-weight, 700) !important;
   color: #C0392B !important;
   margin: 0 !important;
 }
@@ -3160,46 +3160,46 @@ opacity: 1 !important;
 /* === Global Gotham Font Implementation === */
 /* Override all font families to use Gotham */
 * {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Specific overrides for elements that might need different font weights */
 h1, h2, h3, h4, h5, h6 {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--section-title, Gotham, Arial, sans-serif) !important;
 }
 
 p, span, div, a, button, input, textarea, select {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Ensure form elements use Gotham */
 input, textarea, select, button {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Navigation elements */
 nav, .nav, .navigation {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Menu elements */
 .menu-wrapper, .menu-panel, .menu-overlay {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Related items */
 .related-section {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Product elements */
 .product-title, .product-description, .product-price {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 /* Footer elements */
 footer, .footer {
-  font-family: Gotham, Arial, sans-serif !important;
+  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
 }
 
 
@@ -3836,7 +3836,7 @@ ARROWS:
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: var(--btn-weight, 600);
   letter-spacing: 0.5px;
 }
 
@@ -4222,8 +4222,8 @@ ARROWS:
   color: white;
   border-radius: 50%;
   padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--btn-size, 11px);
+  font-weight: var(--btn-weight, 700);
   position: absolute;
   top: -8px;
   right: -8px;
@@ -4464,7 +4464,7 @@ ARROWS:
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: var(--btn-weight, 600);
   letter-spacing: 0.5px;
 }
 
@@ -4519,7 +4519,7 @@ ARROWS:
   .filter-apply-button {
     min-height: 48px;
     padding: 12px 24px;
-    font-size: 16px;
+    font-size: var(--btn-size, 16px);
   }
   
   .filter-header-wrapper {
