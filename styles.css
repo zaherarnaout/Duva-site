@@ -8296,3 +8296,8 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] * {
   border-color: var(--border-divider-light, #E4E3E3) !important;
 }
+
+/* DEBUG: Test if dark theme is working at all */
+[data-theme="dark"] * {
+  background-color: #FF0000 !important; /* BRIGHT RED for debugging */
+}
