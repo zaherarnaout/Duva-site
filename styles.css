@@ -6828,12 +6828,26 @@ body.theme-dark .cards-Container {
   color: #212121;
 }
 
+/* Dark theme for read more text */
+[data-theme="dark"] #new-items .read-more .text-block-86 {
+  color: var(--duva-light-grey, #F4F5F6) !important; /* Light grey on dark mode */
+}
+
 /* Read more arrow styling - following accessories-arrow pattern */
 #new-items .read-more .image-52 {
   width: 16px;
   height: 16px;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   will-change: transform !important;
+}
+
+/* Dark theme image swapping for read more button */
+[data-theme="dark"] #new-items .read-more .image-52 {
+  display: none !important; /* Hide light theme image on dark mode */
+}
+
+[data-theme="dark"] #new-items .read-more .image-62 {
+  display: block !important; /* Show dark theme image on dark mode */
 }
 
 /* Hover effects - arrow only */
@@ -6852,6 +6866,15 @@ body.theme-dark .cards-Container {
   outline: 2px solid var(--duva-red, #C0392B);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Base styles for dark theme read more button (hidden by default) */
+#new-items .read-more .image-62 {
+  width: 16px;
+  height: 16px;
+  display: none; /* Hidden by default for light theme */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform !important;
 }
 
 /* Responsive adjustments */
