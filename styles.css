@@ -6578,6 +6578,14 @@ body.theme-dark .cards-Container {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* DEBUG: Force cards-Container to be RED in dark mode so we can see if it's working */
+html[data-theme="dark"] .cards-Container,
+body[data-theme="dark"] .cards-Container,
+body.theme-dark .cards-Container {
+  background-color: #FF0000 !important; /* BRIGHT RED for debugging */
+  border: 5px solid #00FF00 !important; /* BRIGHT GREEN border for debugging */
+}
+
 /* Dark theme border override for header-section */
 [data-theme="dark"] .header-section {
   border-color: var(--duva-border-secondary, #333333) !important;
