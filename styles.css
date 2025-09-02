@@ -759,6 +759,13 @@ transition: transform 0.3s ease;
 
 transform: rotate(180deg); 
 
+}
+
+/* Dark theme arrow rotation - same as light theme */
+.accessories-arrow-wh.rotated { 
+
+transform: rotate(180deg); 
+
 } 
 
 /* === Custom Zoom Classes for JS Refactor === */
