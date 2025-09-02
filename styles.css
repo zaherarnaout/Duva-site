@@ -6931,6 +6931,7 @@ body.theme-dark .cards-Container {
 /* Base styles for dark theme dropdown arrow (hidden by default) */
 .Dropdown-arrow-wh {
   display: none; /* Hidden by default for light theme */
+  transition: transform 0.3s ease; /* Same transition as original arrow */
 }
 
 /* Dark theme image swapping for dropdown arrow - handle both cases */
@@ -6941,6 +6942,11 @@ body.theme-dark .cards-Container {
 
 [data-theme="dark"] .Dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
+}
+
+/* Ensure dark theme arrow rotates when dropdown is open */
+[data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh {
+  transform: rotate(180deg) !important;
 }
 
 /* === ACCESSORIES SECTION IMAGE DARK THEME === */
@@ -6962,6 +6968,7 @@ body.theme-dark .cards-Container {
 /* Base styles for dark theme accessories arrow (hidden by default) */
 .accessories-section .accessories-arrow-wh {
   display: none; /* Hidden by default for light theme */
+  transition: transform 0.3s ease; /* Same transition as original arrow */
 }
 
 /* Dark theme image swapping for accessories arrow */
@@ -6971,6 +6978,11 @@ body.theme-dark .cards-Container {
 
 [data-theme="dark"] .accessories-section .accessories-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
+}
+
+/* Ensure both arrows have rotation capability */
+.accessories-section .accessories-arrow-wh.rotated {
+  transform: rotate(180deg) !important;
 }
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
