@@ -5244,9 +5244,7 @@ ARROWS:
   transform: rotate(180deg) !important;
 }
 
-.accessories-arrow.rotated {
-  transform: rotate(180deg) !important;
-}
+/* Removed duplicate rule - using the original one with transition */
 
 /* === Ensure Lightbox Functionality === */
 .w-lightbox-trigger {
