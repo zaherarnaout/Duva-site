@@ -753,9 +753,11 @@ transition: transform 0.3s ease !important;
 
 }
 
-/* Target the div wrapper for rotation */
+/* Target the div wrapper for rotation with maximum specificity */
 .accessories-arrow.rotated,
-.accessories-arrow-wh.rotated { 
+.accessories-arrow-wh.rotated,
+.accessories-toggle .accessories-arrow.rotated,
+.accessories-toggle .accessories-arrow-wh.rotated { 
 
 transform: rotate(180deg) !important; 
 
