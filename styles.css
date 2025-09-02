@@ -8242,6 +8242,13 @@ body.exporting-pdf #pdf-container {
   color: var(--duva-light-grey, #F4F5F6) !important;
 }
 
+/* Change all duva-d-grey backgrounds to duva-light-grey in dark mode */
+[data-theme="dark"] *[style*="var(--duva-d-grey)"],
+[data-theme="dark"] *[style*="duva-d-grey"],
+[data-theme="dark"] *[class*="duva-d-grey"] {
+  background-color: var(--duva-light-grey, #F4F5F6) !important;
+}
+
 /* Keep all border-divider-light elements using the same border color in both themes */
 [data-theme="dark"] *[style*="var(--border-divider-light)"],
 [data-theme="dark"] *[style*="border-divider-light"],
