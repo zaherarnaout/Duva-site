@@ -7013,10 +7013,22 @@ body.theme-dark .cards-Container {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Ensure both arrows have rotation capability */
+/* Ensure both arrows have rotation capability with maximum specificity */
 .accessories-section .accessories-arrow.rotated,
-.accessories-section .accessories-arrow-wh.rotated {
+.accessories-section .accessories-arrow-wh.rotated,
+.accessories-toggle .accessories-arrow.rotated,
+.accessories-toggle .accessories-arrow-wh.rotated {
   transform: rotate(180deg) !important;
+  -webkit-transform: rotate(180deg) !important;
+  -moz-transform: rotate(180deg) !important;
+  -ms-transform: rotate(180deg) !important;
+  -o-transform: rotate(180deg) !important;
+}
+
+/* Force transition property to include transform */
+.accessories-section .accessories-arrow,
+.accessories-section .accessories-arrow-wh {
+  transition: transform 0.3s ease, opacity 0.3s ease !important;
 }
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
