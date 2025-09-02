@@ -6523,6 +6523,11 @@ ARROWS:
   background-color: var(--duva-bg-primary) !important;
 }
 
+/* Dark theme for product page main background */
+[data-theme="dark"] body {
+  background-color: var(--duva-d-grey, #212121) !important;
+}
+
 /* Dark theme for specific sections */
 [data-theme="dark"] .hero-section,
 [data-theme="dark"] .product-section,
