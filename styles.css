@@ -6569,6 +6569,11 @@ ARROWS:
   background-color: var(--duva-d-grey, #212121) !important;
 }
 
+/* SIMPLE DEBUG: Make ALL dark theme elements have a bright blue background */
+[data-theme="dark"] * {
+  background-color: #0000FF !important; /* BRIGHT BLUE for everything in dark mode */
+}
+
 /* Force dark theme for cards-Container with maximum specificity */
 html[data-theme="dark"] .cards-Container,
 body[data-theme="dark"] .cards-Container,
