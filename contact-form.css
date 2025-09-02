@@ -135,18 +135,18 @@ html.modal-open::-webkit-scrollbar {
 
 .text-block-58 {
   margin-bottom: 20px;
-  font-family: Gotham Rounded, Georgia, sans-serif;
-  font-size: 28px;
-  line-height: 30px;
+  font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--section-title-size, 28px);
+  line-height: var(--section-title-height, 30px);
   color: #212121;
 }
 
 .text-block-57 {
   margin-bottom: 40px;
-  font-family: Gotham Rounded, Georgia, sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 25px;
+  font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--section-title-size, 18px);
+  font-weight: var(--section-title-weight, 500);
+  line-height: var(--section-title-height, 25px);
   color: #666;
 }
 
@@ -180,10 +180,10 @@ html.modal-open::-webkit-scrollbar {
 .field-label-2 {
   margin-bottom: 0;
   margin-left: 20px;
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 25px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 16px);
+  font-weight: var(--btn-weight, 300);
+  line-height: var(--btn-height, 25px);
   color: #212121;
 }
 
@@ -194,8 +194,8 @@ html.modal-open::-webkit-scrollbar {
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 14px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
   transition: border-color 0.3s ease;
 }
 
@@ -206,8 +206,8 @@ html.modal-open::-webkit-scrollbar {
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 14px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
   transition: border-color 0.3s ease;
 }
 
@@ -220,8 +220,8 @@ html.modal-open::-webkit-scrollbar {
   padding-top: 0;
   padding-bottom: 0;
   height: 30px;
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 14px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
