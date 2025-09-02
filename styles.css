@@ -6912,6 +6912,51 @@ body.theme-dark .cards-Container {
 
 /* === END NEW ITEMS READ MORE TOGGLE === */
 
+/* === DOWNLOAD ARROW DARK THEME === */
+/* Base styles for dark theme download arrow (hidden by default) */
+.download-right .download-arrow-wh {
+  display: none; /* Hidden by default for light theme */
+}
+
+/* Dark theme image swapping for download arrow */
+[data-theme="dark"] .download-right .download-arrow {
+  display: none !important; /* Hide light theme arrow on dark mode */
+}
+
+[data-theme="dark"] .download-right .download-arrow-wh {
+  display: block !important; /* Show dark theme arrow on dark mode */
+}
+
+/* === DROPDOWN ARROW DARK THEME === */
+/* Base styles for dark theme dropdown arrow (hidden by default) */
+.Dropdown-arrow-wh {
+  display: none; /* Hidden by default for light theme */
+}
+
+/* Dark theme image swapping for dropdown arrow */
+[data-theme="dark"] .dropdown-arrow {
+  display: none !important; /* Hide light theme arrow on dark mode */
+}
+
+[data-theme="dark"] .Dropdown-arrow-wh {
+  display: block !important; /* Show dark theme arrow on dark mode */
+}
+
+/* === ACCESSORIES SECTION IMAGE DARK THEME === */
+/* Base styles for dark theme accessories image (hidden by default) */
+.accessories-section .image-63 {
+  display: none; /* Hidden by default for light theme */
+}
+
+/* Dark theme image swapping for accessories section */
+[data-theme="dark"] .accessories-section .image-22 {
+  display: none !important; /* Hide light theme image on dark mode */
+}
+
+[data-theme="dark"] .accessories-section .image-63 {
+  display: block !important; /* Show dark theme image on dark mode */
+}
+
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
 /* Ensures proper offset when scrolling to sections with fixed header */
 
