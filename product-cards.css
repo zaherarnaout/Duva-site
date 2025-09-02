@@ -10,7 +10,7 @@
   grid-row-gap: 12px;
   border: 1px solid var(--border-divider-light);
   border-radius: var(--border-4px-cornner);
-  background-color: var(--duva-bg-primary, var(--duva-white));
+  background-color: var(--duva-bg-primary, #ffffff);
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
