@@ -8293,11 +8293,10 @@ body.exporting-pdf #pdf-container {
   background-color: var(--duva-d-grey, #212121) !important;
 }
 
-[data-theme="dark"] * {
+/* Only target specific elements that need border color, not ALL elements */
+[data-theme="dark"] .border-divider-light,
+[data-theme="dark"] [class*="border"],
+[data-theme="dark"] [style*="border"] {
   border-color: var(--border-divider-light, #E4E3E3) !important;
 }
 
-/* DEBUG: Test if dark theme is working at all */
-[data-theme="dark"] * {
-  background-color: #FF0000 !important; /* BRIGHT RED for debugging */
-}
