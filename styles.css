@@ -3805,32 +3805,7 @@ ARROWS:
 
 
 
-/* 4.4. Filter Reset Button (NO HOVER EFFECTS) */
-.filter-reset-button {
-  /* Just a wrapper - no styling needed */
-  background: none !important;
-  border: none !important;
-  color: inherit !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  transform: none !important;
-  transition: none !important;
-}
-
-.filter-reset-button:hover,
-.filter-reset-button:focus,
-.filter-reset-button:active {
-  background: none !important;
-  border: none !important;
-  color: inherit !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  transform: none !important;
-  transition: none !important;
-  outline: none !important;
-}
+/* 4.4. Filter Reset Button - Styles moved to duva-Fliter-style.css */
 
 /* 4.5. Button 2 Specific Shimmer Effect (NOT reset-button div) */
 .button-2 {
@@ -3897,7 +3872,6 @@ ARROWS:
   position: relative !important;
   overflow: hidden;
   transition: all 0.3s ease;
-  background-color: var(--duva-d-grey, #212121);
 }
 
 .fliter-right-wrapper::before {
@@ -6633,17 +6607,7 @@ ARROWS:
   color: var(--duva-text-secondary, #D1D1D1) !important;
 }
 
-/* Light mode for text blocks in fliter-right-wrapper - only change color */
-.main-filter-wrapper .text-block-31,
-.main-filter-wrapper .text-block-32 {
-  color: var(--duva-light-grey, #F4F5F6) !important;
-}
 
-/* Dark theme for text blocks in fliter-right-wrapper - only change color */
-[data-theme="dark"] .main-filter-wrapper .text-block-31,
-[data-theme="dark"] .main-filter-wrapper .text-block-32 {
-  color: var(--duva-d-grey, #212121) !important;
-}
 
 /* Dark theme for mounting type */
 [data-theme="dark"] .mounting-type,
