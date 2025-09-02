@@ -6569,6 +6569,15 @@ ARROWS:
   background-color: var(--duva-d-grey, #212121) !important;
 }
 
+/* Force dark theme for cards-Container with maximum specificity */
+html[data-theme="dark"] .cards-Container,
+body[data-theme="dark"] .cards-Container,
+body.theme-dark .cards-Container {
+  background-color: var(--duva-d-grey, #212121) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
 /* Dark theme border override for header-section */
 [data-theme="dark"] .header-section {
   border-color: var(--duva-border-secondary, #333333) !important;
