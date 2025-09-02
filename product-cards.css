@@ -10,7 +10,7 @@
   grid-row-gap: 12px;
   border: 1px solid var(--border-divider-light);
   border-radius: var(--border-4px-cornner);
-  background-color: var(--duva-bg-primary, #ffffff);
+  background-color: var(--duva-bg-primary, #f4f5f6);
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
@@ -318,7 +318,7 @@
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(244, 245, 246, 0.95) !important;
 }
 
 /* === DARK THEME SUPPORT FOR FLIP CARDS === */
