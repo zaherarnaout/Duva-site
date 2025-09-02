@@ -6933,8 +6933,9 @@ body.theme-dark .cards-Container {
   display: none; /* Hidden by default for light theme */
 }
 
-/* Dark theme image swapping for dropdown arrow - simplified selectors */
-[data-theme="dark"] .dropdown-arrow {
+/* Dark theme image swapping for dropdown arrow - handle both cases */
+[data-theme="dark"] .dropdown-arrow,
+[data-theme="dark"] .Dropdown-arrow {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
@@ -6955,6 +6956,21 @@ body.theme-dark .cards-Container {
 
 [data-theme="dark"] .accessories-section .image-63 {
   display: block !important; /* Show dark theme image on dark mode */
+}
+
+/* === ACCESSORIES ARROW DARK THEME === */
+/* Base styles for dark theme accessories arrow (hidden by default) */
+.accessories-section .accessories-arrow-wh {
+  display: none; /* Hidden by default for light theme */
+}
+
+/* Dark theme image swapping for accessories arrow */
+[data-theme="dark"] .accessories-section .accessories-arrow {
+  display: none !important; /* Hide light theme arrow on dark mode */
+}
+
+[data-theme="dark"] .accessories-section .accessories-arrow-wh {
+  display: block !important; /* Show dark theme arrow on dark mode */
 }
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
