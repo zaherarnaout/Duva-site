@@ -10,7 +10,7 @@
   grid-row-gap: 12px;
   border: 1px solid var(--border-divider-light);
   border-radius: var(--border-4px-cornner);
-  background-color: var(--duva-bg-primary, #f4f5f6);
+  background-color: var(--duva-bg-primary, #ffffff);
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
@@ -86,12 +86,12 @@
 /* Dark theme support */
 [data-theme="dark"] .cards-Container {
   background-color: var(--duva-d-grey, #212121) !important;
-  border-color: var(--duva-border-secondary, #333333) !important;
+  border-color: var(--duva-border-primary, #E4E3E3) !important; /* Standard border color */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
 [data-theme="dark"] .cards-Container:hover {
-  border-color: var(--duva-red, #C0392B);
+  border-color: var(--duva-red, #C0392B) !important; /* Red border only on hover */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -318,7 +318,7 @@
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: rgba(244, 245, 246, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
 /* === DARK THEME SUPPORT FOR FLIP CARDS === */
