@@ -6582,83 +6582,13 @@ ARROWS:
   color: var(--duva-text-primary, #F4F5F6) !important;
 }
 
-/* Dark theme for filter text elements - keep dark color for important text, light grey for secondary */
-[data-theme="dark"] .main-filter-wrapper .text-block,
-[data-theme="dark"] .main-filter-wrapper .text-block-2,
-[data-theme="dark"] .main-filter-wrapper .text-block-3,
-[data-theme="dark"] .main-filter-wrapper .text-block-4,
-[data-theme="dark"] .main-filter-wrapper .text-block-5,
-[data-theme="dark"] .main-filter-wrapper .text-block-6,
-[data-theme="dark"] .main-filter-wrapper .text-block-7,
-[data-theme="dark"] .main-filter-wrapper .text-block-8,
-[data-theme="dark"] .main-filter-wrapper .text-block-9,
-[data-theme="dark"] .main-filter-wrapper .text-block-10,
-[data-theme="dark"] .main-filter-wrapper .text-block-11,
-[data-theme="dark"] .main-filter-wrapper .text-block-12,
-[data-theme="dark"] .main-filter-wrapper .text-block-13,
-[data-theme="dark"] .main-filter-wrapper .text-block-14,
-[data-theme="dark"] .main-filter-wrapper .text-block-15,
-[data-theme="dark"] .main-filter-wrapper .text-block-16,
-[data-theme="dark"] .main-filter-wrapper .text-block-17,
-[data-theme="dark"] .main-filter-wrapper .text-block-18,
-[data-theme="dark"] .main-filter-wrapper .text-block-19,
-[data-theme="dark"] .main-filter-wrapper .text-block-20,
-[data-theme="dark"] .main-filter-wrapper .text-block-30 {
-  color: var(--duva-text-secondary, #D1D1D1) !important;
-}
+/* Filter dark theme styles moved to duva-Fliter-style.css */
 
 
 
-/* Dark theme for mounting type */
-[data-theme="dark"] .mounting-type,
-[data-theme="dark"] .mounting-type-text,
-[data-theme="dark"] [class*="mounting"],
-[data-theme="dark"] [class*="Mounting"] {
-  color: var(--duva-text-secondary, #D1D1D1) !important;
-}
+/* Filter dark theme styles moved to duva-Fliter-style.css */
 
-/* Dark theme for filter buttons */
-[data-theme="dark"] .filter-apply-button {
-  background-color: var(--duva-bg-tertiary, #333333) !important;
-  color: var(--duva-text-primary, #F4F5F6) !important;
-  border-color: var(--duva-border-secondary, #333333) !important;
-}
-
-[data-theme="dark"] .filter-apply-button:hover {
-  background-color: var(--duva-red, #C0392B) !important;
-  color: var(--duva-text-secondary, #D1D1D1) !important;
-}
-
-/* Remove hover effect from filter reset button since it's just a wrapper */
-[data-theme="dark"] .filter-reset-button:hover {
-  background-color: transparent !important;
-  color: inherit !important;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* Dark theme for button 2 - light grey background with dark text */
-[data-theme="dark"] .button-2 {
-  background-color: var(--duva-light-grey, #F4F5F6) !important;
-  color: var(--duva-text-primary, #212121) !important;
-  border-color: var(--duva-border-secondary, #333333) !important;
-}
-
-[data-theme="dark"] .button-2:hover {
-  background-color: var(--duva-red, #C0392B) !important;
-  color: var(--duva-text-secondary, #D1D1D1) !important;
-}
-
-/* Dark theme for filter shimmer effects */
-[data-theme="dark"] .filter-header-wrapper-main::before,
-[data-theme="dark"] .filter-right-wrapper::before,
-[data-theme="dark"] .fliter-right-wrapper::before {
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.2), transparent) !important;
-}
-
-[data-theme="dark"] .button-2::before {
-  background: linear-gradient(90deg, transparent, rgba(244, 245, 246, 0.2), transparent) !important;
-}
+/* Filter dark theme styles moved to duva-Fliter-style.css */
 
 /* Dark theme for language toggle text */
 [data-theme="dark"] .lang-toggle-switch .lang-en,
