@@ -8256,6 +8256,13 @@ body.exporting-pdf #pdf-container {
   border-color: var(--border-divider-light, #E4E3E3) !important;
 }
 
+/* Change all duva-border-shadow elements to duva-border-shadow-d in dark mode */
+[data-theme="dark"] *[style*="var(--duva-border-shadow)"],
+[data-theme="dark"] *[style*="duva-border-shadow"],
+[data-theme="dark"] *[class*="duva-border-shadow"] {
+  box-shadow: var(--duva-border-shadow-d, 0 2px 5px rgba(0, 0, 0, 0.5)) !important;
+}
+
 /* Change all Duva-light-grey-bg elements to absolute black in dark mode */
 [data-theme="dark"] *[style*="Duva-light-grey-bg"],
 [data-theme="dark"] *[style*="duva-light-grey-bg"],
