@@ -6919,26 +6919,12 @@ body.theme-dark .cards-Container {
 }
 
 /* Dark theme image swapping for download arrow */
-[data-theme="dark"] .download-right .download-arrow {
+[data-theme="dark"] .download-arrow {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
-[data-theme="dark"] .download-right .download-arrow-wh {
-  display: block !important; /* Show dark theme arrow on dark mode */
-}
-
-/* DEBUG: Make sure dark theme download arrow is visible and working */
 [data-theme="dark"] .download-arrow-wh {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  /* Override Webflow's hidden state */
-  clip: auto !important;
-  clip-path: none !important;
-  position: static !important;
-  left: auto !important;
-  top: auto !important;
+  display: block !important; /* Show dark theme arrow on dark mode */
 }
 
 /* === DROPDOWN ARROW DARK THEME === */
@@ -6947,29 +6933,13 @@ body.theme-dark .cards-Container {
   display: none; /* Hidden by default for light theme */
 }
 
-/* Dark theme image swapping for dropdown arrow - target product info block specifically */
-[data-theme="dark"] .product-info-block .dropdown-arrow,
-[data-theme="dark"] .dropdown-wrapper .dropdown-arrow {
+/* Dark theme image swapping for dropdown arrow - simplified selectors */
+[data-theme="dark"] .dropdown-arrow {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
-[data-theme="dark"] .product-info-block .Dropdown-arrow-wh,
-[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh {
-  display: block !important; /* Show dark theme arrow on dark mode */
-}
-
-/* DEBUG: Make sure dark theme arrows are visible and working */
 [data-theme="dark"] .Dropdown-arrow-wh {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  /* Override Webflow's hidden state */
-  clip: auto !important;
-  clip-path: none !important;
-  position: static !important;
-  left: auto !important;
-  top: auto !important;
+  display: block !important; /* Show dark theme arrow on dark mode */
 }
 
 /* === ACCESSORIES SECTION IMAGE DARK THEME === */
