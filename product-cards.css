@@ -53,7 +53,7 @@
 .cards-Container:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-color: var(--duva-red, #C0392B);
+  border-color: var(--duva-border-primary, #E4E3E3); /* Keep standard border color */
   
 
 }
@@ -91,7 +91,7 @@
 }
 
 [data-theme="dark"] .cards-Container:hover {
-  border-color: var(--duva-red, #C0392B) !important; /* Red border only on hover */
+  border-color: var(--duva-border-primary, #E4E3E3); /* Keep standard border color */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -148,6 +148,8 @@
   position: relative;
   overflow: hidden;
   will-change: transform;
+  border: 1px solid var(--duva-border-primary, #E4E3E3); /* Standard border color */
+  border-radius: var(--border-4px-cornner, 4px);
 }
 
 /* === SHIMMER EFFECT FOR PRODUCT CARDS === */
@@ -173,7 +175,7 @@
 .related-card:not(.flip-card-wrapper):hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-  border-color: var(--duva-red, #C0392B) !important;
+  border-color: var(--duva-border-primary, #E4E3E3) !important; /* Standard border color */
 }
 
 /* === DARK THEME SUPPORT FOR PRODUCT CARDS === */
@@ -343,6 +345,7 @@
 .current-product:hover .flip-card-front {
   opacity: 0 !important;
   visibility: hidden !important;
+  transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster fade out */
 }
 
 .flip-card-wrapper:hover .flip-card-back,
@@ -353,6 +356,7 @@
   border-color: var(--duva-red, #C0392B) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
+  transition: opacity 0.1s ease, visibility 0.1s ease, transform 0.3s ease; /* Faster fade in */
 }
 
 /* === FALLBACK: Ensure back card shows on any hover === */
