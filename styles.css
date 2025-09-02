@@ -8266,6 +8266,16 @@ body.exporting-pdf #pdf-container {
   border-color: #E4E3E3 !important; /* Force same border color */
 }
 
+/* Target elements using border-divider-light CSS variable more specifically */
+[data-theme="dark"] *[style*="border-color: var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border: var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-top-color: var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-right-color: var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-bottom-color: var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-left-color: var(--border-divider-light)"] {
+  border-color: #E4E3E3 !important; /* Force same border color */
+}
+
 /* Change all duva-border-shadow elements to duva-border-shadow-d in dark mode */
 [data-theme="dark"] *[style*="var(--duva-border-shadow)"],
 [data-theme="dark"] *[style*="duva-border-shadow"],
