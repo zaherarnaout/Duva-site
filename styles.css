@@ -8216,6 +8216,7 @@ body.exporting-pdf #pdf-container {
   --border-divider-light: #E4E3E3 !important; /* Keep same border color */
   --duva-light-color-bg: var(--main-body-color, #212121) !important;
   --light-color-bg: var(--main-body-color, #212121) !important;
+  --main-body-color: #212121 !important; /* Ensure main body color is set */
 }
 
 /* Force Webflow duva-light-color-bg elements to use main-body-color in dark mode */
@@ -8288,13 +8289,19 @@ body.exporting-pdf #pdf-container {
   background-color: #000000 !important; /* Absolute black */
 }
 
-/* Force main background and borders in dark mode */
+/* Force main background and borders in dark mode with maximum specificity */
+html[data-theme="dark"] body,
+html[data-theme="dark"] html,
+body[data-theme="dark"] body,
+body[data-theme="dark"] html,
 [data-theme="dark"] body,
 [data-theme="dark"] html {
   background-color: var(--duva-d-grey, #212121) !important;
 }
 
-/* Override ALL Webflow borders in dark mode */
+/* Override ALL Webflow borders in dark mode with maximum specificity */
+html[data-theme="dark"] *,
+body[data-theme="dark"] *,
 [data-theme="dark"] * {
   border-color: var(--border-divider-light, #E4E3E3) !important;
 }
