@@ -6564,6 +6564,49 @@ ARROWS:
   background-color: var(--duva-bg-secondary) !important;
 }
 
+/* Dark theme border override for header-section */
+[data-theme="dark"] .header-section {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+/* Dark theme for main-header-wrapper and all borders within it */
+[data-theme="dark"] .main-header-wrapper {
+  background-color: var(--duva-bg-secondary, #2a2a2a) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+/* Dark theme for all borders within main-header-wrapper */
+[data-theme="dark"] .main-header-wrapper * {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+/* Dark theme for lang-toggle-switch and all borders within it */
+[data-theme="dark"] .lang-toggle-switch {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+[data-theme="dark"] .lang-toggle-switch * {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+/* Dark theme for search-input-style and all borders within it */
+[data-theme="dark"] .search-input-style {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+[data-theme="dark"] .search-input-style * {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+/* Dark theme for menu-wrapper and all borders within it */
+[data-theme="dark"] .menu-wrapper {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
+[data-theme="dark"] .menu-wrapper * {
+  border-color: var(--duva-border-secondary, #333333) !important;
+}
+
 /* Dark theme for main filter wrapper and filter sections */
 [data-theme="dark"] .main-filter-wrapper {
   background-color: var(--duva-bg-secondary, #2a2a2a) !important;
