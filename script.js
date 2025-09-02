@@ -298,11 +298,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.backgroundColor = "#fff"; 
 
-    ralInput.style.borderRadius = "20px"; 
+    ralInput.style.borderRadius = "var(--border-8px, 8px)"; 
 
     ralInput.style.cursor = "text"; 
     
-    ralInput.style.border = "1px solid var(--border-main-shadow)";
+    ralInput.style.border = "var(--border-main, 1px) solid var(--border-main-shadow)";
     
     ralInput.style.width = "280px";
     
@@ -904,11 +904,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.backgroundColor = "#fff"; 
 
-    ralInput.style.borderRadius = "20px"; 
+    ralInput.style.borderRadius = "var(--border-8px, 8px)"; 
 
     ralInput.style.cursor = "text"; 
     
-    ralInput.style.border = "1px solid var(--border-main-shadow)";
+    ralInput.style.border = "var(--border-main, 1px) solid var(--border-main-shadow)";
     
     ralInput.style.width = "280px";
     
