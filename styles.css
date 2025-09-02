@@ -760,7 +760,7 @@ transition: transform 0.3s ease !important;
 .accessories-toggle .accessories-arrow-wh.rotated { 
 
 transform: rotate(180deg) !important; 
-border: 15px solid red !important; /* Debug: very obvious visual change */
+
 
 }
 
@@ -2832,7 +2832,8 @@ opacity: 1 !important;
 
 /* Keep active state for thumbnails */
 .thumbnail-image.is-active {
-  border-color: var(--duva-red, #c0392b) !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
 }
 
@@ -3308,7 +3309,8 @@ footer, .footer {
 .main-page-categories-wrapper a:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: var(--duva-red, #C0392B) !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   background-color: var(--duva-bg-primary, #ffffff) !important;
 }
 
@@ -3585,11 +3587,13 @@ footer, .footer {
 .w-lightbox-thumbnail:hover {
   transform: translateY(-4px) scale(1.05) !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
-  border-color: var(--duva-red, #c0392b) !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
+  border-radius: var(--border-4px-cornner, 4px);
 }
 
 .w-lightbox-thumbnail.active {
-  border-color: var(--duva-red, #c0392b) !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.3) !important;
 }
 
@@ -4264,16 +4268,14 @@ ARROWS:
 .checkbox:hover {
   transform: scale(1.05) !important;
   box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25) !important;
-  border-color: var(--duva-red, #C0392B) !important;
-  border-style: solid !important;
-  border-width: 1px !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
 }
 
 .checkbox.active {
   background: var(--duva-red, #C0392B) !important;
-  border-color: var(--duva-red, #C0392B) !important;
-  border-style: solid !important;
-  border-width: 1px !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   transform: scale(1.08) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
   /* Ensure no white borders or backgrounds */
@@ -4362,12 +4364,14 @@ ARROWS:
 .accessory-checkbox:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border-color: var(--duva-red, #C0392B) !important;
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
 }
 
 .accessory-checkbox.active {
   background-color: #c0392b;
-  border-color: #c0392b;
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   width: 25px;
   height: 25px;
   transform: scale(1.08);
@@ -5371,13 +5375,15 @@ ARROWS:
 .footer-newsletter .newsletter-input:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
-  border-color: var(--duva-red, #C0392B);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   background-color: rgba(192, 57, 43, 0.05);
 }
 
 .footer-section .newsletter-input:invalid,
 .footer-newsletter .newsletter-input:invalid {
-  border: 1px solid var(--duva-red, #C0392B);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
 }
 
 /* === Webflow Form Styling === */
@@ -6979,7 +6985,7 @@ body.theme-dark .cards-Container {
 
 /* Debug: Test if dark theme selector is working */
 [data-theme="dark"] body {
-  border: 3px solid red !important; /* This should show a red border if dark theme is working */
+
 }
 
 /* === ACCESSORIES SECTION IMAGE DARK THEME === */
@@ -7481,7 +7487,8 @@ body.theme-dark .cards-Container {
 
 .email-capture-form input[type="email"]:focus {
   outline: none;
-  border-color: var(--duva-red);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
 }
 
@@ -7805,7 +7812,8 @@ body.theme-dark .cards-Container {
 .control-btn:hover {
   background: var(--duva-red);
   color: white;
-  border-color: var(--duva-red);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   transform: translateY(-1px);
 }
 
@@ -7867,7 +7875,8 @@ body.theme-dark .cards-Container {
 
 .search-input:focus {
   outline: none;
-  border-color: var(--duva-red);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
 }
 
@@ -7915,7 +7924,8 @@ body.theme-dark .cards-Container {
 .nav-btn:hover:not(:disabled) {
   background: var(--duva-red);
   color: white;
-  border-color: var(--duva-red);
+  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
+  border-radius: var(--border-4px-cornner, 4px);
   transform: translateY(-1px);
 }
 
@@ -8355,7 +8365,6 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] {
   --duva-white: #212121 !important; /* Override to dark grey */
   --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
-  --border-divider-light: #E4E3E3 !important; /* Keep same border color */
   --duva-light-color-bg: var(--main-body-color, #212121) !important;
   --light-color-bg: var(--main-body-color, #212121) !important;
   --main-body-color: #212121 !important; /* Ensure main body color is set */
@@ -8399,22 +8408,7 @@ body.exporting-pdf #pdf-container {
   background-color: #F4F5F6 !important; /* Force light grey background */
 }
 
-/* Keep all border-divider-light elements using the same border color in both themes */
-[data-theme="dark"] *[style*="var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border-divider-light"],
-[data-theme="dark"] *[class*="border-divider-light"] {
-  border-color: #E4E3E3 !important; /* Force same border color */
-}
 
-/* Target elements using border-divider-light CSS variable more specifically */
-[data-theme="dark"] *[style*="border-color: var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border: var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border-top-color: var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border-right-color: var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border-bottom-color: var(--border-divider-light)"],
-[data-theme="dark"] *[style*="border-left-color: var(--border-divider-light)"] {
-  border-color: #E4E3E3 !important; /* Force same border color */
-}
 
 /* Change all duva-border-shadow elements to duva-border-shadow-d in dark mode */
 [data-theme="dark"] *[style*="var(--duva-border-shadow)"],
