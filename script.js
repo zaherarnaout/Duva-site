@@ -1777,11 +1777,29 @@ document.addEventListener('DOMContentLoaded', function () {
         if (visibleArrow) {
           visibleArrow.classList.toggle("rotated");
           console.log('🔄 Visible arrow rotated:', visibleArrow.classList.contains('rotated'), 'Theme:', document.documentElement.getAttribute('data-theme'));
+          
+          // Force rotation with JavaScript if CSS isn't working
+          if (visibleArrow.classList.contains("rotated")) {
+            visibleArrow.style.transform = "rotate(180deg)";
+            visibleArrow.style.transition = "transform 0.3s ease";
+          } else {
+            visibleArrow.style.transform = "rotate(0deg)";
+            visibleArrow.style.transition = "transform 0.3s ease";
+          }
         }
         
         // Also toggle the hidden arrow to keep them in sync
         if (hiddenArrow) {
           hiddenArrow.classList.toggle("rotated");
+          
+          // Force rotation with JavaScript if CSS isn't working
+          if (hiddenArrow.classList.contains("rotated")) {
+            hiddenArrow.style.transform = "rotate(180deg)";
+            hiddenArrow.style.transition = "transform 0.3s ease";
+          } else {
+            hiddenArrow.style.transform = "rotate(0deg)";
+            hiddenArrow.style.transition = "transform 0.3s ease";
+          }
         } 
 
  
