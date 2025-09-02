@@ -8214,6 +8214,13 @@ body.exporting-pdf #pdf-container {
   --duva-white: #212121 !important; /* Override to dark grey */
 }
 
+/* Change all duva-light-color-bg elements to pure black in dark mode */
+[data-theme="dark"] *[style*="duva-light-color-bg"],
+[data-theme="dark"] *[class*="duva-light-color-bg"],
+[data-theme="dark"] *[class*="Duva-light-color-bg"] {
+  background-color: #000000 !important; /* Pure black */
+}
+
 /* Change all duva-white text colors to light grey in dark mode */
 [data-theme="dark"] *[style*="var(--duva-white)"] *,
 [data-theme="dark"] *[style*="duva-white"] *,
