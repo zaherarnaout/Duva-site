@@ -6933,12 +6933,14 @@ body.theme-dark .cards-Container {
   display: none; /* Hidden by default for light theme */
 }
 
-/* Dark theme image swapping for dropdown arrow */
-[data-theme="dark"] .dropdown-arrow {
+/* Dark theme image swapping for dropdown arrow - target product info block specifically */
+[data-theme="dark"] .product-info-block .dropdown-arrow,
+[data-theme="dark"] .dropdown-wrapper .dropdown-arrow {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
-[data-theme="dark"] .Dropdown-arrow-wh {
+[data-theme="dark"] .product-info-block .Dropdown-arrow-wh,
+[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
