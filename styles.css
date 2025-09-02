@@ -758,7 +758,6 @@ transition: transform 0.3s ease !important;
 .accessories-arrow-wh.rotated { 
 
 transform: rotate(180deg) !important; 
-border: 10px solid red !important; /* Debug: very obvious visual change */
 
 } 
 
