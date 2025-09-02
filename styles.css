@@ -762,6 +762,16 @@ transition: transform 0.3s ease !important;
 transform: rotate(180deg) !important; 
 border: 15px solid red !important; /* Debug: very obvious visual change */
 
+}
+
+/* Force rotation with maximum specificity and inline style override */
+.accessories-toggle .accessories-arrow.rotated,
+.accessories-toggle .accessories-arrow-wh.rotated {
+  transform: rotate(180deg) !important;
+  -webkit-transform: rotate(180deg) !important;
+  -moz-transform: rotate(180deg) !important;
+  -ms-transform: rotate(180deg) !important;
+  -o-transform: rotate(180deg) !important;
 } 
 
 
