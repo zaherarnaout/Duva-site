@@ -6580,6 +6580,13 @@ body.theme-dark .cards-Container {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* ALSO target the lowercase version that exists in other CSS files */
+[data-theme="dark"] .cards-container {
+  background-color: var(--duva-d-grey, #212121) !important;
+  border-color: var(--duva-border-secondary, #333333) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
 
 
 /* Dark theme border override for header-section */
