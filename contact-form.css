@@ -261,11 +261,11 @@ html.modal-open::-webkit-scrollbar {
 .textarea {
   border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
   border-radius: var(--border-8px, 8px);
-  font-family: Gotham, Georgia, sans-serif;
-  font-weight: 200;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-weight: var(--btn-weight, 200);
   min-height: 120px;
   resize: vertical;
-  font-size: 14px;
+  font-size: var(--btn-size, 14px);
   transition: border-color 0.3s ease;
 }
 
@@ -366,9 +366,9 @@ html.modal-open::-webkit-scrollbar {
   color: #212121; /* duva-d-grey */
   margin-bottom: 0;
   margin-left: 20px;
-  font-family: Gotham Rounded, Georgia, sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
+  font-family: var(--btn-font, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
+  line-height: var(--btn-height, 20px);
 }
 
 .link-15 {
@@ -388,8 +388,8 @@ input[type="email"],
 input[type="tel"],
 textarea {
   color: #212121 !important; /* Dark text by default (like filter section) */
-  font-family: Gotham, Georgia, sans-serif !important;
-  font-size: 14px !important;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
 }
 
 /* Select fields handled separately for placeholder styling */
@@ -437,8 +437,8 @@ input[type="email"],
 input[type="tel"],
 textarea {
   color: #212121 !important; /* Dark text by default (like filter section) */
-  font-family: Gotham, Georgia, sans-serif !important;
-  font-size: 14px !important;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
 }
 
 /* Select fields handled separately for placeholder styling */
@@ -451,10 +451,10 @@ input[type="submit"].submit-button,
   border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
   border-radius: var(--border-8px, 8px);
   background-color: #212121; /* btn-dark-bg */
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 14px; /* btn-size */
-  line-height: 1.4; /* btn-height */
-  font-weight: 600; /* Enhanced from filter button */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px); /* btn-size */
+  line-height: var(--btn-height, 20px); /* btn-height */
+  font-weight: var(--btn-weight, 600); /* Enhanced from filter button */
   text-align: center;
   width: 50%;
   margin-left: auto;
@@ -531,10 +531,10 @@ input[type="submit"].submit-button,
 .contact-close {
   border-radius: 8px;
   background-color: #212121; /* btn-dark-bg */
-  font-family: Gotham, Georgia, sans-serif;
-  font-size: 14px; /* btn-size */
-  line-height: 1.4; /* btn-height */
-  font-weight: 600; /* Enhanced from filter button */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px); /* btn-size */
+  line-height: var(--btn-height, 20px); /* btn-height */
+  font-weight: var(--btn-weight, 600); /* Enhanced from filter button */
   text-align: center;
   width: 150px;
   margin-right: 20px;
@@ -592,8 +592,8 @@ input[type="submit"].submit-button,
 }
 
 .selected-value { 
-  font-size: 18px; 
-  font-weight: bold; 
+  font-size: var(--section-title-size, 18px); 
+  font-weight: var(--btn-weight, 700); 
   color: #111; 
 }
 
@@ -628,7 +628,7 @@ input[type="submit"].submit-button,
 
 .dropdown-option { 
   padding: 10px 12px; 
-  font-size: 18px; 
+  font-size: var(--section-title-size, 18px); 
   cursor: pointer; 
   width: 100%; 
   box-sizing: border-box; 
@@ -680,10 +680,10 @@ input[type="submit"].submit-button,
 /* Error message styling */
 .field-error {
   color: #C0392B !important;
-  font-size: 12px !important;
+  font-size: var(--btn-size, 12px) !important;
   margin-top: 5px !important;
-  font-family: 'Gotham', sans-serif !important;
-  font-weight: 400 !important;
+  font-family: var(--btn-font, 'Gotham', sans-serif) !important;
+  font-weight: var(--btn-weight, 400) !important;
 }
 
 /* Loading state for submit button */
@@ -700,8 +700,8 @@ input[type="submit"].submit-button,
   border-radius: 8px !important;
   margin-top: 20px !important;
   text-align: center !important;
-  font-family: 'Gotham', sans-serif !important;
-  font-size: 14px !important;
+  font-family: var(--btn-font, 'Gotham', sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
   /* Remove display: none to allow Webflow to show success message */
 }
 
@@ -712,11 +712,11 @@ input[type="submit"].submit-button,
   border: var(--border-main, 1px) solid #212121 !important;
   border-radius: var(--border-8px, 8px) !important;
   padding: 40px 20px !important;
-  font-family: 'Gotham', Georgia, sans-serif !important;
-  font-size: 16px !important;
-  font-weight: normal !important;
+  font-family: var(--btn-font, 'Gotham', Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 16px) !important;
+  font-weight: var(--btn-weight, 400) !important;
   text-align: center !important;
-  line-height: 1.4 !important;
+  line-height: var(--btn-height, 20px) !important;
   margin-top: 20px !important;
   position: relative !important;
   display: none; /* Hidden by default, Webflow will show it */
