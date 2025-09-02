@@ -6931,22 +6931,38 @@ body.theme-dark .cards-Container {
 /* Base styles for dark theme dropdown arrow (hidden by default) */
 .Dropdown-arrow-wh {
   display: none; /* Hidden by default for light theme */
-  transition: transform 0.3s ease; /* Same transition as original arrow */
+  transition: transform 0.3s ease !important; /* Same transition as original arrow */
 }
 
-/* Dark theme image swapping for dropdown arrow - handle both cases */
+/* Dark theme image swapping for dropdown arrow - handle both cases with maximum specificity */
 [data-theme="dark"] .dropdown-arrow,
-[data-theme="dark"] .Dropdown-arrow {
+[data-theme="dark"] .Dropdown-arrow,
+[data-theme="dark"] * .dropdown-arrow,
+[data-theme="dark"] * .Dropdown-arrow {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
-[data-theme="dark"] .Dropdown-arrow-wh {
+[data-theme="dark"] .Dropdown-arrow-wh,
+[data-theme="dark"] * .Dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Ensure dark theme arrow rotates when dropdown is open */
-[data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh {
+/* Ensure dark theme arrow rotates when dropdown is open with maximum specificity */
+[data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh,
+[data-theme="dark"] * .dropdown-wrapper.open .Dropdown-arrow-wh {
   transform: rotate(180deg) !important;
+}
+
+/* Debug: Force dropdown arrow to show in dark mode */
+[data-theme="dark"] .Dropdown-arrow-wh {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Debug: Test if dark theme selector is working */
+[data-theme="dark"] body {
+  border: 3px solid red !important; /* This should show a red border if dark theme is working */
 }
 
 /* === ACCESSORIES SECTION IMAGE DARK THEME === */
@@ -6968,7 +6984,7 @@ body.theme-dark .cards-Container {
 /* Base styles for dark theme accessories arrow (hidden by default) */
 .accessories-section .accessories-arrow-wh {
   display: none; /* Hidden by default for light theme */
-  transition: transform 0.3s ease; /* Same transition as original arrow */
+  transition: transform 0.3s ease !important; /* Same transition as original arrow */
 }
 
 /* Dark theme image swapping for accessories arrow */
@@ -6980,9 +6996,16 @@ body.theme-dark .cards-Container {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Ensure both arrows have rotation capability */
+/* Ensure both arrows have rotation capability with maximum specificity */
+.accessories-section .accessories-arrow-wh.rotated,
+[data-theme="dark"] .accessories-section .accessories-arrow-wh.rotated {
+  transform: rotate(180deg) !important;
+}
+
+/* Debug: Force accessories arrow rotation to work */
 .accessories-section .accessories-arrow-wh.rotated {
   transform: rotate(180deg) !important;
+  transition: transform 0.3s ease !important;
 }
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
