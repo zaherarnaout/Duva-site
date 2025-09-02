@@ -8209,16 +8209,18 @@ body.exporting-pdf #pdf-container {
   background-color: var(--duva-d-grey, #212121) !important;
 }
 
-/* Override the duva-white CSS variable in dark mode */
+/* Override CSS variables in dark mode */
 [data-theme="dark"] {
   --duva-white: #212121 !important; /* Override to dark grey */
+  --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
+  --border-divider-light: #E4E3E3 !important; /* Keep same border color */
 }
 
-/* Change all duva-light-color-bg elements to pure black in dark mode */
+/* Change all duva-light-color-bg elements to main-body-color in dark mode */
 [data-theme="dark"] *[style*="duva-light-color-bg"],
 [data-theme="dark"] *[class*="duva-light-color-bg"],
 [data-theme="dark"] *[class*="Duva-light-color-bg"] {
-  background-color: #000000 !important; /* Pure black */
+  background-color: var(--main-body-color, #212121) !important; /* Use main-body-color */
 }
 
 /* Change all duva-white text colors to light grey in dark mode */
@@ -8239,21 +8241,21 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[style*="var(--duva-d-grey)"],
 [data-theme="dark"] *[style*="duva-d-grey"],
 [data-theme="dark"] *[class*="duva-d-grey"] {
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  color: #F4F5F6 !important; /* Force light grey text */
 }
 
 /* Change all duva-d-grey backgrounds to duva-light-grey in dark mode */
 [data-theme="dark"] *[style*="var(--duva-d-grey)"],
 [data-theme="dark"] *[style*="duva-d-grey"],
 [data-theme="dark"] *[class*="duva-d-grey"] {
-  background-color: var(--duva-light-grey, #F4F5F6) !important;
+  background-color: #F4F5F6 !important; /* Force light grey background */
 }
 
 /* Keep all border-divider-light elements using the same border color in both themes */
 [data-theme="dark"] *[style*="var(--border-divider-light)"],
 [data-theme="dark"] *[style*="border-divider-light"],
 [data-theme="dark"] *[class*="border-divider-light"] {
-  border-color: var(--border-divider-light, #E4E3E3) !important;
+  border-color: #E4E3E3 !important; /* Force same border color */
 }
 
 /* Change all duva-border-shadow elements to duva-border-shadow-d in dark mode */
