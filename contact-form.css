@@ -93,8 +93,8 @@ html.modal-open::-webkit-scrollbar {
 
 .contact-modal {
   background-color: #FFFFFF; /* duva-white */
-  border: 1px solid #E4E3E3; /* border-divider-light */
-  border-radius: 8px; /* border-8px */
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
   color: #212121; /* duva-d-grey */
   width: 800px; /* Match Webflow width */
   height: 800px; /* Match Webflow height */
@@ -118,7 +118,7 @@ html.modal-open::-webkit-scrollbar {
 }
 
 .contact-divider {
-  background-color: #E4E3E3; /* border-divider-light */
+  background-color: var(--border-divider-light, #E4E3E3);
   width: 100%;
   height: 1px;
   margin-bottom: 10px;
@@ -188,8 +188,8 @@ html.modal-open::-webkit-scrollbar {
 }
 
 .text-field {
-  border: 1px solid #D1D1D1; /* highlighted-duva-grey */
-  border-radius: 8px;
+  border: var(--border-main, 1px) solid #D1D1D1; /* highlighted-duva-grey */
+  border-radius: var(--border-8px, 8px);
   height: 30px;
   margin-bottom: 0;
   padding-top: 0;
@@ -200,8 +200,8 @@ html.modal-open::-webkit-scrollbar {
 }
 
 .text-field-2 {
-  border: 1px solid #E4E3E3; /* border-divider-light */
-  border-radius: 8px;
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
   height: 30px;
   margin-bottom: 0;
   padding-top: 0;
@@ -213,8 +213,8 @@ html.modal-open::-webkit-scrollbar {
 
 /* === Enhanced Select Field Styling (Search Input Effect) === */
 ._w-select {
-  border: 1px solid #E4E3E3; /* border-divider-light */
-  border-radius: 8px;
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
   background-color: #FFFFFF; /* duva-white */
   margin-bottom: 0;
   padding-top: 0;
@@ -259,8 +259,8 @@ html.modal-open::-webkit-scrollbar {
 }
 
 .textarea {
-  border: 1px solid #E4E3E3; /* border-divider-light */
-  border-radius: 8px;
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
   font-family: Gotham, Georgia, sans-serif;
   font-weight: 200;
   min-height: 120px;
@@ -296,8 +296,8 @@ html.modal-open::-webkit-scrollbar {
 .w-checkbox-input {
   width: 20px;
   height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: var(--border-main, 1px) solid #ccc;
+  border-radius: var(--border-4px-cornner, 4px);
   position: relative;
   cursor: pointer;
   transition: border-color 0.2s ease;
@@ -448,8 +448,8 @@ textarea {
 input.submit-button,
 input[type="submit"].submit-button,
 .w-button.submit-button {
-  border: 1px solid #E4E3E3; /* border-divider-light */
-  border-radius: 8px;
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
   background-color: #212121; /* btn-dark-bg */
   font-family: Gotham, Georgia, sans-serif;
   font-size: 14px; /* btn-size */
@@ -518,13 +518,13 @@ input[type="submit"].submit-button,
 .w-form-done {
   background-color: #d4edda;
   color: #155724;
-  border: 1px solid #c3e6cb;
+  border: var(--border-main, 1px) solid #c3e6cb;
 }
 
 .w-form-fail {
   background-color: #f8d7da;
   color: #721c24;
-  border: 1px solid #f5c6cb;
+  border: var(--border-main, 1px) solid #f5c6cb;
 }
 
 /* Close Button */
@@ -617,7 +617,7 @@ input[type="submit"].submit-button,
   left: 0; 
   z-index: 10; 
   background: white; 
-  border: 1px solid #ddd; 
+  border: var(--border-main, 1px) solid #ddd; 
   border-radius: 6px; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
   min-width: 100%; 
@@ -709,8 +709,8 @@ input[type="submit"].submit-button,
 .w-form-done {
   background-color: #212121 !important; /* DUVA dark background */
   color: #F4F5F6 !important; /* DUVA light text */
-  border: 1px solid #212121 !important;
-  border-radius: 8px !important;
+  border: var(--border-main, 1px) solid #212121 !important;
+  border-radius: var(--border-8px, 8px) !important;
   padding: 40px 20px !important;
   font-family: 'Gotham', Georgia, sans-serif !important;
   font-size: 16px !important;
@@ -770,8 +770,8 @@ input[type="submit"].submit-button,
 .w-form-fail {
   background-color: #C0392B !important; /* DUVA red for errors */
   color: #F4F5F6 !important; /* DUVA light text */
-  border: 1px solid #C0392B !important;
-  border-radius: 8px !important;
+  border: var(--border-main, 1px) solid #C0392B !important;
+  border-radius: var(--border-8px, 8px) !important;
   padding: 40px 20px !important;
   font-family: 'Gotham', Georgia, sans-serif !important;
   font-size: 16px !important;
@@ -1039,8 +1039,8 @@ select:not(.has-value) {
 .duva-consent .w-checkbox-input {
   width: 20px;
   height: 20px;
-  border: 2px solid #D1D1D1;     /* Light grey border for unchecked */
-  border-radius: 4px;             /* 0 for sharp corners if needed */
+  border: var(--border-main, 1px) solid #D1D1D1;     /* Light grey border for unchecked */
+  border-radius: var(--border-4px-cornner, 4px);     /* Use Webflow border radius */
   background: #fff;
   position: relative;
   box-shadow: none;
