@@ -1766,8 +1766,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const isOpen = section.classList.toggle("open"); 
 
         // Toggle rotation on both arrows (one will be visible, one hidden)
-        if (arrow) arrow.classList.toggle("rotated"); 
-        if (arrowDark) arrowDark.classList.toggle("rotated"); 
+        if (arrow) {
+          arrow.classList.toggle("rotated");
+          console.log('🔄 Light theme arrow rotated:', arrow.classList.contains('rotated'));
+        }
+        if (arrowDark) {
+          arrowDark.classList.toggle("rotated");
+          console.log('🔄 Dark theme arrow rotated:', arrowDark.classList.contains('rotated'));
+        } 
 
  
 
@@ -4403,15 +4409,21 @@ if (typeof Webflow !== 'undefined') {
         const isOpen = accessoriesSection.classList.toggle('open');
         
         // Toggle rotation on both arrows (one will be visible, one hidden)
-        if (arrow) arrow.classList.toggle('rotated');
-        if (arrowDark) arrowDark.classList.toggle('rotated');
+        if (arrow) {
+          arrow.classList.toggle('rotated');
+          console.log('🔄 Light theme arrow rotated:', arrow.classList.contains('rotated'));
+        }
+        if (arrowDark) {
+          arrowDark.classList.toggle('rotated');
+          console.log('🔄 Dark theme arrow rotated:', arrowDark.classList.contains('rotated'));
+        }
 
         if (isOpen) {
           wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
         } else {
           wrapper.style.maxHeight = '0px';
         }
-        console.log('✅ Accessories toggle clicked');
+        console.log('✅ Accessories toggle clicked, isOpen:', isOpen);
       });
       
       console.log('✅ Accessories toggle functionality restored');
