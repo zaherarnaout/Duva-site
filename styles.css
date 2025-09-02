@@ -7013,7 +7013,11 @@ body.theme-dark .cards-Container {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Removed - now handled by wrapper rule above */
+/* Ensure both arrows have rotation capability */
+.accessories-section .accessories-arrow.rotated,
+.accessories-section .accessories-arrow-wh.rotated {
+  transform: rotate(180deg) !important;
+}
 
 /* === DEEP-LINK TARGET SECTIONS - SCROLL MARGIN === */
 /* Ensures proper offset when scrolling to sections with fixed header */
