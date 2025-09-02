@@ -886,7 +886,7 @@ document.addEventListener('DOMContentLoaded', function () {
            const formFields = contactForm.querySelectorAll('input, textarea, select');
            formFields.forEach(field => {
              field.classList.remove('error');
-             field.style.borderColor = '';
+             field.style.border = '';
              
              // Remove any error messages
              const errorDiv = field.parentNode.querySelector('.field-error');
@@ -965,7 +965,7 @@ document.addEventListener('DOMContentLoaded', function () {
                const formFields = contactForm.querySelectorAll('input, textarea, select');
                formFields.forEach(field => {
                  field.classList.remove('error');
-                 field.style.borderColor = '';
+                 field.style.border = '';
                  
                  // Remove any error messages
                  const errorDiv = field.parentNode.querySelector('.field-error');
@@ -1091,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function () {
       
       // Add error styling
       field.classList.add('error');
-      field.style.borderColor = '#C0392B';
+      field.style.border = 'var(--border-main, 1px) solid var(--duva-red, #C0392B)';
       
       // Show error message
       let errorDiv = field.parentNode.querySelector('.field-error');
@@ -1111,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Remove error after 5 seconds
       setTimeout(() => {
         field.classList.remove('error');
-        field.style.borderColor = '';
+        field.style.border = '';
         if (errorDiv) {
           errorDiv.remove();
         }
