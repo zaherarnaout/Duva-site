@@ -1,226 +1,1171 @@
+/* === Contact Form Styles === */
+
+/* Hide scrollbar when modal is open */
+body.modal-open {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  /* Preserve scroll position */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+body.modal-open::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Hide scrollbar for Firefox */
+body.modal-open {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbar for all elements when modal is open */
+body.modal-open * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+body.modal-open *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Prevent layout shift when scrollbar disappears */
+body.modal-open {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Ensure the modal overlay covers the entire viewport */
 .contact-overlay {
-    z-index: 9999;
-    background-color: var(--duva-light-grey);
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-    justify-content: center;
-    margin: 20px auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex;
-    position: fixed;
-    inset: 0%;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* Match gallery lightbox color */
+  z-index: 9999; /* Match Webflow z-index */
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden !important;
+}
+
+.contact-overlay.active {
+  display: flex; /* Show when active class is added */
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Additional scrollbar hiding for the entire page */
+html.modal-open {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html.modal-open::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.contact-modal {
+  background-color: #FFFFFF; /* duva-white */
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
+  color: #212121; /* duva-d-grey */
+  width: 800px; /* Match Webflow width */
+  height: 800px; /* Match Webflow height */
+  padding: 10px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  z-index: 10000; /* Ensure modal content is above overlay */
+  max-width: 90vw; /* Responsive width */
+  max-height: 90vh; /* Responsive height */
+}
+
+/* Contact Form Header */
+.contact-header {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  position: relative;
+}
+
+.contact-divider {
+  background-color: var(--border-divider-light, #E4E3E3);
+  width: 100%;
+  height: 1px;
+  margin-bottom: 10px;
+}
+
+/* Form Content */
+.form-hero {
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  padding: 20px;
+}
+
+.text-block-58 {
+  margin-bottom: 20px;
+  font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--section-title-size, 28px);
+  line-height: var(--section-title-height, 30px);
+  color: #212121;
+}
+
+.text-block-57 {
+  margin-bottom: 40px;
+  font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--section-title-size, 18px);
+  font-weight: var(--section-title-weight, 500);
+  line-height: var(--section-title-height, 25px);
+  color: #666;
+}
+
+/* Form Fields */
+.contact-form-wrapper {
+  width: 100%;
+}
+
+.contact-form {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  flex-flow: column;
+  display: flex;
+}
+
+.subscribe-row {
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+}
+
+.field-wrapper {
+  flex-flow: column;
+  align-self: flex-start;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.field-label,
+.field-label-2 {
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 16px);
+  font-weight: var(--btn-weight, 300);
+  line-height: var(--btn-height, 25px);
+  color: #212121;
+}
+
+.text-field {
+  border: var(--border-main, 1px) solid #D1D1D1; /* highlighted-duva-grey */
+  border-radius: var(--border-8px, 8px);
+  height: 30px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
+  transition: border-color 0.3s ease;
+}
+
+.text-field-2 {
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
+  height: 30px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
+  transition: border-color 0.3s ease;
+}
+
+/* === Enhanced Select Field Styling (Search Input Effect) === */
+._w-select {
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
+  background-color: #FFFFFF; /* duva-white */
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 30px;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+._w-select::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+._w-select:hover::before {
+  left: 100%;
+}
+
+._w-select:focus {
+  outline: none;
+  border-color: #C0392B; /* duva-red */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+}
+
+.text-field:focus,
+.text-field-2:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #C0392B; /* duva-red */
+}
+
+.textarea {
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-weight: var(--btn-weight, 200);
+  min-height: 120px;
+  resize: vertical;
+  font-size: var(--btn-size, 14px);
+  transition: border-color 0.3s ease;
+}
+
+/* === Enhanced Privacy Consent Checkbox Styling === */
+.privacy-consent {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10px;
+  display: flex;
+  margin-top: 20px;
+}
+
+.w-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.w-checkbox:hover {
+  transform: scale(1.02);
+}
+
+/* === Contact Form Checkbox Styling (Using Filter Section Approach) === */
+.w-checkbox-input {
+  width: 20px;
+  height: 20px;
+  border: var(--border-main, 1px) solid #ccc;
+  border-radius: var(--border-4px-cornner, 4px);
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  background-color: #FFFFFF;
+  /* Remove all Webflow default styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none !important;
+  -webkit-background-image: none !important;
+  -moz-background-image: none !important;
+}
+
+/* === Checkmark Styling (Hidden by Default) === */
+.w-checkbox-input::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(0);
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+/* === Active State Styling === */
+.w-checkbox-input:checked {
+  background-color: #c0392b; /* red on select */
+  border-color: #c0392b;
+  /* Completely remove any Webflow background images */
+  background-image: none !important;
+  -webkit-background-image: none !important;
+  -moz-background-image: none !important;
+}
+
+.w-checkbox-input:checked::after {
+  opacity: 1;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+}
+
+/* === Hover Effects === */
+.w-checkbox-input:hover {
+  border-color: #c0392b;
+}
+
+.w-checkbox-input:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.w-checkbox-input:hover::before {
+  left: 100%;
+}
+
+.checkbox-label {
+  color: #212121; /* duva-d-grey */
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-family: var(--btn-font, Gotham Rounded, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px);
+  line-height: var(--btn-height, 20px);
+}
+
+.link-15 {
+  text-decoration: none;
+  color: #C0392B; /* duva-red */
+  text-decoration-color: #C0392B;
+  text-decoration-style: double;
+}
+
+/* === Input Field Font Color Updates === */
+.text-field,
+.text-field-2,
+.textarea,
+._w-select,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  color: #212121 !important; /* Dark text by default (like filter section) */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+}
+
+/* Select fields handled separately for placeholder styling */
+
+/* All fields now use dark text by default (like filter section) */
+
+/* Placeholder color for input fields */
+.text-field::placeholder,
+.text-field-2::placeholder,
+.textarea::placeholder,
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder {
+  color: #D1D1D1 !important; /* Light grey placeholders only */
+  font-style: italic !important;
+  opacity: 1 !important;
+}
+
+/* Focus state for input fields */
+.text-field:focus,
+.text-field-2:focus,
+.textarea:focus,
+._w-select:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+  color: #212121 !important; /* Keep dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Select fields show dark text when focused */
+select:focus {
+  color: #212121 !important; /* Dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Ensure consistent color across all form elements */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  color: #212121 !important; /* Dark text by default (like filter section) */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+}
+
+/* Select fields handled separately for placeholder styling */
+
+/* Submit Button */
+.submit-button,
+input.submit-button,
+input[type="submit"].submit-button,
+.w-button.submit-button {
+  border: var(--border-main, 1px) solid var(--border-divider-light, #E4E3E3);
+  border-radius: var(--border-8px, 8px);
+  background-color: #212121; /* btn-dark-bg */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px); /* btn-size */
+  line-height: var(--btn-height, 20px); /* btn-height */
+  font-weight: var(--btn-weight, 600); /* Enhanced from filter button */
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  color: #F4F5F6 !important; /* duva-light-grey */
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 14px 28px;
+  /* Filter Apply Button Effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.submit-button:hover::before {
+  left: 100%;
+}
+
+.submit-button:hover,
+input.submit-button:hover,
+input[type="submit"].submit-button:hover,
+.w-button.submit-button:hover {
+  background-color: #C0392B; /* duva-red */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+  color: #F4F5F6 !important; /* Ensure text stays light on hover */
+}
+
+/* AGGRESSIVE Submit Button Text Color Override */
+.submit-button,
+.submit-button:hover,
+.submit-button:focus,
+.submit-button:active,
+input.submit-button,
+input[type="submit"].submit-button,
+.w-button.submit-button {
+  color: #F4F5F6 !important; /* Force DUVA light grey text */
+}
+
+/* Form Messages */
+.w-form-done,
+.w-form-fail {
+  padding: 20px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.w-form-done {
+  background-color: #d4edda;
+  color: #155724;
+  border: var(--border-main, 1px) solid #c3e6cb;
+}
+
+.w-form-fail {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: var(--border-main, 1px) solid #f5c6cb;
+}
+
+/* Close Button */
+.contact-close {
+  border-radius: 8px;
+  background-color: #212121; /* btn-dark-bg */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
+  font-size: var(--btn-size, 14px); /* btn-size */
+  line-height: var(--btn-height, 20px); /* btn-height */
+  font-weight: var(--btn-weight, 600); /* Enhanced from filter button */
+  text-align: center;
+  width: 150px;
+  margin-right: 20px;
+  display: block;
+  position: absolute;
+  left: auto;
+  right: 0%;
+  color: #F4F5F6;
+  cursor: pointer;
+  border: none;
+  padding: 8px;
+  /* Filter Apply Button Effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.contact-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.contact-close:hover::before {
+  left: 100%;
+}
+
+.contact-close:hover {
+  background-color: #C0392B; /* duva-red */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
+}
+
+/* === Dropdown Enhancement Styles === */
+.dropdown-wrapper { 
+  position: relative; 
+  width: 100%; 
+}
+
+.dropdown-field { 
+  cursor: default; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 0; 
+  border: none; 
+  border-radius: 0; 
+  background: none; 
+}
+
+.selected-value { 
+  font-size: var(--section-title-size, 18px); 
+  font-weight: var(--btn-weight, 700); 
+  color: #111; 
+}
+
+.dropdown-arrow { 
+  transition: transform 0.3s ease; 
+  pointer-events: auto; 
+  cursor: pointer; 
+}
+
+.dropdown-wrapper.open .dropdown-arrow { 
+  transform: rotate(180deg); 
+}
+
+.dropdown-wrapper.disabled .dropdown-arrow { 
+  display: none !important; 
+}
+
+.dropdown-options { 
+  position: absolute; 
+  top: calc(100% + 4px); 
+  left: 0; 
+  z-index: 10; 
+  background: white; 
+  border: var(--border-main, 1px) solid #ddd; 
+  border-radius: 6px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  min-width: 100%; 
+  display: none; 
+  flex-direction: column; 
+  padding: 8px 0; 
+}
+
+.dropdown-option { 
+  padding: 10px 12px; 
+  font-size: var(--section-title-size, 18px); 
+  cursor: pointer; 
+  width: 100%; 
+  box-sizing: border-box; 
+  white-space: nowrap; 
+}
+
+.dropdown-option:hover { 
+  background-color: #f4f5f6; 
+}
+
+/* === Country Search Input Styles === */
+
+/* Remove these styles since we're using the existing select element */
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .contact-modal {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    background-color: var(--duva-white);
-    color: var(--duva-d-grey);
-    width: 800px;
-    height: 800px;
-    padding: 10px;
-    position: relative;
-    box-shadow: 0 2px 5px #0003;
-  }
-  
-  .subscribe-close {
-    border-radius: var(--border-8px);
-    background-color: var(--btn-dark-bg);
-    font-family: var(--btn-font);
-    font-size: var(--btn-size);
-    line-height: var(--btn-height);
-    font-weight: var(--btn-weight);
-    text-align: center;
-    width: 150px;
-    margin-right: 20px;
-    display: block;
-    position: absolute;
-    left: auto;
-    right: 0%;
-  }
-  
-  .subscribe-close:hover {
-    background-color: var(--duva-red);
-  }
-  
-  .contact-form-wrapper {
-    width: 100%;
-  }
-  
-  .text-block-57 {
-    margin-bottom: 40px;
-    font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
-    font-size: var(--section-title-size, 18px);
-    font-weight: var(--section-title-weight, 500);
-    line-height: var(--section-title-height, 25px);
-  }
-  
-  .text-block-58 {
-    margin-bottom: 20px;
-    font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
-    font-size: var(--section-title-size, 28px);
-    line-height: var(--section-title-height, 30px);
-  }
-  
-  .submit-button {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    background-color: var(--btn-dark-bg);
-    font-family: var(--btn-font);
-    font-size: var(--btn-size);
-    line-height: var(--btn-height);
-    font-weight: var(--btn-weight);
-    text-align: center;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .submit-button:hover {
-    background-color: var(--duva-red);
-  }
-  
-  .text-field {
-    border: 1px solid var(--highlighted-duva-grey);
-    border-radius: var(--border-8px);
-    height: 30px;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  
-  .text-field-2 {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    height: 30px;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  
-  .field-label, .field-label-2 {
-    margin-bottom: 0;
-    margin-left: 20px;
-    font-family: var(--btn-font, Gotham, Georgia, sans-serif);
-    font-size: var(--btn-size, 16px);
-    font-weight: var(--btn-weight, 300);
-    line-height: var(--btn-height, 25px);
-  }
-  
-  .contact-header {
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 10%;
-    display: flex;
-    position: relative;
-  }
-  
-  .image-32 {
-    margin-left: 20px;
-    position: absolute;
-    left: 0%;
-    right: 0%;
-  }
-  
-  .form-hero {
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    display: flex;
-  }
-  
-  .contact-divider {
-    background-color: var(--border-divider-light);
-    width: 100%;
-    height: 1px;
-    margin-bottom: 10px;
-  }
-  
-  .contact-form {
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    flex-flow: column;
-    display: flex;
-  }
-  
-  .field-wrapper {
-    flex-flow: column;
-    align-self: flex-start;
-    width: 100%;
-    margin-right: 10px;
-  }
-  
-  .privacy-consent {
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: 10px;
-    display: flex;
-  }
-  
-  .text-block-59 {
-    font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
-    font-size: var(--btn-size, 14px);
-    font-weight: var(--btn-weight, 300);
+    width: 95%;
+    height: auto;
+    max-height: 90vh;
+    margin: 20px;
   }
   
   .subscribe-row {
-    justify-content: center;
-    align-items: flex-start;
-    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
   
-  .text-block-60 {
-    color: var(--highlighted-duva-grey);
+  .form-hero {
+    padding: 20px;
   }
   
-  .select-field, .select-field-2 {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    background-color: var(--duva-white);
-    height: 30px;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+  .contact-header {
+    padding: 15px 20px;
   }
-  
-  ._w-select {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    background-color: var(--duva-white);
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  
-  .textarea {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-8px);
-    font-family: var(--btn-font, Gotham, Georgia, sans-serif);
-    font-weight: var(--btn-weight, 200);
-  }
-  
-  .checkbox-label {
-    color: var(--duva-d-grey);
-    margin-bottom: 0;
-    margin-left: 20px;
-    font-family: var(--section-title, Gotham Rounded, Georgia, sans-serif);
-  }
-  
-  .checkbox-2 {
-    border: 1px solid var(--border-divider-light);
-    border-radius: var(--border-4px-cornner);
-    width: 20px;
-    height: 20px;
-    margin-top: 0;
-  }
-  
-  .link-15 {
-    text-decoration: none;
-    -webkit-text-decoration-color: var(--duva-red);
-    text-decoration-color: var(--duva-red);
-    text-decoration-style: double;
-  }
+}
+
+/* === Form Validation and Error Styles === */
+
+/* Error state for form fields */
+.text-field.error,
+.text-field-2.error,
+._w-select.error,
+.textarea.error {
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Error message styling */
+.field-error {
+  color: #C0392B !important;
+  font-size: var(--btn-size, 12px) !important;
+  margin-top: 5px !important;
+  font-family: var(--btn-font, 'Gotham', sans-serif) !important;
+  font-weight: var(--btn-weight, 400) !important;
+}
+
+/* Loading state for submit button */
+.submit-button:disabled {
+  background-color: #D1D1D1 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+}
+
+/* Success and error message styling */
+.w-form-done,
+.w-form-fail {
+  padding: 20px !important;
+  border-radius: 8px !important;
+  margin-top: 20px !important;
+  text-align: center !important;
+  font-family: var(--btn-font, 'Gotham', sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  /* Remove display: none to allow Webflow to show success message */
+}
+
+/* Webflow form success/error messages - DUVA styling */
+.w-form-done {
+  background-color: #212121 !important; /* DUVA dark background */
+  color: #F4F5F6 !important; /* DUVA light text */
+  border: var(--border-main, 1px) solid #212121 !important;
+  border-radius: var(--border-8px, 8px) !important;
+  padding: 40px 20px !important;
+  font-family: var(--btn-font, 'Gotham', Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 16px) !important;
+  font-weight: var(--btn-weight, 400) !important;
+  text-align: center !important;
+  line-height: var(--btn-height, 20px) !important;
+  margin-top: 20px !important;
+  position: relative !important;
+  display: none; /* Hidden by default, Webflow will show it */
+}
+
+/* Ensure text content is visible with white/light grey */
+.w-form-done div,
+.w-form-done p,
+.w-form-done span,
+.w-form-done *:not(::after):not(::before) {
+  color: #FFFFFF !important; /* Force white text */
+  font-family: var(--btn-font, 'Gotham', Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 16px) !important;
+  font-weight: var(--btn-weight, 400) !important;
+  text-align: center !important;
+  line-height: var(--btn-height, 20px) !important;
+}
+
+/* Ultra aggressive text color override */
+.w-form-done,
+.w-form-done > *,
+.w-form-done div,
+.w-form-done div *,
+.w-form-done span,
+.w-form-done p {
+  color: #FFFFFF !important; /* Force white text everywhere */
+}
+
+/* Override any inherited text colors */
+.contact-modal .w-form-done,
+.contact-modal .w-form-done *,
+.contact-form-wrapper .w-form-done,
+.contact-form-wrapper .w-form-done * {
+  color: #FFFFFF !important; /* Force white text with context */
+}
+
+/* Add DUVA logo to success message */
+.w-form-done::after {
+  content: '';
+  display: block !important;
+  width: 120px !important;
+  height: 40px !important;
+  background-image: url('images/duva-Dark-Logo-212121.svg') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: 20px auto 0 auto !important;
+  filter: invert(1) !important; /* Make logo white on dark background */
+}
+
+.w-form-fail {
+  background-color: #C0392B !important; /* DUVA red for errors */
+  color: #F4F5F6 !important; /* DUVA light text */
+  border: var(--border-main, 1px) solid #C0392B !important;
+  border-radius: var(--border-8px, 8px) !important;
+  padding: 40px 20px !important;
+  font-family: var(--btn-font, 'Gotham', Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 16px) !important;
+  font-weight: var(--btn-weight, 400) !important;
+  text-align: center !important;
+  line-height: var(--btn-height, 20px) !important;
+  margin-top: 20px !important;
+  display: none; /* Hidden by default, Webflow will show it */
+}
+
+/* When Webflow shows success/error states */
+.w-form-done.w--current {
+  display: block !important;
+}
+
+.w-form-fail.w--current {
+  display: block !important;
+}
+
+/* Alternative: Webflow might use different classes or inline styles */
+.w-form.w-form-done .w-form-done {
+  display: block !important;
+}
+
+.w-form.w-form-fail .w-form-fail {
+  display: block !important;
+}
+
+/* Checkbox error state */
+.w-checkbox.error .w-checkbox-input {
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Form submission loading animation */
+.submit-button.loading {
+  position: relative !important;
+  color: transparent !important;
+}
+
+.submit-button.loading::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin: -10px 0 0 -10px !important;
+  border: 2px solid transparent !important;
+  border-top: 2px solid #F4F5F6 !important;
+  border-radius: 50% !important;
+  animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Select Field Placeholder Styling === */
+select {
+  color: #D1D1D1 !important; /* Light grey by default for placeholder text */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+}
+
+/* Force light grey for select elements by default */
+select option {
+  color: #212121 !important;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Style for the first option (placeholder) */
+select option:first-child {
+  color: #D1D1D1 !important;
+  font-style: italic !important;
+}
+
+/* Style for actual options */
+select option:not(:first-child) {
+  color: #212121 !important;
+}
+
+/* When select has a real value selected, force dark color */
+select.has-value {
+  color: #212121 !important;
+}
+
+/* Additional force for select elements */
+select:not(.has-value) {
+  color: #D1D1D1 !important;
+}
+
+/* === Form Field Consistency === */
+.text-field,
+.text-field-2,
+.textarea,
+._w-select,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  color: #212121 !important; /* Dark text by default (like filter section) */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  line-height: var(--btn-height, 20px) !important;
+}
+
+/* Select fields start with light grey for placeholder text */
+select {
+  color: #D1D1D1 !important; /* Light grey by default for placeholder text */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  line-height: var(--btn-height, 20px) !important;
+}
+
+/* === Placeholder Consistency === */
+.text-field::placeholder,
+.text-field-2::placeholder,
+.textarea::placeholder,
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder {
+  color: #D1D1D1 !important;
+  font-style: italic !important;
+  opacity: 1 !important;
+}
+
+/* === Focus States === */
+.text-field:focus,
+.text-field-2:focus,
+.textarea:focus,
+._w-select:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+  color: #212121 !important; /* Keep dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* Select fields show dark text when focused */
+select:focus {
+  color: #212121 !important; /* Dark when focused */
+  outline: none !important;
+  border-color: #C0392B !important;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.1) !important;
+}
+
+/* === Checkbox Label Styling === */
+.w-form-label,
+.checkbox-label {
+  color: #212121 !important; /* duva-d-grey */
+  font-family: var(--btn-font, Gotham Rounded, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  line-height: var(--btn-height, 20px) !important;
+  margin-left: 10px !important;
+  cursor: pointer !important;
+}
+
+/* === Form Field Labels === */
+.field-label,
+.field-label-2 {
+  color: #212121 !important; /* duva-d-grey */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 16px) !important;
+  font-weight: var(--btn-weight, 300) !important;
+  line-height: var(--btn-height, 25px) !important;
+  margin-bottom: 5px !important;
+  margin-left: 20px !important;
+}
+
+/* === Select Option Styling === */
+select option {
+  color: #212121 !important;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  background-color: #FFFFFF !important;
+}
+
+select option:checked {
+  background-color: #F4F5F6 !important;
+  color: #212121 !important;
+}
+
+/* === Form Container Consistency === */
+.contact-form {
+  color: #212121 !important;
+}
+
+/* === Ensure all form elements use consistent colors === */
+.contact-form * {
+  color: inherit !important;
+}
+
+/* === Override any Webflow default colors === */
+.w-form-done,
+.w-form-fail {
+  color: inherit !important;
+}
+
+/* === Ultra Aggressive Select Field Styling === */
+select,
+select:not(.has-value),
+select option:first-child {
+  color: #D1D1D1 !important; /* Force light grey for placeholder text */
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+}
+
+/* When select has a real value selected, force dark color */
+select.has-value,
+select.has-value option {
+  color: #212121 !important;
+}
+
+/* Force light grey for select elements by default */
+select option {
+  color: #212121 !important;
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Style for the first option (placeholder) */
+select option:first-child {
+  color: #D1D1D1 !important;
+  font-style: italic !important;
+}
+
+/* Style for actual options */
+select option:not(:first-child) {
+  color: #212121 !important;
+}
+
+/* Additional force for select elements */
+select:not(.has-value) {
+  color: #D1D1D1 !important;
+}
+
+/* === DUVA: Webflow checkbox fix (news + privacy) === */
+
+/* Keep the real inputs for submission, hide native paint entirely */
+.duva-consent input[type="checkbox"].custom-checkbox {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  accent-color: transparent !important;
+  outline: 0 !important;
+}
+
+/* Remove iOS tap highlight from clickable wrappers */
+.duva-consent label,
+.duva-consent .w-checkbox {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Style the visible square Webflow renders - Filter Section Effects */
+.duva-consent .w-checkbox-input {
+  width: 20px;
+  height: 20px;
+  border: var(--border-main, 1px) solid #D1D1D1;     /* Light grey border for unchecked */
+  border-radius: var(--border-4px-cornner, 4px);     /* Use Webflow border radius */
+  background: #fff;
+  position: relative;
+  box-shadow: none;
+  outline: none;
+  background-image: none !important; /* nuke Webflow's default blue SVG */
+  /* Filter section effects */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Filter section shimmer effect */
+.duva-consent .w-checkbox-input::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+/* Hover effects from filter section */
+.duva-consent .w-checkbox-input:hover {
+  border-color: #C0392B;          /* DUVA red */
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
+}
+
+.duva-consent .w-checkbox-input:hover::before {
+  left: 100%;
+}
+
+/* Focus state (Webflow adds this class) */
+.duva-consent .w-checkbox-input.w--redirected-focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #C0392B;
+}
+
+/* Checked state with filter section effects */
+.duva-consent .w-checkbox-input.w--redirected-checked {
+  background: #C0392B !important;            /* DUVA red */
+  border-color: #C0392B !important;
+  background-image: none !important;
+  color: white !important;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
+}
+
+/* Enhanced checkmark with filter section style */
+.duva-consent .w-checkbox-input.w--redirected-checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+  opacity: 1;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+/* Press feedback (optional) */
+.duva-consent .w-checkbox-input:active {
+  transform: scale(0.96);
+}
+
+/* === Plain text styling for checkbox labels === */
+.duva-consent .w-checkbox + .w-form-label,
+.duva-consent .field-label,
+.duva-consent label {
+  font-family: var(--btn-font, Gotham, Georgia, sans-serif) !important;
+  font-size: var(--btn-size, 14px) !important;
+  font-weight: var(--btn-weight, 400) !important;
+  color: #212121 !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  outline: none !important;
+  transition: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  cursor: default !important; /* Default cursor for text */
+  line-height: var(--btn-height, 20px) !important;
+  letter-spacing: normal !important;
+}
+
+/* Remove any hover/focus effects on checkbox labels */
+.duva-consent .w-checkbox + .w-form-label:hover,
+.duva-consent .field-label:hover,
+.duva-consent label:hover,
+.duva-consent .w-checkbox + .w-form-label:focus,
+.duva-consent .field-label:focus,
+.duva-consent label:focus {
+  color: #212121 !important;
+  text-decoration: none !important;
+  background: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: default !important; /* Keep default cursor */
+}
+
+/* Special styling for Privacy Policy link */
+.duva-consent label a,
+.duva-consent .w-form-label a {
+  color: #C0392B !important; /* DUVA red for links */
+  text-decoration: underline !important;
+  cursor: pointer !important; /* Pointer cursor only for links */
+  font-weight: normal !important;
+  transition: color 0.2s ease !important;
+}
+
+.duva-consent label a:hover,
+.duva-consent .w-form-label a:hover {
+  color: #212121 !important; /* Darker on hover */
+  text-decoration: underline !important;
+}
