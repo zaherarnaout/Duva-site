@@ -1,39 +1,5 @@
-/* === PRODUCT CARD BASE STYLES === */
-.collection-item,
-.product-card,
-.related-card {
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  width: 320px !important;
-  height: 550px !important;
-  min-width: 320px !important;
-  min-height: 550px !important;
-  max-width: 320px !important;
-  max-height: 550px !important;
-}
-
-/* === FLIP CARD WRAPPER - MINIMAL STYLES === */
-.flip-card-wrapper,
-.current-product,
-.flip-card-wrapper.w-inline-block,
-.current-product .flip-card-wrapper {
-  position: relative;
-  overflow: hidden;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* === FLIP CARD SPECIFIC STYLES === */
+/* === MINIMAL FLIP CARD ANIMATION ONLY === */
+/* Only keeping the essential flip animation - everything else handled by Webflow */
 
 /* === BACK CARD === */
 .flip-card-back {
@@ -50,17 +16,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-  background: transparent !important;
-  background-color: transparent !important;
 }
-
 
 /* === FRONT CARD === */
 .flip-card-front {
@@ -70,13 +26,6 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
 }
 
 /* === FLIP CARD HOVER EFFECTS === */
