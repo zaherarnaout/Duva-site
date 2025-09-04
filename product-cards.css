@@ -9,18 +9,18 @@
   transition: transform 0.1s ease-out;
 }
 
-/* Parallax transform when active */
+/* Parallax transform when active - only on card container */
 .collection-item.parallax-active,
 .product-card.parallax-active,
 .related-card.parallax-active {
   transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
 }
 
-/* Parallax for card elements (text and images) */
+/* Ensure card elements move with their parent (no separate transform) */
 .collection-item.parallax-active *,
 .product-card.parallax-active *,
 .related-card.parallax-active * {
-  transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
+  transform: none !important;
 }
 
 /* === BACK CARD === */
