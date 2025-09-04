@@ -144,8 +144,19 @@
   position: relative;
   overflow: hidden;
   will-change: transform;
-  border: 1px solid #E4E3E3; /* Standard border color */
+  border: 1px solid #E4E3E3 !important; /* Standard border color - override Webflow defaults */
+  border-width: 1px !important; /* Force 1px border width to override Webflow's 2px */
   border-radius: 4px;
+}
+
+/* === OVERRIDE WEBFLOW THUMBNAIL ACTIVE STATE === */
+/* Prevent Webflow's 2px border from affecting our product cards */
+.collection-item .image-3.thumbnail-image.thumbnail-image-is-active,
+.product-card .image-3.thumbnail-image.thumbnail-image-is-active,
+.related-card .image-3.thumbnail-image.thumbnail-image-is-active,
+.flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active {
+  border-width: 1px !important; /* Override Webflow's 2px border */
+  border-color: #E4E3E3 !important; /* Use our standard border color */
 }
 
 /* === SHIMMER EFFECT FOR PRODUCT CARDS === */
@@ -324,16 +335,20 @@
 
 /* === FRONT CARD FADE OUT ON HOVER === */
 .flip-card-front {
+  position: relative !important;
+  z-index: 1 !important; /* Lower than back card */
   transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   opacity: 1;
   visibility: visible;
   border-radius: 4px; /* Ensure consistent border radius with wrapper */
+  pointer-events: auto !important; /* Allow pointer events when visible */
 }
 
 .flip-card-wrapper:hover .flip-card-front,
 .current-product:hover .flip-card-front {
   opacity: 0 !important;
   visibility: hidden !important;
+  pointer-events: none !important; /* Prevent interference with back card */
   transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster fade out */
 }
 
@@ -345,6 +360,7 @@
   border-color: #C0392B !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
+  pointer-events: auto !important; /* Ensure back card can receive events */
   transition: opacity 0.1s ease, visibility 0.1s ease, transform 0.3s ease; /* Faster fade in */
 }
 
@@ -358,6 +374,7 @@
   border-color: #C0392B !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
   display: flex !important;
+  pointer-events: auto !important; /* Ensure back card can receive events */
 }
 
 /* === FALLBACK: Ensure front card fades out on any hover === */
@@ -366,6 +383,7 @@
 .flip-card:hover .flip-card-front {
   opacity: 0 !important;
   visibility: hidden !important;
+  pointer-events: none !important; /* Prevent interference with back card */
 }
 
 /* === ALTERNATIVE ANIMATION OPTIONS === */
