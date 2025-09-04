@@ -152,73 +152,15 @@
   outline: none !important; /* Remove any outline */
 }
 
-/* === FLIP CARD WRAPPER - TRANSPARENT CONTAINER === */
-/* OVERRIDE WEBFLOW DEFAULTS: border: 1px solid var(--border-divider-light), background-color: var(--duva-white) */
+/* === FLIP CARD WRAPPER - MINIMAL STYLES === */
 .flip-card-wrapper {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
   will-change: transform;
-  border: none !important; /* OVERRIDE: Remove Webflow's 1px solid border */
-  border-width: 0 !important; /* NO BORDER WIDTH */
-  border-style: none !important; /* NO BORDER STYLE */
-  border-color: transparent !important; /* TRANSPARENT BORDER */
-  border-radius: 4px !important; /* OVERRIDE: Use 4px instead of Webflow's 8px */
-  background: transparent !important; /* OVERRIDE: Remove Webflow's white background */
-  background-color: transparent !important; /* OVERRIDE: Remove Webflow's var(--duva-white) */
-  box-shadow: none !important; /* NO BOX SHADOW */
-  outline: none !important; /* NO OUTLINE */
 }
 
-/* === OVERRIDE WEBFLOW THUMBNAIL ACTIVE STATE === */
-/* Prevent Webflow's 2px border from affecting our product cards */
-.collection-item .image-3.thumbnail-image.thumbnail-image-is-active,
-.product-card .image-3.thumbnail-image.thumbnail-image-is-active,
-.related-card .image-3.thumbnail-image.thumbnail-image-is-active,
-.flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active {
-  border-width: 1px !important; /* Override Webflow's 2px border */
-  border-color: #E4E3E3 !important; /* Use our standard border color */
-}
-
-/* === OVERRIDE ALL WEBFLOW BORDER RULES FOR FLIP CARDS === */
-/* Ensure all child elements in flip cards have consistent 1px borders */
-.flip-card-wrapper .image-3,
-.flip-card-wrapper .product-image,
-.flip-card-wrapper .thumbnail-image,
-.flip-card-wrapper .product-image-wrapper {
-  border: 1px solid #E4E3E3 !important;
-  border-width: 1px !important;
-  border-style: solid !important; /* Force solid border style */
-  border-color: #E4E3E3 !important; /* Force border color */
-  box-shadow: none !important; /* Remove any box-shadow that might create bold appearance */
-  outline: none !important; /* Remove any outline */
-}
-
-/* Override any active states that might add thicker borders */
-.flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active,
-.flip-card-wrapper .product-image.main-image-hover,
-.flip-card-wrapper .product-image.main-image-hover:hover {
-  border: 1px solid #E4E3E3 !important;
-  border-width: 1px !important;
-}
-
-/* === OVERRIDE MAIN STYLES.CSS HOVER EFFECTS FOR FLIP CARDS === */
-/* Prevent the red border hover effect from main styles.css */
-.flip-card-wrapper .product-image:hover,
-.flip-card-wrapper .thumbnail-image:hover,
-.flip-card-wrapper .image-3:hover {
-  border-color: #E4E3E3 !important; /* Override the red hover border */
-  border-width: 1px !important;
-  transform: none !important; /* Disable hover transform */
-  box-shadow: none !important; /* Disable hover shadow */
-}
-
-/* Override the is-active state that adds red border */
-.flip-card-wrapper .thumbnail-image.is-active {
-  border: 1px solid #E4E3E3 !important;
-  border-width: 1px !important;
-  box-shadow: none !important;
-}
+/* === MINIMAL FLIP CARD STYLES === */
+/* Only essential styles for flip card functionality */
 
 /* === SHIMMER EFFECT FOR PRODUCT CARDS === */
 /* Only apply shimmer to non-flip cards */
@@ -373,69 +315,47 @@
 
 /* === FADE IN WITH SCALE ANIMATION (ACTIVE) === */
 .flip-card-back {
-  position: absolute !important;
-  inset: 0% !important;
-  z-index: 2 !important;
+  position: absolute;
+  inset: 0%;
+  z-index: 2;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.85) !important; /* Start smaller */
-  width: 100% !important;
-  height: 100% !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Faster and smoother */
-  border: 1px solid #C0392B !important; /* Red border for back card */
-  border-radius: 4px; /* Match the wrapper's border radius */
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important; /* Red shadow for back card */
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  transform: scale(0.85);
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* === DARK THEME SUPPORT FOR FLIP CARDS === */
-[data-theme="dark"] .flip-card-back {
-  background-color: rgba(33, 33, 33, 0.95) !important; /* Dark background */
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
-}
-
-[data-theme="dark"] .flip-card-wrapper:hover .flip-card-back {
-  background-color: rgba(42, 42, 42, 0.98) !important; /* Slightly lighter on hover */
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
-}
+/* Minimal dark theme support - let Webflow handle the rest */
 
 /* === FRONT CARD FADE OUT ON HOVER === */
 .flip-card-front {
-  position: relative !important;
-  z-index: 1 !important; /* Lower than back card */
-  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.3s ease;
   opacity: 1;
   visibility: visible;
-  border-radius: 4px; /* Ensure consistent border radius with wrapper */
-  pointer-events: auto !important; /* Allow pointer events when visible */
-  border: 1px solid #E4E3E3 !important; /* Standard grey border for front card */
-  background: #FFFFFF !important; /* White background for front card */
-  box-shadow: none !important; /* DISABLED: No shadow for front card */
-  outline: none !important;
+  pointer-events: auto;
 }
 
 .flip-card-wrapper:hover .flip-card-front,
 .current-product:hover .flip-card-front {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important; /* Prevent interference with back card */
-  transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster fade out */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .flip-card-wrapper:hover .flip-card-back,
 .current-product:hover .flip-card-back {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: scale(1) !important; /* Scale to full size */
-  border-color: #C0392B !important;
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important;
-  display: flex !important;
-  pointer-events: auto !important; /* Ensure back card can receive events */
-  transition: opacity 0.1s ease, visibility 0.1s ease, transform 0.3s ease; /* Faster fade in */
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 /* === FALLBACK RULES REMOVED === */
