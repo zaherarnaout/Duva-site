@@ -57,6 +57,20 @@
   border-radius: 0 !important;
   box-shadow: none !important;
   outline: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* === BACK CARD TEXT STYLES === */
+.flip-card-back * {
+  /* Preserve Webflow text styles - don't override */
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  text-align: inherit !important;
+  text-decoration: inherit !important;
 }
 
 /* === FRONT CARD === */
