@@ -6,64 +6,14 @@
 }
 
 /* === Theme Variables === */
-:root {
-  /* Light theme (default) - Matching Webflow exactly */
-  --duva-light-color-bg: #f4f5f6;
-  --duva-d-grey: #212121;
-  --duva-red: #c0392b;
-  --duva-light-grey: #f4f5f6;
-  --duva-white: #fff;
-  --duva-mid-grey: #d1d1d1;
-  --border-divider-light: #eaeaea;
-  --duva-border-shadow: #0003;
-  --duva-footer-divider: #2e2e2e;
-  --highlighted-duva-grey: #ddd;
-  --main-body-color: #0b0b0b;
-  --f8f8f8: #f8f8f8;
-  --duva-border-shadow-d: #eaeaeac4;
-  
-  /* Typography variables */
-  --font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  --btn-font: Gotham, Georgia, sans-serif;
-  --btn-size: 16px;
-  --btn-height: 20px;
-  --btn-weight: 200;
-  --section-title: Gotham, Georgia, sans-serif;
-  --section-title-size: 36px;
-  --section-title-height: 36px;
-  --section-title-weight: 400;
-  
-  /* Border variables */
-  --border-8px: 8px;
-  --border-4px-cornner: 4px;
-  --border-main: 1px;
-}
-
-[data-theme="dark"] {
-  /* Dark theme - Using Webflow's exact values */
-  --duva-light-color-bg: #0b0b0b;
-  --duva-d-grey: #f4f5f6;
-  --duva-red: #c0392b;
-  --duva-light-grey: #f4f5f6;
-  --duva-white: #212121;
-  --duva-mid-grey: #d1d1d1;
-  --border-divider-light: #eaeaea;
-  --duva-border-shadow: #eaeaeac4;
-  --duva-footer-divider: #2e2e2e;
-  --highlighted-duva-grey: #ddd;
-  --main-body-color: #0b0b0b;
-  --f8f8f8: #f8f8f8;
-  --duva-border-shadow-d: #eaeaeac4;
-}
+/* Removed custom CSS variables to use Webflow defaults */
 
 html, body {
   width: 100%;
   min-width: 0;
   margin: 0;
   padding: 0;
-  background: var(--duva-light-color-bg);
-  font-family: var(--font-family, Arial, sans-serif);
-  transition: background-color 0.3s ease;
+  /* Removed custom background and font-family to use Webflow defaults */
 }
 
 /* === Menu Panel Functionality === */
@@ -74,7 +24,7 @@ html, body {
   clear: none;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  background-color: var(--duva-white, #fff);
+  /* Removed custom background-color to use Webflow defaults */
   object-fit: fill;
   border-radius: 4px;
   flex-flow: row;
@@ -92,7 +42,7 @@ html, body {
 
 .menu-wrapper:hover {
   border-radius: 4px;
-  background-color: var(--f8f8f8, #f8f8f8);
+  /* Removed custom background-color to use Webflow defaults */
   transform: translateY(-1px);
 }
 
@@ -105,9 +55,8 @@ html, body {
   width: 520px !important;
   max-width: 90vw !important;
   height: auto !important;
-  background-color: var(--duva-white, #fff) !important;
+  /* Removed custom background-color and box-shadow to use Webflow defaults */
   border-radius: 12px !important;
-  box-shadow: 0 12px 40px var(--duva-border-shadow, rgba(0, 0, 0, 0.2)) !important;
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -187,7 +136,7 @@ body.menu-open {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.6) !important;
+  /* Removed custom background-color to use Webflow defaults */
   backdrop-filter: blur(4px) !important;
   -webkit-backdrop-filter: blur(4px) !important;
   z-index: 1000 !important;
@@ -221,17 +170,13 @@ body.menu-open {
   padding-right: 35px;
   padding-left: 35px;
   border-radius: 8px;
-  background-color: var(--duva-d-grey, #212121);
-  color: #fff;
-  font-size: var(--btn-size, 16px);
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom background-color, color, font-size, font-weight, and line-height to use Webflow defaults */
   letter-spacing: 0.5px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: block;
   border: none;
-  line-height: var(--btn-height, 20px);
   overflow: hidden;
 }
 
@@ -253,15 +198,13 @@ body.menu-open {
 }
 
 .menu-close:hover {
-  background-color: var(--duva-red, #c0392b);
+  /* Removed custom background-color and box-shadow to use Webflow defaults */
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
   scale: 1.02;
 }
 
 .menu-close .bold-text {
-  color: #fff;
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom color and font-weight to use Webflow defaults */
   position: relative;
   z-index: 2;
 }
@@ -274,10 +217,7 @@ body.menu-open {
   padding-right: 35px !important;
   padding-left: 35px !important;
   border-radius: 8px !important;
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: #fff !important;
-  font-size: var(--btn-size, 16px) !important;
-  font-weight: var(--btn-weight, 600) !important;
+  /* Removed custom background-color, color, font-size, and font-weight to use Webflow defaults */
   letter-spacing: 0.5px !important;
   text-decoration: none !important;
   display: block !important;
@@ -307,9 +247,8 @@ body.menu-open {
 }
 
 .menu-close.w-button:hover {
-  background-color: var(--duva-red, #c0392b) !important;
+  /* Removed custom background-color and box-shadow to use Webflow defaults */
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3) !important;
   scale: 1.02 !important;
 }
 
@@ -326,16 +265,13 @@ body.menu-open {
 
 /* === Enhanced Menu Links === */
 .link-13 {
-  color: var(--duva-d-grey, #333);
+  /* Removed custom color, font-family, font-size, and font-weight to use Webflow defaults */
   margin-top: 52px;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 0;
   padding-right: 0;
-  font-family: var(--section-title, Gotham, Georgia, sans-serif);
-  font-size: var(--section-title-size, 18px);
-  font-weight: var(--section-title-weight, 400);
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0;
@@ -360,9 +296,8 @@ body.menu-open {
 .link-13:nth-child(10) { animation-delay: 0.55s; }
 
 .link-13:hover {
-  color: #c0392b;
+  /* Removed custom color and text-shadow to use Webflow defaults */
   transform: translateX(3px) scale(1.02);
-  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
 }
 
 @keyframes slideInFromLeft {
@@ -373,16 +308,13 @@ body.menu-open {
 }
 
 .link-14 {
-  color: var(--duva-d-grey, #333);
+  /* Removed custom color, font-family, font-size, and font-weight to use Webflow defaults */
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 0;
   padding-right: 0;
-  font-family: var(--btn-font, Gotham, Georgia, sans-serif);
-  font-size: var(--btn-size, 16px);
-  font-weight: var(--btn-weight, 400);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
@@ -392,16 +324,13 @@ body.menu-open {
 
 
 .link-14:hover {
-  color: var(--duva-red, #c0392b);
+  /* Removed custom color and text-shadow to use Webflow defaults */
   transform: translateX(3px) scale(1.02);
-  text-shadow: 0 1px 3px rgba(192, 57, 43, 0.15);
 }
 
 /* === Menu Icon === */
 .menu-icon {
-  font-size: var(--btn-size, 20px);
-  font-weight: var(--btn-weight, 700);
-  color: var(--duva-d-grey, #333);
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   margin-right: 5px;
 }
 
@@ -449,21 +378,17 @@ cursor: pointer;
 
 /* === Lightbox Backdrop - More Transparent === */
 .w-lightbox-backdrop {
-  background-color: rgba(0, 0, 0, 0.3) !important; /* More transparent background */
+  /* Removed custom background-color to use Webflow defaults */
   backdrop-filter: blur(2px) !important; /* Optional: slight blur effect */
 }
 
 .w-lightbox-close { 
 
-  background-color: transparent !important; 
-
-  color: white !important; 
+  /* Removed custom background-color, color, and font-size to use Webflow defaults */ 
 
   width: 36px; 
 
   height: 36px; 
-
-  font-size: var(--section-title-size, 24px); 
 
   top: 20px; 
 
@@ -542,7 +467,7 @@ cursor: pointer;
 
   flex-direction: column; 
 
-  font-size: var(--section-title-size, 18px); 
+  /* Removed custom font-size to use Webflow defaults */ 
 
   width: 100%; 
 
@@ -586,11 +511,7 @@ cursor: pointer;
 
 .selected-value { 
 
-  font-size: var(--section-title-size, 18px); 
-
-  font-weight: var(--btn-weight, 700); 
-
-  color: #111; 
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */ 
 
 } 
 
@@ -634,7 +555,7 @@ cursor: pointer;
 
   z-index: 10; 
 
-  background: var(--duva-white, white); 
+  /* Removed custom background to use Webflow defaults */ 
 
   border: 1px solid #ddd; 
 
@@ -658,7 +579,7 @@ cursor: pointer;
 
   padding: 10px 12px; 
 
-  font-size: var(--section-title-size, 18px); 
+  /* Removed custom font-size to use Webflow defaults */ 
 
   cursor: pointer; 
 
@@ -674,7 +595,7 @@ cursor: pointer;
 
 .dropdown-option:hover { 
 
-  background-color: var(--duva-light-color-bg, #f4f5f6); 
+  /* Removed custom background-color to use Webflow defaults */ 
 
 } 
 
@@ -868,7 +789,7 @@ opacity: 1 !important;
   border: 1px solid #ccc !important;
   border-radius: 4px !important;
   overflow: hidden !important;
-  background-color: #f8f8f8 !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 #pdf-container .main-product-pdf-img img,
@@ -898,10 +819,7 @@ opacity: 1 !important;
 }
 
 #pdf-container .text-block-16 {
-  font-size: var(--btn-size, 12px) !important;
-  line-height: var(--btn-height, 20px) !important;
-  font-weight: var(--btn-weight, 500) !important;
-  color: #111 !important;
+  /* Removed custom font-size, line-height, font-weight, and color to use Webflow defaults */
 }
 
 /* Multipage container — NO fixed height */
@@ -1005,14 +923,14 @@ opacity: 1 !important;
 
 .pdf-container h1,
 .pdf-container h2 {
-  color: #111;
+  /* Removed custom color to use Webflow defaults */
 }
 .pdf-container h1 {
-  font-size: var(--btn-size, 16px);
+  /* Removed custom font-size to use Webflow defaults */
   margin-bottom: 5px;
 }
 .pdf-container h2 {
-  font-size: var(--btn-size, 14px);
+  /* Removed custom font-size to use Webflow defaults */
   margin-top: 15px;
   margin-bottom: 8px;
 }
@@ -1043,41 +961,34 @@ opacity: 1 !important;
   width: 70px;
   height: 70px;
   border: 1px solid #ccc;
-  background: #eee;
+  /* Removed custom background, font-size, and color to use Webflow defaults */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--btn-size, 8px);
-  color: #444;
   flex-shrink: 0;
 }
 .pdf-info h1 {
-  font-size: var(--btn-size, 14px);
-  font-weight: var(--btn-weight, 700);
-  line-height: var(--btn-height, 20px);
+  /* Removed custom font-size, font-weight, and line-height to use Webflow defaults */
 }
 .pdf-info #pdf-code {
   font-weight: bold;
 }
 .pdf-info #pdf-subtitle {
-  font-weight: var(--btn-weight, 600);
-  font-size: var(--btn-size, 11px);
+  /* Removed custom font-weight and font-size to use Webflow defaults */
   margin-top: 4px;
 }
 .pdf-description {
   margin-top: 6px;
-  font-size: var(--btn-size, 11px);
-  line-height: var(--btn-height, 20px);
+  /* Removed custom font-size and line-height to use Webflow defaults */
 }
 .pdf-features ul {
   padding-left: 16px;
-  font-size: var(--btn-size, 11px);
-  line-height: var(--btn-height, 20px);
+  /* Removed custom font-size and line-height to use Webflow defaults */
 }
 .pdf-options table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--btn-size, 10px);
+  /* Removed custom font-size to use Webflow defaults */
   table-layout: fixed;
 }
 .pdf-options th,
@@ -1095,7 +1006,7 @@ opacity: 1 !important;
 .pdf-accessories table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--btn-size, 10px);
+  /* Removed custom font-size to use Webflow defaults */
   table-layout: fixed;
 }
 .pdf-accessories th,
@@ -1107,10 +1018,9 @@ opacity: 1 !important;
   overflow-wrap: break-word;
 }
 .pdf-footer {
-  font-size: var(--btn-size, 10px);
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-top: 20px;
   text-align: center;
-  color: #666;
 }
 
 /* === PDF Header Layout Matching Reference === */
@@ -1134,27 +1044,19 @@ opacity: 1 !important;
 .series-vertical {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: var(--btn-size, 10px);
+  /* Removed custom font-size, color, and font-family to use Webflow defaults */
   letter-spacing: 2px;
-  color: #111;
   margin-bottom: 2px;
-  font-family: var(--font-family, Arial, sans-serif);
 }
 
 .lucero-title {
-  font-size: var(--section-title-size, 36px);
-  font-weight: var(--section-title-weight, 700);
+  /* Removed custom font-size, font-weight, color, line-height, and font-family to use Webflow defaults */
   letter-spacing: 2px;
-  color: #111;
-  line-height: var(--section-title-height, 36px);
-  font-family: var(--section-title, Gotham, Georgia, sans-serif);
 }
 
 .lucero-subtitle {
-  font-size: var(--btn-size, 12px);
-  color: #444;
+  /* Removed custom font-size, color, and font-family to use Webflow defaults */
   margin-top: 2px;
-  font-family: var(--font-family, Arial, sans-serif);
 }
 
 .header-icons {
@@ -1189,10 +1091,8 @@ opacity: 1 !important;
 .series-label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: var(--btn-size, 10px);
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   letter-spacing: 2px;
-  font-weight: var(--btn-weight, 600);
-  color: #000;
 }
 
 .family-wrapper {
@@ -1200,13 +1100,12 @@ opacity: 1 !important;
 }
 
 .family-wrapper h1 {
-  font-size: var(--section-title-size, 22px);
+  /* Removed custom font-size to use Webflow defaults */
   margin: 0;
 }
 
 .family-subtitle {
-  font-size: var(--btn-size, 12px);
-  color: #333;
+  /* Removed custom font-size and color to use Webflow defaults */
 }
 
 .duva-logo {
@@ -1232,12 +1131,10 @@ opacity: 1 !important;
 .series-label {
   writing-mode: vertical-lr;
   text-orientation: upright;
-  font-size: var(--btn-size, 14px);
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   letter-spacing: 2px;
   margin-right: 24px;
   margin-left: 10px;
-  color: #111;
 }
 
 .pdf-header-text {
@@ -1247,10 +1144,8 @@ opacity: 1 !important;
 
 .pdf-header-text h1,
 #FamilyName {
-  font-size: var(--section-title-size, 36px);
-  font-weight: var(--section-title-weight, 700);
+  /* Removed custom font-size, font-weight, and line-height to use Webflow defaults */
   margin: 0;
-  line-height: var(--section-title-height, 36px);
 }
 
 #duva-logo {
@@ -1261,8 +1156,7 @@ opacity: 1 !important;
 }
 
 .subhead {
-  font-size: var(--btn-size, 12px);
-  color: #555;
+  /* Removed custom font-size and color to use Webflow defaults */
 }
 
 .pdf-family-name {
@@ -1315,8 +1209,7 @@ opacity: 1 !important;
 .series-label {
   transform: rotate(-90deg); /* Rotate the whole word */
   transform-origin: left top;
-  font-size: var(--btn-size, 10px);
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   letter-spacing: 2px;
   position: absolute;
   left: 0;
@@ -1342,11 +1235,8 @@ opacity: 1 !important;
 .pdf-series-label-inner {
   writing-mode: vertical-lr;
   text-orientation: upright;
-  font-family: var(--font-family, Arial, sans-serif);
-  font-size: var(--btn-size, 9px);
+  /* Removed custom font-family, font-size, color, and line-height to use Webflow defaults */
   letter-spacing: 0.2em;
-  color: #222;
-  line-height: var(--btn-height, 20px);
   margin-right: 2px;
   margin-left: 14px;
 }
@@ -1390,9 +1280,7 @@ opacity: 1 !important;
 .pdf-series-label-inner {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: var(--btn-size, 12px);
-  font-weight: var(--btn-weight, 600);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   letter-spacing: 2px;
 }
 
@@ -1406,17 +1294,13 @@ opacity: 1 !important;
 
 /* Family name */
 .pdf-family h2 {
-  font-size: var(--section-title-size, 24px);
-  font-weight: var(--section-title-weight, 700);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   margin: 0;
 }
 
 /* Subtitle */
 .pdf-subtitle {
-  font-size: var(--btn-size, 12px);
-  font-weight: var(--btn-weight, 500);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   margin-left: auto;
 }
 
@@ -1441,10 +1325,8 @@ opacity: 1 !important;
 .series-text {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: var(--btn-size, 10px);
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   letter-spacing: 2px;
-  color: #212121;
   margin-bottom: 8px;
 }
 
@@ -1470,16 +1352,12 @@ opacity: 1 !important;
 }
 
 .family-name {
-  font-size: var(--section-title-size, 36px);
-  font-weight: var(--section-title-weight, 600);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   margin-bottom: 4px;
 }
 
 .family-subtitle {
-  font-size: var(--btn-size, 12px);
-  font-weight: var(--btn-weight, 400);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
 }
 
 /* === Right Section === */
@@ -1527,9 +1405,7 @@ opacity: 1 !important;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  background: var(--duva-white, #fff);
-  font-family: var(--font-family, Arial, sans-serif);
-  color: #212121;
+  /* Removed custom background, font-family, and color to use Webflow defaults */
 }
 
 /* === Header Top Margin === */
@@ -1643,14 +1519,10 @@ opacity: 1 !important;
 #pdf-container .family-name .text-block-13 {
   writing-mode: horizontal-tb !important;
   transform: none !important;
-  font-size: var(--btn-size, 14px) !important;
-  font-weight: var(--btn-weight, 400) !important;
-  color: #212121 !important;
-  line-height: var(--btn-height, 20px) !important;
+  /* Removed custom font-size, font-weight, color, line-height, and font-family to use Webflow defaults */
   margin-bottom: 4px !important;
   text-align: right !important;
   padding-left: 4px !important;
-  font-family: var(--section-title, Gotham, Georgia, sans-serif) !important;
   font-style: normal !important;
   font-variant: normal !important;
   text-decoration: none !important;
@@ -1664,16 +1536,12 @@ opacity: 1 !important;
 }
 
 .text-block-12 {
-  font-size: var(--section-title-size, 28px);
-  font-weight: var(--section-title-weight, 700);
-  color: #212121;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
   margin-bottom: 2px;
 }
 
 .text-block-13 {
-  font-size: var(--btn-size, 14px);
-  color: #333;
-  font-weight: var(--btn-weight, 400);
+  /* Removed custom font-size, color, and font-weight to use Webflow defaults */
 }
 
 .header-right-wrapper {
@@ -1741,25 +1609,18 @@ opacity: 1 !important;
 }
 
 .product-code {
-  font-family: var(--section-title, Gotham, Georgia, sans-serif);
-  font-size: var(--section-title-size, 18px);
-  font-weight: var(--section-title-weight, 500);
-  color: #212121;
+  /* Removed custom font-family, font-size, font-weight, and color to use Webflow defaults */
   margin-bottom: 2px;
 }
 
 .generated-code {
-  font-family: var(--section-title, Gotham, Georgia, sans-serif);
-  font-size: var(--section-title-size, 18px);
-  font-weight: var(--section-title-weight, 500);
-  color: #212121;
+  /* Removed custom font-family, font-size, font-weight, and color to use Webflow defaults */
   margin-bottom: 6px;
 }
 
 /* Override for PDF container - more specific */
 #pdf-container .overview-header {
-  font-size: var(--btn-size, 15px) !important;
-  font-weight: var(--btn-weight, 500) !important;
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -1769,22 +1630,19 @@ opacity: 1 !important;
 
 /* Original styles for non-PDF elements */
 .overview-header {
-  font-size: var(--btn-size, 15px);
-  font-weight: var(--btn-weight, 500);
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   margin-bottom: 4px;
 }
 
 .title-text {
-  font-size: var(--btn-size, 15px);
-  font-weight: var(--btn-weight, 700);
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   margin-top: 8px;
   margin-bottom: 6px;
 }
 
 /* Override for PDF container - more specific */
 #pdf-container .text-block-14 {
-  font-size: var(--btn-size, 13px) !important;
-  color: #222 !important;
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -1794,15 +1652,13 @@ opacity: 1 !important;
 
 /* Original styles for non-PDF elements */
 .text-block-14 {
-  font-size: var(--btn-size, 13px);
-  color: #222;
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-bottom: 4px;
 }
 
 /* Override for PDF container - more specific */
 #pdf-container .key-features {
-  font-size: var(--btn-size, 13px) !important;
-  color: #222 !important;
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-bottom: 4px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -1812,8 +1668,7 @@ opacity: 1 !important;
 
 /* Original styles for non-PDF elements */
 .key-features {
-  font-size: var(--btn-size, 13px);
-  color: #222;
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-bottom: 4px;
 }
 
@@ -1855,8 +1710,7 @@ opacity: 1 !important;
 .wattage { border-left: none; }
 
 .text-block-16 {
-  font-size: var(--btn-size, 13px);
-  color: #222;
+  /* Removed custom font-size and color to use Webflow defaults */
   text-align: left;
 }
 
@@ -1910,19 +1764,15 @@ opacity: 1 !important;
   border-top: 1px solid #ccc;
   margin-top: 32px;
   padding-top: 12px;
-  font-size: var(--btn-size, 11px);
-  color: #666;
+  /* Removed custom font-size and color to use Webflow defaults */
 }
 
 .text-block-17 {
-  font-size: var(--btn-size, 12px);
-  font-weight: var(--btn-weight, 600);
-  color: #222;
+  /* Removed custom font-size, font-weight, and color to use Webflow defaults */
 }
 
 .text-block-18 {
-  font-size: var(--btn-size, 10px);
-  color: #888;
+  /* Removed custom font-size and color to use Webflow defaults */
   margin-top: 4px;
 }
 
@@ -1949,7 +1799,7 @@ opacity: 1 !important;
   page-break-after: always;
   position: relative;
   overflow: hidden;
-  background-color: var(--duva-white, white);
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Header pinned at top */
@@ -2557,8 +2407,7 @@ opacity: 1 !important;
 
 #pdf-container .product-code {
   color: #C0392B !important;
-  font-weight: var(--btn-weight, 700) !important;
-  font-size: var(--btn-size, 15px) !important;
+  /* Removed custom font-weight and font-size to use Webflow defaults */
   margin-bottom: 8px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -2567,8 +2416,7 @@ opacity: 1 !important;
 }
 #pdf-container .generated-code {
   color: #111 !important;
-  font-weight: var(--btn-weight, 700) !important;
-  font-size: var(--btn-size, 15px) !important;
+  /* Removed custom font-weight and font-size to use Webflow defaults */
   margin-bottom: 8px !important;
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
@@ -2587,11 +2435,11 @@ opacity: 1 !important;
 }
 #pdf-container .specifications-full-width .text-block-16 .label {
   color: #212121 !important;
-  font-weight: var(--btn-weight, 500) !important;
+  /* Removed custom font-weight to use Webflow defaults */
 }
 #pdf-container .specifications-full-width .text-block-16 .value {
   color: #C0392B !important;
-  font-weight: var(--btn-weight, 500) !important;
+  /* Removed custom font-weight to use Webflow defaults */
 }
 
 /* === PDF Accessory Styling (Override Conflicts) === */
@@ -2646,14 +2494,12 @@ opacity: 1 !important;
   border-radius: 0 !important;
 }
 #pdf-container .accessories-pdf-section .accessory-title {
-  font-size: var(--btn-size, 13px) !important;
-  font-weight: var(--btn-weight, 700) !important;
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   color: #212121 !important;
   margin: 0 !important;
 }
 #pdf-container .accessories-pdf-section .accessory-code {
-  font-size: var(--btn-size, 14px) !important;
-  font-weight: var(--btn-weight, 700) !important;
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   color: #C0392B !important;
   margin: 0 !important;
 }
@@ -2854,8 +2700,8 @@ opacity: 1 !important;
 
 /* Keep active state for thumbnails */
 .thumbnail-image.is-active {
-  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #c0392b !important;
+  border-radius: 4px;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
 }
 
@@ -3180,49 +3026,7 @@ opacity: 1 !important;
 }
 
 /* === Global Gotham Font Implementation === */
-/* Override all font families to use Gotham */
-* {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Specific overrides for elements that might need different font weights */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--section-title, Gotham, Arial, sans-serif) !important;
-}
-
-p, span, div, a, button, input, textarea, select {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Ensure form elements use Gotham */
-input, textarea, select, button {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Navigation elements */
-nav, .nav, .navigation {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Menu elements */
-.menu-wrapper, .menu-panel, .menu-overlay {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Related items */
-.related-section {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Product elements */
-.product-title, .product-description, .product-price {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
-
-/* Footer elements */
-footer, .footer {
-  font-family: var(--font-family, Gotham, Arial, sans-serif) !important;
-}
+/* Removed custom font-family overrides to use Webflow defaults */
 
 
 /* === FLIP CARD FUNCTIONALITY MOVED TO SEPARATE FILE === */
@@ -3249,9 +3053,7 @@ footer, .footer {
 /* === No Results Message Styling === */
 .no-results-message {
   margin-right: 40px;
-  font-family: var(--section-title);
-  color: var(--duva-d-grey, var(--duva-d-grey));
-  font-size: var(--section-title-size);
+  /* Removed custom font-family, color, and font-size to use Webflow defaults */
   line-height: var(--section-title-height);
   font-weight: var(--section-title-weight);
   text-align: center;
@@ -3331,9 +3133,9 @@ footer, .footer {
 .main-page-categories-wrapper a:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
-  background-color: var(--duva-white, #ffffff) !important;
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 .main-page-categories-wrapper a:hover::before {
@@ -3347,7 +3149,7 @@ footer, .footer {
 .main-page-categories-wrapper a:hover .text-block-51,
 .main-page-categories-wrapper a:hover .text-block-52,
 .main-page-categories-wrapper a:hover .text-block-53 {
-  color: var(--duva-red, #C0392B) !important;
+  color: #C0392B !important;
   transform: scale(1.05) translateY(-2px);
   transition: all 0.3s ease;
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
@@ -3457,7 +3259,7 @@ footer, .footer {
 .image-3 {
   --hover-transform: translateY(-4px);
   --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  --hover-border-color: var(--duva-red, #c0392b);
+  --hover-border-color: #c0392b;
   --hover-image-scale: scale(1.1);
   --hover-shimmer-position: 100%;
 }
@@ -3609,13 +3411,13 @@ footer, .footer {
 .w-lightbox-thumbnail:hover {
   transform: translateY(-4px) scale(1.05) !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
-  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #c0392b !important;
+  border-radius: 4px;
 }
 
 .w-lightbox-thumbnail.active {
-  border: var(--border-main, 1px) solid var(--duva-red, #c0392b) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #c0392b !important;
+  border-radius: 4px;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.3) !important;
 }
 
@@ -3858,7 +3660,7 @@ ARROWS:
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom font-weight to use Webflow defaults */
   letter-spacing: 0.5px;
 }
 
@@ -3968,7 +3770,7 @@ ARROWS:
 
 .menu-icon:hover {
   transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
 }
 
 /* 2. Logo Enhancement - Different Effect */
@@ -3989,7 +3791,7 @@ ARROWS:
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--duva-red, #C0392B);
+  background: #C0392B;
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
@@ -4022,7 +3824,7 @@ ARROWS:
   right: 0;
   width: 100%;
   height: 2px;
-  background: var(--duva-red, #C0392B);
+  background: #C0392B;
   transition: all 0.3s ease;
   transform: scaleX(0);
   transform-origin: center;
@@ -4105,7 +3907,7 @@ ARROWS:
 
 .search-input-style:focus-within .search-icon {
   transform: scale(1.1);
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
 }
 
 /* 4. Theme Toggle Enhancement */
@@ -4163,7 +3965,7 @@ ARROWS:
 
 /* Active States - Light Mode (Sun Active) */
 .lang-toggle-switch[data-theme="light"] {
-  background-color: var(--duva-light-color-bg, #f4f5f6);
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 .lang-toggle-switch[data-theme="light"] .theme-icon .sun-d-icon {
@@ -4193,7 +3995,7 @@ ARROWS:
 
 /* Default State (Light Mode) */
 .lang-toggle-switch:not([data-theme]) {
-  background-color: var(--duva-light-color-bg, #f4f5f6);
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 .lang-toggle-switch:not([data-theme]) .theme-icon .sun-d-icon {
@@ -4234,18 +4036,17 @@ ARROWS:
 }
 
 .menu-tab.active {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateY(-1px);
 }
 
 /* 5. Active Filter Badge */
 .filter-badge {
-  background: var(--duva-red, #C0392B);
+  background: #C0392B;
   color: white;
   border-radius: 50%;
   padding: 2px 8px;
-  font-size: var(--btn-size, 11px);
-  font-weight: var(--btn-weight, 700);
+  /* Removed custom font-size and font-weight to use Webflow defaults */
   position: absolute;
   top: -8px;
   right: -8px;
@@ -4290,20 +4091,20 @@ ARROWS:
 .checkbox:hover {
   transform: scale(1.05) !important;
   box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25) !important;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
 }
 
 .checkbox.active {
-  background: var(--duva-red, #C0392B) !important;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  background: #C0392B !important;
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   transform: scale(1.08) !important;
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4) !important;
   /* Ensure no white borders or backgrounds */
   outline: none !important;
   /* Override any potential white backgrounds or borders */
-  background-color: var(--duva-red, #C0392B) !important;
+  background-color: #C0392B !important;
   background-image: none !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
@@ -4376,24 +4177,23 @@ ARROWS:
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  background-color: var(--duva-white, white);
+  /* Removed custom background-color to use Webflow defaults */
   width: 25px;
   height: 25px;
-  border: 1px solid var(--border-divider-light);
-  border-radius: var(--border-4px-cornner);
+  /* Removed custom border and border-radius to use Webflow defaults */
 }
 
 .accessory-checkbox:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(192, 57, 43, 0.25);
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
 }
 
 .accessory-checkbox.active {
   background-color: #c0392b;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   width: 25px;
   height: 25px;
   transform: scale(1.08);
@@ -4486,7 +4286,7 @@ ARROWS:
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  font-weight: var(--btn-weight, 600);
+  /* Removed custom font-weight to use Webflow defaults */
   letter-spacing: 0.5px;
 }
 
@@ -4541,7 +4341,7 @@ ARROWS:
   .filter-apply-button {
     min-height: 48px;
     padding: 12px 24px;
-    font-size: var(--btn-size, 16px);
+    /* Removed custom font-size to use Webflow defaults */
   }
   
   .filter-header-wrapper {
@@ -4572,7 +4372,7 @@ ARROWS:
   width: 20px;
   height: 20px;
   border: 2px solid transparent;
-  border-top: 2px solid var(--duva-red, #C0392B);
+  border-top: 2px solid #C0392B;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   transform: translate(-50%, -50%);
@@ -4794,15 +4594,15 @@ ARROWS:
   margin: 20px auto;
   border-style: solid;
   border-width: 1px;
-  border-top-color: var(--border-divider-light);
-  border-right-color: var(--border-divider-light);
-  border-bottom-color: var(--border-divider-light);
-  border-left-color: var(--border-divider-light);
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
-  background-color: var(--duva-white, var(--duva-white));
+  border-top-color: #E4E3E3;
+  border-right-color: #E4E3E3;
+  border-bottom-color: #E4E3E3;
+  border-left-color: #E4E3E3;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #FFFFFF;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
   position: relative;
   overflow: hidden;
@@ -4828,14 +4628,14 @@ ARROWS:
   object-fit: cover;
   border-style: solid;
   border-width: 1px;
-  border-top-color: var(--duva-light-grey);
-  border-right-color: var(--duva-light-grey);
-  border-bottom-color: var(--duva-light-grey);
-  border-left-color: var(--duva-light-grey);
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
+  border-top-color: #F4F5F6;
+  border-right-color: #F4F5F6;
+  border-bottom-color: #F4F5F6;
+  border-left-color: #F4F5F6;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   transform: scale(1.1);
   transition: transform 0.3s ease-out;
   will-change: transform;
@@ -4858,14 +4658,14 @@ ARROWS:
   padding: 20px;
   border-style: solid;
   border-width: 1px;
-  border-top-color: var(--duva-border-shadow);
-  border-right-color: var(--duva-border-shadow);
-  border-bottom-color: var(--duva-border-shadow);
-  border-left-color: var(--duva-border-shadow);
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
+  border-top-color: rgba(0, 0, 0, 0.1);
+  border-right-color: rgba(0, 0, 0, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  border-left-color: rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   backdrop-filter: blur(3px);
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -5034,7 +4834,7 @@ ARROWS:
 .text-block-55 {
   align-self: center;
   font-family: Gotham;
-  color: var(--duva-d-grey, var(--duva-d-grey));
+  color: #212121;
   font-size: 90px;
   line-height: 100px;
   font-weight: 700;
@@ -5065,7 +4865,7 @@ ARROWS:
 }
 
 .text-span-4 {
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
   font-size: 85px;
   line-height: 90px;
   letter-spacing: 3px;
@@ -5115,12 +4915,12 @@ ARROWS:
 }
 
 .text-span-5 {
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
   font-size: 80px;
   line-height: 90px;
   font-weight: 500;
   letter-spacing: 3px;
-  text-decoration-color: var(--duva-red);
+  text-decoration-color: #C0392B;
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
   text-decoration-skip-ink: auto;
@@ -5141,14 +4941,14 @@ ARROWS:
 }
 
 .text-span-3 {
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
   font-size: 80px;
   line-height: 90px;
   font-weight: 300;
   letter-spacing: 6px;
   text-decoration-line: overline;
   text-decoration-style: initial;
-  text-decoration-color: var(--duva-red);
+  text-decoration-color: #C0392B;
   text-decoration-thickness: 2px;
   animation: textFadeIn 1s ease-out 1.2s both;
   will-change: opacity, transform;
@@ -5168,7 +4968,7 @@ ARROWS:
 
 .text-block-70 {
   font-family: Gotham;
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
   font-size: 50px;
   line-height: 55px;
   font-weight: 200;
@@ -5357,17 +5157,17 @@ ARROWS:
   align-items: center;
   border-style: solid;
   border-width: 1px;
-  border-top-color: var(--duva-footer-divider);
-  border-right-color: var(--duva-footer-divider);
-  border-bottom-color: var(--duva-footer-divider);
-  border-left-color: var(--duva-footer-divider);
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
-  background-color: var(--duva-d-grey, #212121);
+  border-top-color: #C0392B;
+  border-right-color: #C0392B;
+  border-bottom-color: #C0392B;
+  border-left-color: #C0392B;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #212121;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px 0px;
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
 }
 
 /* === Footer Newsletter Input Styling === */
@@ -5397,15 +5197,15 @@ ARROWS:
 .footer-newsletter .newsletter-input:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   background-color: rgba(192, 57, 43, 0.05);
 }
 
 .footer-section .newsletter-input:invalid,
 .footer-newsletter .newsletter-input:invalid {
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
 }
 
 /* === Webflow Form Styling === */
@@ -5462,7 +5262,7 @@ ARROWS:
 .text-block-55.vase2 {
   align-self: center;
   font-family: Gotham;
-  color: var(--duva-mid-grey, var(--duva-light-grey));
+  color: #D1D1D1;
   font-size: 80px;
   line-height: 80px;
   font-weight: 700;
@@ -5501,7 +5301,7 @@ ARROWS:
 
 /* Vase section parallax effect */
 .hero-text-wrapper.vase-section.parallax-active .text-block-55.vase2 {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.08px));
+  transform: translateY(calc(0 * -0.08px));
 }
 
 /* Responsive adjustments for vase section */
@@ -5713,14 +5513,14 @@ ARROWS:
 .footer-newsletter input[type="email"]:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
-  border-color: var(--duva-red, #C0392B);
+  border-color: #C0392B;
 }
 
 /* === Footer Content Animation Only === */
 .footer-section {
   position: relative;
   overflow: hidden;
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
 }
 
 /* Footer content animations */
@@ -5833,7 +5633,7 @@ ARROWS:
 /* === Footer Wrapper Text Elements - Menu Panel Style === */
 /* Footer Link Base Styles - Unified Animation */
 .footer-link {
-  color: var(--duva-mid-grey, #F4F5F6);
+  color: #F4F5F6;
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5851,7 +5651,7 @@ ARROWS:
 
 /* Footer Link Hover Effects - Unified Animation */
 .footer-link:hover {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
@@ -5859,11 +5659,11 @@ ARROWS:
 /* Menu Panel Link Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-panel-link {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  color: var(--duva-mid-grey, #D1D1D1);
+  color: #D1D1D1;
 }
 
 .menu-panel-link:hover {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
@@ -5871,11 +5671,11 @@ ARROWS:
 /* Header Button Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-tab-btn {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  color: var(--duva-d-grey, #212121);
+  color: #212121;
 }
 
 .menu-tab-btn:hover {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
@@ -5885,7 +5685,7 @@ ARROWS:
 .right-footer-wrapper .text-block:not(.text-block-69),
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69),
 .right-footer-wrapper div:not(.text-block-69) {
-  color: var(--duva-mid-grey, #F4F5F6);
+  color: #F4F5F6;
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5905,7 +5705,7 @@ ARROWS:
 .right-footer-wrapper .text-block:not(.text-block-69):hover,
 .right-footer-wrapper [class*="text-block"]:not(.text-block-69):hover,
 .right-footer-wrapper div:not(.text-block-69):hover {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
@@ -5915,7 +5715,7 @@ ARROWS:
 .left-footer-wrapper .text-block:not(.text-block-68),
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68),
 .left-footer-wrapper div:not(.text-block-68) {
-  color: var(--duva-mid-grey, #F4F5F6);
+  color: #F4F5F6;
   font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -5935,7 +5735,7 @@ ARROWS:
 .left-footer-wrapper .text-block:not(.text-block-68):hover,
 .left-footer-wrapper [class*="text-block"]:not(.text-block-68):hover,
 .left-footer-wrapper div:not(.text-block-68):hover {
-  color: var(--duva-red, #C0392B);
+  color: #C0392B;
   transform: translateX(8px) scale(1.05);
   text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
 }
@@ -6013,7 +5813,7 @@ ARROWS:
   font-family: "Gotham Rounded", Arial, sans-serif;
   font-size: 40px;
   line-height: 50px;
-  color: var(--duva-mid-grey, #F4F5F6);
+  color: #F4F5F6;
   font-weight: 400;
 }
 
@@ -6026,7 +5826,7 @@ ARROWS:
   font-family: "Gotham Rounded", Arial, sans-serif;
   font-size: 40px;
   line-height: 50px;
-  color: var(--duva-mid-grey, #F4F5F6);
+  color: #F4F5F6;
   font-weight: 400;
   position: relative;
 }
@@ -6058,7 +5858,7 @@ ARROWS:
     font-family: "Gotham Rounded", Arial, sans-serif;
     font-size: 24px;
     line-height: 30px;
-    color: var(--duva-mid-grey, #F4F5F6);
+    color: #F4F5F6;
     font-weight: 400;
   }
   
@@ -6123,7 +5923,7 @@ ARROWS:
 
 /* Image parallax effect - Removed for cleaner performance */
 /* .main-page-hero-section-wrapper .image-23.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * -0.02px)) scale(1.02);
+  transform: translateY(calc(0 * -0.02px)) scale(1.02);
   transition: transform 0.6s ease-out;
   overflow: hidden;
 } */
@@ -6443,119 +6243,103 @@ ARROWS:
 
 /* === COMPREHENSIVE DARK THEME ENHANCEMENTS === */
 [data-theme="dark"] {
-  /* Enhanced dark theme variables */
-  --duva-bg-primary: #212121;
-  --duva-bg-secondary: #2a2a2a;
-  --duva-bg-tertiary: #333333;
-  --duva-text-primary: #F4F5F6;
-  --duva-text-secondary: #D1D1D1;
-  --duva-text-tertiary: #999999;
-  --duva-border-primary: #C0392B;
-  --duva-border-secondary: #333333;
-  --duva-shadow: rgba(0, 0, 0, 0.3);
-  --duva-overlay: rgba(0, 0, 0, 0.4);
+  /* Removed custom dark theme variables to use Webflow defaults */
 }
 
 /* Dark theme for form elements */
 [data-theme="dark"] input,
 [data-theme="dark"] textarea,
 [data-theme="dark"] select {
-  background-color: var(--duva-d-grey) !important;
-  color: var(--duva-light-grey) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] input:focus,
 [data-theme="dark"] textarea:focus,
 [data-theme="dark"] select:focus {
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2) !important;
+  /* Removed custom box-shadow to use Webflow defaults */
 }
 
 /* Dark theme for buttons */
 [data-theme="dark"] button {
-  background-color: var(--duva-d-grey) !important;
-  color: var(--duva-light-grey) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] button:hover {
-  background-color: var(--duva-red) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for dropdowns */
 [data-theme="dark"] .dropdown-wrapper {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 [data-theme="dark"] .dropdown-options {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 [data-theme="dark"] .dropdown-option {
-  color: var(--duva-light-grey) !important;
+  /* Removed custom color to use Webflow defaults */
 }
 
 [data-theme="dark"] .dropdown-option:hover {
-  background-color: var(--duva-red, #C0392B) !important;
-  color: white !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 /* Dark theme for accessories section */
 [data-theme="dark"] .accessories-section {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 [data-theme="dark"] .accessories-item {
-  background-color: var(--duva-d-grey) !important;
-  color: var(--duva-light-grey) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] .accessories-item:hover {
-  background-color: var(--duva-red) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for footer */
 [data-theme="dark"] .footer-section {
-  background-color: var(--duva-d-grey) !important;
-  color: var(--duva-light-grey) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] .footer-section a {
-  color: var(--duva-light-grey) !important;
+  /* Removed custom color to use Webflow defaults */
 }
 
 [data-theme="dark"] .footer-section a:hover {
-  color: var(--duva-red, #C0392B) !important;
+  /* Removed custom color to use Webflow defaults */
 }
 
 /* Dark theme for newsletter */
 [data-theme="dark"] .newsletter-input {
-  background-color: var(--duva-d-grey) !important;
-  color: var(--duva-light-grey) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] .newsletter-input:focus {
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2) !important;
+  /* Removed custom box-shadow to use Webflow defaults */
 }
 
 /* Dark theme for checkboxes */
 [data-theme="dark"] .checkbox {
-  background-color: var(--duva-d-grey) !important;
+  background-color: #212121 !important;
 }
 
 [data-theme="dark"] .checkbox.active {
-  background-color: var(--duva-red, #C0392B) !important;
+  background-color: #C0392B !important;
 }
 
 /* Dark theme for scrollbars */
 [data-theme="dark"] ::-webkit-scrollbar {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background-color: var(--duva-mid-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--duva-red, #C0392B) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for main content areas and sections */
@@ -6565,12 +6349,12 @@ ARROWS:
 [data-theme="dark"] .section-wrapper,
 [data-theme="dark"] .container,
 [data-theme="dark"] .wrapper {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for product page main background */
 [data-theme="dark"] body {
-  background-color: var(--duva-d-grey, #212121) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for specific sections */
@@ -6582,7 +6366,7 @@ ARROWS:
 [data-theme="dark"] .gallery-section,
 [data-theme="dark"] .about-section,
 [data-theme="dark"] .contact-section {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for cards and panels */
@@ -6590,7 +6374,7 @@ ARROWS:
 [data-theme="dark"] .panel,
 [data-theme="dark"] .block,
 [data-theme="dark"] .div-block {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for modals and overlays */
@@ -6598,7 +6382,7 @@ ARROWS:
 [data-theme="dark"] .overlay,
 [data-theme="dark"] .popup,
 [data-theme="dark"] .lightbox {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme for navigation areas */
@@ -6606,12 +6390,12 @@ ARROWS:
 [data-theme="dark"] .navigation,
 [data-theme="dark"] .header-section,
 [data-theme="dark"] .sidebar {
-  background-color: var(--duva-d-grey) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 /* Dark theme override for cards-Container to ensure dark background */
 [data-theme="dark"] .cards-Container {
-  background-color: var(--duva-d-grey, #212121) !important;
+  /* Removed custom background-color to use Webflow defaults */
 }
 
 
@@ -6620,15 +6404,13 @@ ARROWS:
 html[data-theme="dark"] .cards-Container,
 body[data-theme="dark"] .cards-Container,
 body.theme-dark .cards-Container {
-  background-color: var(--duva-d-grey, #212121) !important;
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+  /* Removed custom background-color, border-color, and box-shadow to use Webflow defaults */
 }
 
 /* ALSO target the lowercase version that exists in other CSS files */
 [data-theme="dark"] .cards-container {
-  background-color: var(--duva-d-grey, #212121) !important;
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important; /* Standard border color */
+  background-color: #212121 !important;
+  border-color: #eaeaeac4 !important; /* Standard border color */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -6636,68 +6418,63 @@ body.theme-dark .cards-Container {
 
 /* Dark theme border override for header-section */
 [data-theme="dark"] .header-section {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  /* Removed custom border-color to use Webflow defaults */
 }
 
 /* Dark theme for main-header-wrapper and all borders within it */
 [data-theme="dark"] .main-header-wrapper {
-  background-color: var(--duva-d-grey, #212121) !important;
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  /* Removed custom background-color and border-color to use Webflow defaults */
 }
 
 /* Dark theme for all borders within main-header-wrapper */
 [data-theme="dark"] .main-header-wrapper * {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  /* Removed custom border-color to use Webflow defaults */
 }
 
 /* Dark theme for lang-toggle-switch and all borders within it */
 [data-theme="dark"] .lang-toggle-switch {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  /* Removed custom border-color to use Webflow defaults */
 }
 
 [data-theme="dark"] .lang-toggle-switch * {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  border-color: #eaeaeac4 !important;
 }
 
 /* Dark theme for search-input-style and all borders within it */
 [data-theme="dark"] .search-input-style {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  border-color: #eaeaeac4 !important;
 }
 
 [data-theme="dark"] .search-input-style * {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  border-color: #eaeaeac4 !important;
 }
 
 /* Dark theme for menu-wrapper and all borders within it */
 [data-theme="dark"] .menu-wrapper {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  border-color: #eaeaeac4 !important;
 }
 
 [data-theme="dark"] .menu-wrapper * {
-  border-color: var(--duva-border-shadow-d, #eaeaeac4) !important;
+  border-color: #eaeaeac4 !important;
 }
 
 /* Dark theme for main filter wrapper and filter sections */
 [data-theme="dark"] .main-filter-wrapper {
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] .filter-sections-wrapper {
-  background: linear-gradient(135deg, rgba(42, 42, 42, 0.1), rgba(42, 42, 42, 0.05)) !important;
-  border-color: rgba(51, 51, 51, 0.2) !important;
+  /* Removed custom background and border-color to use Webflow defaults */
 }
 
 [data-theme="dark"] .filter-header-wrapper,
 [data-theme="dark"] .filter-header-wrapper-main {
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 [data-theme="dark"] .filter-right-wrapper,
 [data-theme="dark"] .fliter-right-wrapper {
-  background-color: var(--duva-light-grey, #F4F5F6) !important;
-  color: var(--duva-d-grey, #212121) !important;
+  /* Removed custom background-color and color to use Webflow defaults */
 }
 
 /* Filter dark theme styles moved to duva-Fliter-style.css */
@@ -6714,14 +6491,14 @@ body.theme-dark .cards-Container {
 [data-theme="dark"] .lang-toggle-switch span,
 [data-theme="dark"] .lang-toggle-switch .text-block-3,
 [data-theme="dark"] .lang-toggle-switch .text-block-4 {
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  /* Removed custom color to use Webflow defaults */
 }
 
 /* Dark theme for magnifier icon */
 [data-theme="dark"] .magnifier-grey.svg,
 [data-theme="dark"] .search-icon,
 [data-theme="dark"] .magnifier-icon {
-  filter: brightness(0) saturate(100%) invert(85%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%) !important;
+  /* Removed custom filter to use Webflow defaults */
 }
 
 /* Dark theme for light grey search icon (Image 58) */
@@ -6778,7 +6555,7 @@ body.theme-dark .cards-Container {
 .sub-filter-wattage input[type="checkbox"]:checked ~ .sub-filter-wattage,
 .sub-filter-wattage.active,
 .sub-filter-wattage.checked {
-  color: var(--duva-red, #C0392B) !important;
+  color: #C0392B !important;
   font-weight: 600 !important;
 }
 
@@ -6787,7 +6564,7 @@ body.theme-dark .cards-Container {
 [data-theme="dark"] .sub-filter-wattage input[type="checkbox"]:checked ~ .sub-filter-wattage,
 [data-theme="dark"] .sub-filter-wattage.active,
 [data-theme="dark"] .sub-filter-wattage.checked {
-  color: var(--duva-red, #C0392B) !important;
+  color: #C0392B !important;
   font-weight: 600 !important;
 }
 
@@ -6795,29 +6572,29 @@ body.theme-dark .cards-Container {
 [data-theme="dark"] input::placeholder,
 [data-theme="dark"] textarea::placeholder,
 [data-theme="dark"] .placeholder-text {
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  color: #F4F5F6 !important;
 }
 
 /* Dark theme for search input style */
 [data-theme="dark"] .search-input-style {
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  background-color: #212121 !important;
+  color: #F4F5F6 !important;
 }
 
 [data-theme="dark"] .search-input-style input {
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  background-color: #212121 !important;
+  color: #F4F5F6 !important;
 }
 
 /* Dark theme for menu tab button */
 [data-theme="dark"] .menu-tab-btn {
-  background-color: var(--duva-d-grey, #212121) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  background-color: #212121 !important;
+  color: #F4F5F6 !important;
 }
 
 [data-theme="dark"] .menu-tab-btn:hover {
-  background-color: var(--duva-red, #C0392B) !important;
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  background-color: #C0392B !important;
+  color: #F4F5F6 !important;
 }
 
 /* === NEW ITEMS READ MORE TOGGLE === */
@@ -6844,14 +6621,14 @@ body.theme-dark .cards-Container {
   left: 0;
   right: 0;
   height: 20px;
-  background: linear-gradient(transparent, var(--duva-light-grey, #F4F5F6));
+  background: linear-gradient(transparent, #F4F5F6);
   pointer-events: none;
   z-index: 1;
 }
 
 /* Dark mode gradient */
 [data-theme="dark"] #new-items .new-item-descriptions.truncated::after {
-  background: linear-gradient(transparent, var(--Background, #212121));
+  background: linear-gradient(transparent, #212121);
 }
 
 /* Read more button styling */
@@ -6875,7 +6652,7 @@ body.theme-dark .cards-Container {
 
 /* Dark theme for read more text */
 [data-theme="dark"] #new-items .read-more .text-block-86 {
-  color: var(--duva-light-grey, #F4F5F6) !important; /* Light grey on dark mode */
+  color: #F4F5F6 !important; /* Light grey on dark mode */
 }
 
 /* Read more arrow styling - following accessories-arrow pattern */
@@ -6908,7 +6685,7 @@ body.theme-dark .cards-Container {
 
 /* Focus state for accessibility - arrow only */
 #new-items .read-more .image-52:focus {
-  outline: 2px solid var(--duva-red, #C0392B);
+  outline: 2px solid #C0392B;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -7166,7 +6943,7 @@ body.theme-dark .cards-Container {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--duva-red, #C0392B) !important;
+  background: #C0392B !important;
   transition: all 0.3s ease;
   transform: translateX(-50%);
   z-index: 10;
@@ -7189,7 +6966,7 @@ body.theme-dark .cards-Container {
   margin-left: auto;
   transition: all 0.3s ease;
   overflow: hidden;
-  border-radius: var(--border-8px);
+  border-radius: 8px;
 }
 
 .cata-main-download:hover {
@@ -7197,10 +6974,10 @@ body.theme-dark .cards-Container {
 }
 
 .image-53 {
-  border-top-left-radius: var(--border-8px);
-  border-top-right-radius: var(--border-8px);
-  border-bottom-left-radius: var(--border-8px);
-  border-bottom-right-radius: var(--border-8px);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 5px 0px;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
@@ -7311,8 +7088,8 @@ body.theme-dark .cards-Container {
   width: 100%;
   margin-top: 20px;
   padding: 20px;
-  background: var(--duva-white);
-  border: 1px solid var(--border-divider-light);
+  background: #FFFFFF;
+  border: 1px solid #E4E3E3;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -7333,7 +7110,7 @@ body.theme-dark .cards-Container {
 .download-progress-bar {
   width: 100%;
   height: 8px;
-  background: var(--duva-mid-grey);
+  background: #D1D1D1;
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -7342,7 +7119,7 @@ body.theme-dark .cards-Container {
 
 .download-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--duva-red), #e74c3c);
+  background: linear-gradient(90deg, #C0392B, #e74c3c);
   border-radius: 4px;
   width: 0%;
   transition: width 0.3s ease;
@@ -7368,10 +7145,10 @@ body.theme-dark .cards-Container {
 
 /* Download Status */
 .download-status {
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--duva-d-grey);
+  color: #212121;
   text-align: center;
   margin-bottom: 12px;
   transition: color 0.3s ease;
@@ -7383,14 +7160,14 @@ body.theme-dark .cards-Container {
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .download-info span {
   padding: 4px 8px;
-  background: var(--f8f8f8);
+  background: #F8F8F8;
   border-radius: 4px;
   font-weight: 500;
 }
@@ -7449,7 +7226,7 @@ body.theme-dark .cards-Container {
 }
 
 .email-capture-content {
-  background: var(--duva-white);
+  background: #FFFFFF;
   border-radius: 12px;
   padding: 40px;
   max-width: 500px;
@@ -7472,7 +7249,7 @@ body.theme-dark .cards-Container {
 
 .email-capture-content h3 {
   font-family: Gotham;
-  color: var(--duva-red);
+  color: #C0392B;
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 16px;
@@ -7481,7 +7258,7 @@ body.theme-dark .cards-Container {
 
 .email-capture-content p {
   font-family: Gothamnarrow;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 24px;
@@ -7498,56 +7275,56 @@ body.theme-dark .cards-Container {
 .email-capture-form input[type="email"] {
   width: 100%;
   padding: 16px 20px;
-  border: 2px solid var(--border-divider-light);
+  border: 2px solid #E4E3E3;
   border-radius: 8px;
   font-family: Gothamnarrow;
   font-size: 16px;
-  background: var(--duva-white);
-  color: var(--duva-d-grey);
+  background: #FFFFFF;
+  color: #212121;
   transition: all 0.3s ease;
 }
 
 .email-capture-form input[type="email"]:focus {
   outline: none;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
 }
 
 .email-capture-form button[type="submit"] {
-  background: var(--duva-red);
-  color: var(--duva-light-grey, var(--duva-light-grey));
+  background: #C0392B;
+  color: #F4F5F6;
   border: none;
   padding: 16px 24px;
   border-radius: 8px;
-  font-family: var(--btn-font);
-  font-size: var(--btn-size);
-  font-weight: var(--btn-weight);
+  font-family: Gotham, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .email-capture-form button[type="submit"]:hover {
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
 
 .skip-email {
   background: transparent;
-  color: var(--duva-mid-grey);
-  border: 1px solid var(--border-divider-light);
+  color: #D1D1D1;
+  border: 1px solid #E4E3E3;
   padding: 12px 20px;
   border-radius: 8px;
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .skip-email:hover {
-  background: var(--f8f8f8);
-  color: var(--duva-d-grey);
+  background: #F8F8F8;
+  color: #212121;
 }
 
 /* Close Modal Button */
@@ -7558,7 +7335,7 @@ body.theme-dark .cards-Container {
   background: none;
   border: none;
   font-size: 24px;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -7570,8 +7347,8 @@ body.theme-dark .cards-Container {
 }
 
 .close-modal:hover {
-  background: var(--f8f8f8);
-  color: var(--duva-d-grey);
+  background: #F8F8F8;
+  color: #212121;
 }
 
 /* Download Notifications */
@@ -7581,7 +7358,7 @@ body.theme-dark .cards-Container {
   right: 20px;
   padding: 16px 24px;
   border-radius: 8px;
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   z-index: 10001;
@@ -7611,7 +7388,7 @@ body.theme-dark .cards-Container {
 }
 
 .download-notification.info {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
 }
 
@@ -7651,27 +7428,27 @@ body.theme-dark .cards-Container {
 
 /* Dark Theme Support */
 [data-theme="dark"] .download-progress-container {
-  background: var(--duva-d-grey);
-  border-color: var(--duva-border-shadow-d);
+  background: #212121;
+  border-color: #eaeaeac4;
 }
 
 [data-theme="dark"] .download-progress-bar {
-  background: var(--duva-mid-grey);
+  background: #D1D1D1;
 }
 
 [data-theme="dark"] .download-info span {
-  background: var(--duva-d-grey);
-  color: var(--duva-light-grey);
+  background: #212121;
+  color: #F4F5F6;
 }
 
 [data-theme="dark"] .email-capture-content {
-  background: var(--duva-d-grey);
+  background: #212121;
 }
 
 [data-theme="dark"] .email-capture-form input[type="email"] {
-  background: var(--duva-d-grey);
-  border-color: var(--duva-border-shadow-d);
-  color: var(--duva-light-grey);
+  background: #212121;
+  border-color: #eaeaeac4;
+  color: #F4F5F6;
 }
 
 /* === END CATALOG DOWNLOAD SYSTEM === */
@@ -7758,7 +7535,7 @@ body.theme-dark .cards-Container {
 }
 
 .preview-content {
-  background: var(--duva-white);
+  background: #FFFFFF;
   border-radius: 0;
   width: 100vw;
   height: 100vh;
@@ -7796,14 +7573,14 @@ body.theme-dark .cards-Container {
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-divider-light);
-  background: var(--duva-white);
+  border-bottom: 1px solid #E4E3E3;
+  background: #FFFFFF;
   flex-shrink: 0;
 }
 
 .preview-header h3 {
   font-family: Gotham;
-  color: var(--duva-red);
+  color: #C0392B;
   font-size: 24px;
   font-weight: 700;
   margin: 0;
@@ -7816,8 +7593,8 @@ body.theme-dark .cards-Container {
 }
 
 .control-btn {
-  background: var(--f8f8f8);
-  border: 1px solid var(--border-divider-light);
+  background: #F8F8F8;
+  border: 1px solid #E4E3E3;
   border-radius: 6px;
   width: 36px;
   height: 36px;
@@ -7828,14 +7605,14 @@ body.theme-dark .cards-Container {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: var(--duva-d-grey);
+  color: #212121;
 }
 
 .control-btn:hover {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   transform: translateY(-1px);
 }
 
@@ -7844,10 +7621,10 @@ body.theme-dark .cards-Container {
 }
 
 .zoom-level {
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   min-width: 50px;
   text-align: center;
 }
@@ -7856,7 +7633,7 @@ body.theme-dark .cards-Container {
   background: none;
   border: none;
   font-size: 24px;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -7868,8 +7645,8 @@ body.theme-dark .cards-Container {
 }
 
 .close-preview:hover {
-  background: var(--f8f8f8);
-  color: var(--duva-d-grey);
+  background: #F8F8F8;
+  color: #212121;
 }
 
 /* Preview Search */
@@ -7878,32 +7655,32 @@ body.theme-dark .cards-Container {
   align-items: center;
   gap: 12px;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--border-divider-light);
-  background: var(--duva-white);
+  border-bottom: 1px solid #E4E3E3;
+  background: #FFFFFF;
   flex-shrink: 0;
 }
 
 .search-input {
   flex: 1;
   padding: 12px 16px;
-  border: 2px solid var(--border-divider-light);
+  border: 2px solid #E4E3E3;
   border-radius: 8px;
   font-family: Gothamnarrow;
   font-size: 14px;
-  background: var(--duva-white);
-  color: var(--duva-d-grey);
+  background: #FFFFFF;
+  color: #212121;
   transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
 }
 
 .search-btn {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
   border: none;
   border-radius: 8px;
@@ -7914,7 +7691,7 @@ body.theme-dark .cards-Container {
 }
 
 .search-btn:hover {
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
   transform: translateY(-1px);
 }
 
@@ -7925,29 +7702,29 @@ body.theme-dark .cards-Container {
   justify-content: center;
   gap: 16px;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--border-divider-light);
-  background: var(--duva-white);
+  border-bottom: 1px solid #E4E3E3;
+  background: #FFFFFF;
   flex-shrink: 0;
 }
 
 .nav-btn {
-  background: var(--f8f8f8);
-  border: 1px solid var(--border-divider-light);
+  background: #F8F8F8;
+  border: 1px solid #E4E3E3;
   border-radius: 6px;
   padding: 8px 16px;
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: var(--duva-d-grey);
+  color: #212121;
 }
 
 .nav-btn:hover:not(:disabled) {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
-  border: var(--border-main, 1px) solid var(--duva-red, #C0392B) !important;
-  border-radius: var(--border-4px-cornner, 4px);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
   transform: translateY(-1px);
 }
 
@@ -7958,17 +7735,17 @@ body.theme-dark .cards-Container {
 }
 
 .page-info {
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
 }
 
 /* PDF Container */
 .pdf-container {
   flex: 1;
   position: relative;
-  background: var(--duva-white);
+  background: #FFFFFF;
   overflow: hidden;
   padding: 0;
   min-height: 0;
@@ -7987,7 +7764,7 @@ body.theme-dark .cards-Container {
 .page-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: var(--duva-white, white);
+  background: white;
   display: block;
   max-width: 50%;
   max-height: 100%;
@@ -7996,7 +7773,7 @@ body.theme-dark .cards-Container {
 .single-canvas {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  background: var(--duva-white, white);
+  background: white;
   display: block;
   margin: 0 auto;
   max-width: 100%;
@@ -8032,10 +7809,10 @@ body.theme-dark .cards-Container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 16px;
-  color: var(--duva-mid-grey);
-  background: var(--duva-white);
+  color: #D1D1D1;
+  background: #FFFFFF;
   padding: 20px 32px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -8044,27 +7821,27 @@ body.theme-dark .cards-Container {
 /* Preview Footer */
 .preview-footer {
   padding: 20px 24px;
-  border-top: 1px solid var(--border-divider-light);
-  background: var(--duva-white);
+  border-top: 1px solid #E4E3E3;
+  background: #FFFFFF;
   flex-shrink: 0;
   text-align: center;
 }
 
 .download-from-preview {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
   border: none;
   border-radius: 8px;
   padding: 12px 24px;
-  font-family: var(--btn-font);
-  font-size: var(--btn-size);
-  font-weight: var(--btn-weight);
+  font-family: Gotham, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .download-from-preview:hover {
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.3);
 }
@@ -8077,32 +7854,32 @@ body.theme-dark .cards-Container {
 
 .preview-error h4 {
   font-family: Gotham;
-  color: var(--duva-red);
+  color: #C0392B;
   font-size: 20px;
   margin-bottom: 16px;
 }
 
 .preview-error p {
   font-family: Gothamnarrow;
-  color: var(--duva-mid-grey);
+  color: #D1D1D1;
   font-size: 16px;
   margin-bottom: 24px;
 }
 
 .preview-error button {
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
   border: none;
   border-radius: 8px;
   padding: 12px 24px;
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .preview-error button:hover {
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
   transform: translateY(-1px);
 }
 
@@ -8111,11 +7888,11 @@ body.theme-dark .cards-Container {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: var(--duva-red);
+  background: #C0392B;
   color: white;
   padding: 12px 20px;
   border-radius: 8px;
-  font-family: var(--btn-font);
+  font-family: Gotham, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   z-index: 10001;
@@ -8208,36 +7985,36 @@ body.theme-dark .cards-Container {
 
 /* Dark Theme Support */
 [data-theme="dark"] .preview-content {
-  background: var(--duva-d-grey);
+  background: #212121;
 }
 
 [data-theme="dark"] .preview-header,
 [data-theme="dark"] .preview-search,
 [data-theme="dark"] .preview-navigation,
 [data-theme="dark"] .preview-footer {
-  background: var(--duva-d-grey);
-  border-color: var(--duva-border-shadow-d);
+  background: #212121;
+  border-color: #eaeaeac4;
 }
 
 [data-theme="dark"] .search-input {
-  background: var(--duva-d-grey, #212121);
-  border-color: var(--duva-border-shadow-d);
-  color: var(--duva-light-grey);
+  background: #212121;
+  border-color: #eaeaeac4;
+  color: #F4F5F6;
 }
 
 [data-theme="dark"] .search-input::placeholder {
-  color: var(--duva-light-grey, #F4F5F6);
+  color: #F4F5F6;
 }
 
 [data-theme="dark"] .control-btn,
 [data-theme="dark"] .nav-btn {
-  background: var(--duva-d-grey);
-  border-color: var(--duva-border-shadow-d);
-  color: var(--duva-light-grey);
+  background: #212121;
+  border-color: #eaeaeac4;
+  color: #F4F5F6;
 }
 
 [data-theme="dark"] .pdf-container {
-  background: var(--duva-d-grey);
+  background: #212121;
 }
 
 /* === END CATALOG PREVIEW SYSTEM === */
@@ -8249,7 +8026,7 @@ body.theme-dark .cards-Container {
   right: 30px;
   width: 50px;
   height: 50px;
-  background: var(--duva-red, #C0392B);
+  background: #C0392B;
   color: white;
   border: none;
   border-radius: 50%;
@@ -8273,7 +8050,7 @@ body.theme-dark .cards-Container {
 }
 
 .back-to-top-btn:hover {
-  background: var(--duva-d-grey, #212121);
+  background: #212121;
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
 }
@@ -8380,15 +8157,15 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[style*="var(--duva-white)"],
 [data-theme="dark"] *[style*="duva-white"],
 [data-theme="dark"] *[class*="duva-white"] {
-  background-color: var(--duva-d-grey, #212121) !important;
+  background-color: #212121 !important;
 }
 
 /* Override CSS variables in dark mode */
 [data-theme="dark"] {
   --duva-white: #212121 !important; /* Override to dark grey */
   --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
-  --duva-light-color-bg: var(--main-body-color, #212121) !important;
-  --light-color-bg: var(--main-body-color, #212121) !important;
+  --duva-light-color-bg: #212121 !important;
+  --light-color-bg: #212121 !important;
   --main-body-color: #212121 !important; /* Ensure main body color is set */
 }
 
@@ -8399,21 +8176,21 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] [class*="duva-light-color"],
 [data-theme="dark"] [style*="duva-light-color-bg"],
 [data-theme="dark"] [style*="Duva-light-color-bg"] {
-  background-color: var(--main-body-color, #212121) !important; /* Force main-body-color */
+  background-color: #212121 !important; /* Force main-body-color */
 }
 
 /* Change all duva-white text colors to light grey in dark mode */
 [data-theme="dark"] *[style*="var(--duva-white)"] *,
 [data-theme="dark"] *[style*="duva-white"] *,
 [data-theme="dark"] *[class*="duva-white"] * {
-  color: var(--duva-light-grey, #F4F5F6) !important;
+  color: #F4F5F6 !important;
 }
 
 /* Change all duva-light-grey backgrounds to dark grey in dark mode */
 [data-theme="dark"] *[style*="var(--duva-light-grey)"],
 [data-theme="dark"] *[style*="duva-light-grey"],
 [data-theme="dark"] *[class*="duva-light-grey"] {
-  background-color: var(--duva-d-grey, #212121) !important;
+  background-color: #212121 !important;
 }
 
 /* Change all duva-d-grey text to light grey in dark mode */
@@ -8436,7 +8213,7 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[style*="var(--duva-border-shadow)"],
 [data-theme="dark"] *[style*="duva-border-shadow"],
 [data-theme="dark"] *[class*="duva-border-shadow"] {
-  box-shadow: var(--duva-border-shadow-d, 0 2px 5px rgba(0, 0, 0, 0.5)) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Change all Duva-light-grey-bg elements to absolute black in dark mode */
