@@ -1,6 +1,21 @@
 /* === MINIMAL FLIP CARD ANIMATION ONLY === */
 /* Only keeping the essential flip animation - everything else handled by Webflow */
 
+/* === PARALLAX EFFECT FOR CARDS === */
+.collection-item,
+.product-card,
+.related-card {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Parallax transform when active */
+.collection-item.parallax-active,
+.product-card.parallax-active,
+.related-card.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
+}
+
 /* === BACK CARD === */
 .flip-card-back {
   position: absolute;
