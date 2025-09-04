@@ -310,7 +310,7 @@
   height: 100% !important;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Faster and smoother */
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 4px; /* Match the wrapper's border radius */
   box-shadow: 0 8px 25px rgba(192, 57, 43, 0);
   display: flex !important;
   flex-direction: column !important;
@@ -335,6 +335,7 @@
   transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   opacity: 1;
   visibility: visible;
+  border-radius: 4px; /* Ensure consistent border radius with wrapper */
 }
 
 .flip-card-wrapper:hover .flip-card-front,
@@ -376,31 +377,7 @@
 }
 
 /* === ALTERNATIVE ANIMATION OPTIONS === */
-/* 
-=== OPTION 3: SCALE IN (Alternative) ===
-.flip-card-back {
-  position: absolute;
-  inset: 0%;
-  z-index: 2;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.9);
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0);
-}
-
-.flip-card-wrapper:hover .flip-card-back {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-  border-color: #C0392B !important;
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2);
-}
-*/
+/* Alternative animation options removed for cleaner code */
 
 /* === FLIP CARD OVERLAY SLIDE EFFECT === */
 .flip-card-back::before {
