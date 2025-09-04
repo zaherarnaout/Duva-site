@@ -103,10 +103,10 @@
   // Initialize entrance animations
   function initializeEntranceAnimations(cards) {
     cards.forEach((card, index) => {
-      // Add entrance animation class
-      card.classList.add('entrance-animation');
+      // Don't add entrance-animation class immediately
+      // Let the Intersection Observer handle when to show cards
       
-      // Set staggered delay
+      // Set staggered delay for when they do appear
       const delay = index * CARDS_CONFIG.entranceAnimationDelay;
       card.style.animationDelay = `${delay}ms`;
     });
