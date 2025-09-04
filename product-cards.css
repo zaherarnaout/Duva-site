@@ -159,6 +159,42 @@
   border-color: #E4E3E3 !important; /* Use our standard border color */
 }
 
+/* === OVERRIDE ALL WEBFLOW BORDER RULES FOR FLIP CARDS === */
+/* Ensure all child elements in flip cards have consistent 1px borders */
+.flip-card-wrapper .image-3,
+.flip-card-wrapper .product-image,
+.flip-card-wrapper .thumbnail-image,
+.flip-card-wrapper .product-image-wrapper {
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
+}
+
+/* Override any active states that might add thicker borders */
+.flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active,
+.flip-card-wrapper .product-image.main-image-hover,
+.flip-card-wrapper .product-image.main-image-hover:hover {
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
+}
+
+/* === OVERRIDE MAIN STYLES.CSS HOVER EFFECTS FOR FLIP CARDS === */
+/* Prevent the red border hover effect from main styles.css */
+.flip-card-wrapper .product-image:hover,
+.flip-card-wrapper .thumbnail-image:hover,
+.flip-card-wrapper .image-3:hover {
+  border-color: #E4E3E3 !important; /* Override the red hover border */
+  border-width: 1px !important;
+  transform: none !important; /* Disable hover transform */
+  box-shadow: none !important; /* Disable hover shadow */
+}
+
+/* Override the is-active state that adds red border */
+.flip-card-wrapper .thumbnail-image.is-active {
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
+  box-shadow: none !important;
+}
+
 /* === SHIMMER EFFECT FOR PRODUCT CARDS === */
 /* Only apply shimmer to non-flip cards */
 .collection-item::before,
