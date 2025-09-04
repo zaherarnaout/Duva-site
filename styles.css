@@ -2530,6 +2530,44 @@ opacity: 1 !important;
   display: none !important;
 }
 
+/* === Related Cards Hover Effects === */
+.related-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Shimmer effect for related cards */
+.related-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(192, 57, 43, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Hover effects for related cards */
+.related-card:hover {
+  transform: scale(1.02);
+  border: 1px solid #C0392B !important;
+  box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+}
+
+/* Shimmer animation on hover */
+.related-card:hover::before {
+  left: 100%;
+}
+
 /* Hide arrows since we're using mouse wheel scrolling */
 .related-arrow-left,
 .related-arrow-right {
