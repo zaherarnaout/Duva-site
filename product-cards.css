@@ -16,6 +16,13 @@
   transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
 }
 
+/* Parallax for card elements (text and images) */
+.collection-item.parallax-active *,
+.product-card.parallax-active *,
+.related-card.parallax-active * {
+  transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
+}
+
 /* === BACK CARD === */
 .flip-card-back {
   position: absolute;
