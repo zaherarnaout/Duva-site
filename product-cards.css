@@ -136,7 +136,6 @@
 }
 
 /* === PRODUCT CARD BASE STYLES === */
-/* TEMPORARY: DISABLED ALL BORDERS AND SHADOWS FOR TESTING */
 .collection-item,
 .product-card,
 .related-card,
@@ -145,60 +144,62 @@
   position: relative;
   overflow: hidden;
   will-change: transform;
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
-  border-style: none !important; /* TEMPORARY: No border style */
-  border-color: transparent !important; /* TEMPORARY: Transparent border */
+  border: 1px solid #E4E3E3 !important; /* Standard border color - override Webflow defaults */
+  border-width: 1px !important; /* Force 1px border width to override Webflow's 2px */
+  border-style: solid !important; /* Force solid border style */
+  border-color: #E4E3E3 !important; /* Force border color */
   border-radius: 4px;
-  box-shadow: none !important; /* TEMPORARY: No box-shadow */
-  outline: none !important; /* TEMPORARY: No outline */
+  box-shadow: none !important; /* Remove any box-shadow that might create bold appearance */
+  outline: none !important; /* Remove any outline */
 }
 
-/* === TEMPORARY: DISABLED WEBFLOW OVERRIDES FOR TESTING === */
+/* === OVERRIDE WEBFLOW THUMBNAIL ACTIVE STATE === */
+/* Prevent Webflow's 2px border from affecting our product cards */
 .collection-item .image-3.thumbnail-image.thumbnail-image-is-active,
 .product-card .image-3.thumbnail-image.thumbnail-image-is-active,
 .related-card .image-3.thumbnail-image.thumbnail-image-is-active,
 .flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active {
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
+  border-width: 1px !important; /* Override Webflow's 2px border */
+  border-color: #E4E3E3 !important; /* Use our standard border color */
 }
 
 /* === OVERRIDE ALL WEBFLOW BORDER RULES FOR FLIP CARDS === */
-/* TEMPORARY: DISABLED ALL BORDERS FOR TESTING */
+/* Ensure all child elements in flip cards have consistent 1px borders */
 .flip-card-wrapper .image-3,
 .flip-card-wrapper .product-image,
 .flip-card-wrapper .thumbnail-image,
 .flip-card-wrapper .product-image-wrapper {
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
-  border-style: none !important; /* TEMPORARY: No border style */
-  border-color: transparent !important; /* TEMPORARY: Transparent border */
-  box-shadow: none !important; /* TEMPORARY: No box-shadow */
-  outline: none !important; /* TEMPORARY: No outline */
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
+  border-style: solid !important; /* Force solid border style */
+  border-color: #E4E3E3 !important; /* Force border color */
+  box-shadow: none !important; /* Remove any box-shadow that might create bold appearance */
+  outline: none !important; /* Remove any outline */
 }
 
-/* TEMPORARY: DISABLED ALL ACTIVE STATE BORDERS FOR TESTING */
+/* Override any active states that might add thicker borders */
 .flip-card-wrapper .image-3.thumbnail-image.thumbnail-image-is-active,
 .flip-card-wrapper .product-image.main-image-hover,
 .flip-card-wrapper .product-image.main-image-hover:hover {
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
 }
 
-/* === TEMPORARY: DISABLED ALL HOVER EFFECTS FOR TESTING === */
+/* === OVERRIDE MAIN STYLES.CSS HOVER EFFECTS FOR FLIP CARDS === */
+/* Prevent the red border hover effect from main styles.css */
 .flip-card-wrapper .product-image:hover,
 .flip-card-wrapper .thumbnail-image:hover,
 .flip-card-wrapper .image-3:hover {
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
+  border-color: #E4E3E3 !important; /* Override the red hover border */
+  border-width: 1px !important;
   transform: none !important; /* Disable hover transform */
   box-shadow: none !important; /* Disable hover shadow */
 }
 
-/* TEMPORARY: DISABLED ALL ACTIVE STATE BORDERS FOR TESTING */
+/* Override the is-active state that adds red border */
 .flip-card-wrapper .thumbnail-image.is-active {
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  border-width: 0 !important; /* TEMPORARY: No border width */
+  border: 1px solid #E4E3E3 !important;
+  border-width: 1px !important;
   box-shadow: none !important;
 }
 
@@ -355,9 +356,9 @@
   width: 100% !important;
   height: 100% !important;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Faster and smoother */
-  border: 1px solid transparent;
+  border: 3px solid yellow !important; /* DEBUG: Yellow border for back card */
   border-radius: 4px; /* Match the wrapper's border radius */
-  box-shadow: 0 8px 25px rgba(192, 57, 43, 0);
+  box-shadow: 0 0 15px blue !important; /* DEBUG: Blue shadow for back card */
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -385,9 +386,9 @@
   visibility: visible;
   border-radius: 4px; /* Ensure consistent border radius with wrapper */
   pointer-events: auto !important; /* Allow pointer events when visible */
-  border: none !important; /* TEMPORARY: Disabled all borders */
-  box-shadow: none !important; /* TEMPORARY: No box-shadow */
-  outline: none !important; /* TEMPORARY: No outline */
+  border: 3px solid blue !important; /* DEBUG: Blue border for front card */
+  box-shadow: 0 0 10px green !important; /* DEBUG: Green shadow for front card */
+  outline: none !important;
 }
 
 .flip-card-wrapper:hover .flip-card-front,
