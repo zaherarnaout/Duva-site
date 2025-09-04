@@ -153,17 +153,19 @@
 }
 
 /* === FLIP CARD WRAPPER - TRANSPARENT CONTAINER === */
+/* OVERRIDE WEBFLOW DEFAULTS: border: 1px solid var(--border-divider-light), background-color: var(--duva-white) */
 .flip-card-wrapper {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
   will-change: transform;
-  border: none !important; /* NO BORDER - container should be transparent */
+  border: none !important; /* OVERRIDE: Remove Webflow's 1px solid border */
   border-width: 0 !important; /* NO BORDER WIDTH */
   border-style: none !important; /* NO BORDER STYLE */
   border-color: transparent !important; /* TRANSPARENT BORDER */
-  border-radius: 4px;
-  background: transparent !important; /* NO BACKGROUND - container should be transparent */
+  border-radius: 4px !important; /* OVERRIDE: Use 4px instead of Webflow's 8px */
+  background: transparent !important; /* OVERRIDE: Remove Webflow's white background */
+  background-color: transparent !important; /* OVERRIDE: Remove Webflow's var(--duva-white) */
   box-shadow: none !important; /* NO BOX SHADOW */
   outline: none !important; /* NO OUTLINE */
 }
