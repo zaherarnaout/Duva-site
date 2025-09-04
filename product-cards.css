@@ -412,7 +412,7 @@
   pointer-events: auto !important; /* Allow pointer events when visible */
   border: 1px solid #E4E3E3 !important; /* Standard grey border for front card */
   background: #FFFFFF !important; /* White background for front card */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow for front card */
+  box-shadow: none !important; /* DISABLED: No shadow for front card */
   outline: none !important;
 }
 
