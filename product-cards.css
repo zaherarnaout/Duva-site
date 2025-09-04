@@ -42,4 +42,5 @@
   visibility: visible;
   transform: scale(1);
   pointer-events: auto;
+  border: 1px solid #C0392B !important;
 }
