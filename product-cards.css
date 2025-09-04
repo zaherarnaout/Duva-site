@@ -287,6 +287,29 @@
   transform: none !important;
 }
 
+/* === ADDITIONAL SPECIFICITY FOR FLIP CARD TEXT PROTECTION === */
+.flip-card-wrapper:hover .flip-card-front .main-code-text,
+.flip-card-wrapper:hover .flip-card-front .item-description,
+.flip-card-wrapper:hover .flip-card-front .related-code {
+  color: inherit !important;
+  transform: none !important;
+}
+
+/* === ULTRA-SPECIFIC FLIP CARD TEXT PROTECTION === */
+/* Override any possible inheritance from collection-item or product-card classes */
+.flip-card-wrapper.collection-item:hover .main-code-text,
+.flip-card-wrapper.product-card:hover .main-code-text,
+.flip-card-wrapper.related-card:hover .main-code-text,
+.flip-card-wrapper.collection-item:hover .item-description,
+.flip-card-wrapper.product-card:hover .item-description,
+.flip-card-wrapper.related-card:hover .item-description,
+.flip-card-wrapper.collection-item:hover .related-code,
+.flip-card-wrapper.product-card:hover .related-code,
+.flip-card-wrapper.related-card:hover .related-code {
+  color: inherit !important;
+  transform: none !important;
+}
+
 /* === PRODUCT IMAGE SCALING ON HOVER === */
 /* Only apply image scaling to non-flip cards */
 .collection-item:not(.flip-card-wrapper):hover img,
