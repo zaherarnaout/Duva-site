@@ -138,8 +138,7 @@
 /* === PRODUCT CARD BASE STYLES === */
 .collection-item,
 .product-card,
-.related-card,
-.flip-card-wrapper {
+.related-card {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
@@ -151,6 +150,22 @@
   border-radius: 4px;
   box-shadow: none !important; /* Remove any box-shadow that might create bold appearance */
   outline: none !important; /* Remove any outline */
+}
+
+/* === FLIP CARD WRAPPER - TRANSPARENT CONTAINER === */
+.flip-card-wrapper {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  border: none !important; /* NO BORDER - container should be transparent */
+  border-width: 0 !important; /* NO BORDER WIDTH */
+  border-style: none !important; /* NO BORDER STYLE */
+  border-color: transparent !important; /* TRANSPARENT BORDER */
+  border-radius: 4px;
+  background: transparent !important; /* NO BACKGROUND - container should be transparent */
+  box-shadow: none !important; /* NO BOX SHADOW */
+  outline: none !important; /* NO OUTLINE */
 }
 
 /* === OVERRIDE WEBFLOW THUMBNAIL ACTIVE STATE === */
@@ -284,7 +299,12 @@
 /* === INITIAL STATE - NO PARALLAX UNTIL SCROLL STARTS === */
 .collection-item,
 .product-card,
-.related-card,
+.related-card {
+  transform: translateY(0);
+  transition: transform 0.4s ease-out;
+  will-change: transform;
+}
+
 .flip-card-wrapper {
   transform: translateY(0);
   transition: transform 0.4s ease-out;
@@ -294,7 +314,11 @@
 /* === STAGGERED ENTRANCE ANIMATION FOR PRODUCT CARDS === */
 .collection-item,
 .product-card,
-.related-card,
+.related-card {
+  animation: optimizedCardEnter 0.5s ease-out both; /* Faster animation duration */
+  animation-delay: calc(0 * 0.06s + 0.3s + 0s); /* Even faster timing */
+}
+
 .flip-card-wrapper {
   animation: optimizedCardEnter 0.5s ease-out both; /* Faster animation duration */
   animation-delay: calc(0 * 0.06s + 0.3s + 0s); /* Even faster timing */
@@ -356,9 +380,9 @@
   width: 100% !important;
   height: 100% !important;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Faster and smoother */
-  border: 3px solid yellow !important; /* DEBUG: Yellow border for back card */
+  border: 1px solid #C0392B !important; /* Red border for back card */
   border-radius: 4px; /* Match the wrapper's border radius */
-  box-shadow: 0 0 15px blue !important; /* DEBUG: Blue shadow for back card */
+  box-shadow: 0 8px 25px rgba(192, 57, 43, 0.2) !important; /* Red shadow for back card */
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -386,8 +410,9 @@
   visibility: visible;
   border-radius: 4px; /* Ensure consistent border radius with wrapper */
   pointer-events: auto !important; /* Allow pointer events when visible */
-  border: 3px solid blue !important; /* DEBUG: Blue border for front card */
-  box-shadow: 0 0 10px green !important; /* DEBUG: Green shadow for front card */
+  border: 1px solid #E4E3E3 !important; /* Standard grey border for front card */
+  background: #FFFFFF !important; /* White background for front card */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow for front card */
   outline: none !important;
 }
 
@@ -502,7 +527,12 @@
 @media (prefers-reduced-motion: reduce) {
   .collection-item,
   .product-card,
-  .related-card,
+  .related-card {
+    animation: none !important;
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
+  
   .flip-card-wrapper {
     animation: none !important;
     animation-play-state: paused !important;
