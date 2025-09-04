@@ -1,27 +1,35 @@
 /* === MINIMAL FLIP CARD ANIMATION ONLY === */
 /* Only keeping the essential flip animation - everything else handled by Webflow */
 
-/* === PARALLAX EFFECT FOR CARDS === */
+/* === CARD ENTRANCE ANIMATION === */
 .collection-item,
 .product-card,
 .related-card {
-  will-change: transform;
-  transition: transform 0.1s ease-out;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* Parallax transform when active - only on card container */
-.collection-item.parallax-active,
-.product-card.parallax-active,
-.related-card.parallax-active {
-  transform: translateY(calc(var(--scroll-y, 0) * 0.15px));
+/* Animate in when visible */
+.collection-item.viewport-visible,
+.product-card.viewport-visible,
+.related-card.viewport-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Ensure card elements move with their parent (no separate transform) */
-.collection-item.parallax-active *,
-.product-card.parallax-active *,
-.related-card.parallax-active * {
-  transform: none !important;
-}
+/* Staggered timing for each card */
+.collection-item:nth-child(1) { transition-delay: 0.1s; }
+.collection-item:nth-child(2) { transition-delay: 0.2s; }
+.collection-item:nth-child(3) { transition-delay: 0.3s; }
+.collection-item:nth-child(4) { transition-delay: 0.4s; }
+.collection-item:nth-child(5) { transition-delay: 0.5s; }
+.collection-item:nth-child(6) { transition-delay: 0.6s; }
+.collection-item:nth-child(7) { transition-delay: 0.7s; }
+.collection-item:nth-child(8) { transition-delay: 0.8s; }
+.collection-item:nth-child(9) { transition-delay: 0.9s; }
+.collection-item:nth-child(10) { transition-delay: 1.0s; }
+
 
 /* === BACK CARD === */
 .flip-card-back {
