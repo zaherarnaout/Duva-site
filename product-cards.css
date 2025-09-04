@@ -265,50 +265,19 @@
 }
 
 /* === PRODUCT CODE/TITLE COLOR CHANGE ON HOVER === */
-/* Only apply text color changes to non-flip cards */
-.collection-item:not(.flip-card-wrapper):hover .main-code-text,
-.product-card:not(.flip-card-wrapper):hover .main-code-text,
-.related-card:not(.flip-card-wrapper):hover .related-code,
-.collection-item:not(.flip-card-wrapper):hover .item-description,
-.product-card:not(.flip-card-wrapper):hover .item-description {
+/* Only apply text color changes to regular product cards (not flip cards) */
+.collection-item:hover .main-code-text:not(.flip-card-wrapper .main-code-text),
+.product-card:hover .main-code-text:not(.flip-card-wrapper .main-code-text),
+.related-card:hover .related-code:not(.flip-card-wrapper .related-code),
+.collection-item:hover .item-description:not(.flip-card-wrapper .item-description),
+.product-card:hover .item-description:not(.flip-card-wrapper .item-description) {
   color: #C0392B !important;
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
 
-/* === EXPLICITLY DISABLE TEXT COLOR CHANGES FOR FLIP CARDS === */
-.flip-card-wrapper:hover .main-code-text,
-.flip-card-wrapper:hover .related-code,
-.flip-card-wrapper:hover .item-description,
-.flip-card-wrapper:hover .flip-card-front .main-code-text,
-.flip-card-wrapper:hover .flip-card-front .related-code,
-.flip-card-wrapper:hover .flip-card-front .item-description {
-  color: inherit !important;
-  transform: none !important;
-}
-
-/* === ADDITIONAL SPECIFICITY FOR FLIP CARD TEXT PROTECTION === */
-.flip-card-wrapper:hover .flip-card-front .main-code-text,
-.flip-card-wrapper:hover .flip-card-front .item-description,
-.flip-card-wrapper:hover .flip-card-front .related-code {
-  color: inherit !important;
-  transform: none !important;
-}
-
-/* === ULTRA-SPECIFIC FLIP CARD TEXT PROTECTION === */
-/* Override any possible inheritance from collection-item or product-card classes */
-.flip-card-wrapper.collection-item:hover .main-code-text,
-.flip-card-wrapper.product-card:hover .main-code-text,
-.flip-card-wrapper.related-card:hover .main-code-text,
-.flip-card-wrapper.collection-item:hover .item-description,
-.flip-card-wrapper.product-card:hover .item-description,
-.flip-card-wrapper.related-card:hover .item-description,
-.flip-card-wrapper.collection-item:hover .related-code,
-.flip-card-wrapper.product-card:hover .related-code,
-.flip-card-wrapper.related-card:hover .related-code {
-  color: inherit !important;
-  transform: none !important;
-}
+/* === FLIP CARD TEXT PROTECTION === */
+/* Flip card text should not change color on hover - this is handled by the selector above */
 
 /* === PRODUCT IMAGE SCALING ON HOVER === */
 /* Only apply image scaling to non-flip cards */
