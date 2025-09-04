@@ -3775,7 +3775,7 @@ function initializeRelatedSectionAutoScroll() {
   let relatedScrollSpeed = 1; // pixels per frame
   let relatedScrollDirection = 1; // 1 for right, -1 for left
   
-  // Auto-scroll function for related items
+  // Auto-scroll function for related items with infinite loop
   function startRelatedAutoScroll() {
     if (relatedScrollInterval) return; // Already running
     
@@ -3790,17 +3790,22 @@ function initializeRelatedSectionAutoScroll() {
         const currentScroll = relatedContainer.scrollLeft;
         const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
         
+        // Infinite loop logic - seamless transition
         if (currentScroll >= maxScroll) {
-          relatedScrollDirection = -1; // Change direction to left
-        } else if (currentScroll <= 0) {
-          relatedScrollDirection = 1; // Change direction to right
+          // When reaching the end, smoothly transition to the beginning
+          relatedContainer.scrollLeft = 0;
+          console.log('🔄 Related scroll looped to beginning');
+        } else if (currentScroll <= 0 && relatedScrollDirection === -1) {
+          // When reaching the beginning while going left, jump to end
+          relatedContainer.scrollLeft = maxScroll;
+          console.log('🔄 Related scroll looped to end');
         }
         
         relatedContainer.scrollLeft += relatedScrollSpeed * relatedScrollDirection;
       }
     }, 50); // 20 FPS for smooth scrolling
     
-    console.log('▶️ Related auto-scroll started');
+    console.log('▶️ Related infinite auto-scroll started');
   }
   
   function stopRelatedAutoScroll() {
@@ -3815,9 +3820,16 @@ function initializeRelatedSectionAutoScroll() {
   function scrollRight() {
     const currentScroll = relatedContainer.scrollLeft;
     const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
-    const scrollAmount = Math.min(300, maxScroll - currentScroll);
+    const scrollAmount = 300;
     
-    if (scrollAmount > 0) {
+    if (currentScroll + scrollAmount >= maxScroll) {
+      // If would go past the end, loop to beginning
+      relatedContainer.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+      console.log('➡️ Arrow scroll looped to beginning');
+    } else {
       relatedContainer.scrollTo({
         left: currentScroll + scrollAmount,
         behavior: 'smooth'
@@ -3828,9 +3840,17 @@ function initializeRelatedSectionAutoScroll() {
   
   function scrollLeft() {
     const currentScroll = relatedContainer.scrollLeft;
-    const scrollAmount = Math.min(300, currentScroll);
+    const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+    const scrollAmount = 300;
     
-    if (scrollAmount > 0) {
+    if (currentScroll - scrollAmount <= 0) {
+      // If would go past the beginning, loop to end
+      relatedContainer.scrollTo({
+        left: maxScroll,
+        behavior: 'smooth'
+      });
+      console.log('⬅️ Arrow scroll looped to end');
+    } else {
       relatedContainer.scrollTo({
         left: currentScroll - scrollAmount,
         behavior: 'smooth'
