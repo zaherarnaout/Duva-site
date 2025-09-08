@@ -6887,65 +6887,50 @@ body.theme-dark .cards-Container {
 
 /* === DROPDOWN ARROW DARK THEME === */
 /* Base styles for dark theme dropdown arrow (hidden by default) */
-.dropdown-wrapper .Dropdown-arrow-wh,
-.dropdown-field .Dropdown-arrow-wh {
-  display: none; /* Hidden by default for light theme */
+.dropdown-arrow-wh {
+  display: none !important; /* Hidden by default for light theme */
   transition: transform 0.3s ease !important; /* Same transition as original arrow */
 }
 
-/* Dark theme image swapping for dropdown arrow - following accessories arrow pattern */
-[data-theme="dark"] .dropdown-wrapper .dropdown-arrow,
-[data-theme="dark"] .dropdown-field .dropdown-arrow,
-[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow,
-[data-theme="dark"] .dropdown-field .Dropdown-arrow {
+/* Dark theme image swapping for dropdown arrow - simple approach */
+[data-theme="dark"] .dropdown-arrow:not(.dropdown-arrow-wh) {
   display: none !important; /* Hide light theme arrow on dark mode */
 }
 
-[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh,
-[data-theme="dark"] .dropdown-field .Dropdown-arrow-wh {
+[data-theme="dark"] .dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
-/* Ensure both arrows have rotation capability with maximum specificity - following accessories pattern */
-.dropdown-wrapper .dropdown-arrow.rotated,
-.dropdown-wrapper .Dropdown-arrow-wh.rotated,
-.dropdown-field .dropdown-arrow.rotated,
-.dropdown-field .Dropdown-arrow-wh.rotated,
+/* Ensure both arrows have rotation capability */
+.dropdown-arrow.rotated,
 .dropdown-wrapper.open .dropdown-arrow,
-.dropdown-wrapper.open .Dropdown-arrow-wh,
-.dropdown-field.open .dropdown-arrow,
-.dropdown-field.open .Dropdown-arrow-wh {
+.dropdown-field.open .dropdown-arrow {
   transform: rotate(180deg) !important;
   -webkit-transform: rotate(180deg) !important;
   -moz-transform: rotate(180deg) !important;
 }
 
-/* Force transition property to include transform - following accessories pattern */
-.dropdown-wrapper .dropdown-arrow,
-.dropdown-wrapper .Dropdown-arrow-wh,
-.dropdown-field .dropdown-arrow,
-.dropdown-field .Dropdown-arrow-wh {
+/* Force transition property to include transform */
+.dropdown-arrow {
   transition: transform 0.3s ease, opacity 0.3s ease !important;
 }
 
 /* Debug: Force dropdown arrow to show in dark mode */
-[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh,
-[data-theme="dark"] .dropdown-field .Dropdown-arrow-wh {
+[data-theme="dark"] .dropdown-arrow-wh {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Add hover effects for white dropdown arrow in dark mode - following accessories pattern */
-[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh:hover,
-[data-theme="dark"] .dropdown-field .Dropdown-arrow-wh:hover {
+/* Add hover effects for white dropdown arrow in dark mode */
+[data-theme="dark"] .dropdown-arrow-wh:hover {
   transform: translateY(-2px) scale(1.05) !important;
   filter: brightness(1.1) !important;
 }
 
 /* Ensure white arrow rotates properly when dropdown is open in dark mode */
-[data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh:hover,
-[data-theme="dark"] .dropdown-field.open .Dropdown-arrow-wh:hover {
+[data-theme="dark"] .dropdown-wrapper.open .dropdown-arrow-wh:hover,
+[data-theme="dark"] .dropdown-field.open .dropdown-arrow-wh:hover {
   transform: translateY(-2px) scale(1.05) rotate(180deg) !important;
 }
 
