@@ -4532,37 +4532,61 @@ ARROWS:
 }
 
 /* Button Color Styling - Light Theme */
-.reset-button,
+
+/* Download buttons: Light grey default, red hover */
 .download-selected-button,
 .download-all-button {
+  background-color: #F4F5F6;
+  color: #212121;
+  border: 1px solid #F4F5F6;
+  transition: all 0.3s ease;
+}
+
+.download-selected-button:hover,
+.download-all-button:hover {
+  background-color: #C0392B;
+  color: #F4F5F6;
+  border-color: #C0392B;
+}
+
+/* Reset button: Red default, white hover */
+.reset-button {
   background-color: #C0392B;
   color: #F4F5F6;
   border: 1px solid #C0392B;
   transition: all 0.3s ease;
 }
 
-.reset-button:hover,
-.download-selected-button:hover,
-.download-all-button:hover {
+.reset-button:hover {
   background-color: #F4F5F6;
-  color: #C0392B;
+  color: #212121;
   border-color: #C0392B;
 }
 
-/* Dark Theme Button Styling */
-[data-theme="dark"] .reset-button,
+/* Dark Theme Button Styling - Same as light theme */
 [data-theme="dark"] .download-selected-button,
 [data-theme="dark"] .download-all-button {
+  background-color: #F4F5F6;
+  color: #212121;
+  border-color: #F4F5F6;
+}
+
+[data-theme="dark"] .download-selected-button:hover,
+[data-theme="dark"] .download-all-button:hover {
   background-color: #C0392B;
   color: #F4F5F6;
   border-color: #C0392B;
 }
 
-[data-theme="dark"] .reset-button:hover,
-[data-theme="dark"] .download-selected-button:hover,
-[data-theme="dark"] .download-all-button:hover {
+[data-theme="dark"] .reset-button {
+  background-color: #C0392B;
+  color: #F4F5F6;
+  border-color: #C0392B;
+}
+
+[data-theme="dark"] .reset-button:hover {
   background-color: #F4F5F6;
-  color: #C0392B;
+  color: #212121;
   border-color: #C0392B;
 }
 
