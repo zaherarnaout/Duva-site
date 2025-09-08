@@ -4878,12 +4878,41 @@ function initializeLanguageToggle() {
   
   // Get language toggle elements
   const langToggle = document.querySelector('.lang-toggle-switch');
-  const enButton = document.querySelector('.lang-en:not(.lang-es)');
-  const esButton = document.querySelector('.lang-en.lang-es');
+  let enButton = document.querySelector('.lang-en:not(.lang-es)');
+  let esButton = document.querySelector('.lang-en.lang-es');
   
-  if (!langToggle || !enButton || !esButton) {
-    console.log('⚠️ Language toggle elements not found');
+  console.log('🔍 Language toggle elements found:', {
+    langToggle: !!langToggle,
+    enButton: !!enButton,
+    esButton: !!esButton
+  });
+  
+  if (!langToggle) {
+    console.log('⚠️ Language toggle container not found');
     return;
+  }
+  
+  // Fallback: if buttons aren't found with the expected selectors, try alternative methods
+  if (!enButton || !esButton) {
+    console.log('⚠️ Language buttons not found with expected selectors, trying fallback...');
+    
+    // Try to find buttons by their text content
+    const allLangElements = document.querySelectorAll('.lang-en');
+    allLangElements.forEach(element => {
+      const text = element.textContent.trim();
+      if (text === 'EN' && !enButton) {
+        enButton = element;
+        console.log('✅ Found EN button by text content');
+      } else if (text === 'ES' && !esButton) {
+        esButton = element;
+        console.log('✅ Found ES button by text content');
+      }
+    });
+    
+    if (!enButton || !esButton) {
+      console.log('⚠️ Could not find language buttons, language toggle disabled');
+      return;
+    }
   }
   
   // Get saved language preference or default to English
@@ -4909,6 +4938,28 @@ function initializeLanguageToggle() {
     setLanguage('es');
   });
   
+  // Add click handlers to the text elements as well (in case the div structure is different)
+  const enText = document.querySelector('.text-block-3');
+  const esText = document.querySelector('.text-block-4');
+  
+  if (enText) {
+    enText.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🇺🇸 English text clicked');
+      setLanguage('en');
+    });
+  }
+  
+  if (esText) {
+    esText.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🇪🇸 Spanish text clicked');
+      setLanguage('es');
+    });
+  }
+  
   // Function to set language
   function setLanguage(language) {
     if (language === currentLanguage) return;
@@ -4921,6 +4972,8 @@ function initializeLanguageToggle() {
   
   // Function to apply language
   function applyLanguage(language) {
+    console.log(`🔄 Applying language: ${language}`);
+    
     // Update document language attribute
     document.documentElement.setAttribute('lang', language);
     document.documentElement.setAttribute('data-language', language);
@@ -4929,9 +4982,11 @@ function initializeLanguageToggle() {
     if (language === 'es') {
       enButton.classList.remove('active');
       esButton.classList.add('active');
+      console.log('✅ Spanish button activated, English button deactivated');
     } else {
       enButton.classList.add('active');
       esButton.classList.remove('active');
+      console.log('✅ English button activated, Spanish button deactivated');
     }
     
     // Apply translations
