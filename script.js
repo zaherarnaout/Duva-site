@@ -3540,12 +3540,12 @@ function initializeEnhancedLightbox() {
   
   document.addEventListener('touchstart', function(e) {
     touchStartX = e.changedTouches[0].screenX;
-  });
+  }, { passive: true });
   
   document.addEventListener('touchend', function(e) {
     touchEndX = e.changedTouches[0].screenX;
     handleSwipe();
-  });
+  }, { passive: true });
   
   function handleSwipe() {
     const lightbox = document.querySelector('.w-lightbox-backdrop');
@@ -4434,7 +4434,7 @@ if (typeof Webflow !== 'undefined') {
         
         lightbox.addEventListener('touchstart', function(e) {
           touchStartX = e.changedTouches[0].screenX;
-        });
+        }, { passive: true });
         
         lightbox.addEventListener('touchend', function(e) {
           touchEndX = e.changedTouches[0].screenX;
@@ -4450,7 +4450,7 @@ if (typeof Webflow !== 'undefined') {
               if (prevButton) prevButton.click();
             }
           }
-        });
+        }, { passive: true });
         
         console.log('✅ Lightbox navigation added');
       } else {
@@ -5727,7 +5727,7 @@ function initializeFooterContactButton() {
     e.stopImmediatePropagation();
     console.log('📞 Footer contact button touchstart');
     openContactModalFromFooter();
-  });
+  }, { passive: false });
   
   // Mark this button as initialized to prevent conflicts
   newFooterContactBtn.setAttribute('data-footer-initialized', 'true');
@@ -5763,7 +5763,7 @@ function initializeFooterContactButton() {
     e.stopPropagation();
     console.log('📞 Footer contact button touchstart');
     openContactModalFromFooter();
-  });
+  }, { passive: false });
   
   function openContactModalFromFooter() {
     console.log('🔄 Attempting to open contact modal...');
