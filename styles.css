@@ -6471,7 +6471,7 @@ ARROWS:
 [data-theme="dark"] .section-wrapper,
 [data-theme="dark"] .container,
 [data-theme="dark"] .wrapper {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #2a2a2a;
 }
 
 /* Dark theme for product page main background */
@@ -6488,7 +6488,7 @@ ARROWS:
 [data-theme="dark"] .gallery-section,
 [data-theme="dark"] .about-section,
 [data-theme="dark"] .contact-section {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #2a2a2a;
 }
 
 /* Dark theme text color for contact block inside product-visuals */
@@ -8422,15 +8422,15 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] *[style*="var(--duva-white)"],
 [data-theme="dark"] *[style*="duva-white"],
 [data-theme="dark"] *[class*="duva-white"] {
-  background-color: #212121 !important;
+  background-color: #2a2a2a !important;
 }
 
 /* Override CSS variables in dark mode */
 [data-theme="dark"] {
-  --duva-white: #212121 !important; /* Override to dark grey */
+  --duva-white: #2a2a2a !important; /* Override to dark grey for sections */
   --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
-  --duva-light-color-bg: #212121 !important;
-  --light-color-bg: #212121 !important;
+  --duva-light-color-bg: #2a2a2a !important;
+  --light-color-bg: #2a2a2a !important;
   --main-body-color: #212121 !important; /* Ensure main body color is set */
 }
 
