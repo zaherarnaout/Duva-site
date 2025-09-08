@@ -4978,14 +4978,26 @@ function initializeLanguageToggle() {
     document.documentElement.setAttribute('lang', language);
     document.documentElement.setAttribute('data-language', language);
     
-    // Update button states
+    // Update button states - only affect language text elements, not theme icons
     if (language === 'es') {
-      enButton.classList.remove('active');
-      esButton.classList.add('active');
+      // Remove active from EN text element
+      const enTextElement = enButton.querySelector('.text-block-3');
+      if (enTextElement) enTextElement.classList.remove('active');
+      
+      // Add active to ES text element
+      const esTextElement = esButton.querySelector('.text-block-4');
+      if (esTextElement) esTextElement.classList.add('active');
+      
       console.log('✅ Spanish button activated, English button deactivated');
     } else {
-      enButton.classList.add('active');
-      esButton.classList.remove('active');
+      // Add active to EN text element
+      const enTextElement = enButton.querySelector('.text-block-3');
+      if (enTextElement) enTextElement.classList.add('active');
+      
+      // Remove active from ES text element
+      const esTextElement = esButton.querySelector('.text-block-4');
+      if (esTextElement) esTextElement.classList.remove('active');
+      
       console.log('✅ English button activated, Spanish button deactivated');
     }
     
