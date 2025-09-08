@@ -4531,6 +4531,41 @@ ARROWS:
   transform: translateY(-2px);
 }
 
+/* Button Color Styling - Light Theme */
+.reset-button,
+.download-selected-button,
+.download-all-button {
+  background-color: #C0392B;
+  color: #F4F5F6;
+  border: 1px solid #C0392B;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover,
+.download-selected-button:hover,
+.download-all-button:hover {
+  background-color: #F4F5F6;
+  color: #C0392B;
+  border-color: #C0392B;
+}
+
+/* Dark Theme Button Styling */
+[data-theme="dark"] .reset-button,
+[data-theme="dark"] .download-selected-button,
+[data-theme="dark"] .download-all-button {
+  background-color: #C0392B;
+  color: #F4F5F6;
+  border-color: #C0392B;
+}
+
+[data-theme="dark"] .reset-button:hover,
+[data-theme="dark"] .download-selected-button:hover,
+[data-theme="dark"] .download-all-button:hover {
+  background-color: #F4F5F6;
+  color: #C0392B;
+  border-color: #C0392B;
+}
+
 /* 7.9. Product Info Block Load Sequence Animations */
 .product-info-block {
   opacity: 0;
