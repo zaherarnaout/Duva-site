@@ -5708,7 +5708,7 @@ ARROWS:
 /* Menu Panel Link Hover Effects - Keep Webflow Defaults, Add Animation */
 .menu-panel-link {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  color: #D1D1D1;
+  color: var(--duva-d-grey);
 }
 
 .menu-panel-link:hover {
