@@ -6439,7 +6439,7 @@ ARROWS:
 [data-theme="dark"] .navigation,
 [data-theme="dark"] .header-section,
 [data-theme="dark"] .sidebar {
-  /* Removed custom background-color to use Webflow defaults */
+  border-color: #333333 !important;
 }
 
 /* Dark theme override for cards-Container to ensure dark background */
@@ -6467,17 +6467,28 @@ body.theme-dark .cards-Container {
 
 /* Dark theme border override for header-section */
 [data-theme="dark"] .header-section {
-  /* Removed custom border-color to use Webflow defaults */
+  border-color: #333333 !important;
 }
 
 /* Dark theme for main-header-wrapper and all borders within it */
 [data-theme="dark"] .main-header-wrapper {
-  /* Removed custom background-color and border-color to use Webflow defaults */
+  border-color: #333333 !important;
 }
 
 /* Dark theme for all borders within main-header-wrapper */
 [data-theme="dark"] .main-header-wrapper * {
-  /* Removed custom border-color to use Webflow defaults */
+  border-color: #333333 !important;
+}
+
+/* Dark theme for specific header classes */
+[data-theme="dark"] .header-container,
+[data-theme="dark"] .header-wrapper {
+  border-color: #333333 !important;
+}
+
+[data-theme="dark"] .header-container *,
+[data-theme="dark"] .header-wrapper * {
+  border-color: #333333 !important;
 }
 
 /* Dark theme for lang-toggle-switch and all borders within it */
@@ -6507,24 +6518,83 @@ body.theme-dark .cards-Container {
   border-color: #333333 !important;
 }
 
-/* Dark theme override for specific elements with light grey borders */
-[data-theme="dark"] .related-card,
-[data-theme="dark"] .accessories-section,
-[data-theme="dark"] .gallery-section,
-[data-theme="dark"] .product-section,
-[data-theme="dark"] .specifications-section {
-  border-color: #333333 !important;
-}
+/* === COMPREHENSIVE DARK THEME BORDER OVERRIDE === */
+/* This rule ensures ALL borders and dividers use #333333 in dark theme */
+/* Override any element that uses var(--border-divider-light) or similar light colors */
 
-[data-theme="dark"] .related-card *,
-[data-theme="dark"] .accessories-section *,
-[data-theme="dark"] .gallery-section *,
-[data-theme="dark"] .product-section *,
-[data-theme="dark"] .specifications-section * {
+[data-theme="dark"] * {
+  /* Override all border colors to use #333333 */
+  border-color: #333333 !important;
   border-top-color: #333333 !important;
   border-right-color: #333333 !important;
   border-bottom-color: #333333 !important;
   border-left-color: #333333 !important;
+}
+
+/* Override background colors for dividers */
+[data-theme="dark"] *[class*="divider"],
+[data-theme="dark"] *[class*="separator"],
+[data-theme="dark"] *[class*="border"] {
+  background-color: #333333 !important;
+}
+
+/* Specific overrides for divider elements */
+[data-theme="dark"] .divider,
+[data-theme="dark"] .section-divider,
+[data-theme="dark"] .filter-divider,
+[data-theme="dark"] .filter-divider-vertical,
+[data-theme="dark"] .filter-div,
+[data-theme="dark"] .left-divider,
+[data-theme="dark"] .right-divider,
+[data-theme="dark"] .top-divider,
+[data-theme="dark"] .bottom-divider {
+  background-color: #333333 !important;
+  border-color: #333333 !important;
+}
+
+/* Override any element using CSS variables for borders */
+[data-theme="dark"] *[style*="var(--border-divider-light)"],
+[data-theme="dark"] *[style*="border-divider-light"] {
+  border-color: #333333 !important;
+}
+
+/* === EXCEPTIONS: Elements that should keep their special colors === */
+/* Checkmarks and special UI elements should keep their colors for visibility */
+
+[data-theme="dark"] .checkbox,
+[data-theme="dark"] .checkbox *,
+[data-theme="dark"] .accessory-checkbox,
+[data-theme="dark"] .accessory-checkbox *,
+[data-theme="dark"] .w-checkbox-input,
+[data-theme="dark"] .w-checkbox-input * {
+  /* Keep original colors for checkmarks */
+  border-color: inherit !important;
+  border-top-color: inherit !important;
+  border-right-color: inherit !important;
+  border-bottom-color: inherit !important;
+  border-left-color: inherit !important;
+}
+
+/* Active states and hover effects should keep their red colors */
+[data-theme="dark"] *:hover,
+[data-theme="dark"] *.active,
+[data-theme="dark"] *.w--current,
+[data-theme="dark"] *.selected {
+  /* Allow hover/active states to override with their colors */
+  border-color: inherit !important;
+}
+
+/* Red borders for brand elements and active states */
+[data-theme="dark"] *[style*="#C0392B"],
+[data-theme="dark"] *[style*="#c0392b"],
+[data-theme="dark"] *[style*="var(--duva-red)"] {
+  border-color: inherit !important;
+}
+
+/* Transparent borders should stay transparent */
+[data-theme="dark"] *[style*="transparent"],
+[data-theme="dark"] *[style*="rgba(0,0,0,0)"] {
+  border-color: transparent !important;
 }
 
 /* Dark theme for main filter wrapper and filter sections */
