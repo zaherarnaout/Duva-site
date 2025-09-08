@@ -710,32 +710,17 @@ display: none !important;
 /* Note: Enhanced styles are defined later in the file */
 
 /* === 8. Accessories Arrow Rotation === */ 
+/* Updated to match filter-header-toggle-arrow structure */
 
 .accessories-arrow { 
-
-transition: transform 0.3s ease !important; 
-
+  transition: transform 0.3s ease;
+  z-index: 10;
+  /* Start in collapsed position */
+  transform: rotate(0deg);
 }
 
-/* Target the div wrapper for rotation with maximum specificity */
-.accessories-arrow.rotated,
-.accessories-arrow-wh.rotated,
-.accessories-toggle .accessories-arrow.rotated,
-.accessories-toggle .accessories-arrow-wh.rotated { 
-
-transform: rotate(180deg) !important; 
-
-
-}
-
-/* Force rotation with maximum specificity and inline style override */
-.accessories-toggle .accessories-arrow.rotated,
-.accessories-toggle .accessories-arrow-wh.rotated {
-  transform: rotate(180deg) !important;
-  -webkit-transform: rotate(180deg) !important;
-  -moz-transform: rotate(180deg) !important;
-  -ms-transform: rotate(180deg) !important;
-  -o-transform: rotate(180deg) !important;
+.accessories-arrow.rotated {
+  transform: rotate(180deg);
 } 
 
 
