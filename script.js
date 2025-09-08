@@ -4306,26 +4306,19 @@ if (typeof Webflow !== 'undefined') {
       newToggle.addEventListener('click', function () {
         const isOpen = accessoriesSection.classList.toggle('open');
         
-        // Get current arrows based on current theme
-        const { visibleArrow, hiddenArrow } = getCurrentArrows();
-        
-        // Toggle rotation on the visible arrow
-        if (visibleArrow) {
-          visibleArrow.classList.toggle('rotated');
-          console.log('🔄 Visible arrow rotated:', visibleArrow.classList.contains('rotated'), 'Theme:', document.documentElement.getAttribute('data-theme'));
-        }
-        
-        // Also toggle the hidden arrow to keep them in sync
-        if (hiddenArrow) {
-          hiddenArrow.classList.toggle('rotated');
-        }
+        // Toggle rotation on ALL arrow elements (simpler approach)
+        const allArrows = accessoriesSection.querySelectorAll('.accessories-arrow');
+        allArrows.forEach(arrow => {
+          arrow.classList.toggle('rotated');
+          console.log('🔄 Arrow rotated:', arrow.classList.contains('rotated'), 'Arrow classes:', arrow.className);
+        });
 
         if (isOpen) {
           wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
         } else {
           wrapper.style.maxHeight = '0px';
         }
-        console.log('✅ Accessories toggle clicked, isOpen:', isOpen);
+        console.log('✅ Accessories toggle clicked, isOpen:', isOpen, 'Arrows found:', allArrows.length);
       });
       
       console.log('✅ Accessories toggle functionality restored');
