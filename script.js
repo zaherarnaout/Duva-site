@@ -435,8 +435,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // === Dropdown Setup & Interactions === 
 
   dropdowns.forEach(dropdown => {
-    // Add loading state
-    dropdown.classList.add('loading'); 
+    // Add loading state only if not already processed
+    if (!dropdown.classList.contains('processed')) {
+      dropdown.classList.add('loading');
+    } 
 
     const type = dropdown.getAttribute("data-type"); 
 
@@ -460,6 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       dropdown.classList.add("disabled"); 
       dropdown.classList.remove('loading'); // Remove loading state for lumen
+      dropdown.classList.add('processed'); // Mark as processed to prevent re-initialization
       arrow && (arrow.style.display = "none"); 
 
       return; 
@@ -475,6 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!rawText) {
       console.warn(`No data found for dropdown: ${type}`);
       dropdown.classList.remove('loading');
+      dropdown.classList.add('processed');
       dropdown.closest(".spec-row")?.remove();
       return;
     }
@@ -493,6 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (values.length === 0) { 
       dropdown.classList.remove('loading');
+      dropdown.classList.add('processed');
       dropdown.closest(".spec-row")?.remove(); 
       return; 
     } 
@@ -516,6 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (values.length <= 1) { 
       dropdown.classList.add("disabled"); 
       dropdown.classList.remove('loading');
+      dropdown.classList.add('processed');
       arrow && (arrow.style.display = "none"); 
       return; 
     } 
@@ -541,6 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Remove loading state after successful initialization
     dropdown.classList.remove('loading');
+    dropdown.classList.add('processed'); // Mark as processed to prevent re-initialization
 
     values.forEach(value => { 
 
