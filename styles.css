@@ -6488,30 +6488,21 @@ ARROWS:
   /* Removed custom background-color to use Webflow defaults */
 }
 
-/* Dark theme text color for contact elements */
-[data-theme="dark"] .contact-block,
-[data-theme="dark"] .contact-section {
+/* Dark theme text color for contact block inside product-visuals */
+[data-theme="dark"] .product-visuals .contat-block {
   color: #212121;
 }
 
-[data-theme="dark"] .contact-block p,
-[data-theme="dark"] .contact-block h1,
-[data-theme="dark"] .contact-block h2,
-[data-theme="dark"] .contact-block h3,
-[data-theme="dark"] .contact-block h4,
-[data-theme="dark"] .contact-block h5,
-[data-theme="dark"] .contact-block h6,
-[data-theme="dark"] .contact-block span,
-[data-theme="dark"] .contact-block div,
-[data-theme="dark"] .contact-section p,
-[data-theme="dark"] .contact-section h1,
-[data-theme="dark"] .contact-section h2,
-[data-theme="dark"] .contact-section h3,
-[data-theme="dark"] .contact-section h4,
-[data-theme="dark"] .contact-section h5,
-[data-theme="dark"] .contact-section h6,
-[data-theme="dark"] .contact-section span,
-[data-theme="dark"] .contact-section div {
+[data-theme="dark"] .product-visuals .contat-block p,
+[data-theme="dark"] .product-visuals .contat-block h1,
+[data-theme="dark"] .product-visuals .contat-block h2,
+[data-theme="dark"] .product-visuals .contat-block h3,
+[data-theme="dark"] .product-visuals .contat-block h4,
+[data-theme="dark"] .product-visuals .contat-block h5,
+[data-theme="dark"] .product-visuals .contat-block h6,
+[data-theme="dark"] .product-visuals .contat-block span,
+[data-theme="dark"] .product-visuals .contat-block div,
+[data-theme="dark"] .product-visuals .contat-block .text-block-24 {
   color: #212121;
 }
 
