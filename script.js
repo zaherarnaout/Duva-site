@@ -571,11 +571,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
               ralInput.addEventListener("focus", () => { 
 
-                if (ralInput.textContent === "Enter RAL color number (e.g., 1015)") { 
+                if (ralInput.textContent === "Enter RAL color number (e.g., 1015)" || 
+                    ralInput.textContent === "Enter RAL number here") { 
 
                   ralInput.textContent = ""; 
 
-                  ralInput.style.color = "#111"; 
+                  // Set appropriate text color based on theme
+                  const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+                  ralInput.style.color = isDarkTheme ? "#F4F5F6" : "#111"; 
 
                 } 
                 
@@ -600,6 +603,12 @@ document.addEventListener("DOMContentLoaded", function () {
               ralInput.addEventListener("blur", () => {
                 ralInput.style.borderColor = "var(--border-divider-light)";
                 ralInput.style.boxShadow = "none";
+                
+                // Restore placeholder text if field is empty
+                if (ralInput.textContent.trim() === "") {
+                  ralInput.textContent = "Enter RAL number here";
+                  ralInput.style.color = "#999";
+                }
               }); 
 
               ralInput.addEventListener("input", () => { 
@@ -735,7 +744,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (match) {
         const lumen = match.dataset.lumen || match.textContent.trim();
         lumenSelected.textContent = lumen;
-        lumenSelected.style.color = "#111";
+        // Set appropriate text color based on theme
+        const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+        lumenSelected.style.color = isDarkTheme ? "#F4F5F6" : "#111";
         lumenSelected.style.fontWeight = "bold";
         window.currentSelection.lumen = lumen;
       } else {
@@ -1080,7 +1091,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (match) {
         const lumen = match.dataset.lumen || match.textContent.trim();
         lumenSelected.textContent = lumen;
-        lumenSelected.style.color = "#111";
+        // Set appropriate text color based on theme
+        const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+        lumenSelected.style.color = isDarkTheme ? "#F4F5F6" : "#111";
         lumenSelected.style.fontWeight = "bold";
         window.currentSelection.lumen = lumen;
       } else {
