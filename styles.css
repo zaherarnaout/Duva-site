@@ -3967,6 +3967,9 @@ ARROWS:
 
 .lang-toggle-switch:hover {
   transform: scale(1.05);
+  background-color: rgba(192, 57, 43, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 
@@ -6485,6 +6488,11 @@ body.theme-dark .cards-Container {
 /* Dark theme for lang-toggle-switch and all borders within it */
 [data-theme="dark"] .lang-toggle-switch {
   /* Removed custom border-color to use Webflow defaults */
+}
+
+[data-theme="dark"] .lang-toggle-switch:hover {
+  background-color: rgba(192, 57, 43, 0.2);
+  border-radius: 8px;
 }
 
 [data-theme="dark"] .lang-toggle-switch * {
