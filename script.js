@@ -459,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (type === "lumen") { 
 
       dropdown.classList.add("disabled"); 
-
+      dropdown.classList.remove('loading'); // Remove loading state for lumen
       arrow && (arrow.style.display = "none"); 
 
       return; 
