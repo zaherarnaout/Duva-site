@@ -6459,7 +6459,7 @@ body.theme-dark .cards-Container {
 /* ALSO target the lowercase version that exists in other CSS files */
 [data-theme="dark"] .cards-container {
   background-color: #212121 !important;
-  border-color: #eaeaeac4 !important; /* Standard border color */
+  border-color: #333333 !important; /* Standard border color */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -6486,25 +6486,25 @@ body.theme-dark .cards-Container {
 }
 
 [data-theme="dark"] .lang-toggle-switch * {
-  border-color: #eaeaeac4 !important;
+  border-color: #333333 !important;
 }
 
 /* Dark theme for search-input-style and all borders within it */
 [data-theme="dark"] .search-input-style {
-  border-color: #eaeaeac4 !important;
+  border-color: #333333 !important;
 }
 
 [data-theme="dark"] .search-input-style * {
-  border-color: #eaeaeac4 !important;
+  border-color: #333333 !important;
 }
 
 /* Dark theme for menu-wrapper and all borders within it */
 [data-theme="dark"] .menu-wrapper {
-  border-color: #eaeaeac4 !important;
+  border-color: #333333 !important;
 }
 
 [data-theme="dark"] .menu-wrapper * {
-  border-color: #eaeaeac4 !important;
+  border-color: #333333 !important;
 }
 
 /* Dark theme for main filter wrapper and filter sections */
@@ -7478,7 +7478,7 @@ body.theme-dark .cards-Container {
 /* Dark Theme Support */
 [data-theme="dark"] .download-progress-container {
   background: #212121;
-  border-color: #eaeaeac4;
+  border-color: #333333;
 }
 
 [data-theme="dark"] .download-progress-bar {
@@ -7496,7 +7496,7 @@ body.theme-dark .cards-Container {
 
 [data-theme="dark"] .email-capture-form input[type="email"] {
   background: #212121;
-  border-color: #eaeaeac4;
+  border-color: #333333;
   color: #F4F5F6;
 }
 
@@ -8042,12 +8042,12 @@ body.theme-dark .cards-Container {
 [data-theme="dark"] .preview-navigation,
 [data-theme="dark"] .preview-footer {
   background: #212121;
-  border-color: #eaeaeac4;
+  border-color: #333333;
 }
 
 [data-theme="dark"] .search-input {
   background: #212121;
-  border-color: #eaeaeac4;
+  border-color: #333333;
   color: #F4F5F6;
 }
 
@@ -8058,7 +8058,7 @@ body.theme-dark .cards-Container {
 [data-theme="dark"] .control-btn,
 [data-theme="dark"] .nav-btn {
   background: #212121;
-  border-color: #eaeaeac4;
+  border-color: #333333;
   color: #F4F5F6;
 }
 
