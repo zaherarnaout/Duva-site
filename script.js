@@ -274,7 +274,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Global Selectors & State === 
 
-  const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
+  // Add delay to ensure Webflow data is loaded
+  setTimeout(() => {
+    const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
 
   const ralInput = document.querySelector("#ral-input"); 
 
@@ -872,6 +874,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }, 300); 
 
+  }, 100); // Close setTimeout for Webflow data loading
+
 }); 
 
  
@@ -1048,200 +1052,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
-  // Removed duplicate dropdown initialization - using first implementation above 
-  
-  /* DUPLICATE CODE COMMENTED OUT - CAUSES CONFLICTS
-  dropdowns.forEach(dropdown => { 
-
-    const type = dropdown.getAttribute("data-type"); 
-
-    const field = dropdown.querySelector(".dropdown-field"); 
-
-    const selected = dropdown.querySelector(".selected-value"); 
-
-    const source = dropdown.querySelector(".dropdown-source"); 
-
-    const arrow = dropdown.querySelector(".dropdown-arrow"); 
-
- 
-
-    if (!field || !selected || !source) return; 
-
- 
-
-    const values = source.textContent.split(",").map(v => v.trim()).filter(v => 
-
-      v && !["na", "n/a", "none", "0", "--"].includes(v.toLowerCase()) 
-
-    ); 
-
- 
-
-    if (type === "lumen" || values.length === 0) { 
-
-      dropdown.closest(".spec-row")?.remove(); 
-
-      return; 
-
-    } 
-
- 
-
-    selected.textContent = values[0] || "N/A"; 
-
-    window.currentSelection[type] = values[0]; 
-    window.currentSelection.defaults[type] = normalizeValue(type, values[0]); 
-
- 
-
-    if (values.length <= 1) { 
-
-      dropdown.classList.add("disabled"); 
-
-      arrow && (arrow.style.display = "none"); 
-
-      return; 
-
-    } 
-
- 
-
-    const optionsBox = document.createElement("div"); 
-
-    optionsBox.className = "dropdown-options"; 
-
-    dropdown.appendChild(optionsBox); 
-
- 
-
-    values.forEach(value => { 
-
-      const opt = document.createElement("div"); 
-
-      opt.className = "dropdown-option"; 
-      opt.setAttribute("role", "option");
-      opt.setAttribute("aria-selected", "false");
-      opt.setAttribute("tabindex", "-1");
-      opt.textContent = value; 
-
- 
-
-      opt.addEventListener("click", () => { 
-
-        if (selected.textContent === value) return; 
-
- 
-
-        selected.textContent = value; 
-
-        optionsBox.style.display = "none"; 
-
-        dropdown.classList.remove("open"); 
-
- 
-
-        if (type === "finish" && value.toLowerCase() === "ral") { 
-
-          ralInput.style.display = "block"; 
-
-          ralInput.textContent = "Enter RAL number here"; 
-
-          ralInput.style.color = "#999"; 
-
- 
-
-          ralInput.addEventListener("focus", () => { 
-
-            if (ralInput.textContent === "Enter RAL number here") { 
-
-              ralInput.textContent = ""; 
-
-              ralInput.style.color = "#111"; 
-
-            } 
-
-          }); 
-
- 
-
-          ralInput.addEventListener("input", () => { 
-
-            const typedRAL = ralInput.textContent.trim(); 
-
-            window.currentSelection.finish = typedRAL ? "RAL" + typedRAL : "RAL"; 
-
-            updateLumenValue(); 
-
-            updateOrderingCode(); 
-
-          }); 
-
- 
-
-          window.currentSelection.finish = "RAL"; 
-
-        } else { 
-
-          ralInput.style.display = "none"; 
-
-          window.currentSelection[type] = value;
-
-        } 
-
- 
-
-        if (["watt", "cct", "cri"].includes(type)) {
-          updateLumenValue();
-        }
-        updateOrderingCode(); 
-      }); 
-
- 
-
-      optionsBox.appendChild(opt); 
-
-    }); 
-
- 
-
-    // Arrow toggle 
-
-    arrow?.addEventListener("click", (e) => { 
-
-      e.stopPropagation(); 
-
-      const isOpen = optionsBox.style.display === "block"; 
-
-      document.querySelectorAll(".dropdown-options").forEach(opt => opt.style.display = "none"); 
-
-      document.querySelectorAll(".dropdown-wrapper").forEach(d => d.classList.remove("open")); 
-
- 
-
-      if (!isOpen) { 
-
-        optionsBox.style.display = "block"; 
-
-        dropdown.classList.add("open"); 
-
-      } 
-
-    }); 
-
- 
-
-    // Close all dropdowns on outside click 
-
-    document.addEventListener("click", () => { 
-
-      optionsBox.style.display = "none"; 
-
-      dropdown.classList.remove("open"); 
-
-    }); 
-
-  }); 
-  */
 
   /* === Update Lumen Value === */ 
 
