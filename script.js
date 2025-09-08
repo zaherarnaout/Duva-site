@@ -298,7 +298,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.minHeight = "48px"; 
 
-    ralInput.style.backgroundColor = "#fff"; 
+    // Set appropriate background color based on theme
+    const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+    ralInput.style.backgroundColor = isDarkTheme ? "#212121" : "#fff"; 
 
     ralInput.style.borderRadius = "var(--border-8px, 8px)"; 
 
@@ -950,7 +952,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ralInput.style.minHeight = "48px"; 
 
-    ralInput.style.backgroundColor = "#fff"; 
+    // Set appropriate background color based on theme
+    const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+    ralInput.style.backgroundColor = isDarkTheme ? "#212121" : "#fff"; 
 
     ralInput.style.borderRadius = "var(--border-8px, 8px)"; 
 
