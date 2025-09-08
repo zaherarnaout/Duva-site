@@ -8513,6 +8513,48 @@ body.exporting-pdf #pdf-container {
   border-color: #333333 !important; /* Use consistent dark theme border color */
 }
 
+/* Dark theme for related cards */
+[data-theme="dark"] .related-card {
+  background-color: #212121;
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .related-card:hover {
+  background-color: #2a2a2a;
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .related-card * {
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .related-card:hover * {
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .related-card:hover .related-code {
+  color: #C0392B !important;
+}
+
+/* Dark theme fade effects for related cards */
+[data-theme="dark"] .related-slider-wrapper::before {
+  background: linear-gradient(to right, 
+    #212121 0%, 
+    rgba(33, 33, 33, 0.95) 20%, 
+    rgba(33, 33, 33, 0.7) 40%, 
+    rgba(33, 33, 33, 0.3) 70%, 
+    rgba(33, 33, 33, 0) 100%) !important;
+}
+
+[data-theme="dark"] .related-slider-wrapper::after {
+  background: linear-gradient(to left, 
+    #212121 0%, 
+    rgba(33, 33, 33, 0.95) 20%, 
+    rgba(33, 33, 33, 0.7) 40%, 
+    rgba(33, 33, 33, 0.3) 70%, 
+    rgba(33, 33, 33, 0) 100%) !important;
+}
+
 /* Remove flip-card-wrapper from dark theme border override */
 [data-theme="dark"] .flip-card-wrapper {
   border: none !important;
