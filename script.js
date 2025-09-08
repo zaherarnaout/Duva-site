@@ -5818,12 +5818,19 @@ function initializeNewItemsReadMore() {
     }
     
     const readMoreText = readMoreSection.querySelector('.text-block-86');
-    const readMoreArrow = readMoreSection.querySelector('.image-52');
+    const readMoreArrowLight = readMoreSection.querySelector('.image-52');
+    const readMoreArrowDark = readMoreSection.querySelector('.image-62');
     
-    if (!readMoreText || !readMoreArrow) {
+    if (!readMoreText || (!readMoreArrowLight && !readMoreArrowDark)) {
       console.log('⚠️ Read more elements not found for item', index);
       return;
     }
+    
+    // Get the currently visible arrow (light or dark theme)
+    const getCurrentArrow = () => {
+      const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+      return isDarkTheme ? readMoreArrowDark : readMoreArrowLight;
+    };
     
     // Check if content is long enough to need truncation
     const originalText = description.innerHTML;
@@ -5848,7 +5855,10 @@ function initializeNewItemsReadMore() {
       
       // Update button text and arrow
       readMoreText.textContent = 'READ MORE';
-      readMoreArrow.style.transform = 'rotate(0deg)';
+      const currentArrow = getCurrentArrow();
+      if (currentArrow) {
+        currentArrow.style.transform = 'rotate(0deg)';
+      }
     }
     
     // Function to expand text
@@ -5860,37 +5870,48 @@ function initializeNewItemsReadMore() {
       
       // Update button text and arrow
       readMoreText.textContent = 'READ LESS';
-      readMoreArrow.style.transform = 'rotate(180deg)';
+      const currentArrow = getCurrentArrow();
+      if (currentArrow) {
+        currentArrow.style.transform = 'rotate(180deg)';
+      }
     }
     
     // Initialize truncated state
     truncateText();
     
-    // Add click event listener to arrow only
-    readMoreArrow.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    // Add click event listener to both arrows
+    function addArrowEventListeners(arrow) {
+      if (!arrow) return;
       
-      if (isExpanded) {
-        truncateText();
-      } else {
-        expandText();
-      }
+      arrow.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (isExpanded) {
+          truncateText();
+        } else {
+          expandText();
+        }
+        
+        console.log('📖 Toggled read more for item', index, isExpanded ? 'expanded' : 'truncated');
+      });
       
-      console.log('📖 Toggled read more for item', index, isExpanded ? 'expanded' : 'truncated');
-    });
+      // Add hover effects to arrow
+      arrow.style.cursor = 'pointer';
+      arrow.style.transition = 'all 0.3s ease';
+      
+      arrow.addEventListener('mouseenter', function() {
+        this.style.opacity = '0.8';
+      });
+      
+      arrow.addEventListener('mouseleave', function() {
+        this.style.opacity = '1';
+      });
+    }
     
-    // Add hover effects to arrow only
-    readMoreArrow.style.cursor = 'pointer';
-    readMoreArrow.style.transition = 'all 0.3s ease';
-    
-    readMoreArrow.addEventListener('mouseenter', function() {
-      this.style.opacity = '0.8';
-    });
-    
-    readMoreArrow.addEventListener('mouseleave', function() {
-      this.style.opacity = '1';
-    });
+    // Add event listeners to both arrows
+    addArrowEventListeners(readMoreArrowLight);
+    addArrowEventListeners(readMoreArrowDark);
     
     console.log('✅ Read more toggle initialized for item', index);
   });
