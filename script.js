@@ -605,8 +605,13 @@ document.addEventListener("DOMContentLoaded", function () {
               ralInput.addEventListener("input", () => { 
 
                 const typedRAL = ralInput.textContent.trim(); 
+                
+                // Check if the content is placeholder text and treat as empty
+                const isPlaceholder = typedRAL === "Enter RAL number here" || 
+                                    typedRAL === "Enter RAL color number (e.g., 1015)" ||
+                                    typedRAL === "";
 
-                window.currentSelection.finish = typedRAL ? "RAL" + typedRAL : "RAL"; 
+                window.currentSelection.finish = (!isPlaceholder && typedRAL) ? "RAL" + typedRAL : "RAL"; 
 
                 updateLumenValue(); 
 
