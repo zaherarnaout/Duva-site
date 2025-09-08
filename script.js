@@ -434,11 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Dropdown Setup & Interactions === 
 
-  dropdowns.forEach(dropdown => {
-    // Skip if already processed
-    if (dropdown.classList.contains('processed')) {
-      return;
-    } 
+  dropdowns.forEach(dropdown => { 
 
     const type = dropdown.getAttribute("data-type"); 
 
@@ -461,7 +457,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (type === "lumen") { 
 
       dropdown.classList.add("disabled"); 
-      dropdown.classList.add('processed'); // Mark as processed to prevent re-initialization
       arrow && (arrow.style.display = "none"); 
 
       return; 
@@ -476,7 +471,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!rawText) {
       console.warn(`No data found for dropdown: ${type}`);
-      dropdown.classList.add('processed');
       dropdown.closest(".spec-row")?.remove();
       return;
     }
@@ -494,7 +488,6 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
     if (values.length === 0) { 
-      dropdown.classList.add('processed');
       dropdown.closest(".spec-row")?.remove(); 
       return; 
     } 
@@ -517,7 +510,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (values.length <= 1) { 
       dropdown.classList.add("disabled"); 
-      dropdown.classList.add('processed');
       arrow && (arrow.style.display = "none"); 
       return; 
     } 
@@ -539,10 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
     field.setAttribute("aria-label", `${type} selection`);
     field.setAttribute("tabindex", "0");
 
-    dropdown.appendChild(optionsBox); 
-
-    // Mark as processed to prevent re-initialization
-    dropdown.classList.add('processed');
+    dropdown.appendChild(optionsBox);
 
     values.forEach(value => { 
 
