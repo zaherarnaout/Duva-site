@@ -8555,11 +8555,28 @@ body.exporting-pdf #pdf-container {
     rgba(33, 33, 33, 0) 100%) !important;
 }
 
-/* Remove flip-card-wrapper from dark theme border override */
+/* Dark theme for flip cards */
 [data-theme="dark"] .flip-card-wrapper {
   border: none !important;
   border-color: transparent !important;
   background: transparent !important;
   background-color: transparent !important;
+}
+
+[data-theme="dark"] .flip-card-front,
+[data-theme="dark"] .flip-card-back {
+  background-color: #212121;
+  color: #F4F5F6;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .flip-card-front *,
+[data-theme="dark"] .flip-card-back * {
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .flip-card-front:hover,
+[data-theme="dark"] .flip-card-back:hover {
+  background-color: #2a2a2a;
 }
 
