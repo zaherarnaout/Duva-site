@@ -6663,6 +6663,12 @@ body.theme-dark .cards-Container {
   border-color: #333333;
 }
 
+/* Dark theme - keep red color for active state (same as light theme) */
+[data-theme="dark"] .accessory-checkbox.active {
+  background-color: #C0392B;
+  border-color: #C0392B;
+}
+
 [data-theme="dark"] .checkbox *,
 [data-theme="dark"] .accessory-checkbox,
 [data-theme="dark"] .accessory-checkbox *,
