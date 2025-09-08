@@ -2979,6 +2979,27 @@ opacity: 1 !important;
   box-shadow: none !important;
 }
 
+/* Dark theme for RAL input */
+[data-theme="dark"] #ral-input {
+  background-color: #212121;
+  border-color: #333333;
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] #ral-input:focus {
+  border-color: #C0392B;
+  background-color: #2a2a2a;
+}
+
+[data-theme="dark"] #ral-input:hover {
+  border-color: #C0392B;
+}
+
+[data-theme="dark"] #ral-input::placeholder {
+  color: #D1D1D1;
+  opacity: 0.7;
+}
+
 /* === Related Items Scroll Performance Optimizations === */
 .collection-list-6 {
   /* Hardware acceleration for smoother scrolling */
