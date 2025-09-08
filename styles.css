@@ -473,6 +473,15 @@ cursor: pointer;
 
   transition: all 0.3s ease; 
 
+}
+
+/* === Spec Row Cursor Behavior === */
+.spec-row:has(.dropdown-wrapper.disabled) {
+  cursor: default;
+}
+
+.spec-row:has(.dropdown-wrapper:not(.disabled)) {
+  cursor: pointer;
 } 
 
 
@@ -505,6 +514,11 @@ cursor: pointer;
 
   background: none; 
 
+}
+
+/* === Interactive Dropdown Field Cursor === */
+.dropdown-wrapper:not(.disabled) .dropdown-field {
+  cursor: pointer;
 } 
 
 
@@ -5075,8 +5089,8 @@ ARROWS:
 }
 
 /* === Preserve Interactive Elements === */
-.dropdown-wrapper,
-.dropdown-field,
+.dropdown-wrapper:not(.disabled),
+.dropdown-field:not(.dropdown-wrapper.disabled .dropdown-field),
 .dropdown-options,
 .dropdown-option,
 .thumbnail-image,
@@ -5090,6 +5104,13 @@ ARROWS:
   visibility: visible !important;
   pointer-events: auto !important;
   cursor: pointer !important;
+}
+
+/* === Disabled Dropdown Elements === */
+.dropdown-wrapper.disabled,
+.dropdown-wrapper.disabled .dropdown-field {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
 /* === Ensure Dropdown Functionality === */
