@@ -5724,9 +5724,9 @@ ARROWS:
 }
 
 .menu-tab-btn:hover {
-  color: #C0392B;
+  color: var(--btn-light-text);
   transform: translateX(8px) scale(1.05);
-  text-shadow: 0 2px 4px rgba(192, 57, 43, 0.2);
+  text-shadow: 0 2px 4px rgba(244, 245, 246, 0.3);
 }
 
 /* Right Footer Wrapper Text Elements (excluding Text Block 69) */
