@@ -3969,33 +3969,15 @@ ARROWS:
   transform: scale(1.05);
 }
 
-.lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon {
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon:hover {
-  transform: rotate(15deg);
-}
-
-.lang-toggle-switch.theme-toggle-switch .text-block-3.active,
-.lang-toggle-switch.theme-toggle-switch .text-block-4.active {
-  color: #C0392B;
-  font-weight: bold;
-  background-color: rgba(192, 57, 43, 0.1);
-  border-radius: 4px;
-  padding: 2px 6px;
-}
 
 /* Theme icon rotation animation */
-.lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon:hover .sun-d-icon,
-.lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon:hover .moon-d-icon {
+.lang-toggle-switch .theme-icon:hover .sun-d-icon,
+.lang-toggle-switch .theme-icon:hover .moon-d-icon {
   transform: rotate(15deg);
 }
 
 /* Theme Icon Button Functionality */
-.lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon {
+.lang-toggle-switch .theme-icon {
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -6634,18 +6616,12 @@ body.theme-dark .cards-Container {
 /* Filter dark theme styles moved to duva-Fliter-style.css */
 
 /* Dark theme for language toggle text */
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .lang-en.theme-icon,
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .lang-ar,
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch span,
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .text-block-3,
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .text-block-4 {
+[data-theme="dark"] .lang-toggle-switch .lang-en,
+[data-theme="dark"] .lang-toggle-switch .lang-ar,
+[data-theme="dark"] .lang-toggle-switch span,
+[data-theme="dark"] .lang-toggle-switch .text-block-3,
+[data-theme="dark"] .lang-toggle-switch .text-block-4 {
   /* Removed custom color to use Webflow defaults */
-}
-
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .text-block-3.active,
-[data-theme="dark"] .lang-toggle-switch.theme-toggle-switch .text-block-4.active {
-  color: #C0392B !important;
-  background-color: rgba(192, 57, 43, 0.2);
 }
 
 /* Dark theme for magnifier icon */
