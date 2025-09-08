@@ -464,13 +464,6 @@ document.addEventListener("DOMContentLoaded", function () {
       dropdown.classList.add('processed'); // Mark as processed to prevent re-initialization
       arrow && (arrow.style.display = "none"); 
 
-      // Still set the initial value for lumen
-      selected.textContent = "Calculating...";
-      if (type) { 
-        window.currentSelection[type] = "Calculating...";
-        window.currentSelection.defaults[type] = "Calculating...";
-      }
-
       return; 
 
     } 
