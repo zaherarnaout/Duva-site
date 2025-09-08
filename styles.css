@@ -6312,20 +6312,41 @@ ARROWS:
 
 /* Dark theme for dropdowns */
 [data-theme="dark"] .dropdown-wrapper {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #212121;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .dropdown-field {
+  background-color: #212121;
+  border-color: #333333;
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .dropdown-field:hover {
+  background-color: #2a2a2a;
+  border-color: #C0392B;
+}
+
+[data-theme="dark"] .selected-value {
+  color: #F4F5F6;
 }
 
 [data-theme="dark"] .dropdown-options {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #212121;
+  border-color: #333333;
 }
 
 [data-theme="dark"] .dropdown-option {
-  /* Removed custom color to use Webflow defaults */
+  color: #F4F5F6;
+  background-color: #212121;
 }
 
 [data-theme="dark"] .dropdown-option:hover {
-  /* Removed custom background-color and color to use Webflow defaults */
+  background-color: #2a2a2a;
+  color: #C0392B;
 }
+
+
 
 /* Dark theme for accessories section */
 [data-theme="dark"] .accessories-section {
@@ -6899,6 +6920,12 @@ body.theme-dark .cards-Container {
 
 [data-theme="dark"] .dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
+}
+
+/* Hide white arrow when dropdown is disabled or has no options (same as light mode) */
+[data-theme="dark"] .dropdown-wrapper.disabled .dropdown-arrow-wh,
+[data-theme="dark"] .dropdown-wrapper.lumen-static .dropdown-arrow-wh {
+  display: none !important;
 }
 
 /* Ensure both arrows have rotation capability */
