@@ -4873,9 +4873,134 @@ function initializeThemeToggle() {
   console.log('✅ Theme toggle functionality initialized');
 }
 
+function initializeLanguageToggle() {
+  console.log('🌐 Initializing language toggle functionality...');
+  
+  // Get language toggle elements
+  const langToggle = document.querySelector('.lang-toggle-switch');
+  const enButton = document.querySelector('.lang-en:not(.lang-es)');
+  const esButton = document.querySelector('.lang-en.lang-es');
+  
+  if (!langToggle || !enButton || !esButton) {
+    console.log('⚠️ Language toggle elements not found');
+    return;
+  }
+  
+  // Get saved language preference or default to English
+  const savedLanguage = localStorage.getItem('duva-language') || 'en';
+  let currentLanguage = savedLanguage;
+  
+  // Apply initial language
+  applyLanguage(currentLanguage);
+  
+  // English button click handler
+  enButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('🇺🇸 English button clicked');
+    setLanguage('en');
+  });
+  
+  // Spanish button click handler
+  esButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('🇪🇸 Spanish button clicked');
+    setLanguage('es');
+  });
+  
+  // Function to set language
+  function setLanguage(language) {
+    if (language === currentLanguage) return;
+    
+    currentLanguage = language;
+    applyLanguage(language);
+    localStorage.setItem('duva-language', language);
+    console.log(`✅ Language changed to: ${language}`);
+  }
+  
+  // Function to apply language
+  function applyLanguage(language) {
+    // Update document language attribute
+    document.documentElement.setAttribute('lang', language);
+    document.documentElement.setAttribute('data-language', language);
+    
+    // Update button states
+    if (language === 'es') {
+      enButton.classList.remove('active');
+      esButton.classList.add('active');
+    } else {
+      enButton.classList.add('active');
+      esButton.classList.remove('active');
+    }
+    
+    // Apply translations
+    translateContent(language);
+  }
+  
+  // Function to translate content
+  function translateContent(language) {
+    const translations = {
+      en: {
+        'filter': 'Filter',
+        'configure-lighting': 'Configure lighting instantly.',
+        'select-specs': 'Select specs, generate datasheets, downloads files.',
+        'mounting-type': 'Mounting Type',
+        'indoor': 'Indoor',
+        'outdoor': 'Outdoor',
+        'custom-spanish-lighting': 'Custom Spanish Lighting'
+      },
+      es: {
+        'filter': 'Filtrar',
+        'configure-lighting': 'Configura la iluminación al instante.',
+        'select-specs': 'Selecciona especificaciones, genera hojas de datos, descarga archivos.',
+        'mounting-type': 'Tipo de Montaje',
+        'indoor': 'Interior',
+        'outdoor': 'Exterior',
+        'custom-spanish-lighting': 'Iluminación Española Personalizada'
+      }
+    };
+    
+    const currentTranslations = translations[language] || translations.en;
+    
+    // Apply translations to elements with data-translate attributes
+    Object.keys(currentTranslations).forEach(key => {
+      const elements = document.querySelectorAll(`[data-translate="${key}"]`);
+      elements.forEach(element => {
+        element.textContent = currentTranslations[key];
+      });
+    });
+    
+    // Update specific elements by class
+    const textBlock30 = document.querySelector('.text-block-30');
+    if (textBlock30) textBlock30.textContent = currentTranslations['filter'];
+    
+    const textBlock31 = document.querySelector('.text-block-31');
+    if (textBlock31) textBlock31.textContent = currentTranslations['configure-lighting'];
+    
+    const textBlock32 = document.querySelector('.text-block-32');
+    if (textBlock32) textBlock32.textContent = currentTranslations['select-specs'];
+    
+    const textBlock37 = document.querySelector('.text-block-37');
+    if (textBlock37) textBlock37.textContent = currentTranslations['mounting-type'];
+    
+    const textBlock48 = document.querySelector('.text-block-48');
+    if (textBlock48) textBlock48.textContent = currentTranslations['indoor'];
+    
+    const textBlock49 = document.querySelector('.text-block-49');
+    if (textBlock49) textBlock49.textContent = currentTranslations['outdoor'];
+    
+    const textSpan5 = document.querySelector('.text-span-5');
+    if (textSpan5) textSpan5.textContent = currentTranslations['custom-spanish-lighting'];
+  }
+  
+  console.log('✅ Language toggle functionality initialized');
+}
+
 // Initialize theme toggle when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initializeThemeToggle();
+  initializeLanguageToggle();
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
   createCategoriesParticles();
@@ -4886,6 +5011,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Also initialize on Webflow ready
 Webflow.push(() => {
   initializeThemeToggle();
+  initializeLanguageToggle();
   initializeNewsletterSubscription();
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
