@@ -6422,7 +6422,7 @@ ARROWS:
 
 /* Dark theme for footer */
 [data-theme="dark"] .footer-section {
-  /* Removed custom background-color and color to use Webflow defaults */
+  background-color: #2a2a2a;
 }
 
 [data-theme="dark"] .footer-section a {
@@ -6535,7 +6535,7 @@ ARROWS:
 
 /* Dark theme override for cards-Container to ensure dark background */
 [data-theme="dark"] .cards-Container {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #2a2a2a;
 }
 
 
@@ -6544,12 +6544,12 @@ ARROWS:
 html[data-theme="dark"] .cards-Container,
 body[data-theme="dark"] .cards-Container,
 body.theme-dark .cards-Container {
-  /* Removed custom background-color, border-color, and box-shadow to use Webflow defaults */
+  background-color: #2a2a2a;
 }
 
 /* ALSO target the lowercase version that exists in other CSS files */
 [data-theme="dark"] .cards-container {
-  background-color: #212121 !important;
+  background-color: #2a2a2a !important;
   border-color: #333333 !important; /* Standard border color */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
 }
