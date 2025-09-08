@@ -6476,7 +6476,7 @@ ARROWS:
 
 /* Dark theme for product page main background */
 [data-theme="dark"] body {
-  /* Removed custom background-color to use Webflow defaults */
+  background-color: #212121;
 }
 
 /* Dark theme for specific sections */
@@ -8429,7 +8429,7 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] {
   --duva-white: #2a2a2a !important; /* Override to dark grey for sections */
   --duva-d-grey: #F4F5F6 !important; /* Override to light grey */
-  --duva-light-color-bg: #2a2a2a !important;
+  --duva-light-color-bg: #212121 !important;
   --light-color-bg: #2a2a2a !important;
   --main-body-color: #212121 !important; /* Ensure main body color is set */
 }
