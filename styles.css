@@ -6507,6 +6507,26 @@ body.theme-dark .cards-Container {
   border-color: #333333 !important;
 }
 
+/* Dark theme override for specific elements with light grey borders */
+[data-theme="dark"] .related-card,
+[data-theme="dark"] .accessories-section,
+[data-theme="dark"] .gallery-section,
+[data-theme="dark"] .product-section,
+[data-theme="dark"] .specifications-section {
+  border-color: #333333 !important;
+}
+
+[data-theme="dark"] .related-card *,
+[data-theme="dark"] .accessories-section *,
+[data-theme="dark"] .gallery-section *,
+[data-theme="dark"] .product-section *,
+[data-theme="dark"] .specifications-section * {
+  border-top-color: #333333 !important;
+  border-right-color: #333333 !important;
+  border-bottom-color: #333333 !important;
+  border-left-color: #333333 !important;
+}
+
 /* Dark theme for main filter wrapper and filter sections */
 [data-theme="dark"] .main-filter-wrapper {
   /* Removed custom background-color and color to use Webflow defaults */
@@ -8294,7 +8314,7 @@ body.exporting-pdf #pdf-container {
 [data-theme="dark"] .new-items-container,
 [data-theme="dark"] .gallery-section,
 [data-theme="dark"] .footer-section {
-  border-color: #E4E3E3 !important; /* Force same border color */
+  border-color: #333333 !important; /* Use consistent dark theme border color */
 }
 
 /* Remove flip-card-wrapper from dark theme border override */
