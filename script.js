@@ -434,7 +434,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Dropdown Setup & Interactions === 
 
-  dropdowns.forEach(dropdown => { 
+  dropdowns.forEach(dropdown => {
+    // Add loading state
+    dropdown.classList.add('loading'); 
 
     const type = dropdown.getAttribute("data-type"); 
 
@@ -470,6 +472,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const rawText = source.textContent.trim(); 
 
+    if (!rawText) {
+      console.warn(`No data found for dropdown: ${type}`);
+      dropdown.classList.remove('loading');
+      dropdown.closest(".spec-row")?.remove();
+      return;
+    }
+
     const values = [...new Set( 
 
       rawText.split(",") 
@@ -483,11 +492,9 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
     if (values.length === 0) { 
-
+      dropdown.classList.remove('loading');
       dropdown.closest(".spec-row")?.remove(); 
-
       return; 
-
     } 
 
  
@@ -507,13 +514,10 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
     if (values.length <= 1) { 
-
       dropdown.classList.add("disabled"); 
-
+      dropdown.classList.remove('loading');
       arrow && (arrow.style.display = "none"); 
-
       return; 
-
     } 
 
  
@@ -523,10 +527,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const optionsBox = document.createElement("div"); 
 
     optionsBox.className = "dropdown-options"; 
+    optionsBox.setAttribute("role", "listbox");
+    optionsBox.setAttribute("aria-hidden", "true");
+
+    // Add ARIA attributes to dropdown
+    dropdown.setAttribute("role", "combobox");
+    dropdown.setAttribute("aria-expanded", "false");
+    dropdown.setAttribute("aria-haspopup", "listbox");
+    field.setAttribute("aria-label", `${type} selection`);
+    field.setAttribute("tabindex", "0");
 
     dropdown.appendChild(optionsBox); 
 
- 
+    // Remove loading state after successful initialization
+    dropdown.classList.remove('loading');
 
     values.forEach(value => { 
 
@@ -643,24 +657,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Toggle dropdown 
 
-    arrow?.addEventListener("click", (e) => { 
-
+    const toggleDropdown = (e) => {
       e.stopPropagation(); 
-
       const isOpen = optionsBox.style.display === "block"; 
-
       document.querySelectorAll(".dropdown-options").forEach(opt => opt.style.display = "none"); 
-
       document.querySelectorAll(".dropdown-wrapper").forEach(d => d.classList.remove("open")); 
-
       if (!isOpen) { 
-
         optionsBox.style.display = "block"; 
+        dropdown.classList.add("open");
+        dropdown.setAttribute("aria-expanded", "true");
+        optionsBox.setAttribute("aria-hidden", "false");
+      } else {
+        dropdown.setAttribute("aria-expanded", "false");
+        optionsBox.setAttribute("aria-hidden", "true");
+      }
+    };
 
-        dropdown.classList.add("open"); 
+    arrow?.addEventListener("click", toggleDropdown);
+    field.addEventListener("click", toggleDropdown);
 
-      } 
-
+    // Add keyboard navigation
+    field.addEventListener("keydown", (e) => {
+      switch(e.key) {
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          toggleDropdown(e);
+          break;
+        case "Escape":
+          optionsBox.style.display = "none";
+          dropdown.classList.remove("open");
+          dropdown.setAttribute("aria-expanded", "false");
+          optionsBox.setAttribute("aria-hidden", "true");
+          field.focus();
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          const firstOption = optionsBox.querySelector(".dropdown-option");
+          if (firstOption) firstOption.focus();
+          break;
+      }
     }); 
 
  
@@ -1020,8 +1056,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 
-  /* === Initialize Each Dropdown === */ 
-
+  // Removed duplicate dropdown initialization - using first implementation above 
+  
+  /* DUPLICATE CODE COMMENTED OUT - CAUSES CONFLICTS
   dropdowns.forEach(dropdown => { 
 
     const type = dropdown.getAttribute("data-type"); 
@@ -1090,7 +1127,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("div"); 
 
       opt.className = "dropdown-option"; 
-
+      opt.setAttribute("role", "option");
+      opt.setAttribute("aria-selected", "false");
+      opt.setAttribute("tabindex", "-1");
       opt.textContent = value; 
 
  
@@ -1210,8 +1249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }); 
 
   }); 
-
- 
+  */
 
   /* === Update Lumen Value === */ 
 
