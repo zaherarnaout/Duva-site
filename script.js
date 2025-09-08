@@ -902,6 +902,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* === Trigger Hidden Webflow Lightbox Gallery === */ 
 
+  const mainImage = document.getElementById('main-lightbox-trigger');
   const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
   if (mainImage && firstGalleryItem) { 
@@ -5700,13 +5701,13 @@ function initializeFooterContactButton() {
   // Mark this button as initialized to prevent conflicts
   newFooterContactBtn.setAttribute('data-footer-initialized', 'true');
   
-  console.log('📍 Found footer contact button:', contactBtn);
-  console.log('📍 Button classes:', contactBtn.className);
-  console.log('📍 Button href:', contactBtn.href);
+  console.log('📍 Found footer contact button:', newFooterContactBtn);
+  console.log('📍 Button classes:', newFooterContactBtn.className);
+  console.log('📍 Button href:', newFooterContactBtn.href);
   
   // Remove any existing event listeners first
-  const newContactBtn = contactBtn.cloneNode(true);
-  contactBtn.parentNode.replaceChild(newContactBtn, contactBtn);
+  const newContactBtn = newFooterContactBtn.cloneNode(true);
+  newFooterContactBtn.parentNode.replaceChild(newContactBtn, newFooterContactBtn);
   
   // Add multiple event listeners to ensure it works
   newContactBtn.addEventListener('click', function(e) {
