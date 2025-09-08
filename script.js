@@ -4877,9 +4877,9 @@ function initializeLanguageToggle() {
   console.log('🌐 Initializing language toggle functionality...');
   
   // Get language toggle elements
-  const langToggle = document.querySelector('.lang-toggle-switch');
-  let enButton = document.querySelector('.lang-en:not(.lang-es)');
-  let esButton = document.querySelector('.lang-en.lang-es');
+  const langToggle = document.querySelector('.lang-toggle-switch.theme-toggle-switch');
+  let enButton = document.querySelector('.lang-en.theme-icon:not(.lang-es)');
+  let esButton = document.querySelector('.lang-en.theme-icon.lang-es');
   
   console.log('🔍 Language toggle elements found:', {
     langToggle: !!langToggle,
@@ -4897,7 +4897,7 @@ function initializeLanguageToggle() {
     console.log('⚠️ Language buttons not found with expected selectors, trying fallback...');
     
     // Try to find buttons by their text content
-    const allLangElements = document.querySelectorAll('.lang-en');
+    const allLangElements = document.querySelectorAll('.lang-en.theme-icon');
     allLangElements.forEach(element => {
       const text = element.textContent.trim();
       if (text === 'EN' && !enButton) {
