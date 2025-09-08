@@ -6901,13 +6901,16 @@ body.theme-dark .cards-Container {
 }
 
 [data-theme="dark"] .Dropdown-arrow-wh,
-[data-theme="dark"] * .Dropdown-arrow-wh {
+[data-theme="dark"] * .Dropdown-arrow-wh,
+[data-theme="dark"] .dropdown-wrapper .Dropdown-arrow-wh,
+[data-theme="dark"] .dropdown-field .Dropdown-arrow-wh {
   display: block !important; /* Show dark theme arrow on dark mode */
 }
 
 /* Ensure dark theme arrow rotates when dropdown is open with maximum specificity */
 [data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh,
-[data-theme="dark"] * .dropdown-wrapper.open .Dropdown-arrow-wh {
+[data-theme="dark"] * .dropdown-wrapper.open .Dropdown-arrow-wh,
+[data-theme="dark"] .dropdown-field.open .Dropdown-arrow-wh {
   transform: rotate(180deg) !important;
 }
 
@@ -6916,6 +6919,17 @@ body.theme-dark .cards-Container {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+/* Add hover effects for white dropdown arrow in dark mode */
+[data-theme="dark"] .Dropdown-arrow-wh:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  filter: brightness(1.1) !important;
+}
+
+/* Ensure white arrow rotates properly when dropdown is open in dark mode */
+[data-theme="dark"] .dropdown-wrapper.open .Dropdown-arrow-wh:hover {
+  transform: translateY(-2px) scale(1.05) rotate(180deg) !important;
 }
 
 /* Debug: Test if dark theme selector is working */
@@ -8149,9 +8163,6 @@ body.theme-dark .cards-Container {
   color: #F4F5F6;
 }
 
-[data-theme="dark"] .pdf-container {
-  background: #212121;
-}
 
 /* === END CATALOG PREVIEW SYSTEM === */
 
