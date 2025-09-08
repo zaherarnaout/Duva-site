@@ -4876,6 +4876,12 @@ function initializeThemeToggle() {
 function initializeLanguageToggle() {
   console.log('🌐 Initializing language toggle functionality...');
   
+  // Prevent multiple initialization
+  if (window.languageToggleInitialized) {
+    console.log('⚠️ Language toggle already initialized, skipping...');
+    return;
+  }
+  
   // Get language toggle elements
   const langToggle = document.querySelector('.lang-toggle-switch.theme-toggle-switch');
   let enButton = document.querySelector('.lang-en.theme-icon:not(.lang-es)');
@@ -4909,6 +4915,22 @@ function initializeLanguageToggle() {
       }
     });
     
+    // If still not found, try finding by text elements directly
+    if (!enButton || !esButton) {
+      const enTextElement = document.querySelector('.text-block-3');
+      const esTextElement = document.querySelector('.text-block-4');
+      
+      if (enTextElement && enTextElement.textContent.trim() === 'EN') {
+        enButton = enTextElement.closest('.lang-en.theme-icon');
+        console.log('✅ Found EN button via text element');
+      }
+      
+      if (esTextElement && esTextElement.textContent.trim() === 'ES') {
+        esButton = esTextElement.closest('.lang-en.theme-icon');
+        console.log('✅ Found ES button via text element');
+      }
+    }
+    
     if (!enButton || !esButton) {
       console.log('⚠️ Could not find language buttons, language toggle disabled');
       return;
@@ -4928,7 +4950,7 @@ function initializeLanguageToggle() {
     e.stopPropagation();
     console.log('🇺🇸 English button clicked');
     setLanguage('en');
-  });
+  }, { passive: false });
   
   // Spanish button click handler
   esButton.addEventListener('click', function(e) {
@@ -4936,7 +4958,7 @@ function initializeLanguageToggle() {
     e.stopPropagation();
     console.log('🇪🇸 Spanish button clicked');
     setLanguage('es');
-  });
+  }, { passive: false });
   
   // Add click handlers to the text elements as well (in case the div structure is different)
   const enText = document.querySelector('.text-block-3');
@@ -4948,7 +4970,7 @@ function initializeLanguageToggle() {
       e.stopPropagation();
       console.log('🇺🇸 English text clicked');
       setLanguage('en');
-    });
+    }, { passive: false });
   }
   
   if (esText) {
@@ -4957,7 +4979,7 @@ function initializeLanguageToggle() {
       e.stopPropagation();
       console.log('🇪🇸 Spanish text clicked');
       setLanguage('es');
-    });
+    }, { passive: false });
   }
   
   // Function to set language
@@ -5061,7 +5083,26 @@ function initializeLanguageToggle() {
     if (textSpan5) textSpan5.textContent = currentTranslations['custom-spanish-lighting'];
   }
   
+  // Mark as initialized to prevent multiple initialization
+  window.languageToggleInitialized = true;
+  
+  // Store references for potential reinitialization
+  window.languageToggleElements = {
+    langToggle,
+    enButton,
+    esButton,
+    enText,
+    esText
+  };
+  
   console.log('✅ Language toggle functionality initialized');
+}
+
+// Function to reinitialize language toggle if needed
+function reinitializeLanguageToggle() {
+  console.log('🔄 Reinitializing language toggle...');
+  window.languageToggleInitialized = false;
+  initializeLanguageToggle();
 }
 
 // Initialize theme toggle when DOM is ready
@@ -5078,7 +5119,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Also initialize on Webflow ready
 Webflow.push(() => {
   initializeThemeToggle();
-  initializeLanguageToggle();
+  
+  // Add a small delay to ensure DOM is fully ready
+  setTimeout(() => {
+    initializeLanguageToggle();
+  }, 100);
+  
   initializeNewsletterSubscription();
   initializeDateTimeDisplay();
   initializeHeroSectionAnimations();
