@@ -3653,6 +3653,13 @@ function initializeRelatedSectionAutoScroll() {
   // Check overflow initially and on resize
   checkOverflow();
   window.addEventListener('resize', checkOverflow);
+
+  // Ensure viewport fade effects are applied to this section
+  setTimeout(() => {
+    if (typeof initializeViewportFadeEffects === 'function') {
+      initializeViewportFadeEffects();
+    }
+  }, 100);
   
   // Auto-scroll variables
   let isRelatedAutoScrolling = true;
