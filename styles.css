@@ -5155,7 +5155,6 @@ ARROWS:
 
 /* === Force Visibility for Critical Sections (Initial State Only) === */
 .product-info-block:not(.dropdown-wrapper):not(.dropdown-field):not(.dropdown-options):not(.dropdown-option),
-.related-section:not(.related-arrow-left):not(.related-arrow-right),
 .product-visuals:not(.thumbnail-image):not(.w-lightbox-trigger),
 .download-panel:not(.download-checkbox):not(.download-arrow) {
   opacity: 1 !important;
