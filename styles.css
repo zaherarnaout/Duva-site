@@ -3338,6 +3338,27 @@ opacity: 1 !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* Dark theme image switching for categories cards */
+/* Hide light theme images in dark mode */
+[data-theme="dark"] .main-page-categories-wrapper .image-24:not(.Dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-25:not(.Dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-26:not(.Dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-27:not(.Dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-28:not(.Dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-29:not(.Dark) {
+  display: none !important;
+}
+
+/* Show dark theme images in dark mode */
+[data-theme="dark"] .main-page-categories-wrapper .image-24.Dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-25.Dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-26.Dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-27.Dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-28.Dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-29.Dark {
+  display: block !important;
+}
+
 @keyframes textGlow {
   0%, 100% {
     text-shadow: 0 0 0 rgba(192, 57, 43, 0);
