@@ -3340,29 +3340,41 @@ opacity: 1 !important;
 
 /* Dark theme image switching for categories cards */
 /* Hide light theme images in dark mode */
-[data-theme="dark"] .main-page-categories-wrapper .image-24:not(.Dark),
-[data-theme="dark"] .main-page-categories-wrapper .image-25:not(.Dark),
-[data-theme="dark"] .main-page-categories-wrapper .image-26:not(.Dark),
-[data-theme="dark"] .main-page-categories-wrapper .image-27:not(.Dark),
-[data-theme="dark"] .main-page-categories-wrapper .image-28:not(.Dark),
-[data-theme="dark"] .main-page-categories-wrapper .image-29:not(.Dark) {
+[data-theme="dark"] .main-page-categories-wrapper .image-24:not(.dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-25:not(.dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-26:not(.dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-27:not(.dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-28:not(.dark),
+[data-theme="dark"] .main-page-categories-wrapper .image-29:not(.dark) {
   display: none !important;
 }
 
 /* Show dark theme images in dark mode */
-[data-theme="dark"] .main-page-categories-wrapper .image-24.Dark,
-[data-theme="dark"] .main-page-categories-wrapper .image-25.Dark,
-[data-theme="dark"] .main-page-categories-wrapper .image-26.Dark,
-[data-theme="dark"] .main-page-categories-wrapper .image-27.Dark,
-[data-theme="dark"] .main-page-categories-wrapper .image-28.Dark,
-[data-theme="dark"] .main-page-categories-wrapper .image-29.Dark {
+[data-theme="dark"] .main-page-categories-wrapper .image-24.dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-25.dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-26.dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-27.dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-28.dark,
+[data-theme="dark"] .main-page-categories-wrapper .image-29.dark {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* General rule: Show all elements with "Dark" class in dark mode */
-[data-theme="dark"] .Dark {
+/* Override skeleton class hiding in dark mode */
+[data-theme="dark"] .main-page-categories-wrapper .image-24.dark.skeleton,
+[data-theme="dark"] .main-page-categories-wrapper .image-25.dark.skeleton,
+[data-theme="dark"] .main-page-categories-wrapper .image-26.dark.skeleton,
+[data-theme="dark"] .main-page-categories-wrapper .image-27.dark.skeleton,
+[data-theme="dark"] .main-page-categories-wrapper .image-28.dark.skeleton,
+[data-theme="dark"] .main-page-categories-wrapper .image-29.dark.skeleton {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* General rule: Show all elements with "dark" class in dark mode */
+[data-theme="dark"] .dark {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
