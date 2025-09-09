@@ -2628,6 +2628,29 @@ opacity: 1 !important;
   overflow: hidden !important;
 }
 
+/* Related slider mask styling */
+.related-slider-mask {
+  padding-top: 20px;
+}
+
+/* Related section parallax effects */
+.related-section {
+  transition: transform 0.3s ease-out;
+}
+
+.related-section.parallax-active {
+  transform: translateY(calc(var(--scroll-y, 0) * -0.02px));
+}
+
+.related-card {
+  transition: transform 0.3s ease-out;
+  transition-delay: calc(var(--card-delay, 0) * 1s);
+}
+
+.related-card.parallax-active {
+  transform: translateY(calc(var(--card-transform, 0) * 1px));
+}
+
 /* Fade-out overlay for left edge */
 .related-slider-wrapper::before,
 .related-slider-mask::before {
