@@ -2605,13 +2605,17 @@ opacity: 1 !important;
 
 /* Related section arrow navigation - show/hide based on overflow */
 .related-arrow-left,
-.related-arrow-right {
+.related-arrow-right,
+.image-30,
+.image-31 {
   display: none !important;
 }
 
 /* Show arrows when there's overflow */
 .related-section.has-overflow .related-arrow-left,
-.related-section.has-overflow .related-arrow-right {
+.related-section.has-overflow .related-arrow-right,
+.related-section.has-overflow .image-30,
+.related-section.has-overflow .image-31 {
   display: block !important;
 }
 
@@ -2622,7 +2626,9 @@ opacity: 1 !important;
 
 @media screen and (max-width: 991px) {
   .related-arrow-left,
-  .related-arrow-right {
+  .related-arrow-right,
+  .image-30,
+  .image-31 {
     display: none !important;
   }
   
@@ -2637,6 +2643,7 @@ opacity: 1 !important;
 .related-slider-wrapper {
   position: relative !important;
   overflow: hidden !important;
+  margin-top: 20px !important;
 }
 
 /* Related slider mask styling */
