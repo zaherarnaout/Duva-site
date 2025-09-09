@@ -3626,8 +3626,17 @@ function initializeRelatedSectionAutoScroll() {
   const arrowRight = document.querySelector('.image-30');
   const arrowLeft = document.querySelector('.image-31');
   
+  // Check if related section exists and has content
   if (!relatedSection || !relatedContainer) {
     console.log('⚠️ Related section or container not found');
+    return;
+  }
+  
+  // Check if there are any related items
+  const relatedItems = relatedContainer.querySelectorAll('.related-item, .w-dyn-item');
+  if (relatedItems.length === 0) {
+    console.log('📏 No related items found - hiding related section');
+    relatedSection.style.display = 'none';
     return;
   }
   
@@ -3641,10 +3650,20 @@ function initializeRelatedSectionAutoScroll() {
   function startRelatedAutoScroll() {
     if (relatedScrollInterval) return; // Already running
     
-    // Only auto-scroll if there's content to scroll
-    if (relatedContainer.scrollWidth <= relatedContainer.clientWidth) {
-      console.log('📏 Related container has no overflow - auto-scroll not needed');
+    // Check if there are any related items
+    const relatedItems = relatedContainer.querySelectorAll('.related-item, .w-dyn-item');
+    if (relatedItems.length === 0) {
+      console.log('📏 No related items found - hiding related section');
+      const relatedSection = document.querySelector('.related-section');
+      if (relatedSection) {
+        relatedSection.style.display = 'none';
+      }
       return;
+    }
+    
+    // Auto-scroll even with single items (for visual effect)
+    if (relatedContainer.scrollWidth <= relatedContainer.clientWidth) {
+      console.log('📏 Related container has no overflow - but will auto-scroll for single items');
     }
     
     relatedScrollInterval = setInterval(() => {
@@ -3653,7 +3672,10 @@ function initializeRelatedSectionAutoScroll() {
         const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
         
         // Infinite loop logic - seamless transition
-        if (currentScroll >= maxScroll) {
+        if (maxScroll <= 0) {
+          // Single item case - just reset to beginning for continuous effect
+          relatedContainer.scrollLeft = 0;
+        } else if (currentScroll >= maxScroll) {
           // When reaching the end, smoothly transition to the beginning
           relatedContainer.scrollLeft = 0;
           console.log('🔄 Related scroll looped to beginning');
@@ -4421,6 +4443,10 @@ if (typeof Webflow !== 'undefined') {
     // Product cards parallax moved to product-cards.js
     console.log('✅ Product cards parallax effects initialized');
 
+    // Initialize related section parallax effects
+    initializeRelatedSectionParallax();
+    console.log('✅ Related section parallax effects initialized');
+
     // Wait for Webflow lightbox to be ready and add navigation
     setTimeout(() => {
       const lightbox = document.querySelector('.w-lightbox-backdrop');
@@ -4743,6 +4769,61 @@ function initializeCategoriesParallax() {
   });
 
   console.log('🎯 Categories parallax system active');
+}
+
+/* === Related Section Parallax Effects === */
+function initializeRelatedSectionParallax() {
+  const relatedSection = document.querySelector('.related-section');
+  const relatedCards = document.querySelectorAll('.related-card');
+
+  if (!relatedSection) {
+    console.log('⚠️ Related section not found');
+    return;
+  }
+
+  let ticking = false;
+  let hasScrolled = false;
+
+  function updateRelatedParallax() {
+    const scrollY = window.pageYOffset;
+    const sectionTop = relatedSection.offsetTop;
+    const sectionHeight = relatedSection.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    // Check if section is in viewport
+    if (scrollY + windowHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
+      if (!hasScrolled) {
+        hasScrolled = true;
+        // Add parallax-active class to section
+        relatedSection.classList.add('parallax-active');
+
+        // Update individual card parallax based on position
+        relatedCards.forEach((card, index) => {
+          const cardDelay = index * 0.1; // Staggered delay
+          const cardTransform = (scrollY - sectionTop) * 0.05; // Subtle parallax effect
+          
+          card.style.setProperty('--scroll-y', scrollY);
+          card.style.setProperty('--card-delay', cardDelay);
+          card.style.setProperty('--card-transform', cardTransform);
+          card.classList.add('parallax-active');
+        });
+      }
+    }
+
+    ticking = false;
+  }
+
+  function requestRelatedParallaxTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateRelatedParallax);
+      ticking = true;
+    }
+  }
+
+  // Add scroll listener
+  window.addEventListener('scroll', requestRelatedParallaxTick, { passive: true });
+
+  console.log('🎯 Related section parallax system active');
 }
 
 /* === PRODUCT CARDS PARALLAX MOVED TO PRODUCT-CARDS.JS === */
