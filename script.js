@@ -3657,7 +3657,13 @@ function initializeRelatedSectionAutoScroll() {
   // Ensure viewport fade effects are applied to this section
   setTimeout(() => {
     if (typeof initializeViewportFadeEffects === 'function') {
+      console.log('🔄 Re-initializing viewport fade effects for related section...');
       initializeViewportFadeEffects();
+      
+      // Debug: Check if related section has the correct classes
+      console.log('🔍 Related section classes:', relatedSection.className);
+      console.log('🔍 Related section computed opacity:', window.getComputedStyle(relatedSection).opacity);
+      console.log('🔍 Related section computed transform:', window.getComputedStyle(relatedSection).transform);
     }
   }, 100);
   
@@ -5881,7 +5887,14 @@ function initializeViewportFadeEffects() {
     const elements = document.querySelectorAll(selector);
     elements.forEach(element => {
       observer.observe(element);
-      console.log('👁️ Observing section:', selector);
+      console.log('👁️ Observing section:', selector, 'Element:', element);
+      
+      // Special debugging for related section
+      if (selector === '.related-section') {
+        console.log('🔍 Related section found:', element);
+        console.log('🔍 Related section classes:', element.className);
+        console.log('🔍 Related section computed opacity:', window.getComputedStyle(element).opacity);
+      }
     });
   });
   
