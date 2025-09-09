@@ -3634,6 +3634,25 @@ function initializeRelatedSectionAutoScroll() {
     relatedSection.style.display = 'none';
     return;
   }
+
+  // Check for overflow and add appropriate classes
+  function checkOverflow() {
+    const hasOverflow = relatedContainer.scrollWidth > relatedContainer.clientWidth;
+    
+    if (hasOverflow) {
+      relatedSection.classList.add('has-overflow');
+      relatedSection.classList.remove('no-overflow');
+      console.log('📏 Related section has overflow - showing arrows');
+    } else {
+      relatedSection.classList.add('no-overflow');
+      relatedSection.classList.remove('has-overflow');
+      console.log('📏 Related section has no overflow - hiding arrows, centering cards');
+    }
+  }
+
+  // Check overflow initially and on resize
+  checkOverflow();
+  window.addEventListener('resize', checkOverflow);
   
   // Auto-scroll variables
   let isRelatedAutoScrolling = true;
@@ -3656,9 +3675,10 @@ function initializeRelatedSectionAutoScroll() {
       return;
     }
     
-    // Auto-scroll even with single items (for visual effect)
+    // Only auto-scroll if there's overflow
     if (relatedContainer.scrollWidth <= relatedContainer.clientWidth) {
-      console.log('📏 Related container has no overflow - but will auto-scroll for single items');
+      console.log('📏 Related container has no overflow - auto-scroll not needed');
+      return;
     }
     
     relatedScrollInterval = setInterval(() => {
