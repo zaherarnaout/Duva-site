@@ -2697,17 +2697,7 @@ opacity: 1 !important;
 
 /* === Fade-in Animations === */
 
-/* Related Items Section Fade-in on Scroll */
-.related-section {
-  opacity: 0 !important;
-  transform: translateY(30px) !important;
-  transition: opacity 0.8s ease, transform 0.8s ease !important;
-}
-
-.related-section.fade-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
+/* Related Items Section Fade-in on Scroll - REMOVED - Now using viewport fade effects */
 
 /* Gallery Section Fade-in on Scroll */
 /* REMOVED - Gallery section functionality disabled */
