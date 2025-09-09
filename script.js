@@ -2508,12 +2508,7 @@ function initializeScrollAnimations() {
     console.log('✅ Download panel observer set up');
   }
   
-  // Observe Related Items section
-  const relatedSection = document.querySelector('.related-section');
-  if (relatedSection) {
-    observer.observe(relatedSection);
-    console.log('✅ Related section observer set up');
-  }
+  // Related Items section now uses viewport fade effects instead of fade-in class
   
   // Gallery section observer disabled
   
