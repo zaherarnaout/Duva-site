@@ -3357,6 +3357,15 @@ opacity: 1 !important;
 [data-theme="dark"] .main-page-categories-wrapper .image-28.Dark,
 [data-theme="dark"] .main-page-categories-wrapper .image-29.Dark {
   display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* General rule: Show all elements with "Dark" class in dark mode */
+[data-theme="dark"] .Dark {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 @keyframes textGlow {
