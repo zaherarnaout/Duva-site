@@ -2579,6 +2579,30 @@ opacity: 1 !important;
   color: #C0392B !important;
 }
 
+/* Related image link block hover effect */
+.related-card .link-block:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Related image hover effect */
+.related-card .link-block:hover .related-image {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  filter: brightness(1.1) contrast(1.05);
+}
+
+/* Rich text block styling for related cards */
+.related-card .rich-text-block {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+/* Rich text block hover effect */
+.related-card:hover .rich-text-block {
+  color: #C0392B !important;
+}
+
 /* Hide arrows since we're using mouse wheel scrolling */
 .related-arrow-left,
 .related-arrow-right {
@@ -8533,6 +8557,15 @@ body.exporting-pdf #pdf-container {
 }
 
 [data-theme="dark"] .related-card:hover .related-code {
+  color: #C0392B !important;
+}
+
+/* Dark theme for rich text block in related cards */
+[data-theme="dark"] .related-card .rich-text-block {
+  color: #F4F5F6;
+}
+
+[data-theme="dark"] .related-card:hover .rich-text-block {
   color: #C0392B !important;
 }
 
