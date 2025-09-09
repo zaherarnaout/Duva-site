@@ -2629,13 +2629,14 @@ opacity: 1 !important;
 }
 
 /* Fade-out overlay for left edge */
-.related-slider-wrapper::before {
+.related-slider-wrapper::before,
+.related-slider-mask::before {
   content: '' !important;
   position: absolute !important;
-  top: 21px !important; /* Account for wrapper padding + 1px */
-  left: 1px !important; /* 1px padding from edge */
+  top: 0 !important; /* Align with the top of the slider */
+  left: 0 !important; /* Align with the left edge */
   width: 80px !important;
-  height: 248px !important; /* Match related-card height - 2px for padding */
+  height: 100% !important; /* Match the full height of the slider */
   background: linear-gradient(to right, 
     #FFFFFF 0%, 
     rgba(255, 255, 255, 0.95) 20%, 
@@ -2647,13 +2648,14 @@ opacity: 1 !important;
 }
 
 /* Fade-out overlay for right edge */
-.related-slider-wrapper::after {
+.related-slider-wrapper::after,
+.related-slider-mask::after {
   content: '' !important;
   position: absolute !important;
-  top: 21px !important; /* Account for wrapper padding + 1px */
-  right: 1px !important; /* 1px padding from edge */
+  top: 0 !important; /* Align with the top of the slider */
+  right: 0 !important; /* Align with the right edge */
   width: 80px !important;
-  height: 248px !important; /* Match related-card height - 2px for padding */
+  height: 100% !important; /* Match the full height of the slider */
   background: linear-gradient(to left, 
     #FFFFFF 0%, 
     rgba(255, 255, 255, 0.95) 20%, 
@@ -8570,22 +8572,24 @@ body.exporting-pdf #pdf-container {
 }
 
 /* Dark theme fade effects for related cards */
-[data-theme="dark"] .related-slider-wrapper::before {
+[data-theme="dark"] .related-slider-wrapper::before,
+[data-theme="dark"] .related-slider-mask::before {
   background: linear-gradient(to right, 
-    #212121 0%, 
-    rgba(33, 33, 33, 0.95) 20%, 
-    rgba(33, 33, 33, 0.7) 40%, 
-    rgba(33, 33, 33, 0.3) 70%, 
-    rgba(33, 33, 33, 0) 100%) !important;
+    #333333 0%, 
+    rgba(51, 51, 51, 0.95) 20%, 
+    rgba(51, 51, 51, 0.7) 40%, 
+    rgba(51, 51, 51, 0.3) 70%, 
+    rgba(51, 51, 51, 0) 100%) !important;
 }
 
-[data-theme="dark"] .related-slider-wrapper::after {
+[data-theme="dark"] .related-slider-wrapper::after,
+[data-theme="dark"] .related-slider-mask::after {
   background: linear-gradient(to left, 
-    #212121 0%, 
-    rgba(33, 33, 33, 0.95) 20%, 
-    rgba(33, 33, 33, 0.7) 40%, 
-    rgba(33, 33, 33, 0.3) 70%, 
-    rgba(33, 33, 33, 0) 100%) !important;
+    #333333 0%, 
+    rgba(51, 51, 51, 0.95) 20%, 
+    rgba(51, 51, 51, 0.7) 40%, 
+    rgba(51, 51, 51, 0.3) 70%, 
+    rgba(51, 51, 51, 0) 100%) !important;
 }
 
 /* Dark theme for flip cards */
