@@ -6360,11 +6360,6 @@ ARROWS:
   /* Removed custom box-shadow to use Webflow defaults */
 }
 
-/* Main-page button styling */
-.main-page-btn {
-  color: #212121;
-}
-
 /* Dark theme for buttons */
 [data-theme="dark"] button {
   /* Removed custom background-color and color to use Webflow defaults */
@@ -6372,11 +6367,6 @@ ARROWS:
 
 [data-theme="dark"] button:hover {
   /* Removed custom background-color to use Webflow defaults */
-}
-
-/* Dark theme for main-page button - keep text color as #212121 */
-[data-theme="dark"] .main-page-btn {
-  color: #212121;
 }
 
 /* Dark theme for dropdowns */
