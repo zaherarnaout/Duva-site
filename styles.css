@@ -2603,10 +2603,21 @@ opacity: 1 !important;
   color: #C0392B !important;
 }
 
-/* Hide arrows since we're using mouse wheel scrolling */
+/* Related section arrow navigation - show/hide based on overflow */
 .related-arrow-left,
 .related-arrow-right {
   display: none !important;
+}
+
+/* Show arrows when there's overflow */
+.related-section.has-overflow .related-arrow-left,
+.related-section.has-overflow .related-arrow-right {
+  display: block !important;
+}
+
+/* Center single cards when no overflow */
+.related-section.no-overflow .collection-list-6 {
+  justify-content: center !important;
 }
 
 @media screen and (max-width: 991px) {
