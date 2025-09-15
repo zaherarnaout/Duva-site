@@ -372,54 +372,132 @@ document.addEventListener("DOMContentLoaded", function () {
     return `images/${buildImageFilename(productCode, finish)}`;
   }
   
-  // Get available finishes for current product
+  // Get available finishes for current product from CMS and thumbnails
   function getAvailableFinishes(productCode) {
     const availableFinishes = [];
     
-    // All available single colors
-    const singleColors = ["White", "Black", "Grey", "Silver", "Gold", "Chrome", "Brown", "Bronze"];
-    
-    // Check single color images by looking at existing thumbnails
-    singleColors.forEach(color => {
-      const imageUrl = getImageUrl(productCode, color);
-      // Check if this image exists in thumbnails or can be constructed
-      if (imageUrl && !imageUrl.includes('images/')) { // CDN URL means it exists
-        availableFinishes.push(color);
+    // First, try to get finishes from CMS dropdown source
+    const finishDropdown = document.querySelector('.dropdown-wrapper[data-type="finish"]');
+    if (finishDropdown) {
+      const source = finishDropdown.querySelector('.dropdown-source');
+      if (source && source.textContent.trim()) {
+        const cmsFinishes = source.textContent.split(',').map(f => f.trim()).filter(f => f);
+        console.log(`🔍 CMS finishes found:`, cmsFinishes);
+        
+        // Use CMS data as the source of truth
+        cmsFinishes.forEach(finish => {
+          // Check if this finish has a corresponding image in thumbnails
+          const imageUrl = getImageUrl(productCode, finish);
+          if (imageUrl && !imageUrl.includes('images/')) {
+            availableFinishes.push(finish);
+            console.log(`✅ Added finish from CMS: ${finish}`);
+          } else {
+            console.log(`⚠️ Finish in CMS but no image found: ${finish}`);
+          }
+        });
+        
+        return availableFinishes;
       }
-    });
-    
-    // Check dual color images (common combinations)
-    const dualColorCombinations = [
-      "White & Black", "Black & White",
-      "Grey & Black", "Black & Grey",
-      "White & Grey", "Grey & White",
-      "White & Silver", "Silver & White",
-      "Black & Silver", "Silver & Black",
-      "Grey & Silver", "Silver & Grey",
-      "White & Gold", "Gold & White",
-      "Black & Gold", "Gold & Black",
-      "White & Chrome", "Chrome & White",
-      "Black & Chrome", "Chrome & Black",
-      "White & Brown", "Brown & White",
-      "Black & Brown", "Brown & Black",
-      "White & Bronze", "Bronze & White",
-      "Black & Bronze", "Bronze & Black"
-    ];
-    
-    dualColorCombinations.forEach(combo => {
-      const imageUrl = getImageUrl(productCode, combo);
-      if (imageUrl && !imageUrl.includes('images/')) { // CDN URL means it exists
-        availableFinishes.push(combo);
-      }
-    });
-    
-    // Always add RAL if White image exists
-    const whiteImageUrl = getImageUrl(productCode, "White");
-    if (whiteImageUrl && !whiteImageUrl.includes('images/')) {
-      availableFinishes.push("RAL");
     }
     
-    return availableFinishes;
+    // Fallback: Check thumbnails directly if CMS data is not available
+    console.log(`⚠️ No CMS finish data found, checking thumbnails directly`);
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    const foundFinishes = new Set();
+    
+    thumbnails.forEach(thumb => {
+      const thumbSrc = thumb.src || thumb.getAttribute('src');
+      if (thumbSrc) {
+        // Extract finish from thumbnail filename
+        const filename = thumbSrc.split('/').pop().split('?')[0]; // Remove path and timestamp
+        console.log(`🔍 Checking thumbnail: ${filename}`);
+        
+        // Check for single color finishes
+        const singleColors = ["WH", "BK", "GR", "SR", "GD", "CH", "BR", "BZ"];
+        singleColors.forEach(colorCode => {
+          if (filename.includes(`-${colorCode}.png`)) {
+            const colorName = getColorNameFromCode(colorCode);
+            if (colorName) {
+              foundFinishes.add(colorName);
+              console.log(`✅ Found single color: ${colorName} (${colorCode})`);
+            }
+          }
+        });
+        
+        // Check for dual color finishes
+        const dualPattern = /-([A-Z]{2})-([A-Z]{2})\.png/;
+        const dualMatch = filename.match(dualPattern);
+        if (dualMatch) {
+          const color1 = getColorNameFromCode(dualMatch[1]);
+          const color2 = getColorNameFromCode(dualMatch[2]);
+          if (color1 && color2) {
+            foundFinishes.add(`${color1} & ${color2}`);
+            console.log(`✅ Found dual color: ${color1} & ${color2}`);
+          }
+        }
+      }
+    });
+    
+    // Convert Set to Array and add RAL if White exists
+    const finishArray = Array.from(foundFinishes);
+    if (foundFinishes.has("White")) {
+      finishArray.push("RAL");
+    }
+    
+    console.log(`🔍 Final available finishes:`, finishArray);
+    return finishArray;
+  }
+  
+  // Helper function to convert color codes to names
+  function getColorNameFromCode(code) {
+    const colorMap = {
+      "WH": "White",
+      "BK": "Black", 
+      "GR": "Grey",
+      "SR": "Silver",
+      "GD": "Gold",
+      "CH": "Chrome",
+      "BR": "Brown",
+      "BZ": "Bronze"
+    };
+    return colorMap[code] || null;
+  }
+  
+  // Helper function to extract finish from filename
+  function getFinishFromFilename(filename) {
+    console.log(`🔍 Extracting finish from filename: ${filename}`);
+    
+    // Check for single color finishes
+    const singleColors = ["WH", "BK", "GR", "SR", "GD", "CH", "BR", "BZ"];
+    for (let colorCode of singleColors) {
+      if (filename.includes(`-${colorCode}.png`)) {
+        const colorName = getColorNameFromCode(colorCode);
+        console.log(`✅ Found single color finish: ${colorName}`);
+        return colorName;
+      }
+    }
+    
+    // Check for dual color finishes
+    const dualPattern = /-([A-Z]{2})-([A-Z]{2})\.png/;
+    const dualMatch = filename.match(dualPattern);
+    if (dualMatch) {
+      const color1 = getColorNameFromCode(dualMatch[1]);
+      const color2 = getColorNameFromCode(dualMatch[2]);
+      if (color1 && color2) {
+        const dualFinish = `${color1} & ${color2}`;
+        console.log(`✅ Found dual color finish: ${dualFinish}`);
+        return dualFinish;
+      }
+    }
+    
+    // Check for default image (no color code)
+    if (filename.includes('.png') && !filename.includes('-WH') && !filename.includes('-BK') && !filename.includes('-GR')) {
+      console.log(`✅ Found default image, assuming White finish`);
+      return "White"; // Default to White for images without color code
+    }
+    
+    console.log(`⚠️ Could not determine finish from filename: ${filename}`);
+    return null;
   }
   
   // Update main image and lightbox for selected finish
@@ -901,6 +979,9 @@ document.addEventListener("DOMContentLoaded", function () {
           // NEW: Add image switching for finish dropdown
           if (type === "finish") {
             updateMainImageForFinish(value);
+            // Ensure the finish selection is properly stored
+            window.currentSelection.finish = value;
+            console.log(`✅ Finish selection updated: ${value}`);
           }
 
         } 
@@ -4857,6 +4938,24 @@ if (typeof Webflow !== 'undefined') {
           setTimeout(() => {
             mainImage.style.transform = 'scale(1)';
           }, 50);
+          
+          // Update finish selection based on thumbnail image
+          const filename = newImg.split('/').pop().split('?')[0];
+          const finishFromThumbnail = getFinishFromFilename(filename);
+          if (finishFromThumbnail) {
+            // Update the finish dropdown selection
+            const finishDropdown = document.querySelector('.dropdown-wrapper[data-type="finish"]');
+            if (finishDropdown) {
+              const selectedValue = finishDropdown.querySelector('.selected-value');
+              if (selectedValue) {
+                selectedValue.textContent = finishFromThumbnail;
+                window.currentSelection.finish = finishFromThumbnail;
+                console.log(`✅ Finish selection updated from thumbnail: ${finishFromThumbnail}`);
+                // Trigger ordering code update
+                updateOrderingCode();
+              }
+            }
+          }
           
           console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
         } else {
