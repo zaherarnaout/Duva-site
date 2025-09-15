@@ -524,8 +524,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainImage = getMainImageElement();
     const lightboxImage = document.querySelector('.first-gallery-image img');
     
+    console.log(`🔄 updateMainImageForFinish called with finish: ${finish}`);
+    console.log(`🔍 Product code: ${productCode}`);
+    console.log(`🔍 Main image element:`, mainImage);
+    console.log(`🔍 Lightbox image element:`, lightboxImage);
+    
     if (!mainImage || !productCode) {
       console.log('⚠️ Main image or product code not found');
+      console.log(`🔍 Main image found: ${!!mainImage}`);
+      console.log(`🔍 Product code found: ${!!productCode}`);
       return;
     }
     
@@ -996,10 +1003,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // NEW: Add image switching for finish dropdown
           if (type === "finish") {
+            console.log(`🔄 Finish dropdown changed to: ${value}`);
             updateMainImageForFinish(value);
             // Ensure the finish selection is properly stored
             window.currentSelection.finish = value;
             console.log(`✅ Finish selection updated: ${value}`);
+            
+            // Update the ordering code
+            if (typeof updateOrderingCode === 'function') {
+              updateOrderingCode();
+              console.log(`✅ Ordering code updated for finish: ${value}`);
+            }
           }
 
         } 
@@ -1269,13 +1283,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
   if (mainImage && firstGalleryItem) { 
+    console.log('🎯 Setting up lightbox trigger for main image');
+    console.log('🎯 Main image element:', mainImage);
+    console.log('🎯 First gallery item:', firstGalleryItem);
 
-    mainImage.addEventListener("click", () => { 
-
+    mainImage.addEventListener("click", (e) => { 
+      console.log('🖼️ Main image clicked - triggering lightbox');
+      console.log('🎯 TEST: Main image clicked!');
+      console.log('🎯 Event target:', e.target);
+      console.log('🎯 Event type:', e.type);
+      
+      // Prevent default behavior
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Trigger the lightbox
       firstGalleryItem.click(); 
 
     }); 
 
+  } else {
+    console.log('⚠️ Lightbox setup failed - missing elements');
+    console.log('🔍 Main image found:', !!mainImage);
+    console.log('🔍 First gallery item found:', !!firstGalleryItem);
   } 
 
  
@@ -4967,10 +4997,16 @@ if (typeof Webflow !== 'undefined') {
               const selectedValue = finishDropdown.querySelector('.selected-value');
               if (selectedValue) {
                 selectedValue.textContent = finishFromThumbnail;
+                
+                // Update the global finish selection
+                window.currentSelection = window.currentSelection || {};
                 window.currentSelection.finish = finishFromThumbnail;
+                
+                // Update the ordering code
+                if (typeof updateOrderingCode === 'function') {
+                  updateOrderingCode();
+                }
                 console.log(`✅ Finish selection updated from thumbnail: ${finishFromThumbnail}`);
-                // Trigger ordering code update
-                updateOrderingCode();
               }
             }
           }
