@@ -337,6 +337,41 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${productCode}-${colorMap[finish]}.png`;
   }
   
+  // Get the correct image URL from existing thumbnails or construct CDN URL
+  function getImageUrl(productCode, finish) {
+    // First, try to find the image in existing thumbnails
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    const targetFilename = buildImageFilename(productCode, finish);
+    
+    for (let thumb of thumbnails) {
+      const thumbSrc = thumb.src || thumb.getAttribute('src');
+      if (thumbSrc && thumbSrc.includes(targetFilename)) {
+        console.log(`🔍 Found existing thumbnail for ${finish}: ${thumbSrc}`);
+        return thumbSrc;
+      }
+    }
+    
+    // If not found in thumbnails, try to construct from existing main image URL
+    const mainImage = document.getElementById('main-lightbox-trigger');
+    if (mainImage && mainImage.src) {
+      const currentUrl = mainImage.src;
+      // Extract the base CDN URL and construct new filename
+      const urlParts = currentUrl.split('/');
+      const filename = urlParts[urlParts.length - 1].split('?')[0]; // Remove timestamp
+      const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+      
+      // Replace the filename with the new one
+      const newFilename = buildImageFilename(productCode, finish);
+      const newUrl = baseUrl + newFilename;
+      
+      console.log(`🔍 Constructed CDN URL for ${finish}: ${newUrl}`);
+      return newUrl;
+    }
+    
+    // Fallback to local path (for development)
+    return `images/${buildImageFilename(productCode, finish)}`;
+  }
+  
   // Get available finishes for current product
   function getAvailableFinishes(productCode) {
     const availableFinishes = [];
@@ -344,10 +379,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // All available single colors
     const singleColors = ["White", "Black", "Grey", "Silver", "Gold", "Chrome", "Brown", "Bronze"];
     
-    // Check single color images
+    // Check single color images by looking at existing thumbnails
     singleColors.forEach(color => {
-      const filename = buildImageFilename(productCode, color);
-      if (imageExists(filename)) {
+      const imageUrl = getImageUrl(productCode, color);
+      // Check if this image exists in thumbnails or can be constructed
+      if (imageUrl && !imageUrl.includes('images/')) { // CDN URL means it exists
         availableFinishes.push(color);
       }
     });
@@ -371,14 +407,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
     
     dualColorCombinations.forEach(combo => {
-      const filename = buildImageFilename(productCode, combo);
-      if (imageExists(filename)) {
+      const imageUrl = getImageUrl(productCode, combo);
+      if (imageUrl && !imageUrl.includes('images/')) { // CDN URL means it exists
         availableFinishes.push(combo);
       }
     });
     
     // Always add RAL if White image exists
-    if (imageExists(`${productCode}-WH.png`)) {
+    const whiteImageUrl = getImageUrl(productCode, "White");
+    if (whiteImageUrl && !whiteImageUrl.includes('images/')) {
       availableFinishes.push("RAL");
     }
     
@@ -396,19 +433,19 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     
-    // Build image filename based on finish
-    const imageFilename = buildImageFilename(productCode, finish);
-    const imagePath = `images/${imageFilename}`;
+    // Get the correct image URL (CDN or local)
+    const imageUrl = getImageUrl(productCode, finish);
     
-    console.log(`🔄 Updating main image to: ${imageFilename}`);
+    console.log(`🔄 Updating main image to: ${finish}`);
     console.log(`🔍 Current main image src: ${mainImage.src}`);
+    console.log(`🔍 Target image URL: ${imageUrl}`);
     
     // Force image reload by adding timestamp to prevent caching
     const timestamp = new Date().getTime();
-    const imagePathWithCache = `${imagePath}?t=${timestamp}`;
+    const imageUrlWithCache = `${imageUrl}?t=${timestamp}`;
     
     // Check if image exists before updating
-    loadImageWithFallback(imagePathWithCache, (success, path) => {
+    loadImageWithFallback(imageUrlWithCache, (success, path) => {
       if (success) {
         // Update main image with cache busting
         mainImage.src = path;
@@ -426,8 +463,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Update lightbox image
     if (lightboxImage) {
-      lightboxImage.src = imagePathWithCache;
-      console.log(`✅ Lightbox image updated to: ${imageFilename}`);
+      lightboxImage.src = imageUrlWithCache;
+      console.log(`✅ Lightbox image updated to: ${finish}`);
     }
     
     // Update lightbox JSON data if it exists
@@ -436,9 +473,9 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const lightboxData = JSON.parse(lightboxScript.textContent);
         if (lightboxData.items && lightboxData.items.length > 0) {
-          lightboxData.items[0].url = imagePathWithCache;
+          lightboxData.items[0].url = imageUrlWithCache;
           lightboxScript.textContent = JSON.stringify(lightboxData);
-          console.log(`✅ Lightbox JSON updated with: ${imageFilename}`);
+          console.log(`✅ Lightbox JSON updated with: ${finish}`);
         }
       } catch (e) {
         console.log('⚠️ Could not update lightbox JSON:', e);
