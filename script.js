@@ -4547,32 +4547,58 @@ if (typeof Webflow !== 'undefined') {
       return;
     }
 
+    console.log(`🔍 Found ${thumbnails.length} thumbnails and main image:`, mainImage);
+
     thumbnails.forEach((thumb, index) => {
       // Remove existing listeners to prevent duplicates
       const newThumb = thumb.cloneNode(true);
       thumb.parentNode.replaceChild(newThumb, thumb);
       
+      // Log thumbnail details for debugging
+      console.log(`🔍 Thumbnail ${index + 1}:`, {
+        src: newThumb.src,
+        dataImage: newThumb.getAttribute('data-image'),
+        classes: newThumb.className
+      });
+      
       newThumb.addEventListener('click', function () {
+        console.log(`🖱️ Thumbnail ${index + 1} clicked`);
+        
         // Get fresh reference to all thumbnails after DOM changes
         const allThumbnails = document.querySelectorAll('.thumbnail-image');
         
         // Remove active class from all thumbnails
-        allThumbnails.forEach(t => t.classList.remove('is-active'));
+        allThumbnails.forEach(t => t.classList.remove('is-active', 'thumbnail-image-is-active'));
         
         // Add active class to clicked thumbnail
-        this.classList.add('is-active');
+        this.classList.add('is-active', 'thumbnail-image-is-active');
         
-        // Update main image
-        const newImg = this.getAttribute('data-image') || this.getAttribute('src');
-        if (newImg) {
+        // Update main image - try multiple sources for the image URL
+        let newImg = this.getAttribute('data-image') || 
+                    this.getAttribute('src') || 
+                    this.src;
+        
+        console.log(`🔍 Attempting to update main image with: ${newImg}`);
+        
+        // If it's a placeholder, don't update the main image
+        if (newImg && !newImg.includes('placeholder.60f9b1840c.svg')) {
           if (mainImage.tagName === 'IMG') {
             mainImage.src = newImg;
+            console.log(`✅ Main image src updated to: ${newImg}`);
           } else {
             mainImage.setAttribute('href', newImg);
+            console.log(`✅ Main image href updated to: ${newImg}`);
           }
-          console.log(`✅ Thumbnail ${index + 1} clicked - main image updated`);
+          console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
+        } else {
+          console.log(`⚠️ Thumbnail ${index + 1} clicked but no valid image found (placeholder detected: ${newImg})`);
+          // For testing purposes, you could add a test image here
+          // mainImage.src = 'images/test-image.jpg';
         }
       });
+      
+      // Add cursor pointer for better UX
+      newThumb.style.cursor = 'pointer';
     });
     
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
