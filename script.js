@@ -278,7 +278,176 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
 
-  const ralInput = document.querySelector("#ral-input"); 
+  const ralInput = document.querySelector("#ral-input");
+
+  // === Dynamic Finish Dropdown & Image Switching ===
+  
+  // Get current product code from CMS
+  function getCurrentProductCode() {
+    const productCodeElement = document.querySelector('.product-code-heading');
+    return productCodeElement ? productCodeElement.textContent.trim() : 'C327';
+  }
+  
+  // Check if image exists (simple check - you can enhance this)
+  function imageExists(filename) {
+    // For now, we'll assume images exist if they follow the naming convention
+    // You can enhance this with actual image loading checks if needed
+    return true;
+  }
+  
+  // Build image filename based on product code and finish
+  function buildImageFilename(productCode, finish) {
+    const colorMap = {
+      "White": "WH",
+      "Black": "BK", 
+      "Grey": "GR",
+      "Silver": "SR",
+      "Gold": "GD",
+      "Chrome": "CH",
+      "Brown": "BR",
+      "Bronze": "BZ",
+      "RAL": "WH" // RAL uses White as base
+    };
+    
+    if (finish === "RAL") {
+      return `${productCode}-WH.png`; // RAL uses White image
+    }
+    
+    // Check for dual color finishes
+    if (finish.includes(" & ")) {
+      const [color1, color2] = finish.split(" & ");
+      return `${productCode}-${colorMap[color1]}-${colorMap[color2]}.png`;
+    }
+    
+    // Single color finish
+    return `${productCode}-${colorMap[finish]}.png`;
+  }
+  
+  // Get available finishes for current product
+  function getAvailableFinishes(productCode) {
+    const availableFinishes = [];
+    
+    // All available single colors
+    const singleColors = ["White", "Black", "Grey", "Silver", "Gold", "Chrome", "Brown", "Bronze"];
+    
+    // Check single color images
+    singleColors.forEach(color => {
+      const filename = buildImageFilename(productCode, color);
+      if (imageExists(filename)) {
+        availableFinishes.push(color);
+      }
+    });
+    
+    // Check dual color images (common combinations)
+    const dualColorCombinations = [
+      "White & Black", "Black & White",
+      "Grey & Black", "Black & Grey",
+      "White & Grey", "Grey & White",
+      "White & Silver", "Silver & White",
+      "Black & Silver", "Silver & Black",
+      "Grey & Silver", "Silver & Grey",
+      "White & Gold", "Gold & White",
+      "Black & Gold", "Gold & Black",
+      "White & Chrome", "Chrome & White",
+      "Black & Chrome", "Chrome & Black",
+      "White & Brown", "Brown & White",
+      "Black & Brown", "Brown & Black",
+      "White & Bronze", "Bronze & White",
+      "Black & Bronze", "Bronze & Black"
+    ];
+    
+    dualColorCombinations.forEach(combo => {
+      const filename = buildImageFilename(productCode, combo);
+      if (imageExists(filename)) {
+        availableFinishes.push(combo);
+      }
+    });
+    
+    // Always add RAL if White image exists
+    if (imageExists(`${productCode}-WH.png`)) {
+      availableFinishes.push("RAL");
+    }
+    
+    return availableFinishes;
+  }
+  
+  // Update main image and lightbox for selected finish
+  function updateMainImageForFinish(finish) {
+    const productCode = getCurrentProductCode();
+    const mainImage = document.getElementById('main-lightbox-trigger');
+    const lightboxImage = document.querySelector('.first-gallery-image img');
+    
+    if (!mainImage || !productCode) {
+      console.log('⚠️ Main image or product code not found');
+      return;
+    }
+    
+    // Build image filename based on finish
+    const imageFilename = buildImageFilename(productCode, finish);
+    const imagePath = `images/${imageFilename}`;
+    
+    console.log(`🔄 Updating main image to: ${imageFilename}`);
+    
+    // Update main image
+    mainImage.src = imagePath;
+    
+    // Update lightbox image
+    if (lightboxImage) {
+      lightboxImage.src = imagePath;
+      console.log(`✅ Lightbox image updated to: ${imageFilename}`);
+    }
+    
+    // Update lightbox JSON data if it exists
+    const lightboxScript = document.querySelector('.first-gallery-image script.w-json');
+    if (lightboxScript) {
+      try {
+        const lightboxData = JSON.parse(lightboxScript.textContent);
+        if (lightboxData.items && lightboxData.items.length > 0) {
+          lightboxData.items[0].url = imagePath;
+          lightboxScript.textContent = JSON.stringify(lightboxData);
+          console.log(`✅ Lightbox JSON updated with: ${imageFilename}`);
+        }
+      } catch (e) {
+        console.log('⚠️ Could not update lightbox JSON:', e);
+      }
+    }
+    
+    console.log(`✅ Main image updated to: ${imageFilename}`);
+  }
+  
+  // Initialize dynamic finish dropdown
+  function initializeDynamicFinishDropdown() {
+    const finishDropdown = document.querySelector('.dropdown-wrapper[data-type="finish"]');
+    if (!finishDropdown) {
+      console.log('⚠️ Finish dropdown not found');
+      return;
+    }
+    
+    const productCode = getCurrentProductCode();
+    const availableFinishes = getAvailableFinishes(productCode);
+    
+    console.log(`🔍 Product: ${productCode}, Available finishes:`, availableFinishes);
+    
+    if (availableFinishes.length === 0) {
+      console.log('⚠️ No finish images found for product:', productCode);
+      return;
+    }
+    
+    // Update dropdown source with available finishes
+    const source = finishDropdown.querySelector('.dropdown-source');
+    if (source) {
+      source.textContent = availableFinishes.join(', ');
+      console.log(`✅ Updated finish dropdown with: ${availableFinishes.join(', ')}`);
+    }
+    
+    // Set default selection to first available finish
+    const selected = finishDropdown.querySelector('.selected-value');
+    if (selected && availableFinishes.length > 0) {
+      selected.textContent = availableFinishes[0];
+      window.currentSelection.finish = availableFinishes[0];
+      console.log(`✅ Set default finish to: ${availableFinishes[0]}`);
+    }
+  } 
 
  
 
@@ -437,6 +606,9 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
   // === Dropdown Setup & Interactions === 
+
+  // Initialize dynamic finish dropdown first
+  initializeDynamicFinishDropdown();
 
   dropdowns.forEach(dropdown => { 
 
@@ -649,6 +821,11 @@ document.addEventListener("DOMContentLoaded", function () {
             window.currentSelection[type] = value; 
 
           } 
+
+          // NEW: Add image switching for finish dropdown
+          if (type === "finish") {
+            updateMainImageForFinish(value);
+          }
 
         } 
 
@@ -4673,6 +4850,11 @@ if (typeof Webflow !== 'undefined') {
   fixThumbnailFunctionality();
   fixDownloadPanelCheckboxes();
   fixCategoryCardsNavigation();
+  
+  // Initialize dynamic finish dropdown
+  if (typeof initializeDynamicFinishDropdown === 'function') {
+    initializeDynamicFinishDropdown();
+  }
 
   // Re-run fixes after a delay to catch late-loading content
   setTimeout(() => {
