@@ -5295,16 +5295,25 @@ if (typeof Webflow !== 'undefined') {
                   // Force visual update with cache busting
                   const timestamp = new Date().getTime();
                   
-                  // CRITICAL: Force browser to reload the image
-                  visibleMainImage.style.display = 'none';
-                  visibleMainImage.src = `${newImg}?t=${timestamp}`;
+                  // CRITICAL: Force browser to reload the image without jumping
+                  const parentContainer = visibleMainImage.closest('.lightbox-trigger');
                   
-                  // Force reflow and show
-                  visibleMainImage.offsetHeight; // Force reflow
-                  visibleMainImage.style.display = '';
+                  // Smooth transition without display none/block
+                  visibleMainImage.style.opacity = '0.7';
+                  visibleMainImage.src = `${newImg}?t=${timestamp}`;
                   
                   // Remove srcset to prevent browser from using cached versions
                   visibleMainImage.removeAttribute('srcset');
+                  
+                  // Wait for image to load then fade back in
+                  visibleMainImage.onload = () => {
+                    visibleMainImage.style.opacity = '1';
+                  };
+                  
+                  // Fallback if onload doesn't fire
+                  setTimeout(() => {
+                    visibleMainImage.style.opacity = '1';
+                  }, 100);
                   
                   console.log(`✅ Visible main image src updated to: ${newImg}?t=${timestamp}`);
                   
