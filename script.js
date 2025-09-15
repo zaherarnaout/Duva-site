@@ -5136,6 +5136,13 @@ if (typeof Webflow !== 'undefined') {
     }
 
     console.log(`🔍 Found ${thumbnails.length} thumbnails and main image`);
+    console.log('🔍 Main image element details:', {
+      tagName: mainImage.tagName,
+      id: mainImage.id,
+      className: mainImage.className,
+      currentSrc: mainImage.src || mainImage.getAttribute('src'),
+      currentHref: mainImage.getAttribute('href')
+    });
 
     thumbnails.forEach((thumb, index) => {
       // Remove existing listeners to prevent duplicates
@@ -5166,6 +5173,18 @@ if (typeof Webflow !== 'undefined') {
           if (mainImage.tagName === 'IMG') {
             mainImage.src = newImg;
             console.log(`✅ Main image src updated to: ${newImg}`);
+            
+            // Force visual update with cache busting
+            const timestamp = new Date().getTime();
+            mainImage.src = `${newImg}?t=${timestamp}`;
+            console.log(`🔄 Forced image reload with cache busting: ${newImg}?t=${timestamp}`);
+            
+            // Add visual feedback
+            mainImage.style.opacity = '0.8';
+            setTimeout(() => {
+              mainImage.style.opacity = '1';
+            }, 100);
+            
           } else {
             mainImage.setAttribute('href', newImg);
             console.log(`✅ Main image href updated to: ${newImg}`);
