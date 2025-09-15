@@ -5161,8 +5161,8 @@ if (typeof Webflow !== 'undefined') {
         
         console.log(`🔍 Attempting to update main image with: ${newImg}`);
         
-        // If it's a placeholder, don't update the main image
-        if (newImg && !newImg.includes('placeholder.60f9b1840c.svg')) {
+        // Update main image if we have a valid image URL
+        if (newImg) {
           if (mainImage.tagName === 'IMG') {
             mainImage.src = newImg;
             console.log(`✅ Main image src updated to: ${newImg}`);
@@ -5172,7 +5172,7 @@ if (typeof Webflow !== 'undefined') {
           }
           console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
         } else {
-          console.log(`⚠️ Thumbnail ${index + 1} clicked but no valid image found (placeholder detected: ${newImg})`);
+          console.log(`⚠️ Thumbnail ${index + 1} clicked but no image URL found`);
         }
       });
       
@@ -5181,6 +5181,77 @@ if (typeof Webflow !== 'undefined') {
     });
     
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
+  }
+
+  // 5. FIX DROPDOWN FUNCTIONALITY (Simple Working Approach)
+  function fixDropdownFunctionality() {
+    console.log('📋 Fixing dropdown functionality...');
+    
+    const dropdowns = document.querySelectorAll('.dropdown-wrapper');
+    console.log(`🔍 Found ${dropdowns.length} dropdowns`);
+    
+    dropdowns.forEach(dropdown => {
+      const type = dropdown.getAttribute('data-type');
+      const field = dropdown.querySelector('.dropdown-field');
+      const selected = dropdown.querySelector('.selected-value');
+      const arrow = dropdown.querySelector('.dropdown-arrow');
+      
+      if (!field || !selected) {
+        console.log(`⚠️ Dropdown ${type} missing field or selected element`);
+        return;
+      }
+      
+      console.log(`🔧 Setting up dropdown: ${type}`);
+      
+      const toggleDropdown = (e) => {
+        e.stopPropagation();
+        console.log(`📋 Toggling dropdown: ${type}`);
+        
+        // Close all other dropdowns
+        document.querySelectorAll('.dropdown-wrapper').forEach(d => {
+          if (d !== dropdown) {
+            d.classList.remove('open');
+          }
+        });
+        
+        // Toggle current dropdown
+        dropdown.classList.toggle('open');
+        console.log(`📋 Dropdown ${type} is now ${dropdown.classList.contains('open') ? 'open' : 'closed'}`);
+      };
+      
+      // Add click handlers
+      if (arrow) {
+        arrow.addEventListener('click', toggleDropdown);
+      }
+      field.addEventListener('click', toggleDropdown);
+      
+      // Handle option clicks
+      const options = dropdown.querySelectorAll('.dropdown-option');
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.textContent.trim();
+          
+          console.log(`📋 Dropdown ${type} option clicked: ${value}`);
+          
+          // Update selected value
+          selected.textContent = value;
+          dropdown.classList.remove('open');
+          
+          // Update ordering code for finish dropdown
+          if (type === 'finish') {
+            console.log(`🔄 Finish changed to: ${value}`);
+            if (typeof updateOrderingCode === 'function') {
+              updateOrderingCode();
+            }
+          }
+          
+          console.log(`✅ Dropdown ${type} updated to: ${value}`);
+        });
+      });
+    });
+    
+    console.log('✅ Dropdown functionality restored');
   }
 
   // 5. FIX DOWNLOAD PANEL CHECKBOXES
@@ -5255,6 +5326,8 @@ if (typeof Webflow !== 'undefined') {
   console.log('🔧 Lightbox navigation fixed');
   fixThumbnailFunctionality();
   console.log('🔧 Thumbnail functionality fixed');
+  fixDropdownFunctionality();
+  console.log('🔧 Dropdown functionality fixed');
   fixDownloadPanelCheckboxes();
   console.log('🔧 Download panel checkboxes fixed');
   fixCategoryCardsNavigation();
@@ -5271,6 +5344,7 @@ if (typeof Webflow !== 'undefined') {
     fixAccessoriesSection();
     fixLightboxNavigation();
     fixThumbnailFunctionality();
+    fixDropdownFunctionality();
     fixDownloadPanelCheckboxes();
     fixCategoryCardsNavigation();
   }, 2000);
