@@ -5123,12 +5123,50 @@ if (typeof Webflow !== 'undefined') {
     }, 1000);
   }
 
-  // 4. FIX THUMBNAIL FUNCTIONALITY (Simple Working Approach)
+  // 4. FIX THUMBNAIL FUNCTIONALITY (Webflow CMS Compatible)
   function fixThumbnailFunctionality() {
     console.log('🖼️ Fixing thumbnail functionality...');
     
-    // Try multiple selectors to find the main image
+    // Wait for Webflow CMS to load images
+    const waitForWebflowImages = () => {
+      const mainImg = document.querySelector('#main-lightbox-trigger');
+      const thumbnails = document.querySelectorAll('.product-thumbnails-wrapper .w-dyn-item img');
+      
+      // Check if images are still placeholders
+      const isPlaceholder = (img) => {
+        return img.src.includes('placeholder.60f9b1840c.svg') || 
+               img.classList.contains('w-dyn-bind-empty') ||
+               img.src === '';
+      };
+      
+      if (mainImg && isPlaceholder(mainImg)) {
+        console.log('⏳ Waiting for Webflow CMS to load main image...');
+        setTimeout(waitForWebflowImages, 500);
+        return;
+      }
+      
+      if (thumbnails.length === 0 || Array.from(thumbnails).every(isPlaceholder)) {
+        console.log('⏳ Waiting for Webflow CMS to load thumbnails...');
+        setTimeout(waitForWebflowImages, 500);
+        return;
+      }
+      
+      console.log('✅ Webflow CMS images loaded, proceeding with setup...');
+      setupThumbnailFunctionality();
+    };
+    
+    const setupThumbnailFunctionality = () => {
+    
+    // Try multiple selectors to find the main image - WEBFLOW STRUCTURE
     let mainImage = document.getElementById('main-lightbox-trigger');
+    if (!mainImage) {
+      mainImage = document.querySelector('.lightbox-trigger .w-dyn-item img');
+      console.log('🔍 Trying .lightbox-trigger .w-dyn-item img:', !!mainImage);
+    }
+    if (!mainImage) {
+      mainImage = document.querySelector('.product-visuals .w-dyn-item img');
+      console.log('🔍 Trying .product-visuals .w-dyn-item img:', !!mainImage);
+    }
     if (!mainImage) {
       mainImage = document.querySelector('.product-image.main-product-image');
       console.log('🔍 Trying .product-image.main-product-image:', !!mainImage);
@@ -5136,10 +5174,6 @@ if (typeof Webflow !== 'undefined') {
     if (!mainImage) {
       mainImage = document.querySelector('.product-image');
       console.log('🔍 Trying .product-image:', !!mainImage);
-    }
-    if (!mainImage) {
-      mainImage = document.querySelector('img[class*="product-image"]');
-      console.log('🔍 Trying img[class*="product-image"]:', !!mainImage);
     }
     
     // CRITICAL FIX: Handle duplicate IDs by updating ALL elements with main-lightbox-trigger
@@ -5191,7 +5225,8 @@ if (typeof Webflow !== 'undefined') {
       });
     }
     
-    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    // WEBFLOW STRUCTURE: Target thumbnails correctly
+    const thumbnails = document.querySelectorAll('.product-thumbnails-wrapper .w-dyn-item img, .thumbnail-image, .image-3.thumbnail-image');
     
     // Debug thumbnail selection
     console.log('🔍 Thumbnail selection debug:');
@@ -5259,16 +5294,25 @@ if (typeof Webflow !== 'undefined') {
                   
                   // Force visual update with cache busting
                   const timestamp = new Date().getTime();
+                  
+                  // CRITICAL: Force browser to reload the image
+                  visibleMainImage.style.display = 'none';
                   visibleMainImage.src = `${newImg}?t=${timestamp}`;
+                  
+                  // Force reflow and show
+                  visibleMainImage.offsetHeight; // Force reflow
+                  visibleMainImage.style.display = '';
+                  
+                  // Remove srcset to prevent browser from using cached versions
+                  visibleMainImage.removeAttribute('srcset');
+                  
                   console.log(`✅ Visible main image src updated to: ${newImg}?t=${timestamp}`);
                   
-                  // Add visual feedback
-                  visibleMainImage.style.opacity = '0.8';
-                  visibleMainImage.style.transform = 'scale(0.98)';
+                  // Add subtle visual feedback without flickering
+                  visibleMainImage.style.transition = 'all 0.2s ease';
                   setTimeout(() => {
-                    visibleMainImage.style.opacity = '1';
-                    visibleMainImage.style.transform = 'scale(1)';
-                  }, 150);
+                    visibleMainImage.style.transition = '';
+                  }, 200);
                   
                   // Also update lightbox images for consistency
                   const lightboxImages = document.querySelectorAll('.w-lightbox img');
@@ -5294,6 +5338,10 @@ if (typeof Webflow !== 'undefined') {
     });
     
     console.log(`✅ ${thumbnails.length} thumbnails restored`);
+    };
+    
+    // Start waiting for Webflow CMS images
+    waitForWebflowImages();
   }
 
   // 5. FIX DROPDOWN FUNCTIONALITY (Simple Working Approach)
