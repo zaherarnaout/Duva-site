@@ -3675,6 +3675,37 @@ img[class*="main-product"]:hover::before,
 .product-visuals img:hover::before {
   left: 100%;
 }
+
+/* CRITICAL FIX: Target the visible main image specifically */
+#main-lightbox-trigger {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+}
+
+#main-lightbox-trigger:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid #C0392B !important;
+}
+
+#main-lightbox-trigger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#main-lightbox-trigger:hover::before {
+  left: 100%;
+}
 /* Custom arrow and close button styling */
 .w-lightbox-left {
   background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef5902e311c1a22c5086_arrow-red-left-white.png') !important;
