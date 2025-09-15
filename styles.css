@@ -386,15 +386,38 @@ body.menu-open {
 }
 
 .thumbnail-image { 
+  border: 1px solid var(--border-divider-light); 
+  border-radius: 4px; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+  cursor: pointer; 
+}
 
-border: 1px solid var(--border-divider-light); 
+.thumbnail-image {
+  position: relative !important;
+  overflow: hidden !important;
+}
 
-border-radius: 4px; 
+.thumbnail-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.8s ease 0.3s;
+  z-index: 10 !important;
+  pointer-events: none;
+}
 
-transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+.thumbnail-image:hover {
+  border: 1px solid #C0392B !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
 
-cursor: pointer; 
-
+.thumbnail-image:hover::before {
+  left: 100%;
 } 
 
 
@@ -3681,11 +3704,8 @@ img[class*="main-product"]:hover::before,
   position: relative !important;
   overflow: hidden !important;
   cursor: pointer !important;
-  border: 2px solid transparent !important;
+  border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 
 .lightbox-trigger .w-dyn-item {
@@ -3693,9 +3713,6 @@ img[class*="main-product"]:hover::before,
   overflow: hidden !important;
   width: 100% !important;
   height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 
 .lightbox-trigger .w-dyn-item img,
@@ -3704,7 +3721,7 @@ img[class*="main-product"]:hover::before,
   position: relative !important;
   overflow: hidden !important;
   cursor: pointer !important;
-  border: 2px solid transparent !important;
+  border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
   display: block !important;
   max-width: 100% !important;
@@ -3718,7 +3735,7 @@ img[class*="main-product"]:hover::before,
 #main-lightbox-trigger:hover {
   transform: scale(1.02) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  border: 2px solid #C0392B !important;
+  border: 1px solid #C0392B !important;
 }
 
 .lightbox-trigger::before {
@@ -3728,8 +3745,8 @@ img[class*="main-product"]:hover::before,
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.8s ease 0.3s;
   z-index: 10 !important;
   pointer-events: none;
 }
@@ -3741,8 +3758,8 @@ img[class*="main-product"]:hover::before,
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.8s ease 0.3s;
   z-index: 10 !important;
   pointer-events: none;
 }
@@ -3754,8 +3771,8 @@ img[class*="main-product"]:hover::before,
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
+  transition: left 0.8s ease 0.3s;
   z-index: 10 !important;
   pointer-events: none;
 }
