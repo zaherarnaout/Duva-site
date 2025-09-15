@@ -3676,28 +3676,52 @@ img[class*="main-product"]:hover::before,
   left: 100%;
 }
 
-/* CRITICAL FIX: Target the visible main image specifically with maximum specificity */
-img#main-lightbox-trigger,
-#main-lightbox-trigger.product-image,
-#main-lightbox-trigger.main-product-image {
+/* WEBFLOW STRUCTURE: Target the actual main image container and image */
+.lightbox-trigger {
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  border: 2px solid transparent !important;
+  z-index: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.lightbox-trigger .w-dyn-item {
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.lightbox-trigger .w-dyn-item img,
+#main-lightbox-trigger {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   position: relative !important;
   overflow: hidden !important;
   cursor: pointer !important;
   border: 2px solid transparent !important;
+  z-index: 1 !important;
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
 }
 
-img#main-lightbox-trigger:hover,
-#main-lightbox-trigger.product-image:hover,
-#main-lightbox-trigger.main-product-image:hover {
+.lightbox-trigger:hover,
+.lightbox-trigger .w-dyn-item:hover,
+.lightbox-trigger .w-dyn-item img:hover,
+#main-lightbox-trigger:hover {
   transform: scale(1.02) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   border: 2px solid #C0392B !important;
 }
 
-img#main-lightbox-trigger::before,
-#main-lightbox-trigger.product-image::before,
-#main-lightbox-trigger.main-product-image::before {
+.lightbox-trigger::before {
   content: '';
   position: absolute;
   top: 0;
@@ -3706,13 +3730,40 @@ img#main-lightbox-trigger::before,
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
   transition: left 0.5s ease;
-  z-index: 1;
+  z-index: 10 !important;
   pointer-events: none;
 }
 
-img#main-lightbox-trigger:hover::before,
-#main-lightbox-trigger.product-image:hover::before,
-#main-lightbox-trigger.main-product-image:hover::before {
+.lightbox-trigger .w-dyn-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 10 !important;
+  pointer-events: none;
+}
+
+#main-lightbox-trigger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 10 !important;
+  pointer-events: none;
+}
+
+.lightbox-trigger:hover::before,
+.lightbox-trigger .w-dyn-item:hover::before,
+.lightbox-trigger .w-dyn-item img:hover::before,
+#main-lightbox-trigger:hover::before {
   left: 100%;
 }
 
@@ -3735,13 +3786,55 @@ img#main-lightbox-trigger:hover::before,
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
   transition: left 0.5s ease;
-  z-index: 1;
+  z-index: 10 !important;
   pointer-events: none;
 }
 
 .product-visuals #main-lightbox-trigger:hover::before,
 .product-visuals img#main-lightbox-trigger:hover::before {
   left: 100%;
+}
+
+/* ALTERNATIVE APPROACH: Use ::after for overlay effect */
+img#main-lightbox-trigger::after,
+#main-lightbox-trigger.product-image::after,
+#main-lightbox-trigger.main-product-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5 !important;
+  pointer-events: none;
+}
+
+img#main-lightbox-trigger:hover::after,
+#main-lightbox-trigger.product-image:hover::after,
+#main-lightbox-trigger.main-product-image:hover::after {
+  opacity: 1;
+}
+
+/* FORCE HOVER EFFECTS TO STAY VISIBLE */
+.product-visuals img#main-lightbox-trigger:hover,
+.product-visuals #main-lightbox-trigger:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid #C0392B !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.product-visuals img#main-lightbox-trigger:hover::before,
+.product-visuals #main-lightbox-trigger:hover::before {
+  left: 100% !important;
+}
+
+.product-visuals img#main-lightbox-trigger:hover::after,
+.product-visuals #main-lightbox-trigger:hover::after {
+  opacity: 1 !important;
 }
 /* Custom arrow and close button styling */
 .w-lightbox-left {
