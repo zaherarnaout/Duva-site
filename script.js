@@ -290,20 +290,34 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Get the main image element (now from collection)
   function getMainImageElement() {
+    console.log('🔍 getMainImageElement called');
+    
     // Try to find the main image in the collection structure
     const mainImage = document.querySelector('.product-image.main-product-image');
+    console.log('🔍 Found .product-image.main-product-image:', !!mainImage);
     if (mainImage) {
+      console.log('✅ Returning .product-image.main-product-image');
       return mainImage;
     }
     
     // Fallback to the lightbox trigger
     const lightboxTrigger = document.getElementById('main-lightbox-trigger');
+    console.log('🔍 Found #main-lightbox-trigger:', !!lightboxTrigger);
     if (lightboxTrigger) {
+      console.log('✅ Returning #main-lightbox-trigger');
       return lightboxTrigger;
     }
     
     // Last resort - find any product image
-    return document.querySelector('.product-image');
+    const anyProductImage = document.querySelector('.product-image');
+    console.log('🔍 Found any .product-image:', !!anyProductImage);
+    if (anyProductImage) {
+      console.log('✅ Returning any .product-image');
+      return anyProductImage;
+    }
+    
+    console.log('❌ No main image element found');
+    return null;
   }
   
   // Check if image exists (enhanced with actual image loading check)
@@ -1004,7 +1018,15 @@ document.addEventListener("DOMContentLoaded", function () {
           // NEW: Add image switching for finish dropdown
           if (type === "finish") {
             console.log(`🔄 Finish dropdown changed to: ${value}`);
-            updateMainImageForFinish(value);
+            console.log(`🔍 updateMainImageForFinish function exists: ${typeof updateMainImageForFinish === 'function'}`);
+            console.log(`🔍 updateOrderingCode function exists: ${typeof updateOrderingCode === 'function'}`);
+            
+            if (typeof updateMainImageForFinish === 'function') {
+              updateMainImageForFinish(value);
+            } else {
+              console.log('❌ updateMainImageForFinish function not found');
+            }
+            
             // Ensure the finish selection is properly stored
             window.currentSelection.finish = value;
             console.log(`✅ Finish selection updated: ${value}`);
@@ -1013,6 +1035,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (typeof updateOrderingCode === 'function') {
               updateOrderingCode();
               console.log(`✅ Ordering code updated for finish: ${value}`);
+            } else {
+              console.log('❌ updateOrderingCode function not found');
             }
           }
 
@@ -1279,34 +1303,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* === Trigger Hidden Webflow Lightbox Gallery === */ 
 
-  const mainImage = getMainImageElement();
-  const firstGalleryItem = document.querySelector(".first-gallery-image"); 
+  // Wait for DOM to be fully loaded
+  setTimeout(() => {
+    const mainImage = getMainImageElement();
+    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
-  if (mainImage && firstGalleryItem) { 
-    console.log('🎯 Setting up lightbox trigger for main image');
-    console.log('🎯 Main image element:', mainImage);
-    console.log('🎯 First gallery item:', firstGalleryItem);
-
-    mainImage.addEventListener("click", (e) => { 
-      console.log('🖼️ Main image clicked - triggering lightbox');
-      console.log('🎯 TEST: Main image clicked!');
-      console.log('🎯 Event target:', e.target);
-      console.log('🎯 Event type:', e.type);
-      
-      // Prevent default behavior
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Trigger the lightbox
-      firstGalleryItem.click(); 
-
-    }); 
-
-  } else {
-    console.log('⚠️ Lightbox setup failed - missing elements');
+    console.log('🔍 LIGHTBOX SETUP - Checking elements...');
     console.log('🔍 Main image found:', !!mainImage);
     console.log('🔍 First gallery item found:', !!firstGalleryItem);
-  } 
+    
+    if (mainImage) {
+      console.log('🔍 Main image element:', mainImage);
+      console.log('🔍 Main image classes:', mainImage.className);
+      console.log('🔍 Main image ID:', mainImage.id);
+    }
+    
+    if (firstGalleryItem) {
+      console.log('🔍 First gallery item element:', firstGalleryItem);
+      console.log('🔍 First gallery item classes:', firstGalleryItem.className);
+    }
+
+    if (mainImage && firstGalleryItem) { 
+      console.log('✅ Setting up lightbox trigger for main image');
+
+      // Remove any existing click handlers
+      const newMainImage = mainImage.cloneNode(true);
+      mainImage.parentNode.replaceChild(newMainImage, mainImage);
+
+      newMainImage.addEventListener("click", (e) => { 
+        console.log('🖼️ Main image clicked - triggering lightbox');
+        console.log('🎯 TEST: Main image clicked!');
+        console.log('🎯 Event target:', e.target);
+        console.log('🎯 Event type:', e.type);
+        
+        // Prevent default behavior
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Trigger the lightbox
+        console.log('🎯 Triggering firstGalleryItem.click()');
+        firstGalleryItem.click(); 
+
+      }); 
+      
+      console.log('✅ Lightbox click handler added successfully');
+
+    } else {
+      console.log('❌ Lightbox setup failed - missing elements');
+      console.log('🔍 Main image found:', !!mainImage);
+      console.log('🔍 First gallery item found:', !!firstGalleryItem);
+    }
+  }, 1000); 
 
  
 
