@@ -356,6 +356,35 @@ body.menu-open {
 
 /* === 2. Thumbnail Image Hover and Active Styling === */ 
 
+/* === Product Thumbnails Wrapper === */
+.product-thumbnails-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 16px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #C0392B transparent;
+}
+
+.product-thumbnails-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.product-thumbnails-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.product-thumbnails-wrapper::-webkit-scrollbar-thumb {
+  background: #C0392B;
+  border-radius: 3px;
+}
+
+.product-thumbnails-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #A0312A;
+}
+
 .thumbnail-image { 
 
 border: 1px solid var(--border-divider-light); 
@@ -2826,6 +2855,11 @@ opacity: 1 !important;
 }
 
 @media screen and (max-width: 991px) {
+  .product-thumbnails-wrapper {
+    gap: 8px;
+    padding: 12px 0;
+  }
+  
   .image-3.thumbnail-image {
     width: 60px;
     height: auto;
