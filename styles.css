@@ -3587,18 +3587,93 @@ opacity: 1 !important;
 }
 
 /* === Enhanced Lightbox Gallery Styling === */
-/* Make main image clickable for lightbox */
+/* Make main image clickable for lightbox - Multiple selectors to catch all variations */
 .product-image.main-product-image,
-#main-lightbox-trigger {
+#main-lightbox-trigger,
+img[class*="product-image"],
+img[id*="main"],
+img[class*="main-product"],
+.product-visuals img:first-child,
+.product-visuals .w-dyn-bind-empty:first-child img {
   cursor: pointer !important;
   pointer-events: auto !important;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
+/* Main image hover effects - Multiple selectors */
 .product-image.main-product-image:hover,
-#main-lightbox-trigger:hover {
+#main-lightbox-trigger:hover,
+img[class*="product-image"]:hover,
+img[id*="main"]:hover,
+img[class*="main-product"]:hover,
+.product-visuals img:first-child:hover,
+.product-visuals .w-dyn-bind-empty:first-child img:hover {
   transform: scale(1.02) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid #C0392B !important;
+}
+
+/* Shimmer effect for main image - Multiple selectors */
+.product-image.main-product-image::before,
+#main-lightbox-trigger::before,
+img[class*="product-image"]::before,
+img[id*="main"]::before,
+img[class*="main-product"]::before,
+.product-visuals img:first-child::before,
+.product-visuals .w-dyn-bind-empty:first-child img::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Shimmer animation on hover - Multiple selectors */
+.product-image.main-product-image:hover::before,
+#main-lightbox-trigger:hover::before,
+img[class*="product-image"]:hover::before,
+img[id*="main"]:hover::before,
+img[class*="main-product"]:hover::before,
+.product-visuals img:first-child:hover::before,
+.product-visuals .w-dyn-bind-empty:first-child img:hover::before {
+  left: 100%;
+}
+
+/* Fallback: Target any large image in product visuals that might be the main image */
+.product-visuals img {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.product-visuals img:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid #C0392B !important;
+}
+
+.product-visuals img::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.product-visuals img:hover::before {
+  left: 100%;
 }
 /* Custom arrow and close button styling */
 .w-lightbox-left {
