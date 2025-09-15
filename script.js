@@ -5386,18 +5386,14 @@ if (typeof Webflow !== 'undefined') {
       
       console.log(`🔧 Setting up dropdown: ${type}`);
       
-      // Remove existing event listeners to prevent duplicates
-      const newField = field.cloneNode(true);
-      field.parentNode.replaceChild(newField, field);
-      
-      const newArrow = arrow ? arrow.cloneNode(true) : null;
-      if (newArrow && arrow) {
-        arrow.parentNode.replaceChild(newArrow, arrow);
+      // Check if already has event listeners to prevent duplicates
+      if (field.hasAttribute('data-dropdown-initialized')) {
+        console.log(`⚠️ Dropdown ${type} already initialized, skipping`);
+        return;
       }
       
       const toggleDropdown = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         console.log(`📋 Toggling dropdown: ${type}`);
         
         // Close all other dropdowns
@@ -5412,23 +5408,26 @@ if (typeof Webflow !== 'undefined') {
         console.log(`📋 Dropdown ${type} is now ${dropdown.classList.contains('open') ? 'open' : 'closed'}`);
       };
       
-      // Add click handlers to fresh elements
-      if (newArrow) {
-        newArrow.addEventListener('click', toggleDropdown);
+      // Add click handlers
+      if (arrow) {
+        arrow.addEventListener('click', toggleDropdown);
       }
-      newField.addEventListener('click', toggleDropdown);
+      field.addEventListener('click', toggleDropdown);
+      
+      // Mark as initialized
+      field.setAttribute('data-dropdown-initialized', 'true');
       
       // Handle option clicks
       const options = dropdown.querySelectorAll('.dropdown-option');
       options.forEach(option => {
-        // Remove existing listeners
-        const newOption = option.cloneNode(true);
-        option.parentNode.replaceChild(newOption, option);
+        // Check if already has event listeners
+        if (option.hasAttribute('data-option-initialized')) {
+          return;
+        }
         
-        newOption.addEventListener('click', (e) => {
+        option.addEventListener('click', (e) => {
           e.stopPropagation();
-          e.preventDefault();
-          const value = newOption.textContent.trim();
+          const value = option.textContent.trim();
           
           console.log(`📋 Dropdown ${type} option clicked: ${value}`);
           
@@ -5446,6 +5445,9 @@ if (typeof Webflow !== 'undefined') {
           
           console.log(`✅ Dropdown ${type} updated to: ${value}`);
         });
+        
+        // Mark as initialized
+        option.setAttribute('data-option-initialized', 'true');
       });
     });
     
