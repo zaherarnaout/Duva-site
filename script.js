@@ -1311,8 +1311,12 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log('🔍 Setting up lightbox timeout...');
   setTimeout(() => {
     console.log('🔍 Lightbox timeout executed!');
+    console.log('🔍 About to get main image element...');
     const mainImage = getMainImageElement();
-    const firstGalleryItem = document.querySelector(".first-gallery-image"); 
+    console.log('🔍 Main image element result:', mainImage);
+    console.log('🔍 About to get first gallery item...');
+    const firstGalleryItem = document.querySelector(".first-gallery-image");
+    console.log('🔍 First gallery item result:', firstGalleryItem); 
 
     console.log('🔍 LIGHTBOX SETUP - Checking elements...');
     console.log('🔍 Main image found:', !!mainImage);
@@ -5025,56 +5029,27 @@ if (typeof Webflow !== 'undefined') {
     console.log(`✅ ${checkboxes.length} accessory checkboxes restored`);
   }
 
-  // 3. FIX LIGHTBOX NAVIGATION ARROWS
+  // 3. FIX LIGHTBOX NAVIGATION ARROWS (Simple Working Approach)
   function fixLightboxNavigation() {
     console.log('🖼️ Fixing lightbox navigation...');
     
-    // Check for main lightbox trigger
-    const mainTrigger = getMainImageElement();
-    console.log('🔍 Main trigger found:', mainTrigger);
-    console.log('🔍 Main trigger tag name:', mainTrigger ? mainTrigger.tagName : 'null');
-    console.log('🔍 Main trigger classes:', mainTrigger ? mainTrigger.className : 'null');
-    
-    if (!mainTrigger) {
-      console.log('⚠️ Main lightbox trigger not found');
-      return;
-    }
-
-    // Check for first gallery item (Webflow lightbox) - using the same selector as old working code
+    const mainTrigger = document.getElementById('main-lightbox-trigger');
     const firstGalleryItem = document.querySelector('.first-gallery-image');
-    console.log('🔍 First gallery item found:', firstGalleryItem);
-    console.log('🔍 First gallery item tag name:', firstGalleryItem ? firstGalleryItem.tagName : 'null');
-    console.log('🔍 First gallery item classes:', firstGalleryItem ? firstGalleryItem.className : 'null');
     
-    if (!firstGalleryItem) {
-      console.log('⚠️ First gallery item not found');
+    if (!mainTrigger || !firstGalleryItem) {
+      console.log('⚠️ Main trigger or first gallery item not found');
       return;
     }
 
-    // Simple approach: just add click handler to main image to trigger existing lightbox - exactly like old working code
+    console.log('✅ Found main trigger and first gallery item');
+    
+    // Simple approach: just add click handler to main image to trigger existing lightbox
     mainTrigger.addEventListener('click', () => {
       console.log('🖼️ Main image clicked - triggering lightbox');
       firstGalleryItem.click();
     });
     
-    console.log('✅ Main image click handler added');
-    
     console.log('✅ Main image lightbox functionality enabled');
-    
-    // Add a simple test click handler to verify the image is clickable
-    const testClickHandler = function(e) {
-      console.log('🎯 TEST: Main image clicked!');
-      console.log('🎯 Event target:', e.target);
-      console.log('🎯 Event type:', e.type);
-    };
-    
-    // Add test handler to the main trigger
-    mainTrigger.addEventListener('click', testClickHandler);
-    console.log('✅ Test click handler added to main image');
-
-    // Initialize hero section parallax effects
-    initializeHeroParallax();
-    console.log('✅ Hero parallax effects initialized');
 
     // Initialize categories parallax effects
     initializeCategoriesParallax();
@@ -5148,11 +5123,11 @@ if (typeof Webflow !== 'undefined') {
     }, 1000);
   }
 
-  // 4. FIX THUMBNAIL FUNCTIONALITY
+  // 4. FIX THUMBNAIL FUNCTIONALITY (Simple Working Approach)
   function fixThumbnailFunctionality() {
     console.log('🖼️ Fixing thumbnail functionality...');
     
-    const mainImage = getMainImageElement();
+    const mainImage = document.getElementById('main-lightbox-trigger');
     const thumbnails = document.querySelectorAll('.thumbnail-image');
     
     if (!mainImage || thumbnails.length === 0) {
@@ -5160,19 +5135,12 @@ if (typeof Webflow !== 'undefined') {
       return;
     }
 
-    console.log(`🔍 Found ${thumbnails.length} thumbnails and main image:`, mainImage);
+    console.log(`🔍 Found ${thumbnails.length} thumbnails and main image`);
 
     thumbnails.forEach((thumb, index) => {
       // Remove existing listeners to prevent duplicates
       const newThumb = thumb.cloneNode(true);
       thumb.parentNode.replaceChild(newThumb, thumb);
-      
-      // Log thumbnail details for debugging
-      console.log(`🔍 Thumbnail ${index + 1}:`, {
-        src: newThumb.src,
-        dataImage: newThumb.getAttribute('data-image'),
-        classes: newThumb.className
-      });
       
       newThumb.addEventListener('click', function () {
         console.log(`🖱️ Thumbnail ${index + 1} clicked`);
@@ -5195,58 +5163,16 @@ if (typeof Webflow !== 'undefined') {
         
         // If it's a placeholder, don't update the main image
         if (newImg && !newImg.includes('placeholder.60f9b1840c.svg')) {
-          // Force image reload by adding timestamp to prevent caching
-          const timestamp = new Date().getTime();
-          const newImgWithCache = `${newImg}?t=${timestamp}`;
-          
           if (mainImage.tagName === 'IMG') {
-            mainImage.src = newImgWithCache;
-            // Add visual feedback
-            mainImage.style.opacity = '0.8';
-            setTimeout(() => {
-              mainImage.style.opacity = '1';
-            }, 100);
-            console.log(`✅ Main image src updated to: ${newImgWithCache}`);
+            mainImage.src = newImg;
+            console.log(`✅ Main image src updated to: ${newImg}`);
           } else {
-            mainImage.setAttribute('href', newImgWithCache);
-            console.log(`✅ Main image href updated to: ${newImgWithCache}`);
+            mainImage.setAttribute('href', newImg);
+            console.log(`✅ Main image href updated to: ${newImg}`);
           }
-          
-          // Force a re-render by triggering a style change
-          mainImage.style.transform = 'scale(1.01)';
-          setTimeout(() => {
-            mainImage.style.transform = 'scale(1)';
-          }, 50);
-          
-          // Update finish selection based on thumbnail image
-          const filename = newImg.split('/').pop().split('?')[0];
-          const finishFromThumbnail = getFinishFromFilename(filename);
-          if (finishFromThumbnail) {
-            // Update the finish dropdown selection
-            const finishDropdown = document.querySelector('.dropdown-wrapper[data-type="finish"]');
-            if (finishDropdown) {
-              const selectedValue = finishDropdown.querySelector('.selected-value');
-              if (selectedValue) {
-                selectedValue.textContent = finishFromThumbnail;
-                
-                // Update the global finish selection
-                window.currentSelection = window.currentSelection || {};
-                window.currentSelection.finish = finishFromThumbnail;
-                
-                // Update the ordering code
-                if (typeof updateOrderingCode === 'function') {
-                  updateOrderingCode();
-                }
-                console.log(`✅ Finish selection updated from thumbnail: ${finishFromThumbnail}`);
-              }
-            }
-          }
-          
           console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
         } else {
           console.log(`⚠️ Thumbnail ${index + 1} clicked but no valid image found (placeholder detected: ${newImg})`);
-          // For testing purposes, you could add a test image here
-          // mainImage.src = 'images/test-image.jpg';
         }
       });
       
