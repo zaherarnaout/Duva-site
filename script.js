@@ -5033,8 +5033,17 @@ if (typeof Webflow !== 'undefined') {
   function fixLightboxNavigation() {
     console.log('🖼️ Fixing lightbox navigation...');
     
-    const mainTrigger = document.getElementById('main-lightbox-trigger');
+    // Try multiple selectors to find main trigger
+    let mainTrigger = document.getElementById('main-lightbox-trigger');
+    console.log('🔍 Main trigger by ID:', !!mainTrigger);
+    
+    if (!mainTrigger) {
+      mainTrigger = document.querySelector('.lightbox-trigger .w-dyn-item img');
+      console.log('🔍 Main trigger by Webflow selector:', !!mainTrigger);
+    }
+    
     const firstGalleryItem = document.querySelector('.first-gallery-image');
+    console.log('🔍 First gallery item:', !!firstGalleryItem);
     
     if (!mainTrigger || !firstGalleryItem) {
       console.log('⚠️ Main trigger or first gallery item not found');
@@ -5159,6 +5168,8 @@ if (typeof Webflow !== 'undefined') {
     
     // Try multiple selectors to find the main image - WEBFLOW STRUCTURE
     let mainImage = document.getElementById('main-lightbox-trigger');
+    console.log('🔍 Main image found by ID:', !!mainImage);
+    
     if (!mainImage) {
       mainImage = document.querySelector('.lightbox-trigger .w-dyn-item img');
       console.log('🔍 Trying .lightbox-trigger .w-dyn-item img:', !!mainImage);
@@ -5230,7 +5241,9 @@ if (typeof Webflow !== 'undefined') {
     
     // Debug thumbnail selection
     console.log('🔍 Thumbnail selection debug:');
+    console.log('  - Found thumbnails:', thumbnails.length);
     console.log('  - All .thumbnail-image elements:', document.querySelectorAll('.thumbnail-image').length);
+    console.log('  - Webflow thumbnails:', document.querySelectorAll('.product-thumbnails-wrapper .w-dyn-item img').length);
     console.log('  - Thumbnails in wrapper:', thumbnailsWrapper ? thumbnailsWrapper.querySelectorAll('.thumbnail-image').length : 'No wrapper');
     console.log('  - All img elements in wrapper:', thumbnailsWrapper ? thumbnailsWrapper.querySelectorAll('img').length : 'No wrapper');
     
