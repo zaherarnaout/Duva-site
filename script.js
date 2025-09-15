@@ -5142,6 +5142,17 @@ if (typeof Webflow !== 'undefined') {
       console.log('🔍 Trying img[class*="product-image"]:', !!mainImage);
     }
     
+    // CRITICAL FIX: Handle duplicate IDs by updating ALL elements with main-lightbox-trigger
+    const allMainImages = document.querySelectorAll('#main-lightbox-trigger');
+    console.log(`🔍 Found ${allMainImages.length} elements with ID main-lightbox-trigger`);
+    
+    if (allMainImages.length > 1) {
+      console.log('⚠️ WARNING: Multiple elements with same ID detected!');
+      allMainImages.forEach((img, index) => {
+        console.log(`  - Element ${index}:`, img.src, img.className);
+      });
+    }
+    
     // Debug product-thumbnails-wrapper
     const thumbnailsWrapper = document.querySelector('.product-thumbnails-wrapper');
     console.log('🔍 Product thumbnails wrapper found:', !!thumbnailsWrapper);
@@ -5200,31 +5211,34 @@ if (typeof Webflow !== 'undefined') {
         
         console.log(`🔍 Attempting to update main image with: ${newImg}`);
         
-        // Update main image if we have a valid image URL
-        if (newImg) {
-          if (mainImage.tagName === 'IMG') {
-            mainImage.src = newImg;
-            console.log(`✅ Main image src updated to: ${newImg}`);
-            
-            // Force visual update with cache busting
-            const timestamp = new Date().getTime();
-            mainImage.src = `${newImg}?t=${timestamp}`;
-            console.log(`🔄 Forced image reload with cache busting: ${newImg}?t=${timestamp}`);
-            
-            // Add visual feedback
-            mainImage.style.opacity = '0.8';
-            setTimeout(() => {
-              mainImage.style.opacity = '1';
-            }, 100);
-            
-          } else {
-            mainImage.setAttribute('href', newImg);
-            console.log(`✅ Main image href updated to: ${newImg}`);
-          }
-          console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
-        } else {
-          console.log(`⚠️ Thumbnail ${index + 1} clicked but no image URL found`);
-        }
+              // Update main image if we have a valid image URL
+              if (newImg) {
+                // CRITICAL FIX: Update ALL elements with main-lightbox-trigger ID
+                const allMainImages = document.querySelectorAll('#main-lightbox-trigger');
+                console.log(`🔄 Updating ${allMainImages.length} main image elements`);
+                
+                allMainImages.forEach((img, imgIndex) => {
+                  if (img.tagName === 'IMG') {
+                    // Force visual update with cache busting
+                    const timestamp = new Date().getTime();
+                    img.src = `${newImg}?t=${timestamp}`;
+                    console.log(`✅ Main image ${imgIndex + 1} src updated to: ${newImg}?t=${timestamp}`);
+                    
+                    // Add visual feedback
+                    img.style.opacity = '0.8';
+                    setTimeout(() => {
+                      img.style.opacity = '1';
+                    }, 100);
+                  } else {
+                    img.setAttribute('href', newImg);
+                    console.log(`✅ Main image ${imgIndex + 1} href updated to: ${newImg}`);
+                  }
+                });
+                
+                console.log(`✅ Thumbnail ${index + 1} clicked - ALL main images updated to: ${newImg}`);
+              } else {
+                console.log(`⚠️ Thumbnail ${index + 1} clicked but no image URL found`);
+              }
       });
       
       // Add cursor pointer for better UX
