@@ -5149,7 +5149,34 @@ if (typeof Webflow !== 'undefined') {
     if (allMainImages.length > 1) {
       console.log('⚠️ WARNING: Multiple elements with same ID detected!');
       allMainImages.forEach((img, index) => {
-        console.log(`  - Element ${index}:`, img.src, img.className);
+        const rect = img.getBoundingClientRect();
+        console.log(`  - Element ${index}:`, {
+          src: img.src,
+          className: img.className,
+          visible: rect.width > 0 && rect.height > 0,
+          size: `${rect.width}x${rect.height}`,
+          position: `(${rect.left}, ${rect.top})`
+        });
+      });
+    }
+    
+    // Find the actually visible main image (largest one)
+    let visibleMainImage = null;
+    let maxSize = 0;
+    allMainImages.forEach((img, index) => {
+      const rect = img.getBoundingClientRect();
+      const size = rect.width * rect.height;
+      if (size > maxSize && rect.width > 0 && rect.height > 0) {
+        maxSize = size;
+        visibleMainImage = img;
+      }
+    });
+    
+    if (visibleMainImage) {
+      console.log('🎯 Found visible main image:', {
+        src: visibleMainImage.src,
+        className: visibleMainImage.className,
+        size: `${visibleMainImage.getBoundingClientRect().width}x${visibleMainImage.getBoundingClientRect().height}`
       });
     }
     
@@ -5213,29 +5240,50 @@ if (typeof Webflow !== 'undefined') {
         
               // Update main image if we have a valid image URL
               if (newImg) {
-                // CRITICAL FIX: Update ALL elements with main-lightbox-trigger ID
+                // Find the visible main image (largest one)
                 const allMainImages = document.querySelectorAll('#main-lightbox-trigger');
-                console.log(`🔄 Updating ${allMainImages.length} main image elements`);
+                let visibleMainImage = null;
+                let maxSize = 0;
                 
-                allMainImages.forEach((img, imgIndex) => {
-                  if (img.tagName === 'IMG') {
-                    // Force visual update with cache busting
-                    const timestamp = new Date().getTime();
-                    img.src = `${newImg}?t=${timestamp}`;
-                    console.log(`✅ Main image ${imgIndex + 1} src updated to: ${newImg}?t=${timestamp}`);
-                    
-                    // Add visual feedback
-                    img.style.opacity = '0.8';
-                    setTimeout(() => {
-                      img.style.opacity = '1';
-                    }, 100);
-                  } else {
-                    img.setAttribute('href', newImg);
-                    console.log(`✅ Main image ${imgIndex + 1} href updated to: ${newImg}`);
+                allMainImages.forEach((img) => {
+                  const rect = img.getBoundingClientRect();
+                  const size = rect.width * rect.height;
+                  if (size > maxSize && rect.width > 0 && rect.height > 0) {
+                    maxSize = size;
+                    visibleMainImage = img;
                   }
                 });
                 
-                console.log(`✅ Thumbnail ${index + 1} clicked - ALL main images updated to: ${newImg}`);
+                if (visibleMainImage) {
+                  console.log(`🎯 Updating visible main image (${maxSize}px²):`, visibleMainImage.className);
+                  
+                  // Force visual update with cache busting
+                  const timestamp = new Date().getTime();
+                  visibleMainImage.src = `${newImg}?t=${timestamp}`;
+                  console.log(`✅ Visible main image src updated to: ${newImg}?t=${timestamp}`);
+                  
+                  // Add visual feedback
+                  visibleMainImage.style.opacity = '0.8';
+                  visibleMainImage.style.transform = 'scale(0.98)';
+                  setTimeout(() => {
+                    visibleMainImage.style.opacity = '1';
+                    visibleMainImage.style.transform = 'scale(1)';
+                  }, 150);
+                  
+                  // Also update lightbox images for consistency
+                  const lightboxImages = document.querySelectorAll('.w-lightbox img');
+                  lightboxImages.forEach((lbImg, lbIndex) => {
+                    if (lbImg.src !== newImg) {
+                      lbImg.src = `${newImg}?t=${timestamp}`;
+                      console.log(`🔁 Lightbox image ${lbIndex + 1} also updated`);
+                    }
+                  });
+                  
+                } else {
+                  console.log('⚠️ No visible main image found!');
+                }
+                
+                console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
               } else {
                 console.log(`⚠️ Thumbnail ${index + 1} clicked but no image URL found`);
               }
