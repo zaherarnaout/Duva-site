@@ -5142,7 +5142,24 @@ if (typeof Webflow !== 'undefined') {
       console.log('🔍 Trying img[class*="product-image"]:', !!mainImage);
     }
     
+    // Debug product-thumbnails-wrapper
+    const thumbnailsWrapper = document.querySelector('.product-thumbnails-wrapper');
+    console.log('🔍 Product thumbnails wrapper found:', !!thumbnailsWrapper);
+    if (thumbnailsWrapper) {
+      console.log('🔍 Thumbnails wrapper details:', {
+        className: thumbnailsWrapper.className,
+        children: thumbnailsWrapper.children.length,
+        innerHTML: thumbnailsWrapper.innerHTML.substring(0, 200) + '...'
+      });
+    }
+    
     const thumbnails = document.querySelectorAll('.thumbnail-image');
+    
+    // Debug thumbnail selection
+    console.log('🔍 Thumbnail selection debug:');
+    console.log('  - All .thumbnail-image elements:', document.querySelectorAll('.thumbnail-image').length);
+    console.log('  - Thumbnails in wrapper:', thumbnailsWrapper ? thumbnailsWrapper.querySelectorAll('.thumbnail-image').length : 'No wrapper');
+    console.log('  - All img elements in wrapper:', thumbnailsWrapper ? thumbnailsWrapper.querySelectorAll('img').length : 'No wrapper');
     
     if (!mainImage || thumbnails.length === 0) {
       console.log('⚠️ Main image or thumbnails not found');
