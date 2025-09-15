@@ -5386,8 +5386,18 @@ if (typeof Webflow !== 'undefined') {
       
       console.log(`🔧 Setting up dropdown: ${type}`);
       
+      // Remove existing event listeners to prevent duplicates
+      const newField = field.cloneNode(true);
+      field.parentNode.replaceChild(newField, field);
+      
+      const newArrow = arrow ? arrow.cloneNode(true) : null;
+      if (newArrow && arrow) {
+        arrow.parentNode.replaceChild(newArrow, arrow);
+      }
+      
       const toggleDropdown = (e) => {
         e.stopPropagation();
+        e.preventDefault();
         console.log(`📋 Toggling dropdown: ${type}`);
         
         // Close all other dropdowns
@@ -5402,18 +5412,23 @@ if (typeof Webflow !== 'undefined') {
         console.log(`📋 Dropdown ${type} is now ${dropdown.classList.contains('open') ? 'open' : 'closed'}`);
       };
       
-      // Add click handlers
-      if (arrow) {
-        arrow.addEventListener('click', toggleDropdown);
+      // Add click handlers to fresh elements
+      if (newArrow) {
+        newArrow.addEventListener('click', toggleDropdown);
       }
-      field.addEventListener('click', toggleDropdown);
+      newField.addEventListener('click', toggleDropdown);
       
       // Handle option clicks
       const options = dropdown.querySelectorAll('.dropdown-option');
       options.forEach(option => {
-        option.addEventListener('click', (e) => {
+        // Remove existing listeners
+        const newOption = option.cloneNode(true);
+        option.parentNode.replaceChild(newOption, option);
+        
+        newOption.addEventListener('click', (e) => {
           e.stopPropagation();
-          const value = option.textContent.trim();
+          e.preventDefault();
+          const value = newOption.textContent.trim();
           
           console.log(`📋 Dropdown ${type} option clicked: ${value}`);
           
