@@ -288,11 +288,25 @@ document.addEventListener("DOMContentLoaded", function () {
     return productCodeElement ? productCodeElement.textContent.trim() : 'C327';
   }
   
-  // Check if image exists (simple check - you can enhance this)
+  // Check if image exists (enhanced with actual image loading check)
   function imageExists(filename) {
     // For now, we'll assume images exist if they follow the naming convention
     // You can enhance this with actual image loading checks if needed
     return true;
+  }
+  
+  // Enhanced image loading with error handling
+  function loadImageWithFallback(imagePath, callback) {
+    const img = new Image();
+    img.onload = function() {
+      console.log(`✅ Image loaded successfully: ${imagePath}`);
+      callback(true, imagePath);
+    };
+    img.onerror = function() {
+      console.log(`❌ Image failed to load: ${imagePath}`);
+      callback(false, imagePath);
+    };
+    img.src = imagePath;
   }
   
   // Build image filename based on product code and finish
@@ -387,13 +401,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const imagePath = `images/${imageFilename}`;
     
     console.log(`🔄 Updating main image to: ${imageFilename}`);
+    console.log(`🔍 Current main image src: ${mainImage.src}`);
     
-    // Update main image
-    mainImage.src = imagePath;
+    // Force image reload by adding timestamp to prevent caching
+    const timestamp = new Date().getTime();
+    const imagePathWithCache = `${imagePath}?t=${timestamp}`;
+    
+    // Check if image exists before updating
+    loadImageWithFallback(imagePathWithCache, (success, path) => {
+      if (success) {
+        // Update main image with cache busting
+        mainImage.src = path;
+        mainImage.style.opacity = '0.8'; // Slight fade effect
+        setTimeout(() => {
+          mainImage.style.opacity = '1';
+        }, 100);
+        
+        console.log(`✅ Main image src set to: ${path}`);
+      } else {
+        console.log(`⚠️ Image not found: ${path}, keeping current image`);
+        // Keep the current image if the new one doesn't exist
+      }
+    });
     
     // Update lightbox image
     if (lightboxImage) {
-      lightboxImage.src = imagePath;
+      lightboxImage.src = imagePathWithCache;
       console.log(`✅ Lightbox image updated to: ${imageFilename}`);
     }
     
@@ -403,7 +436,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const lightboxData = JSON.parse(lightboxScript.textContent);
         if (lightboxData.items && lightboxData.items.length > 0) {
-          lightboxData.items[0].url = imagePath;
+          lightboxData.items[0].url = imagePathWithCache;
           lightboxScript.textContent = JSON.stringify(lightboxData);
           console.log(`✅ Lightbox JSON updated with: ${imageFilename}`);
         }
@@ -411,6 +444,12 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('⚠️ Could not update lightbox JSON:', e);
       }
     }
+    
+    // Force a re-render by triggering a style change
+    mainImage.style.transform = 'scale(1.01)';
+    setTimeout(() => {
+      mainImage.style.transform = 'scale(1)';
+    }, 50);
     
     console.log(`✅ Main image updated to: ${imageFilename}`);
   }
@@ -4759,13 +4798,29 @@ if (typeof Webflow !== 'undefined') {
         
         // If it's a placeholder, don't update the main image
         if (newImg && !newImg.includes('placeholder.60f9b1840c.svg')) {
+          // Force image reload by adding timestamp to prevent caching
+          const timestamp = new Date().getTime();
+          const newImgWithCache = `${newImg}?t=${timestamp}`;
+          
           if (mainImage.tagName === 'IMG') {
-            mainImage.src = newImg;
-            console.log(`✅ Main image src updated to: ${newImg}`);
+            mainImage.src = newImgWithCache;
+            // Add visual feedback
+            mainImage.style.opacity = '0.8';
+            setTimeout(() => {
+              mainImage.style.opacity = '1';
+            }, 100);
+            console.log(`✅ Main image src updated to: ${newImgWithCache}`);
           } else {
-            mainImage.setAttribute('href', newImg);
-            console.log(`✅ Main image href updated to: ${newImg}`);
+            mainImage.setAttribute('href', newImgWithCache);
+            console.log(`✅ Main image href updated to: ${newImgWithCache}`);
           }
+          
+          // Force a re-render by triggering a style change
+          mainImage.style.transform = 'scale(1.01)';
+          setTimeout(() => {
+            mainImage.style.transform = 'scale(1)';
+          }, 50);
+          
           console.log(`✅ Thumbnail ${index + 1} clicked - main image updated to: ${newImg}`);
         } else {
           console.log(`⚠️ Thumbnail ${index + 1} clicked but no valid image found (placeholder detected: ${newImg})`);
