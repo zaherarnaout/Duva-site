@@ -5127,11 +5127,26 @@ if (typeof Webflow !== 'undefined') {
   function fixThumbnailFunctionality() {
     console.log('🖼️ Fixing thumbnail functionality...');
     
-    const mainImage = document.getElementById('main-lightbox-trigger');
+    // Try multiple selectors to find the main image
+    let mainImage = document.getElementById('main-lightbox-trigger');
+    if (!mainImage) {
+      mainImage = document.querySelector('.product-image.main-product-image');
+      console.log('🔍 Trying .product-image.main-product-image:', !!mainImage);
+    }
+    if (!mainImage) {
+      mainImage = document.querySelector('.product-image');
+      console.log('🔍 Trying .product-image:', !!mainImage);
+    }
+    if (!mainImage) {
+      mainImage = document.querySelector('img[class*="product-image"]');
+      console.log('🔍 Trying img[class*="product-image"]:', !!mainImage);
+    }
+    
     const thumbnails = document.querySelectorAll('.thumbnail-image');
     
     if (!mainImage || thumbnails.length === 0) {
       console.log('⚠️ Main image or thumbnails not found');
+      console.log('🔍 Available image elements:', document.querySelectorAll('img'));
       return;
     }
 
