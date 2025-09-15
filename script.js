@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // If not found in thumbnails, try to construct from existing main image URL
-    const mainImage = document.getElementById('main-lightbox-trigger');
+    const mainImage = getMainImageElement();
     if (mainImage && mainImage.src) {
       const currentUrl = mainImage.src;
       // Extract the base CDN URL and construct new filename
@@ -1265,7 +1265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* === Trigger Hidden Webflow Lightbox Gallery === */ 
 
-  const mainImage = document.getElementById('main-lightbox-trigger');
+  const mainImage = getMainImageElement();
   const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
   if (mainImage && firstGalleryItem) { 
@@ -2266,7 +2266,7 @@ function generatePdfLegacy() {
     return;
   }
   // === Inject Product Image Dynamically ===
-  const imageElement = document.querySelector('#product-image img'); // or your actual main image selector
+  const imageElement = getMainImageElement(); // Updated to use new structure
   const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
   if (imageElement && pdfImageContainer) {
     const imageUrl = imageElement.src;
@@ -2694,7 +2694,7 @@ function injectPdfIcons() {
 // === Inject Product, Dimension, and Photometric Images into PDF ===
 function injectPdfImages() {
   // Product Image
-  const productSource = document.querySelector('#main-lightbox-trigger.product-image');
+  const productSource = getMainImageElement();
   const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
   if (productSource && pdfImageContainer) {
     pdfImageContainer.innerHTML = `<img src="${productSource.src}" style="max-width: 100%; height: auto; width: 180px; height: 180px; object-fit: contain;">`;
@@ -3212,9 +3212,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Preload critical images
 function preloadCriticalImages() {
   const criticalImages = [
-    'main-lightbox-trigger',
-    'thumbnail-image',
-    'gallery-image'
+    '.product-image.main-product-image',
+    '.thumbnail-image',
+    '.gallery-image'
   ];
   
   criticalImages.forEach(selector => {
@@ -3423,7 +3423,7 @@ async function generatePdfWithHtml2Pdf() {
   // === Inject all dynamic content ===
   
   // Inject Product Image Dynamically
-  const imageElement = document.querySelector('#product-image img');
+  const imageElement = getMainImageElement();
   const pdfImageContainer = document.querySelector('#pdf-container .main-product-pdf-img');
   if (imageElement && pdfImageContainer) {
     const imageUrl = imageElement.src;
