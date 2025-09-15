@@ -288,6 +288,24 @@ document.addEventListener("DOMContentLoaded", function () {
     return productCodeElement ? productCodeElement.textContent.trim() : 'C327';
   }
   
+  // Get the main image element (now from collection)
+  function getMainImageElement() {
+    // Try to find the main image in the collection structure
+    const mainImage = document.querySelector('.product-image.main-product-image');
+    if (mainImage) {
+      return mainImage;
+    }
+    
+    // Fallback to the lightbox trigger
+    const lightboxTrigger = document.getElementById('main-lightbox-trigger');
+    if (lightboxTrigger) {
+      return lightboxTrigger;
+    }
+    
+    // Last resort - find any product image
+    return document.querySelector('.product-image');
+  }
+  
   // Check if image exists (enhanced with actual image loading check)
   function imageExists(filename) {
     // For now, we'll assume images exist if they follow the naming convention
@@ -503,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update main image and lightbox for selected finish
   function updateMainImageForFinish(finish) {
     const productCode = getCurrentProductCode();
-    const mainImage = document.getElementById('main-lightbox-trigger');
+    const mainImage = getMainImageElement();
     const lightboxImage = document.querySelector('.first-gallery-image img');
     
     if (!mainImage || !productCode) {
@@ -4751,7 +4769,7 @@ if (typeof Webflow !== 'undefined') {
     console.log('🖼️ Fixing lightbox navigation...');
     
     // Check for main lightbox trigger
-    const mainTrigger = document.getElementById('main-lightbox-trigger');
+    const mainTrigger = getMainImageElement();
     console.log('🔍 Main trigger found:', mainTrigger);
     console.log('🔍 Main trigger tag name:', mainTrigger ? mainTrigger.tagName : 'null');
     console.log('🔍 Main trigger classes:', mainTrigger ? mainTrigger.className : 'null');
@@ -4873,7 +4891,7 @@ if (typeof Webflow !== 'undefined') {
   function fixThumbnailFunctionality() {
     console.log('🖼️ Fixing thumbnail functionality...');
     
-    const mainImage = document.getElementById('main-lightbox-trigger');
+    const mainImage = getMainImageElement();
     const thumbnails = document.querySelectorAll('.thumbnail-image');
     
     if (!mainImage || thumbnails.length === 0) {
