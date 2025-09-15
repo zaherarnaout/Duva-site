@@ -276,7 +276,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add delay to ensure Webflow data is loaded
   setTimeout(() => {
-    const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
+    const dropdowns = document.querySelectorAll(".dropdown-wrapper");
+    console.log(`🔍 Found ${dropdowns.length} dropdowns in timeout`); 
 
   const ralInput = document.querySelector("#ral-input");
 
@@ -800,6 +801,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Dropdown Setup & Interactions === 
 
+  console.log('🔧 Setting up dropdowns...');
+  console.log(`🔍 Found ${dropdowns.length} dropdowns`);
+
   // Initialize dynamic finish dropdown first
   initializeDynamicFinishDropdown();
 
@@ -1304,7 +1308,9 @@ document.addEventListener("DOMContentLoaded", function () {
   /* === Trigger Hidden Webflow Lightbox Gallery === */ 
 
   // Wait for DOM to be fully loaded
+  console.log('🔍 Setting up lightbox timeout...');
   setTimeout(() => {
+    console.log('🔍 Lightbox timeout executed!');
     const mainImage = getMainImageElement();
     const firstGalleryItem = document.querySelector(".first-gallery-image"); 
 
@@ -1353,15 +1359,193 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log('🔍 Main image found:', !!mainImage);
       console.log('🔍 First gallery item found:', !!firstGalleryItem);
     }
+
+    // === Dropdown Setup & Interactions === 
+    console.log('🔧 Setting up dropdowns...');
+    console.log(`🔍 Found ${dropdowns.length} dropdowns`);
+
+    // Initialize dynamic finish dropdown first
+    initializeDynamicFinishDropdown();
+
+    dropdowns.forEach(dropdown => {
+      const type = dropdown.getAttribute("data-type");
+      const source = dropdown.querySelector(".dropdown-source");
+      const field = dropdown.querySelector(".dropdown-field");
+      const selected = dropdown.querySelector(".selected-value");
+      const arrow = dropdown.querySelector(".dropdown-arrow");
+
+      if (!source || !field || !selected) return;
+
+      const values = source.textContent.split(",").map(v => v.trim()).filter(v => v);
+      if (values.length === 0) return;
+
+      // Set default value
+      if (!selected.textContent.trim()) {
+        selected.textContent = values[0];
+        window.currentSelection[type] = normalizeValue(type, values[0]);
+      }
+
+      // Create options box
+      const optionsBox = document.createElement("div");
+      optionsBox.className = "dropdown-options";
+      optionsBox.style.display = "none";
+      optionsBox.style.position = "absolute";
+      optionsBox.style.top = "100%";
+      optionsBox.style.left = "0";
+      optionsBox.style.right = "0";
+      optionsBox.style.backgroundColor = "white";
+      optionsBox.style.border = "1px solid #ccc";
+      optionsBox.style.borderTop = "none";
+      optionsBox.style.maxHeight = "200px";
+      optionsBox.style.overflowY = "auto";
+      optionsBox.style.zIndex = "1000";
+
+      values.forEach(value => {
+        const opt = document.createElement("div");
+        opt.className = "dropdown-option";
+        opt.textContent = value;
+        opt.style.padding = "8px 12px";
+        opt.style.cursor = "pointer";
+        opt.style.borderBottom = "1px solid #eee";
+
+        opt.addEventListener("mouseenter", () => {
+          opt.style.backgroundColor = "#f5f5f5";
+        });
+
+        opt.addEventListener("mouseleave", () => {
+          opt.style.backgroundColor = "white";
+        });
+
+        opt.addEventListener("click", () => {
+          if (selected.textContent === value) return;
+
+          selected.textContent = value;
+          optionsBox.style.display = "none";
+          dropdown.classList.remove("open");
+
+          // RAL logic
+          if (type === "finish" && value.toLowerCase() === "ral") {
+            if (ralInput) {
+              ralInput.style.display = "block";
+              ralInput.textContent = "Enter RAL number here";
+              ralInput.style.color = "#999";
+            }
+            window.currentSelection.finish = "RAL";
+          } else {
+            if (ralInput) {
+              ralInput.style.display = "none";
+              ralInput.textContent = "Enter RAL number here";
+              ralInput.style.color = "#999";
+            }
+            window.currentSelection[type] = value;
+          }
+
+          // NEW: Add image switching for finish dropdown
+          if (type === "finish") {
+            console.log(`🔄 Finish dropdown changed to: ${value}`);
+            console.log(`🔍 updateMainImageForFinish function exists: ${typeof updateMainImageForFinish === 'function'}`);
+            console.log(`🔍 updateOrderingCode function exists: ${typeof updateOrderingCode === 'function'}`);
+            
+            if (typeof updateMainImageForFinish === 'function') {
+              updateMainImageForFinish(value);
+            } else {
+              console.log('❌ updateMainImageForFinish function not found');
+            }
+            
+            // Ensure the finish selection is properly stored
+            window.currentSelection.finish = value;
+            console.log(`✅ Finish selection updated: ${value}`);
+            
+            // Update the ordering code
+            if (typeof updateOrderingCode === 'function') {
+              updateOrderingCode();
+              console.log(`✅ Ordering code updated for finish: ${value}`);
+            } else {
+              console.log('❌ updateOrderingCode function not found');
+            }
+          }
+
+          if (["watt", "cct", "cri"].includes(type)) {
+            updateLumenValue();
+          }
+
+          updateOrderingCode();
+        });
+
+        optionsBox.appendChild(opt);
+      });
+
+      field.appendChild(optionsBox);
+
+      const toggleDropdown = (e) => {
+        e.stopPropagation();
+        const isOpen = optionsBox.style.display === "block";
+        document.querySelectorAll(".dropdown-options").forEach(opt => opt.style.display = "none");
+        document.querySelectorAll(".dropdown-wrapper").forEach(d => d.classList.remove("open"));
+        if (!isOpen) {
+          optionsBox.style.display = "block";
+          dropdown.classList.add("open");
+        }
+      };
+
+      arrow?.addEventListener("click", toggleDropdown);
+      field.addEventListener("click", toggleDropdown);
+
+      // Add keyboard navigation
+      field.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleDropdown(e);
+        } else if (e.key === "Escape") {
+          optionsBox.style.display = "none";
+          dropdown.classList.remove("open");
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          const firstOption = optionsBox.querySelector(".dropdown-option");
+          if (firstOption) firstOption.focus();
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener("click", () => {
+        optionsBox.style.display = "none";
+        dropdown.classList.remove("open");
+      });
+    });
+
+    console.log('✅ Dropdown setup completed');
+
+    // RAL input styling and default setup 
+    if (ralInput) { 
+      ralInput.style.display = "none"; 
+      ralInput.textContent = "Enter RAL number here"; 
+      ralInput.setAttribute("contenteditable", "true"); 
+      ralInput.style.color = "#999"; 
+      ralInput.style.padding = "12px 16px"; 
+      ralInput.style.minHeight = "48px"; 
+      
+      // Set appropriate background color based on theme
+      const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+      ralInput.style.backgroundColor = isDarkTheme ? "#212121" : "#fff"; 
+      ralInput.style.border = "1px solid #ccc"; 
+      ralInput.style.borderRadius = "4px"; 
+      ralInput.style.fontSize = "14px"; 
+      ralInput.style.lineHeight = "1.4"; 
+      ralInput.style.outline = "none"; 
+      ralInput.style.transition = "all 0.3s ease"; 
+      ralInput.style.boxSizing = "border-box"; 
+      ralInput.style.width = "100%"; 
+      ralInput.style.marginTop = "8px"; 
+      ralInput.style.display = "none"; 
+    }
+
   }, 1000); 
 
  
 
   /* === Dropdown + Configurator Logic === */ 
 
-  const dropdowns = document.querySelectorAll(".dropdown-wrapper"); 
-
-  const ralInput = document.querySelector("#ral-input"); 
+  // Dropdown setup moved inside timeout 
 
  
 
@@ -5136,12 +5320,19 @@ if (typeof Webflow !== 'undefined') {
   }
 
   // Run all fixes
+  console.log('🔧 Starting critical fixes...');
   fixGalleryImages();
+  console.log('🔧 Gallery images fixed');
   fixAccessoriesSection();
+  console.log('🔧 Accessories section fixed');
   fixLightboxNavigation();
+  console.log('🔧 Lightbox navigation fixed');
   fixThumbnailFunctionality();
+  console.log('🔧 Thumbnail functionality fixed');
   fixDownloadPanelCheckboxes();
+  console.log('🔧 Download panel checkboxes fixed');
   fixCategoryCardsNavigation();
+  console.log('🔧 Category cards navigation fixed');
   
   // Initialize dynamic finish dropdown
   if (typeof initializeDynamicFinishDropdown === 'function') {
