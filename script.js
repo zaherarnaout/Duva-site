@@ -5385,6 +5385,8 @@ if (typeof Webflow !== 'undefined') {
       }
       
       console.log(`🔧 Setting up dropdown: ${type}`);
+      console.log(`🔍 Dropdown element:`, dropdown);
+      console.log(`🔍 Dropdown data-type attribute:`, dropdown.getAttribute('data-type'));
       
       // Check if already has event listeners to prevent duplicates
       if (field.hasAttribute('data-dropdown-initialized')) {
@@ -5438,9 +5440,16 @@ if (typeof Webflow !== 'undefined') {
           // Update ordering code for finish dropdown
           if (type === 'finish') {
             console.log(`🔄 Finish changed to: ${value}`);
+            console.log(`🔍 updateOrderingCode function exists: ${typeof updateOrderingCode === 'function'}`);
             if (typeof updateOrderingCode === 'function') {
+              console.log(`🚀 Calling updateOrderingCode()...`);
               updateOrderingCode();
+              console.log(`✅ updateOrderingCode() called successfully`);
+            } else {
+              console.log(`❌ updateOrderingCode function not found!`);
             }
+          } else {
+            console.log(`ℹ️ Not a finish dropdown, type: ${type}`);
           }
           
           console.log(`✅ Dropdown ${type} updated to: ${value}`);
