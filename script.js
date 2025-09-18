@@ -267,34 +267,48 @@ function initializeDimensionPhotometricScrolling() {
   const photometricContainer = document.querySelector('.photometric-img');
   const photometricItems = document.querySelectorAll('.photometric-img .w-dyn-item');
   
-  // Check if containers exist and have multiple images
-  if (dimensionContainer && dimensionItems.length > 1) {
-    console.log(`📐 Found ${dimensionItems.length} dimension images, starting auto-scroll`);
-    startDimensionScrolling();
-    
-    // Pause on hover
-    dimensionContainer.addEventListener('mouseenter', stopDimensionScrolling);
-    dimensionContainer.addEventListener('mouseleave', startDimensionScrolling);
-  } else if (dimensionContainer && dimensionItems.length === 0) {
-    console.log('📐 No dimension images found, hiding container');
-    dimensionContainer.style.display = 'none';
+  // Check if containers exist and have images
+  if (dimensionContainer) {
+    if (dimensionItems.length > 1) {
+      console.log(`📐 Found ${dimensionItems.length} dimension images, starting auto-scroll`);
+      startDimensionScrolling();
+      
+      // Pause on hover
+      dimensionContainer.addEventListener('mouseenter', stopDimensionScrolling);
+      dimensionContainer.addEventListener('mouseleave', startDimensionScrolling);
+    } else if (dimensionItems.length === 1) {
+      console.log('📐 Single dimension image found, no scrolling needed');
+      // Make sure container is visible
+      dimensionContainer.style.display = '';
+      dimensionContainer.classList.remove('no-images');
+    } else {
+      console.log('📐 No dimension images found, hiding container');
+      dimensionContainer.classList.add('no-images');
+    }
   }
   
-  if (photometricContainer && photometricItems.length > 1) {
-    console.log(`📊 Found ${photometricItems.length} photometric images, starting auto-scroll`);
-    startPhotometricScrolling();
-    
-    // Pause on hover
-    photometricContainer.addEventListener('mouseenter', stopPhotometricScrolling);
-    photometricContainer.addEventListener('mouseleave', startPhotometricScrolling);
-  } else if (photometricContainer && photometricItems.length === 0) {
-    console.log('📊 No photometric images found, hiding container');
-    photometricContainer.style.display = 'none';
+  if (photometricContainer) {
+    if (photometricItems.length > 1) {
+      console.log(`📊 Found ${photometricItems.length} photometric images, starting auto-scroll`);
+      startPhotometricScrolling();
+      
+      // Pause on hover
+      photometricContainer.addEventListener('mouseenter', stopPhotometricScrolling);
+      photometricContainer.addEventListener('mouseleave', startPhotometricScrolling);
+    } else if (photometricItems.length === 1) {
+      console.log('📊 Single photometric image found, no scrolling needed');
+      // Make sure container is visible
+      photometricContainer.style.display = '';
+      photometricContainer.classList.remove('no-images');
+    } else {
+      console.log('📊 No photometric images found, hiding container');
+      photometricContainer.classList.add('no-images');
+    }
   }
 }
 
 function startDimensionScrolling() {
-  const dimensionItems = document.querySelectorAll('.dimension-images-wrapper .w-dyn-item');
+  const dimensionItems = document.querySelectorAll('.product-dimension .w-dyn-item');
   if (dimensionItems.length <= 1) return;
   
   stopDimensionScrolling(); // Clear any existing interval
@@ -302,7 +316,7 @@ function startDimensionScrolling() {
   dimensionScrollInterval = setInterval(() => {
     dimensionCurrentIndex = (dimensionCurrentIndex + 1) % dimensionItems.length;
     const translateY = -dimensionCurrentIndex * 100;
-    const itemsContainer = document.querySelector('.dimension-images-wrapper .w-dyn-items');
+    const itemsContainer = document.querySelector('.product-dimension .w-dyn-items');
     if (itemsContainer) {
       itemsContainer.style.transform = `translateY(${translateY}%)`;
     }
@@ -317,7 +331,7 @@ function stopDimensionScrolling() {
 }
 
 function startPhotometricScrolling() {
-  const photometricItems = document.querySelectorAll('.photometric-images-wrapper .w-dyn-item');
+  const photometricItems = document.querySelectorAll('.photometric-img .w-dyn-item');
   if (photometricItems.length <= 1) return;
   
   stopPhotometricScrolling(); // Clear any existing interval
@@ -325,7 +339,7 @@ function startPhotometricScrolling() {
   photometricScrollInterval = setInterval(() => {
     photometricCurrentIndex = (photometricCurrentIndex + 1) % photometricItems.length;
     const translateY = -photometricCurrentIndex * 100;
-    const itemsContainer = document.querySelector('.photometric-images-wrapper .w-dyn-items');
+    const itemsContainer = document.querySelector('.photometric-img .w-dyn-items');
     if (itemsContainer) {
       itemsContainer.style.transform = `translateY(${translateY}%)`;
     }
