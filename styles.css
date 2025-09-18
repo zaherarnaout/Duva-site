@@ -388,7 +388,7 @@ body.menu-open {
 .thumbnail-image { 
   border: 1px solid #d1d1d1; 
   border-radius: 4px; 
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
   cursor: pointer; 
 }
 
@@ -3516,7 +3516,7 @@ opacity: 1 !important;
 .image-3:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
-  border: 1px solid var(--hover-border-color) !important;
+  border-color: var(--hover-border-color) !important;
 }
 
 /* Shimmer animation on hover */
