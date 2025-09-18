@@ -247,8 +247,97 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-/* === 2. Thumbnail Image Selector === */ 
-/* REMOVED - Duplicate thumbnail handler, using critical fixes version instead */ 
+/* === 2. Thumbnail Image Selector === */
+/* REMOVED - Duplicate thumbnail handler, using critical fixes version instead */
+
+/* === Dimension and Photometric Image Auto-Scrolling === */
+let dimensionScrollInterval = null;
+let photometricScrollInterval = null;
+let dimensionCurrentIndex = 0;
+let photometricCurrentIndex = 0;
+
+function initializeDimensionPhotometricScrolling() {
+  console.log('🔄 Initializing dimension and photometric image scrolling...');
+  
+  // Initialize dimension image scrolling
+  const dimensionContainer = document.querySelector('.product-dimension');
+  const dimensionItems = document.querySelectorAll('.product-dimension .w-dyn-item');
+  
+  // Initialize photometric image scrolling
+  const photometricContainer = document.querySelector('.photometric-img');
+  const photometricItems = document.querySelectorAll('.photometric-img .w-dyn-item');
+  
+  // Check if containers exist and have multiple images
+  if (dimensionContainer && dimensionItems.length > 1) {
+    console.log(`📐 Found ${dimensionItems.length} dimension images, starting auto-scroll`);
+    startDimensionScrolling();
+    
+    // Pause on hover
+    dimensionContainer.addEventListener('mouseenter', stopDimensionScrolling);
+    dimensionContainer.addEventListener('mouseleave', startDimensionScrolling);
+  } else if (dimensionContainer && dimensionItems.length === 0) {
+    console.log('📐 No dimension images found, hiding container');
+    dimensionContainer.style.display = 'none';
+  }
+  
+  if (photometricContainer && photometricItems.length > 1) {
+    console.log(`📊 Found ${photometricItems.length} photometric images, starting auto-scroll`);
+    startPhotometricScrolling();
+    
+    // Pause on hover
+    photometricContainer.addEventListener('mouseenter', stopPhotometricScrolling);
+    photometricContainer.addEventListener('mouseleave', startPhotometricScrolling);
+  } else if (photometricContainer && photometricItems.length === 0) {
+    console.log('📊 No photometric images found, hiding container');
+    photometricContainer.style.display = 'none';
+  }
+}
+
+function startDimensionScrolling() {
+  const dimensionItems = document.querySelectorAll('.dimension-images-wrapper .w-dyn-item');
+  if (dimensionItems.length <= 1) return;
+  
+  stopDimensionScrolling(); // Clear any existing interval
+  
+  dimensionScrollInterval = setInterval(() => {
+    dimensionCurrentIndex = (dimensionCurrentIndex + 1) % dimensionItems.length;
+    const translateY = -dimensionCurrentIndex * 100;
+    const itemsContainer = document.querySelector('.dimension-images-wrapper .w-dyn-items');
+    if (itemsContainer) {
+      itemsContainer.style.transform = `translateY(${translateY}%)`;
+    }
+  }, 3000); // Change image every 3 seconds
+}
+
+function stopDimensionScrolling() {
+  if (dimensionScrollInterval) {
+    clearInterval(dimensionScrollInterval);
+    dimensionScrollInterval = null;
+  }
+}
+
+function startPhotometricScrolling() {
+  const photometricItems = document.querySelectorAll('.photometric-images-wrapper .w-dyn-item');
+  if (photometricItems.length <= 1) return;
+  
+  stopPhotometricScrolling(); // Clear any existing interval
+  
+  photometricScrollInterval = setInterval(() => {
+    photometricCurrentIndex = (photometricCurrentIndex + 1) % photometricItems.length;
+    const translateY = -photometricCurrentIndex * 100;
+    const itemsContainer = document.querySelector('.photometric-images-wrapper .w-dyn-items');
+    if (itemsContainer) {
+      itemsContainer.style.transform = `translateY(${translateY}%)`;
+    }
+  }, 3000); // Change image every 3 seconds
+}
+
+function stopPhotometricScrolling() {
+  if (photometricScrollInterval) {
+    clearInterval(photometricScrollInterval);
+    photometricScrollInterval = null;
+  }
+}
 
  
 
@@ -3472,6 +3561,43 @@ function handleDynamicImages() {
 // Initialize dynamic image handling
 document.addEventListener('DOMContentLoaded', function() {
   handleDynamicImages();
+  initializeDimensionPhotometricScrolling();
+  
+  // Also initialize when Webflow loads dynamic content
+  if (typeof Webflow !== 'undefined') {
+    Webflow.push(function() {
+      setTimeout(initializeDimensionPhotometricScrolling, 100);
+    });
+  }
+  
+  // Watch for dynamic content changes
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList') {
+        // Check if dimension or photometric containers were added/modified
+        const addedNodes = Array.from(mutation.addedNodes);
+        const hasRelevantChanges = addedNodes.some(node => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            return node.classList?.contains('product-dimension') || 
+                   node.classList?.contains('photometric-img') ||
+                   node.querySelector?.('.product-dimension') ||
+                   node.querySelector?.('.photometric-img');
+          }
+          return false;
+        });
+        
+        if (hasRelevantChanges) {
+          setTimeout(initializeDimensionPhotometricScrolling, 100);
+        }
+      }
+    });
+  });
+  
+  // Start observing
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 });
 
 // Preload critical images
