@@ -262,25 +262,43 @@ function initializeDimensionPhotometricScrolling() {
   // Initialize dimension image scrolling
   const dimensionContainer = document.querySelector('.product-dimension');
   const dimensionItems = document.querySelectorAll('.product-dimension .w-dyn-item');
+  const dimensionImages = document.querySelectorAll('.product-dimension .dimension');
   
   // Initialize photometric image scrolling
   const photometricContainer = document.querySelector('.photometric-img');
   const photometricItems = document.querySelectorAll('.photometric-img .w-dyn-item');
+  const photometricImages = document.querySelectorAll('.photometric-img .photometric');
+  
+  // Debug logging
+  console.log('🔍 Debug Info:');
+  console.log('Dimension Container:', dimensionContainer);
+  console.log('Dimension Items:', dimensionItems.length);
+  console.log('Dimension Images:', dimensionImages.length);
+  console.log('Photometric Container:', photometricContainer);
+  console.log('Photometric Items:', photometricItems.length);
+  console.log('Photometric Images:', photometricImages.length);
   
   // Check if containers exist and have images
   if (dimensionContainer) {
-    if (dimensionItems.length > 1) {
-      console.log(`📐 Found ${dimensionItems.length} dimension images, starting auto-scroll`);
-      startDimensionScrolling();
-      
-      // Pause on hover
-      dimensionContainer.addEventListener('mouseenter', stopDimensionScrolling);
-      dimensionContainer.addEventListener('mouseleave', startDimensionScrolling);
-    } else if (dimensionItems.length === 1) {
-      console.log('📐 Single dimension image found, no scrolling needed');
+    // Check for any dimension images (either in w-dyn-items or direct)
+    const hasImages = dimensionImages.length > 0 || dimensionItems.length > 0;
+    
+    if (hasImages) {
+      console.log('📐 Dimension images found, showing container');
       // Make sure container is visible
       dimensionContainer.style.display = '';
       dimensionContainer.classList.remove('no-images');
+      
+      if (dimensionItems.length > 1) {
+        console.log(`📐 Found ${dimensionItems.length} dimension images, starting auto-scroll`);
+        startDimensionScrolling();
+        
+        // Pause on hover
+        dimensionContainer.addEventListener('mouseenter', stopDimensionScrolling);
+        dimensionContainer.addEventListener('mouseleave', startDimensionScrolling);
+      } else {
+        console.log('📐 Single dimension image found, no scrolling needed');
+      }
     } else {
       console.log('📐 No dimension images found, hiding container');
       dimensionContainer.classList.add('no-images');
@@ -288,18 +306,25 @@ function initializeDimensionPhotometricScrolling() {
   }
   
   if (photometricContainer) {
-    if (photometricItems.length > 1) {
-      console.log(`📊 Found ${photometricItems.length} photometric images, starting auto-scroll`);
-      startPhotometricScrolling();
-      
-      // Pause on hover
-      photometricContainer.addEventListener('mouseenter', stopPhotometricScrolling);
-      photometricContainer.addEventListener('mouseleave', startPhotometricScrolling);
-    } else if (photometricItems.length === 1) {
-      console.log('📊 Single photometric image found, no scrolling needed');
+    // Check for any photometric images (either in w-dyn-items or direct)
+    const hasImages = photometricImages.length > 0 || photometricItems.length > 0;
+    
+    if (hasImages) {
+      console.log('📊 Photometric images found, showing container');
       // Make sure container is visible
       photometricContainer.style.display = '';
       photometricContainer.classList.remove('no-images');
+      
+      if (photometricItems.length > 1) {
+        console.log(`📊 Found ${photometricItems.length} photometric images, starting auto-scroll`);
+        startPhotometricScrolling();
+        
+        // Pause on hover
+        photometricContainer.addEventListener('mouseenter', stopPhotometricScrolling);
+        photometricContainer.addEventListener('mouseleave', startPhotometricScrolling);
+      } else {
+        console.log('📊 Single photometric image found, no scrolling needed');
+      }
     } else {
       console.log('📊 No photometric images found, hiding container');
       photometricContainer.classList.add('no-images');
@@ -3575,6 +3600,22 @@ function handleDynamicImages() {
 // Initialize dynamic image handling
 document.addEventListener('DOMContentLoaded', function() {
   handleDynamicImages();
+  
+  // Show containers by default first
+  const dimensionContainer = document.querySelector('.product-dimension');
+  const photometricContainer = document.querySelector('.photometric-img');
+  
+  if (dimensionContainer) {
+    dimensionContainer.style.display = 'block';
+    dimensionContainer.classList.remove('no-images');
+  }
+  
+  if (photometricContainer) {
+    photometricContainer.style.display = 'block';
+    photometricContainer.classList.remove('no-images');
+  }
+  
+  // Then initialize scrolling
   initializeDimensionPhotometricScrolling();
   
   // Also initialize when Webflow loads dynamic content
