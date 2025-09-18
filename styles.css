@@ -2922,8 +2922,7 @@ opacity: 1 !important;
 }
 
 /* Skeleton for thumbnail images */
-.thumbnail-image.skeleton,
-.image-3.skeleton {
+.thumbnail-image.skeleton {
   width: 80px !important;
   height: 80px !important;
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -3456,8 +3455,7 @@ opacity: 1 !important;
 
 /* === Product Image and Thumbnail Hover Animation === */
 /* Enhanced hover effects for product images and thumbnails */
-.product-image,
-.thumbnail-image {
+.product-image {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
@@ -3472,8 +3470,7 @@ opacity: 1 !important;
 
 /* Shimmer effect for product images and thumbnails */
 .product-image::before,
-.thumbnail-image::before,
-.image-3::before {
+.thumbnail-image::before {
   content: '';
   position: absolute;
   top: 0;
