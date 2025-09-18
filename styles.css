@@ -3457,8 +3457,7 @@ opacity: 1 !important;
 /* === Product Image and Thumbnail Hover Animation === */
 /* Enhanced hover effects for product images and thumbnails */
 .product-image,
-.thumbnail-image,
-.image-3 {
+.thumbnail-image {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
@@ -3490,8 +3489,7 @@ opacity: 1 !important;
 /* Enhanced hover effects for product images and thumbnails */
 /* Use CSS custom properties for cleaner, more maintainable code */
 .product-image,
-.thumbnail-image,
-.image-3 {
+.thumbnail-image {
   --hover-transform: translateY(-4px);
   --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   --hover-border-color: #c0392b;
@@ -3501,8 +3499,7 @@ opacity: 1 !important;
 
 /* Disable hover effects for flip card images */
 .flip-card-wrapper .product-image,
-.flip-card-wrapper .thumbnail-image,
-.flip-card-wrapper .image-3 {
+.flip-card-wrapper .thumbnail-image {
   --hover-transform: none;
   --hover-box-shadow: none;
   --hover-border-color: transparent;
@@ -3512,8 +3509,7 @@ opacity: 1 !important;
 
 /* Apply hover effects using custom properties */
 .product-image:hover,
-.thumbnail-image:hover,
-.image-3:hover {
+.thumbnail-image:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
   border-color: var(--hover-border-color) !important;
@@ -3521,15 +3517,13 @@ opacity: 1 !important;
 
 /* Shimmer animation on hover */
 .product-image:hover::before,
-.thumbnail-image:hover::before,
-.image-3:hover::before {
+.thumbnail-image:hover::before {
   left: var(--hover-shimmer-position);
 }
 
 /* Product image scaling on hover */
 .product-image:hover img,
-.thumbnail-image:hover img,
-.image-3:hover img {
+.thumbnail-image:hover img {
   transform: var(--hover-image-scale);
   transition: transform 0.3s ease;
 }
@@ -3537,22 +3531,19 @@ opacity: 1 !important;
 /* Responsive adjustments for product images and thumbnails */
 @media screen and (max-width: 767px) {
   .product-image:hover,
-  .thumbnail-image:hover,
-  .image-3:hover {
+  .thumbnail-image:hover {
     transform: translateY(-2px);
   }
   
   .product-image:hover img,
-  .thumbnail-image:hover img,
-  .image-3:hover img {
+  .thumbnail-image:hover img {
     transform: scale(1.1);
   }
 }
 
 @media screen and (max-width: 479px) {
   .product-image:hover,
-  .thumbnail-image:hover,
-  .image-3:hover {
+  .thumbnail-image:hover {
     transform: translateY(-1px);
   }
 }
