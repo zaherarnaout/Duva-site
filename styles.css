@@ -388,7 +388,7 @@ body.menu-open {
 .thumbnail-image { 
   border: 1px solid #d1d1d1; 
   border-radius: 4px; 
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
   cursor: pointer; 
 }
 
@@ -410,15 +410,7 @@ body.menu-open {
   pointer-events: none;
 }
 
-.thumbnail-image:hover {
-  border: 1px solid #C0392B !important;
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-}
-
-.thumbnail-image:hover::before {
-  left: 100%;
-} 
+/* REMOVED - Duplicate hover effects, using unified system below */ 
 
 
 
@@ -2864,19 +2856,7 @@ opacity: 1 !important;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
 }
 
-/* Thumbnail hover effects */
-.thumbnail-image {
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.thumbnail-image:hover {
-  border: 1px solid #c0392b;
-  border-radius: 4px;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
+/* REMOVED - Duplicate thumbnail hover effects, using unified system below */
 
 @media screen and (max-width: 991px) {
   .product-thumbnails-wrapper {
@@ -3569,7 +3549,7 @@ opacity: 1 !important;
 .image-3:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
-  border-color: var(--hover-border-color) !important;
+  border: 1px solid var(--hover-border-color) !important;
 }
 
 /* Shimmer animation on hover */
