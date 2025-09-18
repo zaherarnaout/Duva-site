@@ -2851,9 +2851,9 @@ opacity: 1 !important;
 /* Keep active state for thumbnails */
 .thumbnail-image.is-active,
 .thumbnail-image.thumbnail-image-is-active {
-  border: 2px solid #c0392b !important;
+  border: 1px solid #c0392b !important;
   border-radius: 4px;
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
+  box-shadow: 0 0 0 1px rgba(192, 57, 43, 0.2);
 }
 
 /* REMOVED - Duplicate thumbnail hover effects, using unified system below */
