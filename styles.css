@@ -3771,6 +3771,12 @@ img[class*="main-product"]:hover::before,
   display: none !important;
 }
 
+/* Ensure containers are visible by default */
+.product-dimension,
+.photometric-img {
+  display: block !important;
+}
+
 /* WEBFLOW STRUCTURE: Target the actual main image container and image */
 .lightbox-trigger {
   position: relative !important;
