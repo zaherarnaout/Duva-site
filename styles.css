@@ -3764,11 +3764,10 @@ img[class*="main-product"]:hover::before,
   border-radius: 0;
 }
 
-/* Hide containers when no images are available */
-.product-dimension:has(.w-dyn-empty),
-.photometric-img:has(.w-dyn-empty),
-.product-dimension:has(.w-dyn-items:empty),
-.photometric-img:has(.w-dyn-items:empty) {
+/* Hide containers only when they have no images at all */
+/* This will be handled by JavaScript for better reliability */
+.product-dimension.no-images,
+.photometric-img.no-images {
   display: none !important;
 }
 
