@@ -3481,44 +3481,20 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* NUCLEAR OPTION - Override ALL external hover effects */
-html body *[class*="product-image"]:hover,
-html body *[class*="dimension"]:hover,
-html body *[class*="photometric"]:hover,
-html body *[id*="main-lightbox-trigger"]:hover,
-html body *.lightbox-trigger:hover,
-html body *.lightbox-trigger img:hover,
-html body *.product-visuals img:hover,
-html body *.w-dyn-item:hover,
-html body *.w-dyn-list:hover,
-html body *.w-dyn-items:hover,
-html body *.w-dyn-bind:hover,
-html body *.w-dyn-bind-empty:hover {
+/* Override Webflow's built-in hover effects */
+.product-image.main-image-hover:hover {
   transform: none !important;
-  box-shadow: none !important;
-  border: 1px solid var(--border-divider-light) !important;
-  border-radius: 4px !important;
-  background-color: transparent !important;
-  opacity: 1 !important;
-  filter: none !important;
   scale: 1 !important;
-  transition: none !important;
-  animation: none !important;
-  overflow: hidden !important;
 }
 
-/* Override any pseudo-element hover effects */
-html body *[class*="product-image"]:hover::before,
-html body *[class*="product-image"]:hover::after,
-html body *[class*="dimension"]:hover::before,
-html body *[class*="dimension"]:hover::after,
-html body *[class*="photometric"]:hover::before,
-html body *[class*="photometric"]:hover::after {
-  display: none !important;
-  content: none !important;
-  background: none !important;
+/* Override any other Webflow hover effects for product images */
+.product-image:hover,
+.dimension:hover,
+.photometric-img:hover {
   transform: none !important;
-  opacity: 0 !important;
+  scale: 1 !important;
+  box-shadow: none !important;
+  border: 1px solid var(--border-divider-light) !important;
 }
 
 /* REMOVED - All responsive hover effects disabled */
