@@ -3748,9 +3748,7 @@ img[class*="main-product"]::before,
   left: 100%;
 }
 
-/* ULTRA-AGGRESSIVE: Force hover effects on main image */
-.product-visuals #main-lightbox-trigger:hover,
-/* REMOVED - This was adding red border to product-visuals img#main-lightbox-trigger on hover */
+/* REMOVED - All product visuals hover effects disabled */
 
 .product-visuals #main-lightbox-trigger::before,
 .product-visuals img#main-lightbox-trigger::before {
