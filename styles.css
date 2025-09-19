@@ -3479,25 +3479,35 @@ opacity: 1 !important;
   pointer-events: none;
 }
 
-/* ULTRA-AGGRESSIVE DEBUGGING - Override everything */
-html body #main-lightbox-trigger,
-html body .product-image.main-image-hover.main-product-image,
-html body .lightbox-trigger img {
-  background-color: yellow !important; /* DEBUG: Make it visible */
-  border: 5px solid red !important; /* DEBUG: Thick red border */
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+/* CLEAN SLATE - Remove ALL hover effects from product images */
+.product-image,
+.product-image.main-image-hover,
+.product-image.main-product-image,
+#main-lightbox-trigger,
+.lightbox-trigger img,
+.product-dimension,
+.photometric-img {
+  /* Keep only Webflow default border */
+  border: 1px solid var(--border-divider-light) !important;
+  border-radius: 4px !important;
+  /* Remove all other effects */
+  transform: none !important;
+  box-shadow: none !important;
+  transition: none !important;
 }
 
-html body #main-lightbox-trigger:hover,
-html body .product-image.main-image-hover.main-product-image:hover,
-html body .lightbox-trigger img:hover {
-  background-color: orange !important; /* DEBUG: Change color on hover */
-  border: 5px solid blue !important; /* DEBUG: Change border on hover */
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  transition: all 0.3s ease !important;
+/* DISABLE ALL hover effects */
+.product-image:hover,
+.product-image.main-image-hover:hover,
+.product-image.main-product-image:hover,
+#main-lightbox-trigger:hover,
+.lightbox-trigger img:hover,
+.product-dimension:hover,
+.photometric-img:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border: 1px solid var(--border-divider-light) !important;
+  border-radius: 4px !important;
 }
 
 /* DISABLE container hover effects to prevent conflicts */
@@ -3515,33 +3525,9 @@ html body .lightbox-trigger img:hover {
   border: none !important;
 }
 
-/* Shimmer animation on hover */
-.product-image:hover::before {
-  left: 100% !important;
-}
+/* REMOVED - All shimmer and scaling effects disabled */
 
-/* Product image scaling on hover */
-.product-image:hover img {
-  transform: scale(1.05) !important;
-  transition: transform 0.3s ease !important;
-}
-
-/* Responsive adjustments for product images */
-@media screen and (max-width: 767px) {
-  .product-image:hover {
-    transform: translateY(-2px) !important;
-  }
-  
-  .product-image:hover img {
-    transform: scale(1.05) !important;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .product-image:hover {
-    transform: translateY(-1px) !important;
-  }
-}
+/* REMOVED - All responsive hover effects disabled */
 
 /* === Enhanced Lightbox Gallery Styling === */
 /* Make main image clickable for lightbox - Multiple selectors to catch all variations */
@@ -3627,31 +3613,9 @@ img[class*="main-product"]:hover::before,
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-.product-dimension:hover .dimension,
-.photometric-img:hover .photometric {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
-}
+/* REMOVED - Dimension and photometric scaling effects disabled */
 
-/* Add shimmer effect to dimension and photometric containers */
-.product-dimension::before,
-.photometric-img::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.3), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.product-dimension:hover::before,
-.photometric-img:hover::before {
-  left: 100%;
-}
+/* REMOVED - All shimmer effects disabled */
 
 /* === Dimension and Photometric Image Scrolling === */
 /* Enhanced styling for existing Webflow structure */
