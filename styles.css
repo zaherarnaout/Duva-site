@@ -3494,8 +3494,7 @@ opacity: 1 !important;
 }
 
 /* Dimension Image Hover Effects */
-.product-dimension:hover,
-.product-dimension .dimension:hover {
+.product-dimension:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #c0392b !important;
@@ -3503,8 +3502,7 @@ opacity: 1 !important;
 }
 
 /* Photometric Image Hover Effects */
-.photometric-img:hover,
-.photometric-img .photometric:hover {
+.photometric-img:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #c0392b !important;
