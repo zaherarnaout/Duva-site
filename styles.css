@@ -2799,10 +2799,13 @@ opacity: 1 !important;
 /* Gallery image styles */
 /* REMOVED - Gallery section functionality disabled */
 
-/* === Thumbnail Hover Effects === */
-/* REMOVED - Conflicting border styles, using unified system above */
-
-/* REMOVED - Conflicting border styles, using unified system above */
+/* === Thumbnail Default State === */
+.thumbnail-image { 
+  border: 1px solid #d1d1d1; 
+  border-radius: 4px; 
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+  cursor: pointer; 
+}
 
 /* Keep active state for thumbnails */
 .thumbnail-image.is-active,
