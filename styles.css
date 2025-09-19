@@ -3496,18 +3496,28 @@ opacity: 1 !important;
   transition: none !important;
 }
 
-/* DISABLE ALL hover effects */
+/* ULTRA-AGGRESSIVE - DISABLE ALL hover effects */
 .product-image:hover,
 .product-image.main-image-hover:hover,
 .product-image.main-product-image:hover,
 #main-lightbox-trigger:hover,
 .lightbox-trigger img:hover,
 .product-dimension:hover,
-.photometric-img:hover {
+.photometric-img:hover,
+.product-visuals img:hover,
+.product-visuals .product-image:hover,
+.product-visuals #main-lightbox-trigger:hover,
+img[class*="product-image"]:hover,
+img[id*="main"]:hover,
+img[class*="main-product"]:hover {
   transform: none !important;
   box-shadow: none !important;
   border: 1px solid var(--border-divider-light) !important;
   border-radius: 4px !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+  filter: none !important;
+  scale: 1 !important;
 }
 
 /* DISABLE container hover effects to prevent conflicts */
@@ -3567,16 +3577,7 @@ img[class*="main-product"]::before,
   pointer-events: none;
 }
 
-/* Shimmer animation on hover - Multiple selectors */
-.product-image.main-product-image:hover::before,
-#main-lightbox-trigger:hover::before,
-img[class*="product-image"]:hover::before,
-img[id*="main"]:hover::before,
-img[class*="main-product"]:hover::before,
-.product-visuals img:first-child:hover::before,
-.product-visuals .w-dyn-bind-empty:first-child img:hover::before {
-  left: 100%;
-}
+/* REMOVED - All shimmer animations disabled */
 
 /* Fallback: Target any large image in product visuals that might be the main image */
 .product-visuals img {
@@ -3600,18 +3601,9 @@ img[class*="main-product"]:hover::before,
   pointer-events: none;
 }
 
-.product-visuals img:hover::before {
-  left: 100%;
-}
+/* REMOVED - Product visuals hover effects disabled */
 
-/* Specific hover effects for dimension and photometric containers to match product-image */
-.product-dimension:hover,
-.photometric-img:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid #C0392B !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
+/* REMOVED - Dimension and photometric hover effects disabled */
 
 /* REMOVED - Dimension and photometric scaling effects disabled */
 
@@ -3774,10 +3766,7 @@ img[class*="main-product"]:hover::before,
   pointer-events: none;
 }
 
-.product-visuals #main-lightbox-trigger:hover::before,
-.product-visuals img#main-lightbox-trigger:hover::before {
-  left: 100%;
-}
+/* REMOVED - Product visuals main image hover effects disabled */
 
 /* ALTERNATIVE APPROACH: Use ::after for overlay effect */
 img#main-lightbox-trigger::after,
@@ -3796,24 +3785,12 @@ img#main-lightbox-trigger::after,
   pointer-events: none;
 }
 
-img#main-lightbox-trigger:hover::after,
-#main-lightbox-trigger.product-image:hover::after,
-#main-lightbox-trigger.main-product-image:hover::after {
-  opacity: 1;
-}
+/* REMOVED - All after pseudo-element hover effects disabled */
 
 /* FORCE HOVER EFFECTS TO STAY VISIBLE */
 /* REMOVED - This was adding red border to product-visuals img#main-lightbox-trigger on hover */
 
-.product-visuals img#main-lightbox-trigger:hover::before,
-.product-visuals #main-lightbox-trigger:hover::before {
-  left: 100% !important;
-}
-
-.product-visuals img#main-lightbox-trigger:hover::after,
-.product-visuals #main-lightbox-trigger:hover::after {
-  opacity: 1 !important;
-}
+/* REMOVED - All product visuals hover effects disabled */
 /* Custom arrow and close button styling */
 .w-lightbox-left {
   background-image: url('https://cdn.prod.website-files.com/684a5d9b82bae84c8dbeb42f/6880ef5902e311c1a22c5086_arrow-red-left-white.png') !important;
