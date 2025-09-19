@@ -397,18 +397,7 @@ body.menu-open {
   overflow: hidden !important;
 }
 
-.thumbnail-image::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.8s ease 0.3s;
-  z-index: 10 !important;
-  pointer-events: none;
-}
+/* REMOVED - thumbnail-image::before rule to eliminate all effects */
 
 /* REMOVED - Duplicate hover effects, using unified system below */ 
 
@@ -3509,10 +3498,7 @@ opacity: 1 !important;
   border-color: var(--hover-border-color) !important;
 }
 
-/* CLEAN SLATE - No hover effects yet, building from scratch */
-.thumbnail-image:hover {
-  /* No effects yet - starting fresh */
-}
+/* CLEAN SLATE - No hover effects at all, completely removed */
 
 /* Shimmer animation on hover */
 .product-image:hover::before {
