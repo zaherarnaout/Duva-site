@@ -3475,20 +3475,25 @@ opacity: 1 !important;
   transition: none !important;
 }
 
-/* ULTRA-AGGRESSIVE - DISABLE ALL hover effects */
-.product-image:hover,
-.product-image.main-image-hover:hover,
-.product-image.main-product-image:hover,
-#main-lightbox-trigger:hover,
-.lightbox-trigger img:hover,
-.product-dimension:hover,
-.photometric-img:hover,
-.product-visuals img:hover,
-.product-visuals .product-image:hover,
-.product-visuals #main-lightbox-trigger:hover,
-img[class*="product-image"]:hover,
-img[id*="main"]:hover,
-img[class*="main-product"]:hover {
+/* REMOVED - All hover effects completely disabled */
+
+/* REMOVED - Download arrow hover effects disabled */
+
+/* REMOVED - All shimmer and scaling effects disabled */
+
+/* NUCLEAR OPTION - Override ALL external hover effects */
+html body *[class*="product-image"]:hover,
+html body *[class*="dimension"]:hover,
+html body *[class*="photometric"]:hover,
+html body *[id*="main-lightbox-trigger"]:hover,
+html body *.lightbox-trigger:hover,
+html body *.lightbox-trigger img:hover,
+html body *.product-visuals img:hover,
+html body *.w-dyn-item:hover,
+html body *.w-dyn-list:hover,
+html body *.w-dyn-items:hover,
+html body *.w-dyn-bind:hover,
+html body *.w-dyn-bind-empty:hover {
   transform: none !important;
   box-shadow: none !important;
   border: 1px solid var(--border-divider-light) !important;
@@ -3497,24 +3502,24 @@ img[class*="main-product"]:hover {
   opacity: 1 !important;
   filter: none !important;
   scale: 1 !important;
+  transition: none !important;
+  animation: none !important;
+  overflow: hidden !important;
 }
 
-/* DISABLE container hover effects to prevent conflicts */
-.lightbox-trigger:hover {
+/* Override any pseudo-element hover effects */
+html body *[class*="product-image"]:hover::before,
+html body *[class*="product-image"]:hover::after,
+html body *[class*="dimension"]:hover::before,
+html body *[class*="dimension"]:hover::after,
+html body *[class*="photometric"]:hover::before,
+html body *[class*="photometric"]:hover::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
   transform: none !important;
-  box-shadow: none !important;
-  border: none !important;
+  opacity: 0 !important;
 }
-
-/* DISABLE hover effects on download arrow (conflicting ID) */
-#product-image:hover,
-.download-arrow:hover {
-  transform: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* REMOVED - All shimmer and scaling effects disabled */
 
 /* REMOVED - All responsive hover effects disabled */
 
