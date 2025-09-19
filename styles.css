@@ -3626,7 +3626,6 @@ img[class*="main-product"],
 /* WEBFLOW STRUCTURE: Target the actual main image container and image */
 .lightbox-trigger {
   position: relative !important;
-  overflow: hidden !important;
   cursor: pointer !important;
   border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
@@ -3634,7 +3633,6 @@ img[class*="main-product"],
 
 .lightbox-trigger .w-dyn-item {
   position: relative !important;
-  overflow: hidden !important;
   width: 100% !important;
   height: 100% !important;
 }
@@ -3643,7 +3641,6 @@ img[class*="main-product"],
 #main-lightbox-trigger {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   position: relative !important;
-  overflow: hidden !important;
   cursor: pointer !important;
   border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
