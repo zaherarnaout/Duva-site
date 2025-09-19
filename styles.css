@@ -3480,12 +3480,11 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* === Duva Standard Hover Effects - Matching Thumbnail Image === */
-/* Product Image Hover Effects */
-.product-image:hover,
-.product-image.main-image-hover:hover,
-.product-image.main-product-image:hover,
-#main-lightbox-trigger:hover {
+/* === Duva Standard Hover Effects - Parent Container Approach === */
+/* Product Image Hover Effects - Applied to Parent Container */
+.lightbox-trigger:hover .product-image,
+.lightbox-trigger:hover #main-lightbox-trigger,
+.lightbox-trigger:hover .w-dyn-item img {
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #c0392b !important;
@@ -3626,6 +3625,7 @@ img[class*="main-product"],
 /* WEBFLOW STRUCTURE: Target the actual main image container and image */
 .lightbox-trigger {
   position: relative !important;
+  overflow: hidden !important;
   cursor: pointer !important;
   border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
@@ -3633,6 +3633,7 @@ img[class*="main-product"],
 
 .lightbox-trigger .w-dyn-item {
   position: relative !important;
+  overflow: hidden !important;
   width: 100% !important;
   height: 100% !important;
 }
