@@ -718,11 +718,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     
-    // Force a re-render by triggering a style change
-    mainImage.style.transform = 'scale(1.01)';
-    setTimeout(() => {
-      mainImage.style.transform = 'scale(1)';
-    }, 50);
+    // REMOVED - Scale effects disabled
     
     console.log(`✅ Main image updated to: ${imageFilename}`);
   }
