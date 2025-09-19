@@ -2813,7 +2813,7 @@ opacity: 1 !important;
 .image-3.thumbnail-image:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--border-divider-light);
+  border: 1px solid #c0392b !important;
 }
 
 /* Keep active state for thumbnails */
