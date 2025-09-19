@@ -1484,6 +1484,22 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log('🔍 DEBUG: Main image computed styles:', window.getComputedStyle(newMainImage));
       console.log('🔍 DEBUG: Main image background color:', window.getComputedStyle(newMainImage).backgroundColor);
       console.log('🔍 DEBUG: Main image border:', window.getComputedStyle(newMainImage).border);
+      
+      // DEBUG: Check for Webflow-specific elements
+      console.log('🔍 DEBUG: All product images:', document.querySelectorAll('.product-image'));
+      console.log('🔍 DEBUG: All lightbox triggers:', document.querySelectorAll('.lightbox-trigger'));
+      console.log('🔍 DEBUG: All w-dyn-bind-empty elements:', document.querySelectorAll('.w-dyn-bind-empty'));
+      
+      // DEBUG: Check if Webflow is dynamically changing the element
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && mutation.target === newMainImage) {
+            console.log('🔍 DEBUG: Main image attributes changed:', mutation.attributeName);
+            console.log('🔍 DEBUG: New classes:', newMainImage.className);
+          }
+        });
+      });
+      observer.observe(newMainImage, { attributes: true, attributeFilter: ['class', 'id', 'src'] });
 
       newMainImage.addEventListener("click", (e) => { 
         console.log('🖼️ Main image clicked - triggering lightbox');
