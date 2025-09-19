@@ -4834,16 +4834,7 @@ function initializeRelatedItemsSingleClick() {
       }
     });
     
-    // Add hover effect for better UX
-    item.addEventListener('mouseenter', function() {
-      this.style.cursor = 'pointer';
-      this.style.transform = 'translateY(-2px)';
-      this.style.transition = 'transform 0.2s ease';
-    });
-    
-    item.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0)';
-    });
+    // REMOVED - Hover effects disabled
   });
   
   console.log(`✅ Single-click fix applied to ${relatedItems.length} related items`);
