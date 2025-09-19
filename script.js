@@ -213,11 +213,7 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-  container.addEventListener('mouseenter', () => { 
-
-    img.classList.add('zoomed'); 
-
-  }); 
+  // REMOVED - Hover effects disabled 
 
  
 
@@ -235,13 +231,7 @@ document.querySelectorAll('.accessory-image').forEach(container => {
 
  
 
-  container.addEventListener('mouseleave', () => { 
-
-    img.classList.remove('zoomed'); 
-
-    img.style.transformOrigin = 'center center'; 
-
-  }); 
+  // REMOVED - Hover effects disabled 
 
 }); 
 
@@ -3718,31 +3708,9 @@ document.addEventListener('DOMContentLoaded', function() {
 /* === Arrow Hover Effects === */
 document.addEventListener('DOMContentLoaded', function() {
   
-  // Download arrow hover effects
-  document.querySelectorAll('.download-arrow').forEach(arrow => {
-    arrow.addEventListener('mouseenter', function() {
-      this.style.transform = 'scale(1.1)';
-      this.style.transition = 'transform 0.2s ease';
-    });
-    
-    arrow.addEventListener('mouseleave', function() {
-      this.style.transform = 'scale(1)';
-    });
-  });
+  // REMOVED - Download arrow hover effects disabled
   
-  // Dropdown arrow hover effects
-  document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
-    arrow.addEventListener('mouseenter', function() {
-      this.style.transform = 'scale(1.1)';
-      this.style.transition = 'transform 0.2s ease';
-    });
-    
-    arrow.addEventListener('mouseleave', function() {
-      // Reset to default state - let CSS handle the rotation
-      this.style.transform = '';
-      this.style.transition = '';
-    });
-  });
+  // REMOVED - Dropdown arrow hover effects disabled
 });
 
 // New PDF generation function using stable export wrapper
