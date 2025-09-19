@@ -3615,7 +3615,6 @@ img[class*="main-product"],
   position: relative !important;
   overflow: hidden !important;
   cursor: pointer !important;
-  border: 1px solid var(--border-divider-light) !important;
   z-index: 1 !important;
 }
 
