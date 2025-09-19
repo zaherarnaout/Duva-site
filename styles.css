@@ -3481,15 +3481,17 @@ opacity: 1 !important;
 /* REMOVED - All shimmer and scaling effects disabled */
 
 /* === FRESH START - Simple Hover Effects === */
-/* Very basic hover effect - just red border */
+/* Very basic hover effect - red border + shadow */
 .product-image:hover,
 #main-lightbox-trigger:hover {
   border: 1px solid #c0392b !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 .product-dimension:hover,
 .photometric-img:hover {
   border: 1px solid #c0392b !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* REMOVED - All responsive hover effects disabled */
