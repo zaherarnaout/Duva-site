@@ -3451,7 +3451,6 @@ opacity: 1 !important;
 /* Enhanced hover effects for product images and thumbnails */
 /* Consolidated product-image base styling */
 .product-image {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative !important;
   overflow: hidden !important;
   border: 1px solid var(--border-divider-light);
@@ -3664,51 +3663,13 @@ img[class*="main-product"],
 
 /* REMOVED - This was adding red border to lightbox-trigger .w-dyn-item img on hover */
 
-.lightbox-trigger::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.8s ease 0.3s;
-  z-index: 10 !important;
-  pointer-events: none;
-}
+/* REMOVED - Lightbox trigger shimmer effects disabled */
 
-.lightbox-trigger .w-dyn-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.8s ease 0.3s;
-  z-index: 10 !important;
-  pointer-events: none;
-}
+/* REMOVED - Lightbox trigger w-dyn-item shimmer effects disabled */
 
-#main-lightbox-trigger::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(192, 57, 43, 0.1), transparent);
-  transition: left 0.8s ease 0.3s;
-  z-index: 10 !important;
-  pointer-events: none;
-}
+/* REMOVED - Main lightbox trigger shimmer effects disabled */
 
-.lightbox-trigger:hover::before,
-.lightbox-trigger .w-dyn-item:hover::before,
-.lightbox-trigger .w-dyn-item img:hover::before,
-#main-lightbox-trigger:hover::before {
-  left: 100%;
-}
+/* REMOVED - All lightbox shimmer effects disabled */
 
 /* REMOVED - All product visuals hover effects disabled */
 
