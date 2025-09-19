@@ -386,9 +386,9 @@ body.menu-open {
 }
 
 .thumbnail-image { 
-  border: 1px solid #d1d1d1 !important; 
+  border: none !important; 
   border-radius: 4px; 
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
   cursor: pointer; 
 }
 
@@ -3483,10 +3483,9 @@ opacity: 1 !important;
   pointer-events: none;
 }
 
-/* Enhanced hover effects for product images and thumbnails */
+/* Enhanced hover effects for product images */
 /* Use CSS custom properties for cleaner, more maintainable code */
-.product-image,
-.thumbnail-image {
+.product-image {
   --hover-transform: translateY(-4px);
   --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   --hover-border-color: #c0392b;
@@ -3495,8 +3494,7 @@ opacity: 1 !important;
 }
 
 /* Disable hover effects for flip card images */
-.flip-card-wrapper .product-image,
-.flip-card-wrapper .thumbnail-image {
+.flip-card-wrapper .product-image {
   --hover-transform: none;
   --hover-box-shadow: none;
   --hover-border-color: transparent;
@@ -3511,55 +3509,37 @@ opacity: 1 !important;
   border-color: var(--hover-border-color) !important;
 }
 
-/* NUCLEAR FIX for thumbnail-image hover - override everything */
+/* CLEAN SLATE - Starting fresh with thumbnail-image hover */
 .thumbnail-image:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid #C0392B !important;
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-color: #C0392B !important;
-}
-
-/* Override any other conflicting styles */
-.thumbnail-image:hover,
-.thumbnail-image:hover *,
-.thumbnail-image:hover::before,
-.thumbnail-image:hover::after {
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-color: #C0392B !important;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C0392B;
 }
 
 /* Shimmer animation on hover */
-.product-image:hover::before,
-.thumbnail-image:hover::before {
+.product-image:hover::before {
   left: var(--hover-shimmer-position);
 }
 
 /* Product image scaling on hover */
-.product-image:hover img,
-.thumbnail-image:hover img {
+.product-image:hover img {
   transform: var(--hover-image-scale);
   transition: transform 0.3s ease;
 }
 
-/* Responsive adjustments for product images and thumbnails */
+/* Responsive adjustments for product images */
 @media screen and (max-width: 767px) {
-  .product-image:hover,
-  .thumbnail-image:hover {
+  .product-image:hover {
     transform: translateY(-2px);
   }
   
-  .product-image:hover img,
-  .thumbnail-image:hover img {
+  .product-image:hover img {
     transform: scale(1.1);
   }
 }
 
 @media screen and (max-width: 479px) {
-  .product-image:hover,
-  .thumbnail-image:hover {
+  .product-image:hover {
     transform: translateY(-1px);
   }
 }
