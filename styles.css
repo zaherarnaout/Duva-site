@@ -3480,7 +3480,9 @@ opacity: 1 !important;
 }
 
 /* ULTRA-AGGRESSIVE DEBUGGING - Override everything */
-html body #main-lightbox-trigger {
+html body #main-lightbox-trigger,
+html body .product-image.main-image-hover.main-product-image,
+html body .lightbox-trigger img {
   background-color: yellow !important; /* DEBUG: Make it visible */
   border: 5px solid red !important; /* DEBUG: Thick red border */
   display: block !important;
@@ -3488,7 +3490,9 @@ html body #main-lightbox-trigger {
   opacity: 1 !important;
 }
 
-html body #main-lightbox-trigger:hover {
+html body #main-lightbox-trigger:hover,
+html body .product-image.main-image-hover.main-product-image:hover,
+html body .lightbox-trigger img:hover {
   background-color: orange !important; /* DEBUG: Change color on hover */
   border: 5px solid blue !important; /* DEBUG: Change border on hover */
   transform: translateY(-4px) !important;
