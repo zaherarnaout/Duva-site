@@ -3503,30 +3503,28 @@ opacity: 1 !important;
   --hover-shimmer-position: -100%;
 }
 
-/* Apply hover effects using custom properties */
+/* Apply hover effects using custom properties - Fixed flickering */
 .product-image:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
   border-color: var(--hover-border-color) !important;
 }
 
-/* CLEAN SLATE - No hover effects at all, completely removed */
-
 /* Shimmer animation on hover */
 .product-image:hover::before {
   left: var(--hover-shimmer-position);
 }
 
-/* Product image scaling on hover */
+/* Product image scaling on hover - Fixed to work with container transform */
 .product-image:hover img {
   transform: var(--hover-image-scale);
   transition: transform 0.3s ease;
 }
 
-/* Responsive adjustments for product images */
+/* Responsive adjustments for product images - Fixed flickering */
 @media screen and (max-width: 767px) {
-  .product-image:hover {
-    transform: translateY(-2px);
+  .product-image {
+    --hover-transform: translateY(-2px);
   }
   
   .product-image:hover img {
@@ -3535,8 +3533,8 @@ opacity: 1 !important;
 }
 
 @media screen and (max-width: 479px) {
-  .product-image:hover {
-    transform: translateY(-1px);
+  .product-image {
+    --hover-transform: translateY(-1px);
   }
 }
 
