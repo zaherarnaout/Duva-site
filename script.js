@@ -1466,6 +1466,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Remove any existing click handlers
       const newMainImage = mainImage.cloneNode(true);
+      
+      // Preserve all CSS classes and properties for hover effects
+      newMainImage.className = mainImage.className;
+      newMainImage.id = mainImage.id;
+      newMainImage.style.cssText = mainImage.style.cssText;
+      
       mainImage.parentNode.replaceChild(newMainImage, mainImage);
 
       newMainImage.addEventListener("click", (e) => { 
