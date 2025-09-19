@@ -3595,12 +3595,7 @@ img[class*="main-product"]:hover::before,
   overflow: hidden !important;
 }
 
-/* Match product-image hover effects for all images in product-visuals */
-.product-visuals img:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid #C0392B !important;
-}
+/* REMOVED - This was adding red border to all images in product-visuals */
 
 .product-visuals img::before {
   content: '';
