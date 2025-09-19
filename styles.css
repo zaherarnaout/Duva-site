@@ -3480,14 +3480,22 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* === Duva Standard Hover Effects - Direct Image Approach === */
-/* Product Image Hover Effects - Back to Direct Image Hover */
+/* === Duva Standard Hover Effects - Based on Working Old Style === */
+/* Product Image Base Styles - Match Old Working Version */
+.product-image,
+#main-lightbox-trigger {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid transparent !important;
+}
+
+/* Product Image Hover Effects - Match Old Working Version */
 .product-image:hover,
 #main-lightbox-trigger:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: inset 0 0 0 1px #c0392b, 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid #c0392b !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border-color: #c0392b !important;
 }
 
 /* Dimension Image Hover Effects */
