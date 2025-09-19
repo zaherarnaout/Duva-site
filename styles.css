@@ -3479,57 +3479,39 @@ opacity: 1 !important;
   pointer-events: none;
 }
 
-/* Enhanced hover effects for product images */
-/* Use CSS custom properties for cleaner, more maintainable code */
-.product-image {
-  --hover-transform: translateY(-4px);
-  --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  --hover-border-color: #c0392b;
-  --hover-image-scale: scale(1.05);
-  --hover-shimmer-position: 100%;
-}
-
-/* Disable hover effects for flip card images */
-.flip-card-wrapper .product-image {
-  --hover-transform: none;
-  --hover-box-shadow: none;
-  --hover-border-color: transparent;
-  --hover-image-scale: none;
-  --hover-shimmer-position: -100%;
-}
-
-/* Apply hover effects using custom properties - Fixed flickering */
+/* COMPLETELY REBUILT - Product Image Hover Effects */
 .product-image:hover {
-  transform: var(--hover-transform);
-  box-shadow: var(--hover-box-shadow);
-  border: 1px solid var(--hover-border-color) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #c0392b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 /* Shimmer animation on hover */
 .product-image:hover::before {
-  left: var(--hover-shimmer-position);
+  left: 100% !important;
 }
 
-/* Product image scaling on hover - Fixed to work with container transform */
+/* Product image scaling on hover */
 .product-image:hover img {
-  transform: var(--hover-image-scale);
-  transition: transform 0.3s ease;
+  transform: scale(1.05) !important;
+  transition: transform 0.3s ease !important;
 }
 
-/* Responsive adjustments for product images - Fixed flickering */
+/* Responsive adjustments for product images */
 @media screen and (max-width: 767px) {
-  .product-image {
-    --hover-transform: translateY(-2px);
+  .product-image:hover {
+    transform: translateY(-2px) !important;
   }
   
   .product-image:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05) !important;
   }
 }
 
 @media screen and (max-width: 479px) {
-  .product-image {
-    --hover-transform: translateY(-1px);
+  .product-image:hover {
+    transform: translateY(-1px) !important;
   }
 }
 
@@ -3551,8 +3533,12 @@ img[class*="main-product"],
 
 /* Main image hover effects - Multiple selectors */
 .product-image.main-product-image:hover,
-#main-lightbox-trigger:hover,
-/* REMOVED - This was adding red border to product-visuals img:first-child on hover */
+#main-lightbox-trigger:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #c0392b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
 
 /* Shimmer effect for main image - Multiple selectors */
 .product-image.main-product-image::before,
