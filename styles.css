@@ -3479,12 +3479,12 @@ opacity: 1 !important;
   pointer-events: none;
 }
 
-/* ULTRA-AGGRESSIVE - Product Image Hover Effects (IMAGE ONLY) */
-.product-image:hover,
-.product-image.main-product-image:hover,
-.product-image.main-image-hover:hover,
+/* ULTRA-AGGRESSIVE - Product Image Hover Effects (MAIN IMAGE ONLY) */
+.product-visuals .product-image:hover,
+.product-visuals .product-image.main-product-image:hover,
+.product-visuals .product-image.main-image-hover:hover,
 #main-lightbox-trigger:hover,
-img.product-image:hover {
+.product-visuals img.product-image:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid #c0392b !important;
@@ -3496,6 +3496,14 @@ img.product-image:hover {
 
 /* DISABLE container hover effects to prevent conflicts */
 .lightbox-trigger:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* DISABLE hover effects on download arrow (conflicting ID) */
+#product-image:hover,
+.download-arrow:hover {
   transform: none !important;
   box-shadow: none !important;
   border: none !important;
