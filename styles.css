@@ -3732,14 +3732,7 @@ img[class*="main-product"]:hover::before,
   object-fit: contain !important;
 }
 
-.lightbox-trigger:hover,
-.lightbox-trigger .w-dyn-item:hover,
-.lightbox-trigger .w-dyn-item img:hover,
-#main-lightbox-trigger:hover {
-  transform: scale(1.02) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid #C0392B !important;
-}
+/* REMOVED - This was adding red border to lightbox-trigger .w-dyn-item img on hover */
 
 .lightbox-trigger::before {
   content: '';
@@ -3789,12 +3782,7 @@ img[class*="main-product"]:hover::before,
 
 /* ULTRA-AGGRESSIVE: Force hover effects on main image */
 .product-visuals #main-lightbox-trigger:hover,
-.product-visuals img#main-lightbox-trigger:hover {
-  transform: scale(1.02) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  border: 2px solid #C0392B !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
+/* REMOVED - This was adding red border to product-visuals img#main-lightbox-trigger on hover */
 
 .product-visuals #main-lightbox-trigger::before,
 .product-visuals img#main-lightbox-trigger::before {
@@ -3839,13 +3827,7 @@ img#main-lightbox-trigger:hover::after,
 }
 
 /* FORCE HOVER EFFECTS TO STAY VISIBLE */
-.product-visuals img#main-lightbox-trigger:hover,
-.product-visuals #main-lightbox-trigger:hover {
-  transform: scale(1.02) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  border: 2px solid #C0392B !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
+/* REMOVED - This was adding red border to product-visuals img#main-lightbox-trigger on hover */
 
 .product-visuals img#main-lightbox-trigger:hover::before,
 .product-visuals #main-lightbox-trigger:hover::before {
