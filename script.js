@@ -1464,15 +1464,18 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mainImage && firstGalleryItem) { 
       console.log('✅ Setting up lightbox trigger for main image');
 
-      // Remove any existing click handlers
-      const newMainImage = mainImage.cloneNode(true);
+      // DISABLED - Remove any existing click handlers (was causing CSS hover issues)
+      // const newMainImage = mainImage.cloneNode(true);
+      // 
+      // // Preserve all CSS classes and properties for hover effects
+      // newMainImage.className = mainImage.className;
+      // newMainImage.id = mainImage.id;
+      // newMainImage.style.cssText = mainImage.style.cssText;
+      // 
+      // mainImage.parentNode.replaceChild(newMainImage, mainImage);
       
-      // Preserve all CSS classes and properties for hover effects
-      newMainImage.className = mainImage.className;
-      newMainImage.id = mainImage.id;
-      newMainImage.style.cssText = mainImage.style.cssText;
-      
-      mainImage.parentNode.replaceChild(newMainImage, mainImage);
+      // Use the original element instead
+      const newMainImage = mainImage;
 
       newMainImage.addEventListener("click", (e) => { 
         console.log('🖼️ Main image clicked - triggering lightbox');
