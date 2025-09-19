@@ -3481,21 +3481,7 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* Override Webflow's built-in hover effects */
-.product-image.main-image-hover:hover {
-  transform: none !important;
-  scale: 1 !important;
-}
-
-/* Override any other Webflow hover effects for product images */
-.product-image:hover,
-.dimension:hover,
-.photometric-img:hover {
-  transform: none !important;
-  scale: 1 !important;
-  box-shadow: none !important;
-  border: 1px solid var(--border-divider-light) !important;
-}
+/* REMOVED - No Webflow hover effects to override */
 
 /* REMOVED - All responsive hover effects disabled */
 
