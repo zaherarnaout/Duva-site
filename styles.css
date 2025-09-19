@@ -3547,15 +3547,7 @@ img[class*="main-product"],
 /* Main image hover effects - Multiple selectors */
 .product-image.main-product-image:hover,
 #main-lightbox-trigger:hover,
-img[class*="product-image"]:hover,
-img[id*="main"]:hover,
-img[class*="main-product"]:hover,
-.product-visuals img:first-child:hover,
-.product-visuals .w-dyn-bind-empty:first-child img:hover {
-  transform: scale(1.02) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  border: 2px solid #C0392B !important;
-}
+/* REMOVED - This was adding red border to product-visuals img:first-child on hover */
 
 /* Shimmer effect for main image - Multiple selectors */
 .product-image.main-product-image::before,
@@ -3938,12 +3930,7 @@ img#main-lightbox-trigger:hover::after,
   object-position: center !important;
 }
 
-.w-lightbox-thumbnail:hover {
-  transform: translateY(-4px) scale(1.05) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
-  border: 1px solid #c0392b !important;
-  border-radius: 4px;
-}
+/* REMOVED - This was adding red border to w-lightbox-thumbnail on hover */
 
 .w-lightbox-thumbnail.active {
   border: 1px solid #c0392b !important;
