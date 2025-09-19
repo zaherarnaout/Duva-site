@@ -3618,11 +3618,21 @@ img[class*="main-product"],
   z-index: 1 !important;
 }
 
+/* Allow shadow to show on hover */
+.lightbox-trigger:hover {
+  overflow: visible !important;
+}
+
 .lightbox-trigger .w-dyn-item {
   position: relative !important;
   overflow: hidden !important;
   width: 100% !important;
   height: 100% !important;
+}
+
+/* Allow shadow to show on hover */
+.lightbox-trigger:hover .w-dyn-item {
+  overflow: visible !important;
 }
 
 .lightbox-trigger .w-dyn-item img,
