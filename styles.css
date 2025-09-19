@@ -3509,11 +3509,9 @@ opacity: 1 !important;
   border-color: var(--hover-border-color) !important;
 }
 
-/* CLEAN SLATE - Starting fresh with thumbnail-image hover */
+/* CLEAN SLATE - No hover effects yet, building from scratch */
 .thumbnail-image:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #C0392B;
+  /* No effects yet - starting fresh */
 }
 
 /* Shimmer animation on hover */
