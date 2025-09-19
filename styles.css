@@ -3456,17 +3456,12 @@ opacity: 1 !important;
 
 /* === Product Image and Thumbnail Hover Animation === */
 /* Enhanced hover effects for product images and thumbnails */
+/* Consolidated product-image base styling */
 .product-image {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid transparent;
-}
-
-/* Override Webflow's overflow setting for product images */
-.product-image {
-  overflow: hidden !important;
   position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border-divider-light);
 }
 
 /* Shimmer effect for product images and thumbnails */
@@ -3490,7 +3485,7 @@ opacity: 1 !important;
   --hover-transform: translateY(-4px);
   --hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   --hover-border-color: #c0392b;
-  --hover-image-scale: scale(1.1);
+  --hover-image-scale: scale(1.05);
   --hover-shimmer-position: 100%;
 }
 
@@ -3507,7 +3502,7 @@ opacity: 1 !important;
 .product-image:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
-  border-color: var(--hover-border-color) !important;
+  border: 1px solid var(--hover-border-color) !important;
 }
 
 /* Shimmer animation on hover */
