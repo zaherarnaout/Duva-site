@@ -3481,7 +3481,38 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* REMOVED - No Webflow hover effects to override */
+/* === Duva Standard Hover Effects === */
+/* Product Image Hover Effects */
+.product-image:hover,
+.product-image.main-image-hover:hover,
+.product-image.main-product-image:hover,
+#main-lightbox-trigger:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Dimension Image Hover Effects */
+.product-dimension:hover,
+.product-dimension .dimension:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Photometric Image Hover Effects */
+.photometric-img:hover,
+.photometric-img .photometric:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C0392B !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
 
 /* REMOVED - All responsive hover effects disabled */
 
