@@ -1476,6 +1476,14 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // Use the original element instead
       const newMainImage = mainImage;
+      
+      // DEBUG: Check if our CSS is being applied
+      console.log('🔍 DEBUG: Main image element:', newMainImage);
+      console.log('🔍 DEBUG: Main image classes:', newMainImage.className);
+      console.log('🔍 DEBUG: Main image ID:', newMainImage.id);
+      console.log('🔍 DEBUG: Main image computed styles:', window.getComputedStyle(newMainImage));
+      console.log('🔍 DEBUG: Main image background color:', window.getComputedStyle(newMainImage).backgroundColor);
+      console.log('🔍 DEBUG: Main image border:', window.getComputedStyle(newMainImage).border);
 
       newMainImage.addEventListener("click", (e) => { 
         console.log('🖼️ Main image clicked - triggering lightbox');
