@@ -3479,11 +3479,19 @@ opacity: 1 !important;
   pointer-events: none;
 }
 
-/* COMPLETELY REBUILT - Product Image Hover Effects */
-.product-image:hover {
+/* ULTRA-AGGRESSIVE - Product Image Hover Effects */
+.product-image:hover,
+.product-image.main-product-image:hover,
+.product-image.main-image-hover:hover,
+#main-lightbox-trigger:hover,
+img.product-image:hover,
+div.product-image:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid #c0392b !important;
+  border-color: #c0392b !important;
+  border-width: 1px !important;
+  border-style: solid !important;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
@@ -3531,14 +3539,7 @@ img[class*="main-product"],
   overflow: hidden !important;
 }
 
-/* Main image hover effects - Multiple selectors */
-.product-image.main-product-image:hover,
-#main-lightbox-trigger:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid #c0392b !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
+/* REMOVED - Consolidated into ultra-aggressive rule above */
 
 /* Shimmer effect for main image - Multiple selectors */
 .product-image.main-product-image::before,
