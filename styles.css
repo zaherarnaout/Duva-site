@@ -3471,7 +3471,6 @@ opacity: 1 !important;
   border-radius: 4px !important;
   /* Remove all other effects */
   transform: none !important;
-  box-shadow: none !important;
   transition: none !important;
 }
 
@@ -3487,26 +3486,26 @@ opacity: 1 !important;
 .product-image.main-image-hover:hover,
 .product-image.main-product-image:hover,
 #main-lightbox-trigger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #c0392b !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 /* Dimension Image Hover Effects */
 .product-dimension:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #c0392b !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 /* Photometric Image Hover Effects */
 .photometric-img:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #c0392b !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 /* REMOVED - All responsive hover effects disabled */
