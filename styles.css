@@ -386,7 +386,7 @@ body.menu-open {
 }
 
 .thumbnail-image { 
-  border: 1px solid #d1d1d1; 
+  border: 1px solid #d1d1d1 !important; 
   border-radius: 4px; 
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
   cursor: pointer; 
@@ -3505,11 +3505,30 @@ opacity: 1 !important;
 }
 
 /* Apply hover effects using custom properties */
-.product-image:hover,
-.thumbnail-image:hover {
+.product-image:hover {
   transform: var(--hover-transform);
   box-shadow: var(--hover-box-shadow);
   border-color: var(--hover-border-color) !important;
+}
+
+/* NUCLEAR FIX for thumbnail-image hover - override everything */
+.thumbnail-image:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #C0392B !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #C0392B !important;
+}
+
+/* Override any other conflicting styles */
+.thumbnail-image:hover,
+.thumbnail-image:hover *,
+.thumbnail-image:hover::before,
+.thumbnail-image:hover::after {
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #C0392B !important;
 }
 
 /* Shimmer animation on hover */
