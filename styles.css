@@ -3481,37 +3481,34 @@ opacity: 1 !important;
 
 /* REMOVED - All shimmer and scaling effects disabled */
 
-/* === Duva Standard Hover Effects === */
+/* === Duva Standard Hover Effects - Matching Thumbnail Image === */
 /* Product Image Hover Effects */
 .product-image:hover,
 .product-image.main-image-hover:hover,
 .product-image.main-product-image:hover,
 #main-lightbox-trigger:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #C0392B !important;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #c0392b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Dimension Image Hover Effects */
 .product-dimension:hover,
 .product-dimension .dimension:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #C0392B !important;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #c0392b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Photometric Image Hover Effects */
 .photometric-img:hover,
 .photometric-img .photometric:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #C0392B !important;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #c0392b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* REMOVED - All responsive hover effects disabled */
